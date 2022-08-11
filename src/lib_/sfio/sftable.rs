@@ -132,7 +132,7 @@ pub struct _sffmt_s<'a> {
 pub type Sffmtevent_f = Option<
     unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
-pub type Sffmt_t = _sffmt_s;
+pub type Sffmt_t<'a> = _sffmt_s<'a>;
 pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 pub type ptrdiff_t = libc::c_long;
 pub type C2RustUnnamed = libc::c_uint;
@@ -176,18 +176,18 @@ pub struct lconv {
     pub int_p_sign_posn: libc::c_char,
     pub int_n_sign_posn: libc::c_char,
 }
-pub type Fmtpos_t = _fmtpos_s;
+pub type Fmtpos_t<'a> = _fmtpos_s<'a>;
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct _fmtpos_s {
-    pub ft: Sffmt_t,
-    pub argv: Argv_t,
+pub struct _fmtpos_s<'a> {
+    pub ft: Sffmt_t<'a>,
+    pub argv: Argv_t<'a>,
     pub fmt: libc::c_int,
     pub need: [libc::c_int; 5],
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub union Argv_t {
+pub union Argv_t<'a> {
     pub i: libc::c_int,
     pub ip: *mut libc::c_int,
     pub l: libc::c_long,
@@ -207,7 +207,7 @@ pub union Argv_t {
     pub s: *mut libc::c_char,
     pub sp: *mut *mut libc::c_char,
     pub vp: *mut libc::c_void,
-    pub ft: *mut Sffmt_t,
+    pub ft: *mut Sffmt_t<'a>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -219,12 +219,12 @@ pub struct _sftab_ {
     pub sf_cvinitf: Option<unsafe extern "C" fn() -> libc::c_int>,
     pub sf_cvinit: libc::c_int,
     pub sf_fmtposf: Option<
-        unsafe extern "C" fn(
+        for<'a, 'f> unsafe extern "C" fn(
             *mut Sfio_t,
             *const libc::c_char,
-            ::std::ffi::VaList,
+            ::std::ffi::VaList<'a, 'f>,
             libc::c_int,
-        ) -> *mut Fmtpos_t,
+        ) -> *mut Fmtpos_t<'a>,
     >,
     pub sf_fmtintf:
         Option<unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char>,
@@ -535,12 +535,12 @@ pub static mut _Sftable: Sftab_t = unsafe {
             sf_cvinit: 0 as libc::c_int,
             sf_fmtposf: Some(
                 sffmtpos
-                    as unsafe extern "C" fn(
+                    as for<'a, 'f> unsafe extern "C" fn(
                         *mut Sfio_t,
                         *const libc::c_char,
-                        ::std::ffi::VaList,
+                        ::std::ffi::VaList<'a, 'f>,
                         libc::c_int,
-                    ) -> *mut Fmtpos_t,
+                    ) -> *mut Fmtpos_t<'a>,
             ),
             sf_fmtintf: Some(
                 sffmtint

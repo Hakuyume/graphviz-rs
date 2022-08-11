@@ -208,7 +208,7 @@ pub struct _sffmt_s<'a> {
 pub type Sffmtevent_f = Option<
     unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
-pub type Sffmt_t = _sffmt_s;
+pub type Sffmt_t<'a> = _sffmt_s<'a>;
 pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -643,8 +643,8 @@ pub struct Exassoc_s {
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct Fmt_t {
-    pub fmt: Sffmt_t,
+pub struct Fmt_t<'a> {
+    pub fmt: Sffmt_t<'a>,
     pub expr: *mut Expr_t,
     pub env: *mut libc::c_void,
     pub args: *mut Print_t,

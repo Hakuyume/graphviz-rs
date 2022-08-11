@@ -155,7 +155,7 @@ pub struct _fmt_s<'a> {
     pub next: *mut Fmt_t<'a>,
 }
 pub type Fmtpos_t<'a> = _fmtpos_s<'a>;
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 #[repr(C)]
 pub struct _fmtpos_s<'a> {
     pub ft: Sffmt_t<'a>,

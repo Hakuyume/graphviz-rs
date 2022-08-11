@@ -177,7 +177,7 @@ pub struct lconv {
     pub int_n_sign_posn: libc::c_char,
 }
 pub type Fmtpos_t<'a> = _fmtpos_s<'a>;
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 #[repr(C)]
 pub struct _fmtpos_s<'a> {
     pub ft: Sffmt_t<'a>,

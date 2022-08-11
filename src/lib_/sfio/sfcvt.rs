@@ -134,7 +134,7 @@ pub type Sffmtevent_f = Option<
 pub type Sffmt_t<'a> = _sffmt_s<'a>;
 pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 pub type Fmtpos_t<'a> = _fmtpos_s<'a>;
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 #[repr(C)]
 pub struct _fmtpos_s<'a> {
     pub ft: Sffmt_t<'a>,

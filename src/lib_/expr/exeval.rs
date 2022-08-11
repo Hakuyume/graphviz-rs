@@ -641,7 +641,7 @@ pub struct Exassoc_s {
     pub value: Extype_t,
     pub name: [libc::c_char; 1],
 }
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 #[repr(C)]
 pub struct Fmt_t<'a> {
     pub fmt: Sffmt_t<'a>,

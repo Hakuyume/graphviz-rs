@@ -112,7 +112,7 @@ pub type Sfwrite_f = Option<
 >;
 pub type Sfread_f =
     Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
-#[derive()]
+#[derive(Clone)]
 #[repr(C)]
 pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,

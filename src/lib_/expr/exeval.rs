@@ -189,7 +189,7 @@ pub struct _sfio_s {
     pub val: ssize_t,
 }
 pub type Sfio_t = _sfio_s;
-#[derive()]
+#[derive(Clone)]
 #[repr(C)]
 pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,

@@ -395,7 +395,7 @@ pub struct textspan_t {
     pub size: pointf,
     pub just: libc::c_char,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct textfont_t {
     pub name: *mut libc::c_char,
@@ -426,7 +426,7 @@ pub type label_type = libc::c_uint;
 pub const LABEL_HTML: label_type = 1;
 pub const LABEL_PLAIN: label_type = 0;
 pub type obj_state_t = obj_state_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct obj_state_s {
     pub parent: *mut obj_state_t,
@@ -728,7 +728,7 @@ pub struct Agrec_s {
     pub next: *mut Agrec_t,
 }
 pub type Agtag_t = Agtag_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agtag_s {
     #[bitfield(name = "objtype", ty = "libc::c_uint", bits = "0..=1")]
@@ -843,7 +843,7 @@ pub struct Agmemdisc_s {
     pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agdesc_s {
     #[bitfield(name = "directed", ty = "libc::c_uint", bits = "0..=0")]
@@ -1139,7 +1139,7 @@ pub struct Agraphinfo_t {
     pub label_pos: libc::c_char,
     pub exact_ranksep: bool,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct xml_flags_t {
     #[bitfield(name = "raw", ty = "libc::c_uint", bits = "0..=0")]

@@ -440,7 +440,7 @@ pub const RGBA_BYTE: color_type_t = 1;
 pub const HSVA_DOUBLE: color_type_t = 0;
 pub type gvrender_engine_t = gvrender_engine_s;
 pub type obj_state_t = obj_state_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct obj_state_s {
     pub parent: *mut obj_state_t,
@@ -760,7 +760,7 @@ pub struct Agrec_s {
     pub next: *mut Agrec_t,
 }
 pub type Agtag_t = Agtag_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agtag_s {
     #[bitfield(name = "objtype", ty = "libc::c_uint", bits = "0..=1")]
@@ -874,7 +874,7 @@ pub struct Agmemdisc_s {
     pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agdesc_s {
     #[bitfield(name = "directed", ty = "libc::c_uint", bits = "0..=0")]

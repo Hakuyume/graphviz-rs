@@ -266,7 +266,7 @@ pub struct _GTypeInstance {
     pub g_class: *mut GTypeClass,
 }
 pub type GTypeInstance = _GTypeInstance;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GClosure {
     #[bitfield(name = "ref_count", ty = "guint", bits = "0..=14")]
@@ -510,7 +510,7 @@ pub const GDK_CONTROL_MASK: GdkModifierType = 4;
 pub const GDK_LOCK_MASK: GdkModifierType = 2;
 pub const GDK_SHIFT_MASK: GdkModifierType = 1;
 pub type GdkScreen = _GdkScreen;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GdkScreen {
     pub parent_instance: GObject,
@@ -737,7 +737,7 @@ pub const GDK_SCROLL_LEFT: GdkScrollDirection = 2;
 pub const GDK_SCROLL_DOWN: GdkScrollDirection = 1;
 pub const GDK_SCROLL_UP: GdkScrollDirection = 0;
 pub type GdkEventScroll = _GdkEventScroll;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GdkEventKey {
     pub type_0: GdkEventType,
@@ -1030,7 +1030,7 @@ pub struct _GtkAccelGroupEntry {
     pub accel_path_quark: GQuark,
 }
 pub type GtkAccelKey = _GtkAccelKey;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkAccelKey {
     pub accel_key: guint,
@@ -1099,7 +1099,7 @@ pub struct _GtkStyle {
     pub icon_factories: *mut GSList,
 }
 pub type GtkRcStyle = _GtkRcStyle;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkRcStyle {
     pub parent_instance: GObject,
@@ -1150,7 +1150,7 @@ pub struct _GtkRequisition {
     pub width: gint,
     pub height: gint,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkWindow {
     pub bin: GtkBin,
@@ -1213,7 +1213,7 @@ pub struct _GtkBin {
     pub child: *mut GtkWidget,
 }
 pub type GtkContainer = _GtkContainer;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkContainer {
     pub widget: GtkWidget,
@@ -1227,7 +1227,7 @@ pub struct _GtkContainer {
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 5],
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkBox {
     pub container: GtkContainer,
@@ -1239,7 +1239,7 @@ pub struct _GtkBox {
     pub c2rust_padding: [u8; 5],
 }
 pub type GtkBox = _GtkBox;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkButton {
     pub bin: GtkBin,
@@ -1266,7 +1266,7 @@ pub struct _GtkItem {
     pub bin: GtkBin,
 }
 pub type GtkItem = _GtkItem;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkMenuItem {
     pub item: GtkItem,
@@ -1295,7 +1295,7 @@ pub struct _GtkTreeView {
 }
 pub type GtkTreeViewPrivate = _GtkTreeViewPrivate;
 pub type GtkTreeView = _GtkTreeView;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkPaned {
     pub container: GtkContainer,
@@ -1329,7 +1329,7 @@ pub struct _GtkPaned {
 }
 pub type GtkPanedPrivate = _GtkPanedPrivate;
 pub type GtkPaned = _GtkPaned;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkTooltips {
     pub parent_instance: GtkObject,
@@ -1365,7 +1365,7 @@ pub struct _GtkToolItem {
 }
 pub type GtkToolItemPrivate = _GtkToolItemPrivate;
 pub type GtkToolItem = _GtkToolItem;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkScrolledWindow {
     pub container: GtkBin,
@@ -1381,7 +1381,7 @@ pub struct _GtkScrolledWindow {
     pub shadow_type: guint16,
 }
 pub type GtkScrolledWindow = _GtkScrolledWindow;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkToolbar {
     pub container: GtkContainer,

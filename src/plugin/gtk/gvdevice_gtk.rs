@@ -315,7 +315,7 @@ pub const RGBA_BYTE: color_type_t = 1;
 pub const HSVA_DOUBLE: color_type_t = 0;
 pub type gvrender_engine_t = gvrender_engine_s;
 pub type obj_state_t = obj_state_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct obj_state_s {
     pub parent: *mut obj_state_t,
@@ -635,7 +635,7 @@ pub struct Agrec_s {
     pub next: *mut Agrec_t,
 }
 pub type Agtag_t = Agtag_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agtag_s {
     #[bitfield(name = "objtype", ty = "libc::c_uint", bits = "0..=1")]
@@ -749,7 +749,7 @@ pub struct Agmemdisc_s {
     pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agdesc_s {
     #[bitfield(name = "directed", ty = "libc::c_uint", bits = "0..=0")]
@@ -875,7 +875,7 @@ pub struct _GTypeInstance {
     pub g_class: *mut GTypeClass,
 }
 pub type GTypeInstance = _GTypeInstance;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GClosure {
     #[bitfield(name = "ref_count", ty = "guint", bits = "0..=14")]
@@ -1085,7 +1085,7 @@ pub struct _GtkStyle {
     pub icon_factories: *mut GSList,
 }
 pub type GtkRcStyle = _GtkRcStyle;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkRcStyle {
     pub parent_instance: GObject,
@@ -1137,7 +1137,7 @@ pub struct _GtkRequisition {
     pub height: gint,
 }
 pub type GtkContainer = _GtkContainer;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkContainer {
     pub widget: GtkWidget,
@@ -1151,7 +1151,7 @@ pub struct _GtkContainer {
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 5],
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkCellRenderer {
     pub parent: GtkObject,
@@ -1192,7 +1192,7 @@ pub type GtkTreeIterCompareFunc = Option::<
         gpointer,
     ) -> gint,
 >;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkCellRendererText {
     pub parent: GtkCellRenderer,
@@ -1220,7 +1220,7 @@ pub struct _GtkCellRendererText {
     pub c2rust_padding: [u8; 2],
 }
 pub type GtkCellRendererText = _GtkCellRendererText;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkListStore {
     pub parent: GObject,

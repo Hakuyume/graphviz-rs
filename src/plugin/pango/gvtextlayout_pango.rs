@@ -190,7 +190,7 @@ pub struct textspan_t {
     pub size: pointf,
     pub just: libc::c_char,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct textfont_t {
     pub name: *mut libc::c_char,
@@ -242,7 +242,7 @@ pub struct agxbuf {
     pub eptr: *mut libc::c_char,
     pub dyna: libc::c_int,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct xml_flags_t {
     #[bitfield(name = "raw", ty = "libc::c_uint", bits = "0..=0")]
@@ -735,7 +735,7 @@ pub struct FT_GlyphSlotRec_ {
 pub type FT_Slot_Internal = *mut FT_Slot_InternalRec_;
 pub type FT_SubGlyph = *mut FT_SubGlyphRec_;
 pub type FcPattern = _FcPattern;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _PangoFcFont {
     pub parent_instance: PangoFont,

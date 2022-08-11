@@ -138,7 +138,7 @@ pub type Dtmake_f = Option::<
 >;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agtag_s {
     #[bitfield(name = "objtype", ty = "libc::c_uint", bits = "0..=1")]
@@ -321,7 +321,7 @@ pub struct Agmemdisc_s {
     pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agdesc_s {
     #[bitfield(name = "directed", ty = "libc::c_uint", bits = "0..=0")]
@@ -336,7 +336,7 @@ pub struct Agdesc_s {
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 3],
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct refstr_t {
     pub link: Dtlink_t,

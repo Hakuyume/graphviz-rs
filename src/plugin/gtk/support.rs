@@ -105,7 +105,7 @@ pub struct _GTypeInstance {
     pub g_class: *mut GTypeClass,
 }
 pub type GTypeInstance = _GTypeInstance;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GClosure {
     #[bitfield(name = "ref_count", ty = "guint", bits = "0..=14")]
@@ -279,7 +279,7 @@ pub struct _GtkAccelGroupEntry {
     pub accel_path_quark: GQuark,
 }
 pub type GtkAccelKey = _GtkAccelKey;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkAccelKey {
     pub accel_key: guint,
@@ -348,7 +348,7 @@ pub struct _GtkStyle {
     pub icon_factories: *mut GSList,
 }
 pub type GtkRcStyle = _GtkRcStyle;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkRcStyle {
     pub parent_instance: GObject,
@@ -400,7 +400,7 @@ pub struct _GtkRequisition {
     pub height: gint,
 }
 pub type GtkContainer = _GtkContainer;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkContainer {
     pub widget: GtkWidget,
@@ -414,7 +414,7 @@ pub struct _GtkContainer {
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 5],
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkMenuShell {
     pub container: GtkContainer,
@@ -435,7 +435,7 @@ pub struct _GtkMenuShell {
     pub c2rust_padding: [u8; 7],
 }
 pub type GtkMenuShell = _GtkMenuShell;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkMenu {
     pub menu_shell: GtkMenuShell,

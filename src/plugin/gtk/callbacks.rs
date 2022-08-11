@@ -276,7 +276,7 @@ pub const GDK_CONTROL_MASK: GdkModifierType = 4;
 pub const GDK_LOCK_MASK: GdkModifierType = 2;
 pub const GDK_SHIFT_MASK: GdkModifierType = 1;
 pub type GdkScreen = _GdkScreen;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GdkScreen {
     pub parent_instance: GObject,
@@ -503,7 +503,7 @@ pub const GDK_SCROLL_LEFT: GdkScrollDirection = 2;
 pub const GDK_SCROLL_DOWN: GdkScrollDirection = 1;
 pub const GDK_SCROLL_UP: GdkScrollDirection = 0;
 pub type GdkEventScroll = _GdkEventScroll;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GdkEventKey {
     pub type_0: GdkEventType,
@@ -774,7 +774,7 @@ pub struct _GtkStyle {
     pub icon_factories: *mut GSList,
 }
 pub type GtkRcStyle = _GtkRcStyle;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkRcStyle {
     pub parent_instance: GObject,
@@ -825,7 +825,7 @@ pub struct _GtkRequisition {
     pub width: gint,
     pub height: gint,
 }
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkWindow {
     pub bin: GtkBin,
@@ -888,7 +888,7 @@ pub struct _GtkBin {
     pub child: *mut GtkWidget,
 }
 pub type GtkContainer = _GtkContainer;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkContainer {
     pub widget: GtkWidget,
@@ -947,7 +947,7 @@ pub struct _GtkItem {
     pub bin: GtkBin,
 }
 pub type GtkItem = _GtkItem;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkMenuItem {
     pub item: GtkItem,
@@ -968,7 +968,7 @@ pub struct _GtkMenuItem {
     pub timer: guint,
 }
 pub type GtkMenuItem = _GtkMenuItem;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct _GtkListStore {
     pub parent: GObject,
@@ -1201,7 +1201,7 @@ pub const RGBA_BYTE: color_type_t = 1;
 pub const HSVA_DOUBLE: color_type_t = 0;
 pub type gvrender_engine_t = gvrender_engine_s;
 pub type obj_state_t = obj_state_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct obj_state_s {
     pub parent: *mut obj_state_t,
@@ -1521,7 +1521,7 @@ pub struct Agrec_s {
     pub next: *mut Agrec_t,
 }
 pub type Agtag_t = Agtag_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agtag_s {
     #[bitfield(name = "objtype", ty = "libc::c_uint", bits = "0..=1")]
@@ -1635,7 +1635,7 @@ pub struct Agmemdisc_s {
     pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct Agdesc_s {
     #[bitfield(name = "directed", ty = "libc::c_uint", bits = "0..=0")]

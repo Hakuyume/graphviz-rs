@@ -182,7 +182,7 @@ pub const LT_ERROR_UNKNOWN: C2RustUnnamed_0 = 0;
 pub type lt_dlloader = *mut libc::c_void;
 pub type lt_module = *mut libc::c_void;
 pub type lt_user_data = *mut libc::c_void;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct lt__advise {
     #[bitfield(name = "try_ext", ty = "libc::c_uint", bits = "0..=0")]
@@ -246,7 +246,7 @@ pub struct lt_interface_data {
 }
 pub type lt_dlinterface_id = *mut libc::c_void;
 pub type lt_dlhandle = *mut lt__handle;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct lt_dlinfo {
     pub filename: *mut libc::c_char,

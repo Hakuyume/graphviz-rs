@@ -57,7 +57,7 @@ pub struct _IO_FILE {
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
 pub type uint32_t = __uint32_t;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct xml_flags_t {
     #[bitfield(name = "raw", ty = "libc::c_uint", bits = "0..=0")]

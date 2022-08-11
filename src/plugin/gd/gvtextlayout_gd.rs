@@ -42,7 +42,7 @@ pub struct _PostscriptAlias {
     pub svg_font_style: *mut libc::c_char,
 }
 pub type PostscriptAlias = _PostscriptAlias;
-#[derive(Copy, Clone, BitfieldStruct)]
+#[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
 pub struct textfont_t {
     pub name: *mut libc::c_char,

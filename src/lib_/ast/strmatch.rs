@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -80,9 +88,9 @@ unsafe extern "C" fn gobble(
                     }
                     b = s;
                 } else if *s as libc::c_int == '.' as i32
-                        || *s as libc::c_int == '=' as i32
-                        || *s as libc::c_int == ':' as i32
-                    {
+                    || *s as libc::c_int == '=' as i32
+                    || *s as libc::c_int == ':' as i32
+                {
                     c = *s as libc::c_int;
                 }
                 current_block_27 = 2873832966593178012;
@@ -118,13 +126,11 @@ unsafe extern "C" fn gobble(
                 current_block_27 = 2873832966593178012;
             }
             41 => {
-                if b.is_null()
-                    && {
-                        let fresh6 = p;
-                        p = p - 1;
-                        fresh6 <= 0 as libc::c_int
-                    }
-                {
+                if b.is_null() && {
+                    let fresh6 = p;
+                    p = p - 1;
+                    fresh6 <= 0 as libc::c_int
+                } {
                     return if sub != 0 { 0 as *mut libc::c_char } else { s };
                 }
                 current_block_27 = 2873832966593178012;
@@ -143,7 +149,7 @@ unsafe extern "C" fn gobble(
             2873832966593178012 => {}
             _ => return 0 as *mut libc::c_char,
         }
-    };
+    }
 }
 unsafe extern "C" fn onematch(
     mut mp: *mut Match_t,
@@ -172,7 +178,8 @@ unsafe extern "C" fn onematch(
         };
         if icase != 0
             && *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                & _ISupper as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
         {
             sc = ({
                 let mut __res: libc::c_int = 0;
@@ -181,9 +188,7 @@ unsafe extern "C" fn onematch(
                 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = sc;
-                        __res = if __c < -(128 as libc::c_int)
-                            || __c > 255 as libc::c_int
-                        {
+                        __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                             __c
                         } else {
                             *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -230,9 +235,7 @@ unsafe extern "C" fn onematch(
                     if p.is_null() {
                         return 0 as libc::c_int;
                     }
-                    if pc == '*' as i32 || pc == '?' as i32
-                        || pc == '+' as i32 && oldp == r
-                    {
+                    if pc == '*' as i32 || pc == '?' as i32 || pc == '+' as i32 && oldp == r {
                         if onematch(mp, g, s, p, e, 0 as *mut libc::c_char, flags) != 0 {
                             return 1 as libc::c_int;
                         }
@@ -286,13 +289,11 @@ unsafe extern "C" fn onematch(
                                 return 1 as libc::c_int;
                             }
                         }
-                        if !(s < e
-                            && {
-                                let fresh16 = s;
-                                s = s.offset(1);
-                                *fresh16 as libc::c_int != 0
-                            })
-                        {
+                        if !(s < e && {
+                            let fresh16 = s;
+                            s = s.offset(1);
+                            *fresh16 as libc::c_int != 0
+                        }) {
                             break;
                         }
                     }
@@ -301,8 +302,7 @@ unsafe extern "C" fn onematch(
                 } else {
                     if pc == '*' as i32 {
                         while *p as libc::c_int == '*' as i32
-                            && *p.offset(1 as libc::c_int as isize) as libc::c_int
-                                != '(' as i32
+                            && *p.offset(1 as libc::c_int as isize) as libc::c_int != '(' as i32
                         {
                             p = p.offset(1);
                         }
@@ -397,15 +397,7 @@ unsafe extern "C" fn onematch(
                         p = oldp;
                         loop {
                             if (n != 0 || pc == sc)
-                                && onematch(
-                                    mp,
-                                    g,
-                                    olds,
-                                    p,
-                                    e,
-                                    0 as *mut libc::c_char,
-                                    flags,
-                                ) != 0
+                                && onematch(mp, g, olds, p, e, 0 as *mut libc::c_char, flags) != 0
                             {
                                 return 1 as libc::c_int;
                             }
@@ -487,7 +479,7 @@ unsafe extern "C" fn onematch(
                     p = p.offset(1);
                     pc = *fresh25 as libc::c_int;
                     if pc == 0 {
-                        return 0 as libc::c_int
+                        return 0 as libc::c_int;
                     } else {
                         if pc == '[' as i32
                             && (*p as libc::c_int == ':' as i32
@@ -519,19 +511,24 @@ unsafe extern "C" fn onematch(
                                 match (((((x + 'a' as i32 - ('a' as i32 - 1 as libc::c_int)
                                     << 5 as libc::c_int)
                                     + (*oldp.offset(0 as libc::c_int as isize) as libc::c_int
-                                        - ('a' as i32 - 1 as libc::c_int)) << 5 as libc::c_int)
+                                        - ('a' as i32 - 1 as libc::c_int))
+                                    << 5 as libc::c_int)
                                     + (*oldp.offset(1 as libc::c_int as isize) as libc::c_int
-                                        - ('a' as i32 - 1 as libc::c_int)) << 5 as libc::c_int)
+                                        - ('a' as i32 - 1 as libc::c_int))
+                                    << 5 as libc::c_int)
                                     + (*oldp.offset(2 as libc::c_int as isize) as libc::c_int
-                                        - ('a' as i32 - 1 as libc::c_int)) << 5 as libc::c_int)
+                                        - ('a' as i32 - 1 as libc::c_int))
+                                    << 5 as libc::c_int)
                                     + (*oldp.offset(3 as libc::c_int as isize) as libc::c_int
-                                        - ('a' as i32 - 1 as libc::c_int)) << 5 as libc::c_int)
+                                        - ('a' as i32 - 1 as libc::c_int))
+                                    << 5 as libc::c_int)
                                     + (*oldp.offset(4 as libc::c_int as isize) as libc::c_int
                                         - ('a' as i32 - 1 as libc::c_int))
                                 {
                                     202783405 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISalnum as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -539,7 +536,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     202785025 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISalpha as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -547,7 +545,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     203818443 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISblank as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISblank as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -555,7 +554,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     204952140 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _IScntrl as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _IScntrl as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -563,7 +563,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     205823284 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISdigit as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -571,7 +572,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     209257992 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISgraph as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISgraph as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -579,7 +581,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     214424754 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISlower as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -587,7 +590,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     218703316 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISprint as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISprint as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -595,7 +599,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     218806388 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISpunct as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISpunct as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -603,7 +608,8 @@ unsafe extern "C" fn onematch(
                                     }
                                     221774949 => {
                                         if *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                            & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISspace as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -612,10 +618,12 @@ unsafe extern "C" fn onematch(
                                     223887538 => {
                                         if if icase != 0 {
                                             *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                                & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
+                                                & _ISlower as libc::c_int as libc::c_ushort
+                                                    as libc::c_int
                                         } else {
                                             *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                                & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                                                & _ISupper as libc::c_int as libc::c_ushort
+                                                    as libc::c_int
                                         } != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -624,8 +632,10 @@ unsafe extern "C" fn onematch(
                                     260187369 => {
                                         if *oldp.offset(5 as libc::c_int as isize) as libc::c_int
                                             == 't' as i32
-                                            && *(*__ctype_b_loc()).offset(sc as isize) as libc::c_int
-                                                & _ISxdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                            && *(*__ctype_b_loc()).offset(sc as isize)
+                                                as libc::c_int
+                                                & _ISxdigit as libc::c_int as libc::c_ushort
+                                                    as libc::c_int
                                                 != 0
                                         {
                                             ok = 1 as libc::c_int;
@@ -644,66 +654,65 @@ unsafe extern "C" fn onematch(
                                     let fresh29 = p;
                                     p = p.offset(1);
                                     range = oldp;
-                                } else if *(*__ctype_b_loc())
-                                        .offset(*oldp as libc::c_int as isize) as libc::c_int
+                                } else if *(*__ctype_b_loc()).offset(*oldp as libc::c_int as isize)
+                                    as libc::c_int
+                                    & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+                                    != 0
+                                    && *(*__ctype_b_loc()).offset(*olds as libc::c_int as isize)
+                                        as libc::c_int
                                         & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
                                         != 0
-                                        && *(*__ctype_b_loc()).offset(*olds as libc::c_int as isize)
-                                            as libc::c_int
-                                            & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
-                                            != 0
-                                        && ({
-                                            let mut __res: libc::c_int = 0;
-                                            if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                                                > 1 as libc::c_int as libc::c_ulong
-                                            {
-                                                if 0 != 0 {
-                                                    let mut __c: libc::c_int = *oldp as libc::c_int;
-                                                    __res = (if __c < -(128 as libc::c_int)
-                                                        || __c > 255 as libc::c_int
-                                                    {
-                                                        __c
-                                                    } else {
-                                                        *(*__ctype_tolower_loc()).offset(__c as isize)
-                                                    });
-                                                } else {
-                                                    __res = tolower(*oldp as libc::c_int);
-                                                }
-                                            } else {
-                                                __res = *(*__ctype_tolower_loc())
-                                                    .offset(*oldp as libc::c_int as isize);
-                                            }
-                                            __res
-                                        })
-                                            == ({
-                                                let mut __res: libc::c_int = 0;
-                                                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                                                    > 1 as libc::c_int as libc::c_ulong
+                                    && ({
+                                        let mut __res: libc::c_int = 0;
+                                        if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
+                                            > 1 as libc::c_int as libc::c_ulong
+                                        {
+                                            if 0 != 0 {
+                                                let mut __c: libc::c_int = *oldp as libc::c_int;
+                                                __res = (if __c < -(128 as libc::c_int)
+                                                    || __c > 255 as libc::c_int
                                                 {
-                                                    if 0 != 0 {
-                                                        let mut __c: libc::c_int = *olds as libc::c_int;
-                                                        __res = (if __c < -(128 as libc::c_int)
-                                                            || __c > 255 as libc::c_int
-                                                        {
-                                                            __c
-                                                        } else {
-                                                            *(*__ctype_tolower_loc()).offset(__c as isize)
-                                                        });
-                                                    } else {
-                                                        __res = tolower(*olds as libc::c_int);
-                                                    }
+                                                    __c
                                                 } else {
-                                                    __res = *(*__ctype_tolower_loc())
-                                                        .offset(*olds as libc::c_int as isize);
-                                                }
-                                                __res
-                                            })
-                                        || {
-                                            let fresh30 = oldp;
-                                            oldp = oldp.offset(1);
-                                            sc == *fresh30 as libc::c_int
+                                                    *(*__ctype_tolower_loc()).offset(__c as isize)
+                                                });
+                                            } else {
+                                                __res = tolower(*oldp as libc::c_int);
+                                            }
+                                        } else {
+                                            __res = *(*__ctype_tolower_loc())
+                                                .offset(*oldp as libc::c_int as isize);
                                         }
-                                    {
+                                        __res
+                                    }) == ({
+                                        let mut __res: libc::c_int = 0;
+                                        if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
+                                            > 1 as libc::c_int as libc::c_ulong
+                                        {
+                                            if 0 != 0 {
+                                                let mut __c: libc::c_int = *olds as libc::c_int;
+                                                __res = (if __c < -(128 as libc::c_int)
+                                                    || __c > 255 as libc::c_int
+                                                {
+                                                    __c
+                                                } else {
+                                                    *(*__ctype_tolower_loc()).offset(__c as isize)
+                                                });
+                                            } else {
+                                                __res = tolower(*olds as libc::c_int);
+                                            }
+                                        } else {
+                                            __res = *(*__ctype_tolower_loc())
+                                                .offset(*olds as libc::c_int as isize);
+                                        }
+                                        __res
+                                    })
+                                    || {
+                                        let fresh30 = oldp;
+                                        oldp = oldp.offset(1);
+                                        sc == *fresh30 as libc::c_int
+                                    }
+                                {
                                     ok = 1 as libc::c_int;
                                 }
                                 current_block_212 = 6958737826328148217;
@@ -720,16 +729,14 @@ unsafe extern "C" fn onematch(
                                 break;
                             }
                             return 0 as libc::c_int;
-                        } else if pc == '\\' as i32
-                                && {
-                                    oldp = p;
-                                    let fresh31 = p;
-                                    p = p.offset(1);
-                                    pc = *fresh31 as libc::c_int;
-                                    pc == 0
-                                }
-                            {
-                            return 0 as libc::c_int
+                        } else if pc == '\\' as i32 && {
+                            oldp = p;
+                            let fresh31 = p;
+                            p = p.offset(1);
+                            pc = *fresh31 as libc::c_int;
+                            pc == 0
+                        } {
+                            return 0 as libc::c_int;
                         } else {
                             if ok != 0 {
                                 continue;
@@ -746,7 +753,8 @@ unsafe extern "C" fn onematch(
                                 } else {
                                     if icase != 0
                                         && *(*__ctype_b_loc()).offset(pc as isize) as libc::c_int
-                                            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                                            & _ISupper as libc::c_int as libc::c_ushort
+                                                as libc::c_int
                                             != 0
                                     {
                                         pc = ({
@@ -761,13 +769,15 @@ unsafe extern "C" fn onematch(
                                                     {
                                                         __c
                                                     } else {
-                                                        *(*__ctype_tolower_loc()).offset(__c as isize)
+                                                        *(*__ctype_tolower_loc())
+                                                            .offset(__c as isize)
                                                     };
                                                 } else {
                                                     __res = tolower(pc);
                                                 }
                                             } else {
-                                                __res = *(*__ctype_tolower_loc()).offset(pc as isize);
+                                                __res =
+                                                    *(*__ctype_tolower_loc()).offset(pc as isize);
                                             }
                                             __res
                                         });
@@ -843,8 +853,7 @@ unsafe extern "C" fn onematch(
                             ok = 1 as libc::c_int;
                         }
                         if *p as libc::c_int == '-' as i32
-                            && *p.offset(1 as libc::c_int as isize) as libc::c_int
-                                != ']' as i32
+                            && *p.offset(1 as libc::c_int as isize) as libc::c_int != ']' as i32
                         {
                             let fresh33 = p;
                             p = p.offset(1);
@@ -866,22 +875,18 @@ unsafe extern "C" fn onematch(
                 }
                 if pc >= '0' as i32 && pc <= '9' as i32 {
                     n = pc - '0' as i32;
-                    if n <= g
-                        && {
-                            oldp = (*mp).current.beg[n as usize];
-                            !oldp.is_null()
-                        }
-                    {
+                    if n <= g && {
+                        oldp = (*mp).current.beg[n as usize];
+                        !oldp.is_null()
+                    } {
                         while oldp < (*mp).current.end[n as usize] {
-                            if *olds == 0
-                                || {
-                                    let fresh36 = olds;
-                                    olds = olds.offset(1);
-                                    let fresh37 = oldp;
-                                    oldp = oldp.offset(1);
-                                    *fresh36 as libc::c_int != *fresh37 as libc::c_int
-                                }
-                            {
+                            if *olds == 0 || {
+                                let fresh36 = olds;
+                                olds = olds.offset(1);
+                                let fresh37 = oldp;
+                                oldp = oldp.offset(1);
+                                *fresh36 as libc::c_int != *fresh37 as libc::c_int
+                            } {
                                 return 0 as libc::c_int;
                             }
                         }
@@ -902,7 +907,8 @@ unsafe extern "C" fn onematch(
             14970271268288140784 => {
                 if icase != 0
                     && *(*__ctype_b_loc()).offset(pc as isize) as libc::c_int
-                        & _ISupper as libc::c_int as libc::c_ushort as libc::c_int != 0
+                        & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                        != 0
                 {
                     pc = ({
                         let mut __res: libc::c_int = 0;
@@ -911,9 +917,7 @@ unsafe extern "C" fn onematch(
                         {
                             if 0 != 0 {
                                 let mut __c: libc::c_int = pc;
-                                __res = if __c < -(128 as libc::c_int)
-                                    || __c > 255 as libc::c_int
-                                {
+                                __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                                     __c
                                 } else {
                                     *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -1054,22 +1058,18 @@ pub unsafe extern "C" fn strgrpmatch(
     }
     i = 0 as libc::c_int;
     while i < n {
-        *sub
-            .offset(
-                (i * 2 as libc::c_int) as isize,
-            ) = (if !(match_0.current.end[i as usize]).is_null() {
-            (match_0.current.beg[i as usize]).offset_from(s) as libc::c_long
-        } else {
-            0 as libc::c_int as libc::c_long
-        }) as libc::c_int;
-        *sub
-            .offset(
-                (i * 2 as libc::c_int + 1 as libc::c_int) as isize,
-            ) = (if !(match_0.current.end[i as usize]).is_null() {
-            (match_0.current.end[i as usize]).offset_from(s) as libc::c_long
-        } else {
-            0 as libc::c_int as libc::c_long
-        }) as libc::c_int;
+        *sub.offset((i * 2 as libc::c_int) as isize) =
+            (if !(match_0.current.end[i as usize]).is_null() {
+                (match_0.current.beg[i as usize]).offset_from(s) as libc::c_long
+            } else {
+                0 as libc::c_int as libc::c_long
+            }) as libc::c_int;
+        *sub.offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+            (if !(match_0.current.end[i as usize]).is_null() {
+                (match_0.current.end[i as usize]).offset_from(s) as libc::c_long
+            } else {
+                0 as libc::c_int as libc::c_long
+            }) as libc::c_int;
         i += 1;
     }
     return n;

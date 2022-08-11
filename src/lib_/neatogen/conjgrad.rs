@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -33,11 +41,7 @@ extern "C" {
         _: libc::c_double,
         _: *mut libc::c_double,
     );
-    fn copy_vector(
-        n: libc::c_int,
-        source: *mut libc::c_double,
-        dest: *mut libc::c_double,
-    );
+    fn copy_vector(n: libc::c_int, source: *mut libc::c_double, dest: *mut libc::c_double);
     fn vectors_inner_product(
         n: libc::c_int,
         vector1: *mut libc::c_double,
@@ -63,11 +67,7 @@ extern "C" {
         alpha: libc::c_float,
         vector2: *mut libc::c_float,
     );
-    fn copy_vectorf(
-        n: libc::c_int,
-        source: *mut libc::c_float,
-        dest: *mut libc::c_float,
-    );
+    fn copy_vectorf(n: libc::c_int, source: *mut libc::c_float, dest: *mut libc::c_float);
     fn vectors_inner_productf(
         n: libc::c_int,
         vector1: *mut libc::c_float,
@@ -336,11 +336,8 @@ pub unsafe extern "C" fn conjugate_gradient_mkernel(
                 r_r = r_r_new;
                 let mut j: size_t = 0 as libc::c_int as size_t;
                 while j < n as size_t {
-                    *p
-                        .offset(
-                            j as isize,
-                        ) = beta as libc::c_float * *p.offset(j as isize)
-                        + *r.offset(j as isize);
+                    *p.offset(j as isize) =
+                        beta as libc::c_float * *p.offset(j as isize) + *r.offset(j as isize);
                     j = j.wrapping_add(1);
                 }
             }

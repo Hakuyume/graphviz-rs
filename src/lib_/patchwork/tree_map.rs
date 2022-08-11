@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -66,13 +74,12 @@ unsafe extern "C" fn squarify(
     mut asp: libc::c_double,
     mut fillrec: rectangle,
 ) {
-    let mut w: libc::c_double = if fillrec.size[0 as libc::c_int as usize]
-        < fillrec.size[1 as libc::c_int as usize]
-    {
-        fillrec.size[0 as libc::c_int as usize]
-    } else {
-        fillrec.size[1 as libc::c_int as usize]
-    };
+    let mut w: libc::c_double =
+        if fillrec.size[0 as libc::c_int as usize] < fillrec.size[1 as libc::c_int as usize] {
+            fillrec.size[0 as libc::c_int as usize]
+        } else {
+            fillrec.size[1 as libc::c_int as usize]
+        };
     let mut i: libc::c_int = 0;
     if n <= 0 as libc::c_int {
         return;
@@ -80,8 +87,7 @@ unsafe extern "C" fn squarify(
     if Verbose != 0 {
         fprintf(
             stderr,
-            b"trying to add to rect {%f +/- %f, %f +/- %f}\n\0" as *const u8
-                as *const libc::c_char,
+            b"trying to add to rect {%f +/- %f, %f +/- %f}\n\0" as *const u8 as *const libc::c_char,
             fillrec.x[0 as libc::c_int as usize],
             fillrec.size[0 as libc::c_int as usize],
             fillrec.x[1 as libc::c_int as usize],
@@ -105,7 +111,9 @@ unsafe extern "C" fn squarify(
             w * w / *area.offset(0 as libc::c_int as isize)
         };
         totalarea = *area.offset(0 as libc::c_int as isize);
-        squarify(n, area, recs, nadded, maxarea, minarea, totalarea, asp, fillrec);
+        squarify(
+            n, area, recs, nadded, maxarea, minarea, totalarea, asp, fillrec,
+        );
     } else {
         let mut newmaxarea: libc::c_double = 0.;
         let mut newminarea: libc::c_double = 0.;
@@ -133,72 +141,68 @@ unsafe extern "C" fn squarify(
             h = s / w;
             maxw = newmaxarea / h;
             minw = newminarea / h;
-            newasp = if h / minw > maxw / h { h / minw } else { maxw / h };
+            newasp = if h / minw > maxw / h {
+                h / minw
+            } else {
+                maxw / h
+            };
         }
         if nadded < n && newasp <= asp {
             nadded += 1;
-            squarify(n, area, recs, nadded, newmaxarea, newminarea, s, newasp, fillrec);
+            squarify(
+                n, area, recs, nadded, newmaxarea, newminarea, s, newasp, fillrec,
+            );
         } else {
             if Verbose != 0 {
                 fprintf(
                     stderr,
-                    b"adding %d items, total area = %f, w = %f, area/w=%f\n\0"
-                        as *const u8 as *const libc::c_char,
+                    b"adding %d items, total area = %f, w = %f, area/w=%f\n\0" as *const u8
+                        as *const libc::c_char,
                     nadded,
                     totalarea,
                     w,
                     totalarea / w,
                 );
             }
-            if fillrec.size[0 as libc::c_int as usize]
-                <= fillrec.size[1 as libc::c_int as usize]
-            {
+            if fillrec.size[0 as libc::c_int as usize] <= fillrec.size[1 as libc::c_int as usize] {
                 hh = totalarea / w;
                 xx = fillrec.x[0 as libc::c_int as usize]
-                    - fillrec.size[0 as libc::c_int as usize]
-                        / 2 as libc::c_int as libc::c_double;
+                    - fillrec.size[0 as libc::c_int as usize] / 2 as libc::c_int as libc::c_double;
                 i = 0 as libc::c_int;
                 while i < nadded {
                     (*recs.offset(i as isize)).size[1 as libc::c_int as usize] = hh;
                     ww = *area.offset(i as isize) / hh;
                     (*recs.offset(i as isize)).size[0 as libc::c_int as usize] = ww;
-                    (*recs.offset(i as isize))
-                        .x[1 as libc::c_int
-                        as usize] = fillrec.x[1 as libc::c_int as usize]
+                    (*recs.offset(i as isize)).x[1 as libc::c_int as usize] = fillrec.x
+                        [1 as libc::c_int as usize]
                         + 0.5f64 * fillrec.size[1 as libc::c_int as usize]
                         - hh / 2 as libc::c_int as libc::c_double;
-                    (*recs.offset(i as isize))
-                        .x[0 as libc::c_int
-                        as usize] = xx + ww / 2 as libc::c_int as libc::c_double;
+                    (*recs.offset(i as isize)).x[0 as libc::c_int as usize] =
+                        xx + ww / 2 as libc::c_int as libc::c_double;
                     xx += ww;
                     i += 1;
                 }
-                fillrec.x[1 as libc::c_int as usize]
-                    -= hh / 2 as libc::c_int as libc::c_double;
+                fillrec.x[1 as libc::c_int as usize] -= hh / 2 as libc::c_int as libc::c_double;
                 fillrec.size[1 as libc::c_int as usize] -= hh;
             } else {
                 ww = totalarea / w;
                 yy = fillrec.x[1 as libc::c_int as usize]
-                    + fillrec.size[1 as libc::c_int as usize]
-                        / 2 as libc::c_int as libc::c_double;
+                    + fillrec.size[1 as libc::c_int as usize] / 2 as libc::c_int as libc::c_double;
                 i = 0 as libc::c_int;
                 while i < nadded {
                     (*recs.offset(i as isize)).size[0 as libc::c_int as usize] = ww;
                     hh = *area.offset(i as isize) / ww;
                     (*recs.offset(i as isize)).size[1 as libc::c_int as usize] = hh;
-                    (*recs.offset(i as isize))
-                        .x[0 as libc::c_int
-                        as usize] = fillrec.x[0 as libc::c_int as usize]
+                    (*recs.offset(i as isize)).x[0 as libc::c_int as usize] = fillrec.x
+                        [0 as libc::c_int as usize]
                         - 0.5f64 * fillrec.size[0 as libc::c_int as usize]
                         + ww / 2 as libc::c_int as libc::c_double;
-                    (*recs.offset(i as isize))
-                        .x[1 as libc::c_int
-                        as usize] = yy - hh / 2 as libc::c_int as libc::c_double;
+                    (*recs.offset(i as isize)).x[1 as libc::c_int as usize] =
+                        yy - hh / 2 as libc::c_int as libc::c_double;
                     yy -= hh;
                     i += 1;
                 }
-                fillrec.x[0 as libc::c_int as usize]
-                    += ww / 2 as libc::c_int as libc::c_double;
+                fillrec.x[0 as libc::c_int as usize] += ww / 2 as libc::c_int as libc::c_double;
                 fillrec.size[0 as libc::c_int as usize] -= ww;
             }
             squarify(
@@ -235,14 +239,18 @@ pub unsafe extern "C" fn tree_map(
         i += 1;
     }
     if total
-        > fillrec.size[0 as libc::c_int as usize]
-            * fillrec.size[1 as libc::c_int as usize] + 0.001f64
+        > fillrec.size[0 as libc::c_int as usize] * fillrec.size[1 as libc::c_int as usize]
+            + 0.001f64
     {
         return 0 as *mut rectangle;
     }
-    recs = gcalloc(n as size_t, ::std::mem::size_of::<rectangle>() as libc::c_ulong)
-        as *mut rectangle;
-    squarify(n, area, recs, nadded, maxarea, minarea, totalarea, asp, fillrec);
+    recs = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<rectangle>() as libc::c_ulong,
+    ) as *mut rectangle;
+    squarify(
+        n, area, recs, nadded, maxarea, minarea, totalarea, asp, fillrec,
+    );
     return recs;
 }
 #[no_mangle]

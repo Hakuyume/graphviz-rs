@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -38,10 +46,9 @@ unsafe extern "C" fn construct_b(
         if !((*graph.offset(0 as libc::c_int as isize)).edists).is_null() {
             j = 1 as libc::c_int;
             while j < (*graph.offset(i as isize)).nedges {
-                b_i
-                    += (*((*graph.offset(i as isize)).ewgts).offset(j as isize)
-                        * *((*graph.offset(i as isize)).edists).offset(j as isize))
-                        as libc::c_double;
+                b_i += (*((*graph.offset(i as isize)).ewgts).offset(j as isize)
+                    * *((*graph.offset(i as isize)).edists).offset(j as isize))
+                    as libc::c_double;
                 j += 1;
             }
             *b.offset(i as isize) = b_i;
@@ -66,8 +73,7 @@ pub unsafe extern "C" fn compute_y_coords(
     let mut tol: libc::c_double = 1e-3f64;
     let mut nedges: libc::c_int = 0 as libc::c_int;
     let mut uniform_weights: *mut libc::c_float = 0 as *mut libc::c_float;
-    let mut old_ewgts: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize))
-        .ewgts;
+    let mut old_ewgts: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize)).ewgts;
     construct_b(graph, n, b);
     init_vec_orth1(n, y_coords);
     i = 0 as libc::c_int;
@@ -83,22 +89,17 @@ pub unsafe extern "C" fn compute_y_coords(
     while i < n {
         let ref mut fresh0 = (*graph.offset(i as isize)).ewgts;
         *fresh0 = uniform_weights;
-        *uniform_weights
-            .offset(
-                0 as libc::c_int as isize,
-            ) = -((*graph.offset(i as isize)).nedges - 1 as libc::c_int)
-            as libc::c_float;
+        *uniform_weights.offset(0 as libc::c_int as isize) =
+            -((*graph.offset(i as isize)).nedges - 1 as libc::c_int) as libc::c_float;
         j = 1 as libc::c_int;
         while j < (*graph.offset(i as isize)).nedges {
             *uniform_weights.offset(j as isize) = 1 as libc::c_int as libc::c_float;
             j += 1;
         }
-        uniform_weights = uniform_weights
-            .offset((*graph.offset(i as isize)).nedges as isize);
+        uniform_weights = uniform_weights.offset((*graph.offset(i as isize)).nedges as isize);
         i += 1;
     }
-    if conjugate_gradient(graph, y_coords, b, n, tol, max_iterations) < 0 as libc::c_int
-    {
+    if conjugate_gradient(graph, y_coords, b, n, tol, max_iterations) < 0 as libc::c_int {
         rv = 1 as libc::c_int;
     }
     free((*graph.offset(0 as libc::c_int as isize)).ewgts as *mut libc::c_void);

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -119,18 +127,8 @@ extern "C" {
         frac: libc::c_float,
     );
     fn gvrender_set_style(job: *mut GVJ_t, s: *mut *mut libc::c_char);
-    fn gvrender_ellipse(
-        job: *mut GVJ_t,
-        AF: *mut pointf,
-        n: libc::c_int,
-        filled: libc::c_int,
-    );
-    fn gvrender_polygon(
-        job: *mut GVJ_t,
-        af: *mut pointf,
-        n: libc::c_int,
-        filled: libc::c_int,
-    );
+    fn gvrender_ellipse(job: *mut GVJ_t, AF: *mut pointf, n: libc::c_int, filled: libc::c_int);
+    fn gvrender_polygon(job: *mut GVJ_t, af: *mut pointf, n: libc::c_int, filled: libc::c_int);
     fn gvrender_box(job: *mut GVJ_t, BF: boxf, filled: libc::c_int);
     fn gvrender_beziercurve(
         job: *mut GVJ_t,
@@ -143,7 +141,7 @@ extern "C" {
     fn gvrender_polyline(job: *mut GVJ_t, AF: *mut pointf, n: libc::c_int);
     fn bezier_clip(
         inside_context: *mut inside_t,
-        insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+        insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
         sp: *mut pointf,
         left_inside: bool,
     );
@@ -154,11 +152,7 @@ extern "C" {
         clrs: *mut libc::c_char,
         rotate: libc::c_int,
     ) -> libc::c_int;
-    fn wedgedEllipse(
-        job: *mut GVJ_t,
-        pf: *mut pointf,
-        clrs: *mut libc::c_char,
-    ) -> libc::c_int;
+    fn wedgedEllipse(job: *mut GVJ_t, pf: *mut pointf, clrs: *mut libc::c_char) -> libc::c_int;
     fn parse_style(s: *mut libc::c_char) -> *mut *mut libc::c_char;
     fn epsf_free(n: *mut node_t);
     fn epsf_init(n: *mut node_t);
@@ -180,11 +174,7 @@ extern "C" {
         imagescale: *mut libc::c_char,
         imagepos: *mut libc::c_char,
     );
-    fn html_port(
-        n: *mut node_t,
-        pname: *mut libc::c_char,
-        sides: *mut libc::c_int,
-    ) -> *mut boxf;
+    fn html_port(n: *mut node_t, pname: *mut libc::c_char, sides: *mut libc::c_int) -> *mut boxf;
 }
 pub type size_t = libc::c_ulong;
 pub type __uint64_t = libc::c_ulong;
@@ -334,9 +324,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -350,25 +338,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -470,7 +451,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -631,16 +613,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -656,18 +632,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -675,16 +645,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -726,9 +689,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -757,13 +719,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -796,26 +753,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -824,29 +773,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -854,8 +795,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -889,7 +830,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -915,9 +856,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -1051,7 +990,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1255,13 +1194,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1270,7 +1208,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 pub type shape_kind = libc::c_uint;
 pub const SH_EPSF: shape_kind = 4;
@@ -1379,7 +1317,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1520,8 +1458,8 @@ pub type epsf_t = epsf_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct poly_desc_t {
-    pub size_gen: Option::<unsafe extern "C" fn(pointf) -> pointf>,
-    pub vertex_gen: Option::<unsafe extern "C" fn(*mut pointf, *mut pointf) -> ()>,
+    pub size_gen: Option<unsafe extern "C" fn(pointf) -> pointf>,
+    pub vertex_gen: Option<unsafe extern "C" fn(*mut pointf, *mut pointf) -> ()>,
 }
 #[inline]
 unsafe extern "C" fn pointfof(mut x: libc::c_double, mut y: libc::c_double) -> pointf {
@@ -1579,9 +1517,7 @@ static mut star_gen: poly_desc_t = unsafe {
     {
         let mut init = poly_desc_t {
             size_gen: Some(star_size as unsafe extern "C" fn(pointf) -> pointf),
-            vertex_gen: Some(
-                star_vertices as unsafe extern "C" fn(*mut pointf, *mut pointf) -> (),
-            ),
+            vertex_gen: Some(star_vertices as unsafe extern "C" fn(*mut pointf, *mut pointf) -> ()),
         };
         init
     }
@@ -1906,8 +1842,7 @@ static mut p_cylinder: polygon_t = unsafe {
             distortion: 0.,
             skew: 0.,
             option: (26 as libc::c_int) << 24 as libc::c_int,
-            vertices: &cylinder_gen as *const poly_desc_t as *mut poly_desc_t
-                as *mut pointf,
+            vertices: &cylinder_gen as *const poly_desc_t as *mut poly_desc_t as *mut pointf,
         };
         init
     }
@@ -1998,8 +1933,7 @@ static mut p_Mdiamond: polygon_t = {
         orientation: 45.0f64,
         distortion: 0.,
         skew: 0.,
-        option: (1 as libc::c_int) << 3 as libc::c_int
-            | (1 as libc::c_int) << 4 as libc::c_int,
+        option: (1 as libc::c_int) << 3 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int,
         vertices: 0 as *const pointf as *mut pointf,
     };
     init
@@ -2025,8 +1959,7 @@ static mut p_Mcircle: polygon_t = {
         orientation: 0.,
         distortion: 0.,
         skew: 0.,
-        option: (1 as libc::c_int) << 3 as libc::c_int
-            | (1 as libc::c_int) << 4 as libc::c_int,
+        option: (1 as libc::c_int) << 3 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int,
         vertices: 0 as *const pointf as *mut pointf,
     };
     init
@@ -2319,9 +2252,7 @@ static mut poly_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                poly_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(poly_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: Some(
                 poly_path
                     as unsafe extern "C" fn(
@@ -2332,9 +2263,7 @@ static mut poly_fns: shape_functions = unsafe {
                         *mut libc::c_int,
                     ) -> libc::c_int,
             ),
-            codefn: Some(
-                poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2352,13 +2281,9 @@ static mut point_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                point_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(point_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: None,
-            codefn: Some(
-                point_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(point_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2376,9 +2301,7 @@ static mut record_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                record_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(record_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: Some(
                 record_path
                     as unsafe extern "C" fn(
@@ -2389,9 +2312,7 @@ static mut record_fns: shape_functions = unsafe {
                         *mut libc::c_int,
                     ) -> libc::c_int,
             ),
-            codefn: Some(
-                record_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(record_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2409,13 +2330,9 @@ static mut epsf_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                epsf_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(epsf_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: None,
-            codefn: Some(
-                epsf_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(epsf_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2433,9 +2350,7 @@ static mut star_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                star_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(star_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: Some(
                 poly_path
                     as unsafe extern "C" fn(
@@ -2446,9 +2361,7 @@ static mut star_fns: shape_functions = unsafe {
                         *mut libc::c_int,
                     ) -> libc::c_int,
             ),
-            codefn: Some(
-                poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2466,9 +2379,7 @@ static mut cylinder_fns: shape_functions = unsafe {
                         *mut libc::c_char,
                     ) -> port,
             ),
-            insidefn: Some(
-                poly_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool,
-            ),
+            insidefn: Some(poly_inside as unsafe extern "C" fn(*mut inside_t, pointf) -> bool),
             pboxfn: Some(
                 poly_path
                     as unsafe extern "C" fn(
@@ -2479,9 +2390,7 @@ static mut cylinder_fns: shape_functions = unsafe {
                         *mut libc::c_int,
                     ) -> libc::c_int,
             ),
-            codefn: Some(
-                poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> (),
-            ),
+            codefn: Some(poly_gencode as unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()),
         };
         init
     }
@@ -2499,8 +2408,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"polygon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"polygon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_polygon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2509,8 +2417,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"ellipse\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"ellipse\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_ellipse as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2528,8 +2435,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"circle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"circle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_circle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2538,8 +2444,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"point\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"point\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &point_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_circle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2557,8 +2462,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"triangle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"triangle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_triangle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2576,8 +2480,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"plaintext\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"plaintext\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_plaintext as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2586,8 +2489,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"plain\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"plain\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_plain as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2596,8 +2498,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"diamond\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"diamond\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_diamond as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2606,8 +2507,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"trapezium\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"trapezium\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_trapezium as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2616,8 +2516,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"parallelogram\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"parallelogram\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_parallelogram as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2626,8 +2525,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"house\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"house\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_house as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2636,8 +2534,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"pentagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"pentagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_pentagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2646,8 +2543,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"hexagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"hexagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_hexagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2656,8 +2552,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"septagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"septagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_septagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2666,8 +2561,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"octagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"octagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_octagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2694,8 +2588,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"folder\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"folder\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_folder as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2704,8 +2597,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"box3d\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"box3d\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_box3d as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2714,8 +2606,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"component\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"component\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_component as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2724,8 +2615,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"cylinder\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cylinder\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &cylinder_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_cylinder as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2743,8 +2633,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"rectangle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"rectangle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_box as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2753,8 +2642,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"square\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"square\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_square as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2763,8 +2651,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"doublecircle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"doublecircle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_doublecircle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2773,8 +2660,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"doubleoctagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"doubleoctagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_doubleoctagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2783,8 +2669,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"tripleoctagon\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"tripleoctagon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_tripleoctagon as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2793,8 +2678,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"invtriangle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"invtriangle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_invtriangle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2803,8 +2687,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"invtrapezium\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"invtrapezium\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_invtrapezium as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2813,8 +2696,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"invhouse\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"invhouse\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_invhouse as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2823,8 +2705,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"underline\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"underline\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_underline as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2833,8 +2714,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"Mdiamond\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"Mdiamond\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_Mdiamond as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2843,8 +2723,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"Msquare\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"Msquare\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_Msquare as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2853,8 +2732,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"Mcircle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"Mcircle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_Mcircle as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2863,8 +2741,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"promoter\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"promoter\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_promoter as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2882,8 +2759,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"terminator\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"terminator\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_terminator as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2901,8 +2777,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"insulator\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"insulator\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_insulator as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2911,8 +2786,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"ribosite\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"ribosite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_ribosite as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2921,8 +2795,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"rnastab\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"rnastab\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_rnastab as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2931,8 +2804,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"proteasesite\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"proteasesite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_proteasesite as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2941,8 +2813,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"proteinstab\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"proteinstab\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_proteinstab as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2951,8 +2822,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"primersite\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"primersite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_primersite as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2961,8 +2831,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"restrictionsite\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"restrictionsite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_restrictionsite as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2971,8 +2840,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"fivepoverhang\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"fivepoverhang\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_fivepoverhang as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2981,8 +2849,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"threepoverhang\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"threepoverhang\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_threepoverhang as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -2991,8 +2858,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"noverhang\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"noverhang\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_noverhang as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3001,8 +2867,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"assembly\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"assembly\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_assembly as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3011,8 +2876,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"signature\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"signature\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_signature as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3021,8 +2885,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"rpromoter\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"rpromoter\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_rpromoter as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3031,8 +2894,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"larrow\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"larrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_larrow as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3041,8 +2903,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"rarrow\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"rarrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_rarrow as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3051,8 +2912,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"lpromoter\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"lpromoter\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &poly_fns as *const shape_functions as *mut shape_functions,
                 polygon: &p_lpromoter as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3061,8 +2921,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"record\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"record\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &record_fns as *const shape_functions as *mut shape_functions,
                 polygon: 0 as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3071,8 +2930,7 @@ static mut Shapes: [shape_desc; 63] = unsafe {
         },
         {
             let mut init = shape_desc {
-                name: b"Mrecord\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"Mrecord\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 fns: &record_fns as *const shape_functions as *mut shape_functions,
                 polygon: 0 as *const polygon_t as *mut polygon_t,
                 usershape: false,
@@ -3116,10 +2974,7 @@ unsafe extern "C" fn unrecognized(mut n: *mut node_t, mut p: *mut libc::c_char) 
         p,
     );
 }
-unsafe extern "C" fn quant(
-    mut val: libc::c_double,
-    mut q: libc::c_double,
-) -> libc::c_double {
+unsafe extern "C" fn quant(mut val: libc::c_double, mut q: libc::c_double) -> libc::c_double {
     let mut i: libc::c_int = 0;
     i = (val / q) as libc::c_int;
     if i as libc::c_double * q + 0.00001f64 < val {
@@ -3145,10 +3000,7 @@ unsafe extern "C" fn same_side(
     s1 = (a * p1.x + b * p1.y - c >= 0 as libc::c_int as libc::c_double) as libc::c_int;
     return (s0 == s1) as libc::c_int;
 }
-unsafe extern "C" fn penColor(
-    mut job: *mut GVJ_t,
-    mut n: *mut node_t,
-) -> *mut libc::c_char {
+unsafe extern "C" fn penColor(mut job: *mut GVJ_t, mut n: *mut node_t) -> *mut libc::c_char {
     let mut color: *mut libc::c_char = 0 as *mut libc::c_char;
     color = late_nnstring(
         n as *mut libc::c_void,
@@ -3198,19 +3050,21 @@ unsafe extern "C" fn isBox(mut n: *mut node_t) -> libc::c_int {
                 ((*p).orientation + 0.5f64) as libc::c_int
             } else {
                 ((*p).orientation - 0.5f64) as libc::c_int
-            }) % 90 as libc::c_int == 0 as libc::c_int && (*p).distortion == 0.0f64
-            && (*p).skew == 0.0f64) as libc::c_int
+            }) % 90 as libc::c_int
+                == 0 as libc::c_int
+            && (*p).distortion == 0.0f64
+            && (*p).skew == 0.0f64) as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn isEllipse(mut n: *mut node_t) -> libc::c_int {
     let mut p: *mut polygon_t = 0 as *mut polygon_t;
     p = (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon;
     if !p.is_null() {
-        return ((*p).sides <= 2 as libc::c_int) as libc::c_int
+        return ((*p).sides <= 2 as libc::c_int) as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn checkStyle(
@@ -3251,8 +3105,7 @@ unsafe extern "C" fn checkStyle(
                         break;
                     }
                 }
-            } else if strcmp(p, b"diagonals\0" as *const u8 as *const libc::c_char) == 0
-                {
+            } else if strcmp(p, b"diagonals\0" as *const u8 as *const libc::c_char) == 0 {
                 istyle |= (1 as libc::c_int) << 3 as libc::c_int;
                 qp = pp;
                 loop {
@@ -3267,9 +3120,8 @@ unsafe extern "C" fn checkStyle(
                 istyle |= (1 as libc::c_int) << 5 as libc::c_int;
                 pp = pp.offset(1);
             } else if strcmp(p, b"radial\0" as *const u8 as *const libc::c_char) == 0 {
-                istyle
-                    |= (1 as libc::c_int) << 1 as libc::c_int
-                        | (1 as libc::c_int) << 0 as libc::c_int;
+                istyle |=
+                    (1 as libc::c_int) << 1 as libc::c_int | (1 as libc::c_int) << 0 as libc::c_int;
                 qp = pp;
                 loop {
                     qp = qp.offset(1);
@@ -3280,8 +3132,8 @@ unsafe extern "C" fn checkStyle(
                     }
                 }
             } else if strcmp(p, b"striped\0" as *const u8 as *const libc::c_char) == 0
-                    && isBox(n) != 0
-                {
+                && isBox(n) != 0
+            {
                 istyle |= (1 as libc::c_int) << 6 as libc::c_int;
                 qp = pp;
                 loop {
@@ -3293,8 +3145,8 @@ unsafe extern "C" fn checkStyle(
                     }
                 }
             } else if strcmp(p, b"wedged\0" as *const u8 as *const libc::c_char) == 0
-                    && isEllipse(n) != 0
-                {
+                && isEllipse(n) != 0
+            {
                 istyle |= (1 as libc::c_int) << 9 as libc::c_int;
                 qp = pp;
                 loop {
@@ -3330,7 +3182,8 @@ unsafe extern "C" fn stylenode(mut job: *mut GVJ_t, mut n: *mut node_t) -> libc:
         && {
             s = agxget(n as *mut libc::c_void, N_penwidth);
             !s.is_null()
-        } && *s.offset(0 as libc::c_int as isize) as libc::c_int != 0
+        }
+        && *s.offset(0 as libc::c_int as isize) as libc::c_int != 0
     {
         penwidth = late_double(n as *mut libc::c_void, N_penwidth, 1.0f64, 0.0f64);
         gvrender_set_penwidth(job, penwidth);
@@ -3346,14 +3199,13 @@ unsafe extern "C" fn Mcircle_hack(mut job: *mut GVJ_t, mut n: *mut node_t) {
     x = 0.6614f64;
     p.y = y * (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht / 2.0f64;
     p.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw * x;
-    AF[0 as libc::c_int
-        as usize] = add_pointf(
+    AF[0 as libc::c_int as usize] = add_pointf(
         p,
         (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord,
     );
     AF[1 as libc::c_int as usize].y = AF[0 as libc::c_int as usize].y;
-    AF[1 as libc::c_int as usize]
-        .x = AF[0 as libc::c_int as usize].x - 2 as libc::c_int as libc::c_double * p.x;
+    AF[1 as libc::c_int as usize].x =
+        AF[0 as libc::c_int as usize].x - 2 as libc::c_int as libc::c_double * p.x;
     gvrender_polyline(job, AF.as_mut_ptr(), 2 as libc::c_int);
     AF[0 as libc::c_int as usize].y -= 2 as libc::c_int as libc::c_double * p.y;
     AF[1 as libc::c_int as usize].y = AF[0 as libc::c_int as usize].y;
@@ -3411,7 +3263,11 @@ pub unsafe extern "C" fn round_corners(
         dx = p1.x - p0.x;
         dy = p1.y - p0.y;
         d = hypot(dx, dy);
-        rbconst = if rbconst < d / 3.0f64 { rbconst } else { d / 3.0f64 };
+        rbconst = if rbconst < d / 3.0f64 {
+            rbconst
+        } else {
+            d / 3.0f64
+        };
         seg += 1;
     }
     seg = 0 as libc::c_int;
@@ -3475,40 +3331,27 @@ pub unsafe extern "C" fn round_corners(
             while seg < sides {
                 let fresh13 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh13 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg) as isize);
+                *pts.offset(fresh13 as isize) = *B.offset((4 as libc::c_int * seg) as isize);
                 let fresh14 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh14 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg + 1 as libc::c_int) as isize);
+                *pts.offset(fresh14 as isize) =
+                    *B.offset((4 as libc::c_int * seg + 1 as libc::c_int) as isize);
                 let fresh15 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh15 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg + 1 as libc::c_int) as isize);
+                *pts.offset(fresh15 as isize) =
+                    *B.offset((4 as libc::c_int * seg + 1 as libc::c_int) as isize);
                 let fresh16 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh16 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg + 2 as libc::c_int) as isize);
+                *pts.offset(fresh16 as isize) =
+                    *B.offset((4 as libc::c_int * seg + 2 as libc::c_int) as isize);
                 let fresh17 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh17 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg + 2 as libc::c_int) as isize);
+                *pts.offset(fresh17 as isize) =
+                    *B.offset((4 as libc::c_int * seg + 2 as libc::c_int) as isize);
                 let fresh18 = i;
                 i = i + 1;
-                *pts
-                    .offset(
-                        fresh18 as isize,
-                    ) = *B.offset((4 as libc::c_int * seg + 3 as libc::c_int) as isize);
+                *pts.offset(fresh18 as isize) =
+                    *B.offset((4 as libc::c_int * seg + 3 as libc::c_int) as isize);
                 seg += 1;
             }
             let fresh19 = i;
@@ -3531,12 +3374,10 @@ pub unsafe extern "C" fn round_corners(
             gvrender_polygon(job, AF, sides, filled);
             seg = 0 as libc::c_int;
             while seg < sides {
-                C[0 as libc::c_int
-                    as usize] = *B
-                    .offset((3 as libc::c_int * seg + 2 as libc::c_int) as isize);
-                C[1 as libc::c_int
-                    as usize] = *B
-                    .offset((3 as libc::c_int * seg + 4 as libc::c_int) as isize);
+                C[0 as libc::c_int as usize] =
+                    *B.offset((3 as libc::c_int * seg + 2 as libc::c_int) as isize);
+                C[1 as libc::c_int as usize] =
+                    *B.offset((3 as libc::c_int * seg + 4 as libc::c_int) as isize);
                 gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
                 seg += 1;
             }
@@ -3551,41 +3392,25 @@ pub unsafe extern "C" fn round_corners(
                 *D.offset(seg as isize) = *AF.offset(seg as isize);
                 seg += 1;
             }
-            *D
-                .offset(
-                    0 as libc::c_int as isize,
-                ) = *B
-                .offset(
-                    (3 as libc::c_int * (sides - 1 as libc::c_int) + 4 as libc::c_int)
-                        as isize,
-                );
-            *D
-                .offset(
-                    sides as isize,
-                ) = *B
-                .offset(
-                    (3 as libc::c_int * (sides - 1 as libc::c_int) + 2 as libc::c_int)
-                        as isize,
-                );
+            *D.offset(0 as libc::c_int as isize) = *B.offset(
+                (3 as libc::c_int * (sides - 1 as libc::c_int) + 4 as libc::c_int) as isize,
+            );
+            *D.offset(sides as isize) = *B.offset(
+                (3 as libc::c_int * (sides - 1 as libc::c_int) + 2 as libc::c_int) as isize,
+            );
             gvrender_polygon(job, D, sides + 1 as libc::c_int, filled);
             free(D as *mut libc::c_void);
             seg = sides - 1 as libc::c_int;
-            C[0 as libc::c_int
-                as usize] = *B
-                .offset((3 as libc::c_int * seg + 2 as libc::c_int) as isize);
-            C[1 as libc::c_int
-                as usize] = *B
-                .offset((3 as libc::c_int * seg + 4 as libc::c_int) as isize);
-            C[2 as libc::c_int as usize]
-                .x = C[1 as libc::c_int as usize].x
+            C[0 as libc::c_int as usize] =
+                *B.offset((3 as libc::c_int * seg + 2 as libc::c_int) as isize);
+            C[1 as libc::c_int as usize] =
+                *B.offset((3 as libc::c_int * seg + 4 as libc::c_int) as isize);
+            C[2 as libc::c_int as usize].x = C[1 as libc::c_int as usize].x
                 + (C[0 as libc::c_int as usize].x
-                    - (*B.offset((3 as libc::c_int * seg + 3 as libc::c_int) as isize))
-                        .x);
-            C[2 as libc::c_int as usize]
-                .y = C[1 as libc::c_int as usize].y
+                    - (*B.offset((3 as libc::c_int * seg + 3 as libc::c_int) as isize)).x);
+            C[2 as libc::c_int as usize].y = C[1 as libc::c_int as usize].y
                 + (C[0 as libc::c_int as usize].y
-                    - (*B.offset((3 as libc::c_int * seg + 3 as libc::c_int) as isize))
-                        .y);
+                    - (*B.offset((3 as libc::c_int * seg + 3 as libc::c_int) as isize)).y);
             gvrender_polyline(
                 job,
                 C.as_mut_ptr().offset(1 as libc::c_int as isize),
@@ -3601,23 +3426,19 @@ pub unsafe extern "C" fn round_corners(
             ) as *mut pointf;
             *D.offset(0 as libc::c_int as isize) = *AF.offset(0 as libc::c_int as isize);
             *D.offset(1 as libc::c_int as isize) = *B.offset(2 as libc::c_int as isize);
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(3 as libc::c_int as isize)).x
                     - (*B.offset(4 as libc::c_int as isize)).x)
                     / 3 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*B.offset(2 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*B.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 3 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x
                 + ((*B.offset(3 as libc::c_int as isize)).x
                     - (*B.offset(4 as libc::c_int as isize)).x)
                     / 3 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 3 as libc::c_int as libc::c_double;
@@ -3638,34 +3459,26 @@ pub unsafe extern "C" fn round_corners(
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
             *D.offset(0 as libc::c_int as isize) = *AF.offset(0 as libc::c_int as isize);
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x
                 - ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*B.offset(1 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 3 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x
                 - 2 as libc::c_int as libc::c_double
                     * ((*AF.offset(0 as libc::c_int as isize)).x
                         - (*B.offset(1 as libc::c_int as isize)).x);
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x
                 - 2.25f64
                     * ((*AF.offset(0 as libc::c_int as isize)).x
                         - (*B.offset(1 as libc::c_int as isize)).x);
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y;
             seg = 4 as libc::c_int;
             while seg < sides + 3 as libc::c_int {
                 *D.offset(seg as isize) = *AF.offset((seg - 3 as libc::c_int) as isize);
@@ -3675,16 +3488,16 @@ pub unsafe extern "C" fn round_corners(
             free(D as *mut libc::c_void);
         }
         67108864 => {
-            if sides == 4 as libc::c_int {} else {
+            if sides == 4 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"sides == 4\0" as *const u8 as *const libc::c_char,
                     b"shapes.c\0" as *const u8 as *const libc::c_char,
                     709 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 53],
-                        &[libc::c_char; 53],
-                    >(b"void round_corners(GVJ_t *, pointf *, int, int, int)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 53], &[libc::c_char; 53]>(
+                        b"void round_corners(GVJ_t *, pointf *, int, int, int)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             D = gcalloc(
@@ -3699,12 +3512,10 @@ pub unsafe extern "C" fn round_corners(
             *D.offset(5 as libc::c_int as isize) = *B.offset(10 as libc::c_int as isize);
             gvrender_polygon(job, D, sides + 2 as libc::c_int, filled);
             free(D as *mut libc::c_void);
-            C[0 as libc::c_int as usize]
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*B.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(11 as libc::c_int as isize)).x
                     - (*B.offset(0 as libc::c_int as isize)).x);
-            C[0 as libc::c_int as usize]
-                .y = (*B.offset(1 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*B.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(11 as libc::c_int as isize)).y
                     - (*B.offset(0 as libc::c_int as isize)).y);
             C[1 as libc::c_int as usize] = *B.offset(4 as libc::c_int as isize);
@@ -3715,16 +3526,16 @@ pub unsafe extern "C" fn round_corners(
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
         }
         83886080 => {
-            if sides == 4 as libc::c_int {} else {
+            if sides == 4 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"sides == 4\0" as *const u8 as *const libc::c_char,
                     b"shapes.c\0" as *const u8 as *const libc::c_char,
                     732 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 53],
-                        &[libc::c_char; 53],
-                    >(b"void round_corners(GVJ_t *, pointf *, int, int, int)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 53], &[libc::c_char; 53]>(
+                        b"void round_corners(GVJ_t *, pointf *, int, int, int)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             D = gcalloc(
@@ -3733,113 +3544,83 @@ pub unsafe extern "C" fn round_corners(
             ) as *mut pointf;
             *D.offset(0 as libc::c_int as isize) = *AF.offset(0 as libc::c_int as isize);
             *D.offset(1 as libc::c_int as isize) = *AF.offset(1 as libc::c_int as isize);
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x
                 + ((*B.offset(4 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(4 as libc::c_int as isize)).y
                     - (*B.offset(3 as libc::c_int as isize)).y);
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(3 as libc::c_int as isize)).x
                     - (*B.offset(2 as libc::c_int as isize)).x);
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(2 as libc::c_int as isize)).y);
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x
                 + ((*B.offset(4 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(4 as libc::c_int as isize)).y
                     - (*B.offset(3 as libc::c_int as isize)).y);
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x
                 + ((*D.offset(2 as libc::c_int as isize)).x
                     - (*D.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y
                 + ((*D.offset(2 as libc::c_int as isize)).y
                     - (*D.offset(3 as libc::c_int as isize)).y);
-            (*D.offset(9 as libc::c_int as isize))
-                .x = (*B.offset(6 as libc::c_int as isize)).x
+            (*D.offset(9 as libc::c_int as isize)).x = (*B.offset(6 as libc::c_int as isize)).x
                 + ((*B.offset(5 as libc::c_int as isize)).x
                     - (*B.offset(6 as libc::c_int as isize)).x);
-            (*D.offset(9 as libc::c_int as isize))
-                .y = (*B.offset(6 as libc::c_int as isize)).y
+            (*D.offset(9 as libc::c_int as isize)).y = (*B.offset(6 as libc::c_int as isize)).y
                 + ((*B.offset(5 as libc::c_int as isize)).y
                     - (*B.offset(6 as libc::c_int as isize)).y);
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*D.offset(9 as libc::c_int as isize)).x
+            (*D.offset(8 as libc::c_int as isize)).x = (*D.offset(9 as libc::c_int as isize)).x
                 + ((*B.offset(6 as libc::c_int as isize)).x
                     - (*B.offset(7 as libc::c_int as isize)).x);
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*D.offset(9 as libc::c_int as isize)).y
+            (*D.offset(8 as libc::c_int as isize)).y = (*D.offset(9 as libc::c_int as isize)).y
                 + ((*B.offset(6 as libc::c_int as isize)).y
                     - (*B.offset(7 as libc::c_int as isize)).y);
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x
                 + ((*B.offset(5 as libc::c_int as isize)).x
                     - (*B.offset(6 as libc::c_int as isize)).x);
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(8 as libc::c_int as isize)).y
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(8 as libc::c_int as isize)).y
                 + ((*B.offset(5 as libc::c_int as isize)).y
                     - (*B.offset(6 as libc::c_int as isize)).y);
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*D.offset(7 as libc::c_int as isize)).x
+            (*D.offset(6 as libc::c_int as isize)).x = (*D.offset(7 as libc::c_int as isize)).x
                 + ((*D.offset(9 as libc::c_int as isize)).x
                     - (*D.offset(8 as libc::c_int as isize)).x);
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(7 as libc::c_int as isize)).y
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(7 as libc::c_int as isize)).y
                 + ((*D.offset(9 as libc::c_int as isize)).y
                     - (*D.offset(8 as libc::c_int as isize)).y);
-            *D
-                .offset(
-                    10 as libc::c_int as isize,
-                ) = *AF.offset(2 as libc::c_int as isize);
-            *D
-                .offset(
-                    11 as libc::c_int as isize,
-                ) = *AF.offset(3 as libc::c_int as isize);
+            *D.offset(10 as libc::c_int as isize) = *AF.offset(2 as libc::c_int as isize);
+            *D.offset(11 as libc::c_int as isize) = *AF.offset(3 as libc::c_int as isize);
             gvrender_polygon(job, D, sides + 8 as libc::c_int, filled);
             C[0 as libc::c_int as usize] = *D.offset(2 as libc::c_int as isize);
-            C[1 as libc::c_int as usize]
-                .x = (*D.offset(2 as libc::c_int as isize)).x
+            C[1 as libc::c_int as usize].x = (*D.offset(2 as libc::c_int as isize)).x
                 - ((*D.offset(3 as libc::c_int as isize)).x
                     - (*D.offset(2 as libc::c_int as isize)).x);
-            C[1 as libc::c_int as usize]
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*D.offset(2 as libc::c_int as isize)).y
                 - ((*D.offset(3 as libc::c_int as isize)).y
                     - (*D.offset(2 as libc::c_int as isize)).y);
-            C[2 as libc::c_int as usize]
-                .x = C[1 as libc::c_int as usize].x
+            C[2 as libc::c_int as usize].x = C[1 as libc::c_int as usize].x
                 + ((*D.offset(4 as libc::c_int as isize)).x
                     - (*D.offset(3 as libc::c_int as isize)).x);
-            C[2 as libc::c_int as usize]
-                .y = C[1 as libc::c_int as usize].y
+            C[2 as libc::c_int as usize].y = C[1 as libc::c_int as usize].y
                 + ((*D.offset(4 as libc::c_int as isize)).y
                     - (*D.offset(3 as libc::c_int as isize)).y);
             C[3 as libc::c_int as usize] = *D.offset(5 as libc::c_int as isize);
             gvrender_polyline(job, C.as_mut_ptr(), 4 as libc::c_int);
             C[0 as libc::c_int as usize] = *D.offset(6 as libc::c_int as isize);
-            C[1 as libc::c_int as usize]
-                .x = (*D.offset(6 as libc::c_int as isize)).x
+            C[1 as libc::c_int as usize].x = (*D.offset(6 as libc::c_int as isize)).x
                 - ((*D.offset(7 as libc::c_int as isize)).x
                     - (*D.offset(6 as libc::c_int as isize)).x);
-            C[1 as libc::c_int as usize]
-                .y = (*D.offset(6 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*D.offset(6 as libc::c_int as isize)).y
                 - ((*D.offset(7 as libc::c_int as isize)).y
                     - (*D.offset(6 as libc::c_int as isize)).y);
-            C[2 as libc::c_int as usize]
-                .x = C[1 as libc::c_int as usize].x
+            C[2 as libc::c_int as usize].x = C[1 as libc::c_int as usize].x
                 + ((*D.offset(8 as libc::c_int as isize)).x
                     - (*D.offset(7 as libc::c_int as isize)).x);
-            C[2 as libc::c_int as usize]
-                .y = C[1 as libc::c_int as usize].y
+            C[2 as libc::c_int as usize].y = C[1 as libc::c_int as usize].y
                 + ((*D.offset(8 as libc::c_int as isize)).y
                     - (*D.offset(7 as libc::c_int as isize)).y);
             C[3 as libc::c_int as usize] = *D.offset(9 as libc::c_int as isize);
@@ -3851,16 +3632,14 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 5 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -3868,79 +3647,61 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 3 as libc::c_int as libc::c_double
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y);
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(6 as libc::c_int as isize)).y
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(6 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(8 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(8 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
             gvrender_polygon(job, D, sides + 5 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -3952,41 +3713,31 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 1 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*B.offset(1 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*B.offset(1 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
             gvrender_polygon(job, D, sides + 1 as libc::c_int, filled);
             free(D as *mut libc::c_void);
         }
@@ -3995,42 +3746,33 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 4 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4038,36 +3780,27 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x;
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 4 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4079,8 +3812,7 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 2 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4088,43 +3820,35 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4132,22 +3856,17 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 2 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4159,60 +3878,48 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 1 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y);
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 1 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4224,8 +3931,7 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 4 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4235,89 +3941,70 @@ pub unsafe extern "C" fn round_corners(
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*D.offset(5 as libc::c_int as isize)).x;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(5 as libc::c_int as isize)).y
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*D.offset(5 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(5 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(6 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(6 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 4 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*D.offset(4 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*D.offset(7 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4329,46 +4016,36 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + 2 as libc::c_int as libc::c_double
                     * ((*B.offset(2 as libc::c_int as isize)).x
                         - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4376,33 +4053,25 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 5 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             C[0 as libc::c_int as usize].x = (*D.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4414,46 +4083,36 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x
                 - 2 as libc::c_int as libc::c_double
                     * ((*B.offset(3 as libc::c_int as isize)).y
                         - (*B.offset(4 as libc::c_int as isize)).y);
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4461,33 +4120,25 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 5 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y);
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*D.offset(3 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4499,8 +4150,7 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4508,39 +4158,31 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 9 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4548,8 +4190,7 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 9 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4557,39 +4198,31 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 5 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4597,78 +4230,61 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 5 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             C[0 as libc::c_int as usize].x = (*D.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4676,14 +4292,12 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 9 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4695,54 +4309,44 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + 2 as libc::c_int as libc::c_double
                     * ((*B.offset(2 as libc::c_int as isize)).x
                         - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
             D = gcalloc(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4750,47 +4354,37 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 5 as libc::c_int as libc::c_double
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + 2 as libc::c_int as libc::c_double
                     * ((*B.offset(2 as libc::c_int as isize)).x
                         - (*B.offset(3 as libc::c_int as isize)).x);
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             C[0 as libc::c_int as usize].x = (*D.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*D.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -4802,96 +4396,77 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*B.offset(1 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*B.offset(1 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polygon(job, D, sides, filled);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .x = C[0 as libc::c_int as usize].x
+            C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .x = C[0 as libc::c_int as usize].x
+            C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .x = (*AF.offset(0 as libc::c_int as isize)).x
+            C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
@@ -4904,50 +4479,41 @@ pub unsafe extern "C" fn round_corners(
                 sides as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides, filled);
             free(D as *mut libc::c_void);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4955,8 +4521,7 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4965,8 +4530,7 @@ pub unsafe extern "C" fn round_corners(
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -4974,8 +4538,7 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            C[2 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[2 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4988,8 +4551,7 @@ pub unsafe extern "C" fn round_corners(
             C[3 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y;
             C[4 as libc::c_int as usize] = C[0 as libc::c_int as usize];
             gvrender_polyline(job, C.as_mut_ptr(), 5 as libc::c_int);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -4997,26 +4559,22 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[1 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
@@ -5024,8 +4582,7 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     * 3 as libc::c_int as libc::c_double
                     / 4 as libc::c_int as libc::c_double;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -5036,126 +4593,91 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 12 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(5 as libc::c_int as isize)).y;
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*D.offset(7 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(5 as libc::c_int as isize)).y;
+            (*D.offset(8 as libc::c_int as isize)).x = (*D.offset(7 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*D.offset(7 as libc::c_int as isize)).y;
-            (*D.offset(9 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(9 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(10 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x
+            (*D.offset(8 as libc::c_int as isize)).y = (*D.offset(7 as libc::c_int as isize)).y;
+            (*D.offset(9 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(9 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(10 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(10 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(11 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(11 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(12 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(12 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(13 as libc::c_int as isize))
-                .x = (*D.offset(10 as libc::c_int as isize)).x;
-            (*D.offset(13 as libc::c_int as isize))
-                .y = (*D.offset(12 as libc::c_int as isize)).y;
-            (*D.offset(14 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x;
-            (*D.offset(14 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(15 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(15 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(10 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(11 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(11 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(12 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(12 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(13 as libc::c_int as isize)).x = (*D.offset(10 as libc::c_int as isize)).x;
+            (*D.offset(13 as libc::c_int as isize)).y = (*D.offset(12 as libc::c_int as isize)).y;
+            (*D.offset(14 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x;
+            (*D.offset(14 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(15 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(15 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 12 as libc::c_int, filled);
             C[0 as libc::c_int as usize].x = (*D.offset(14 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*D.offset(14 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -5163,21 +4685,18 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -5189,93 +4708,72 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 4 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*D.offset(5 as libc::c_int as isize)).x;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*D.offset(5 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x;
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 4 as libc::c_int, filled);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
@@ -5283,21 +4781,18 @@ pub unsafe extern "C" fn round_corners(
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = C[0 as libc::c_int as usize].y
+            C[1 as libc::c_int as usize].y = C[0 as libc::c_int as usize].y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -5309,127 +4804,92 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 12 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(4 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(4 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(5 as libc::c_int as isize)).y;
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*D.offset(7 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(5 as libc::c_int as isize)).y;
+            (*D.offset(8 as libc::c_int as isize)).x = (*D.offset(7 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*D.offset(7 as libc::c_int as isize)).y;
-            (*D.offset(9 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(9 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(10 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x
+            (*D.offset(8 as libc::c_int as isize)).y = (*D.offset(7 as libc::c_int as isize)).y;
+            (*D.offset(9 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(9 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(10 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(10 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(11 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(11 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(12 as libc::c_int as isize))
-                .x = (*D.offset(8 as libc::c_int as isize)).x;
-            (*D.offset(12 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(13 as libc::c_int as isize))
-                .x = (*D.offset(10 as libc::c_int as isize)).x;
-            (*D.offset(13 as libc::c_int as isize))
-                .y = (*D.offset(12 as libc::c_int as isize)).y;
-            (*D.offset(14 as libc::c_int as isize))
-                .x = (*D.offset(6 as libc::c_int as isize)).x;
-            (*D.offset(14 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(15 as libc::c_int as isize))
-                .x = (*D.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(15 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(10 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(11 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(11 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(12 as libc::c_int as isize)).x = (*D.offset(8 as libc::c_int as isize)).x;
+            (*D.offset(12 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(13 as libc::c_int as isize)).x = (*D.offset(10 as libc::c_int as isize)).x;
+            (*D.offset(13 as libc::c_int as isize)).y = (*D.offset(12 as libc::c_int as isize)).y;
+            (*D.offset(14 as libc::c_int as isize)).x = (*D.offset(6 as libc::c_int as isize)).x;
+            (*D.offset(14 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(15 as libc::c_int as isize)).x = (*D.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(15 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 12 as libc::c_int, filled);
             C[0 as libc::c_int as usize] = *D.offset(14 as libc::c_int as isize);
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -5441,91 +4901,71 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 4 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*D.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*D.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*D.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).x = (*D.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*D.offset(3 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*D.offset(3 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 4 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*D.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).y = (*D.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 8 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*D.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*D.offset(5 as libc::c_int as isize)).x;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*D.offset(1 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*D.offset(4 as libc::c_int as isize)).x;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*D.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).y = (*D.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*D.offset(5 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).y = (*D.offset(1 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).x = (*D.offset(4 as libc::c_int as isize)).x;
+            (*D.offset(7 as libc::c_int as isize)).y = (*D.offset(0 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 4 as libc::c_int, filled);
-            C[0 as libc::c_int as usize]
-                .x = (*AF.offset(1 as libc::c_int as isize)).x
+            C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x
                 + ((*AF.offset(0 as libc::c_int as isize)).x
                     - (*AF.offset(1 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
             C[0 as libc::c_int as usize].y = (*D.offset(0 as libc::c_int as isize)).y;
             C[1 as libc::c_int as usize].x = C[0 as libc::c_int as usize].x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             gvrender_polyline(job, C.as_mut_ptr(), 2 as libc::c_int);
             C[0 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-            C[0 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[0 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
             C[1 as libc::c_int as usize].x = (*AF.offset(0 as libc::c_int as isize)).x;
-            C[1 as libc::c_int as usize]
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            C[1 as libc::c_int as usize].y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
@@ -5537,72 +4977,54 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 5 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*B.offset(1 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*B.offset(1 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(4 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(5 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(6 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(6 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(8 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(8 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
@@ -5614,58 +5036,44 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 3 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(0 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*B.offset(1 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).y = (*B.offset(1 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*B.offset(3 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(1 as libc::c_int as isize)).y = (*B.offset(3 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*AF.offset(2 as libc::c_int as isize)).x;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).x = (*AF.offset(2 as libc::c_int as isize)).x;
+            (*D.offset(2 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(3 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*AF.offset(0 as libc::c_int as isize)).y
                     - (*AF.offset(3 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y;
+            (*D.offset(6 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
@@ -5677,61 +5085,47 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 3 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*B.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*B.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(1 as libc::c_int as isize)).y
                 - ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y
+            (*D.offset(6 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(6 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
             gvrender_polygon(job, D, sides + 3 as libc::c_int, filled);
             free(D as *mut libc::c_void);
         }
@@ -5740,75 +5134,57 @@ pub unsafe extern "C" fn round_corners(
                 (sides + 5 as libc::c_int) as size_t,
                 ::std::mem::size_of::<pointf>() as libc::c_ulong,
             ) as *mut pointf;
-            (*D.offset(0 as libc::c_int as isize))
-                .x = (*AF.offset(0 as libc::c_int as isize)).x;
-            (*D.offset(0 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(0 as libc::c_int as isize)).x = (*AF.offset(0 as libc::c_int as isize)).x;
+            (*D.offset(0 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(1 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(1 as libc::c_int as isize))
-                .y = (*AF.offset(0 as libc::c_int as isize)).y
+            (*D.offset(1 as libc::c_int as isize)).y = (*AF.offset(0 as libc::c_int as isize)).y
                 - ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(2 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(2 as libc::c_int as isize))
-                .y = (*B.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(3 as libc::c_int as isize))
-                .x = (*AF.offset(1 as libc::c_int as isize)).x;
-            (*D.offset(3 as libc::c_int as isize))
-                .y = (*AF.offset(1 as libc::c_int as isize)).y
+            (*D.offset(2 as libc::c_int as isize)).y = (*B.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(3 as libc::c_int as isize)).x = (*AF.offset(1 as libc::c_int as isize)).x;
+            (*D.offset(3 as libc::c_int as isize)).y = (*AF.offset(1 as libc::c_int as isize)).y
                 - ((*AF.offset(1 as libc::c_int as isize)).y
                     - (*AF.offset(2 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(4 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(4 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y;
-            (*D.offset(5 as libc::c_int as isize))
-                .y = (*AF.offset(2 as libc::c_int as isize)).y
+            (*D.offset(4 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y;
+            (*D.offset(5 as libc::c_int as isize)).y = (*AF.offset(2 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(5 as libc::c_int as isize))
-                .x = (*B.offset(2 as libc::c_int as isize)).x
+            (*D.offset(5 as libc::c_int as isize)).x = (*B.offset(2 as libc::c_int as isize)).x
                 + ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y
+            (*D.offset(6 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y
                 + ((*B.offset(3 as libc::c_int as isize)).y
                     - (*B.offset(4 as libc::c_int as isize)).y)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(6 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(6 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .x = (*B.offset(1 as libc::c_int as isize)).x
+            (*D.offset(7 as libc::c_int as isize)).x = (*B.offset(1 as libc::c_int as isize)).x
                 - ((*B.offset(2 as libc::c_int as isize)).x
                     - (*B.offset(3 as libc::c_int as isize)).x)
                     / 2 as libc::c_int as libc::c_double;
-            (*D.offset(7 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y;
-            (*D.offset(8 as libc::c_int as isize))
-                .x = (*AF.offset(3 as libc::c_int as isize)).x;
-            (*D.offset(8 as libc::c_int as isize))
-                .y = (*AF.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(7 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y;
+            (*D.offset(8 as libc::c_int as isize)).x = (*AF.offset(3 as libc::c_int as isize)).x;
+            (*D.offset(8 as libc::c_int as isize)).y = (*AF.offset(3 as libc::c_int as isize)).y;
             gvrender_polygon(job, D, sides + 5 as libc::c_int, filled);
             free(D as *mut libc::c_void);
         }
@@ -5824,32 +5200,29 @@ unsafe extern "C" fn userSize(mut n: *mut node_t) -> libc::c_double {
     return (if (if w > h { w } else { h }) * 72 as libc::c_int as libc::c_double
         >= 0 as libc::c_int as libc::c_double
     {
-        ((if w > h { w } else { h }) * 72 as libc::c_int as libc::c_double + 0.5f64)
-            as libc::c_int
+        ((if w > h { w } else { h }) * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
     } else {
-        ((if w > h { w } else { h }) * 72 as libc::c_int as libc::c_double - 0.5f64)
-            as libc::c_int
+        ((if w > h { w } else { h }) * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
     }) as libc::c_double;
 }
 #[no_mangle]
 pub unsafe extern "C" fn shapeOf(mut n: *mut node_t) -> shape_kind {
-    let mut sh: *mut shape_desc = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape;
-    let mut ifn: Option::<unsafe extern "C" fn(*mut node_t) -> ()> = None;
+    let mut sh: *mut shape_desc = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape;
+    let mut ifn: Option<unsafe extern "C" fn(*mut node_t) -> ()> = None;
     if sh.is_null() {
         return SH_UNSET;
     }
     ifn = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).fns).initfn;
     if ifn == Some(poly_init as unsafe extern "C" fn(*mut node_t) -> ()) {
-        return SH_POLY
+        return SH_POLY;
     } else if ifn == Some(record_init as unsafe extern "C" fn(*mut node_t) -> ()) {
-        return SH_RECORD
+        return SH_RECORD;
     } else if ifn == Some(point_init as unsafe extern "C" fn(*mut node_t) -> ()) {
-        return SH_POINT
+        return SH_POINT;
     } else if ifn == Some(epsf_init as unsafe extern "C" fn(*mut node_t) -> ()) {
-        return SH_EPSF
+        return SH_EPSF;
     } else {
-        return SH_UNSET
+        return SH_UNSET;
     };
 }
 #[no_mangle]
@@ -5898,39 +5271,29 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
     let mut j: libc::c_int = 0;
     let mut isBox_0: libc::c_int = 0;
     let mut outp: libc::c_int = 0;
-    let mut poly: *mut polygon_t = zmalloc(
-        ::std::mem::size_of::<polygon_t>() as libc::c_ulong,
-    ) as *mut polygon_t;
-    let mut isPlain: bool = (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape)
-        .polygon == &mut p_plain as *mut polygon_t;
-    regular = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon)
-        .regular;
-    peripheries = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape)
-        .polygon)
-        .peripheries;
-    sides = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon)
-        .sides;
-    orientation = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape)
-        .polygon)
-        .orientation;
-    skew = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon)
-        .skew;
-    distortion = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape)
-        .polygon)
-        .distortion;
-    regular
-        |= if mapbool(
-            agget(
-                n as *mut libc::c_void,
-                b"regular\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            ),
-        ) as libc::c_int != 0
-        {
-            (0 as libc::c_int == 0) as libc::c_int
-        } else {
-            0 as libc::c_int
-        };
+    let mut poly: *mut polygon_t =
+        zmalloc(::std::mem::size_of::<polygon_t>() as libc::c_ulong) as *mut polygon_t;
+    let mut isPlain: bool = (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon
+        == &mut p_plain as *mut polygon_t;
+    regular = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).regular;
+    peripheries =
+        (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).peripheries;
+    sides = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).sides;
+    orientation =
+        (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).orientation;
+    skew = (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).skew;
+    distortion =
+        (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).distortion;
+    regular |= if mapbool(agget(
+        n as *mut libc::c_void,
+        b"regular\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    )) as libc::c_int
+        != 0
+    {
+        (0 as libc::c_int == 0) as libc::c_int
+    } else {
+        0 as libc::c_int
+    };
     if isPlain {
         height = 0 as libc::c_int as libc::c_double;
         width = height;
@@ -5947,31 +5310,39 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
                 >= 0 as libc::c_int as libc::c_double
             {
                 ((if width < height { width } else { height })
-                    * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    + 0.5f64) as libc::c_int
             } else {
                 ((if width < height { width } else { height })
-                    * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    - 0.5f64) as libc::c_int
             }) as libc::c_double;
             width = height;
         }
     } else {
         width = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-            * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+            * 72 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                + 0.5f64) as libc::c_int
         } else {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                - 0.5f64) as libc::c_int
         }) as libc::c_double;
         height = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-            * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+            * 72 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                + 0.5f64) as libc::c_int
         } else {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                - 0.5f64) as libc::c_int
         }) as libc::c_double;
     }
     peripheries = late_int(
@@ -5989,16 +5360,10 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
             4 as libc::c_int,
             0 as libc::c_int,
         );
-        distortion = late_double(
-            n as *mut libc::c_void,
-            N_distortion,
-            0.0f64,
-            -100.0f64,
-        );
+        distortion = late_double(n as *mut libc::c_void, N_distortion, 0.0f64, -100.0f64);
     }
     dimen = (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).dimen;
-    if dimen.x > 0 as libc::c_int as libc::c_double
-        || dimen.y > 0 as libc::c_int as libc::c_double
+    if dimen.x > 0 as libc::c_int as libc::c_double || dimen.y > 0 as libc::c_int as libc::c_double
     {
         if !isPlain {
             p = agget(
@@ -6017,8 +5382,27 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
                 marginx = fmax(marginx, 0 as libc::c_int as libc::c_double);
                 marginy = fmax(marginy, 0 as libc::c_int as libc::c_double);
                 if i > 0 as libc::c_int {
-                    dimen.x
-                        += (2 as libc::c_int
+                    dimen.x += (2 as libc::c_int
+                        * (if marginx * 72 as libc::c_int as libc::c_double
+                            >= 0 as libc::c_int as libc::c_double
+                        {
+                            (marginx * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                        } else {
+                            (marginx * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                        })) as libc::c_double;
+                    if i > 1 as libc::c_int {
+                        dimen.y += (2 as libc::c_int
+                            * (if marginy * 72 as libc::c_int as libc::c_double
+                                >= 0 as libc::c_int as libc::c_double
+                            {
+                                (marginy * 72 as libc::c_int as libc::c_double + 0.5f64)
+                                    as libc::c_int
+                            } else {
+                                (marginy * 72 as libc::c_int as libc::c_double - 0.5f64)
+                                    as libc::c_int
+                            })) as libc::c_double;
+                    } else {
+                        dimen.y += (2 as libc::c_int
                             * (if marginx * 72 as libc::c_int as libc::c_double
                                 >= 0 as libc::c_int as libc::c_double
                             {
@@ -6028,30 +5412,6 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
                                 (marginx * 72 as libc::c_int as libc::c_double - 0.5f64)
                                     as libc::c_int
                             })) as libc::c_double;
-                    if i > 1 as libc::c_int {
-                        dimen.y
-                            += (2 as libc::c_int
-                                * (if marginy * 72 as libc::c_int as libc::c_double
-                                    >= 0 as libc::c_int as libc::c_double
-                                {
-                                    (marginy * 72 as libc::c_int as libc::c_double + 0.5f64)
-                                        as libc::c_int
-                                } else {
-                                    (marginy * 72 as libc::c_int as libc::c_double - 0.5f64)
-                                        as libc::c_int
-                                })) as libc::c_double;
-                    } else {
-                        dimen.y
-                            += (2 as libc::c_int
-                                * (if marginx * 72 as libc::c_int as libc::c_double
-                                    >= 0 as libc::c_int as libc::c_double
-                                {
-                                    (marginx * 72 as libc::c_int as libc::c_double + 0.5f64)
-                                        as libc::c_int
-                                } else {
-                                    (marginx * 72 as libc::c_int as libc::c_double - 0.5f64)
-                                        as libc::c_int
-                                })) as libc::c_double;
                     }
                 } else {
                     dimen.x += (4 as libc::c_int * 4 as libc::c_int) as libc::c_double;
@@ -6064,14 +5424,14 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
         }
     }
     spacex = dimen.x
-        - (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).dimen.x;
-    temp = (*(*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-        as *mut Agraphinfo_t))
+        - (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
+            .dimen
+            .x;
+    temp = (*(*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
         .drawing)
         .quantum;
     if temp > 0.0f64 {
-        temp = (if temp * 72 as libc::c_int as libc::c_double
-            >= 0 as libc::c_int as libc::c_double
+        temp = (if temp * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
         {
             (temp * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
         } else {
@@ -6145,14 +5505,12 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
             }
         }
     }
-    bb
-        .x = if dimen.x > imagesize.x as libc::c_double {
+    bb.x = if dimen.x > imagesize.x as libc::c_double {
         dimen.x
     } else {
         imagesize.x as libc::c_double
     };
-    bb
-        .y = if dimen.y > imagesize.y as libc::c_double {
+    bb.y = if dimen.y > imagesize.y as libc::c_double {
         dimen.y
     } else {
         imagesize.y as libc::c_double
@@ -6168,35 +5526,35 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
         && (*p.offset(0 as libc::c_int as isize) as libc::c_int == 't' as i32
             || *p.offset(0 as libc::c_int as isize) as libc::c_int == 'b' as i32)
     {
-        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
-            .valign = *p.offset(0 as libc::c_int as isize);
+        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).valign =
+            *p.offset(0 as libc::c_int as isize);
     } else {
-        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
-            .valign = 'c' as i32 as libc::c_char;
+        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).valign =
+            'c' as i32 as libc::c_char;
     }
     isBox_0 = (sides == 4 as libc::c_int
         && (if orientation >= 0 as libc::c_int as libc::c_double {
             (orientation + 0.5f64) as libc::c_int
         } else {
             (orientation - 0.5f64) as libc::c_int
-        }) % 90 as libc::c_int == 0 as libc::c_int && distortion == 0.0f64
+        }) % 90 as libc::c_int
+            == 0 as libc::c_int
+        && distortion == 0.0f64
         && skew == 0.0f64) as libc::c_int;
     if !(isBox_0 != 0) {
-        if !((*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon)
-            .vertices)
+        if !((*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).vertices)
             .is_null()
         {
-            let mut pd: *mut poly_desc_t = (*(*(*((*(n as *mut Agobj_t)).data
-                as *mut Agnodeinfo_t))
-                .shape)
-                .polygon)
-                .vertices as *mut poly_desc_t;
+            let mut pd: *mut poly_desc_t =
+                (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).vertices
+                    as *mut poly_desc_t;
             bb = ((*pd).size_gen).expect("non-null function pointer")(bb);
         } else {
             temp = bb.y * 1.41421356237309504880f64;
             if height > temp
                 && (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).valign
-                    as libc::c_int == 'c' as i32
+                    as libc::c_int
+                    == 'c' as i32
             {
                 bb.x *= sqrt(1.0f64 / (1.0f64 - bb.y / height * (bb.y / height)));
             } else {
@@ -6223,9 +5581,14 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
         bb.y = height;
         (*poly).option |= (1 as libc::c_int) << 11 as libc::c_int;
     } else if mapbool(fxd) {
-        if width < (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).dimen.x
+        if width
+            < (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
+                .dimen
+                .x
             || height
-                < (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).dimen.y
+                < (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
+                    .dimen
+                    .y
         {
             agerr(
                 AGWARN,
@@ -6249,13 +5612,11 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
         height = bb.x;
         width = height;
     }
-    if !mapbool(
-        late_string(
-            n as *mut libc::c_void,
-            N_nojustify,
-            b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-        ),
-    ) {
+    if !mapbool(late_string(
+        n as *mut libc::c_void,
+        N_nojustify,
+        b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    )) {
         if isBox_0 != 0 {
             (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
                 .space
@@ -6322,15 +5683,12 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
             (outp * sides) as size_t,
             ::std::mem::size_of::<pointf>() as libc::c_ulong,
         ) as *mut pointf;
-        if !((*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon)
-            .vertices)
+        if !((*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).vertices)
             .is_null()
         {
-            let mut pd_0: *mut poly_desc_t = (*(*(*((*(n as *mut Agobj_t)).data
-                as *mut Agnodeinfo_t))
-                .shape)
-                .polygon)
-                .vertices as *mut poly_desc_t;
+            let mut pd_0: *mut poly_desc_t =
+                (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).vertices
+                    as *mut poly_desc_t;
             ((*pd_0).vertex_gen).expect("non-null function pointer")(vertices, &mut bb);
             xmax = bb.x / 2 as libc::c_int as libc::c_double;
             ymax = bb.y / 2 as libc::c_int as libc::c_double;
@@ -6338,8 +5696,7 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
             sectorangle = 2.0f64 * 3.14159265358979323846f64 / sides as libc::c_double;
             sidelength = sin(sectorangle / 2.0f64);
             skewdist = hypot(fabs(distortion) + fabs(skew), 1.0f64);
-            gdistortion = distortion * 1.41421356237309504880f64
-                / cos(sectorangle / 2.0f64);
+            gdistortion = distortion * 1.41421356237309504880f64 / cos(sectorangle / 2.0f64);
             gskew = skew / 2.0f64;
             angle = (sectorangle - 3.14159265358979323846f64) / 2.0f64;
             sincos(angle, &mut sinx, &mut cosx);
@@ -6358,8 +5715,7 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
                 let mut P_0: pointf = pointf { x: 0., y: 0. };
                 P_0.x = R.x * (skewdist + R.y * gdistortion) + R.y * gskew;
                 P_0.y = R.y;
-                alpha_0 = orientation / 180.0f64 * 3.14159265358979323846f64
-                    + atan2(P_0.y, P_0.x);
+                alpha_0 = orientation / 180.0f64 * 3.14159265358979323846f64 + atan2(P_0.y, P_0.x);
                 sincos(alpha_0, &mut sinx, &mut cosx);
                 P_0.y = hypot(P_0.x, P_0.y);
                 P_0.x = P_0.y;
@@ -6367,8 +5723,16 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
                 P_0.y *= sinx;
                 P_0.x *= bb.x;
                 P_0.y *= bb.y;
-                xmax = if fabs(P_0.x) > xmax { fabs(P_0.x) } else { xmax };
-                ymax = if fabs(P_0.y) > ymax { fabs(P_0.y) } else { ymax };
+                xmax = if fabs(P_0.x) > xmax {
+                    fabs(P_0.x)
+                } else {
+                    xmax
+                };
+                ymax = if fabs(P_0.y) > ymax {
+                    fabs(P_0.y)
+                } else {
+                    ymax
+                };
                 *vertices.offset(i as isize) = P_0;
                 if isBox_0 != 0 {
                     (*vertices.offset(1 as libc::c_int as isize)).x = -P_0.x;
@@ -6423,16 +5787,14 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
             }
             i = 0 as libc::c_int;
             while i < sides {
-                let mut P_2: pointf = *vertices
-                    .offset((i + (peripheries - 1 as libc::c_int) * sides) as isize);
-                bb
-                    .x = if 2.0f64 * fabs(P_2.x) > bb.x {
+                let mut P_2: pointf =
+                    *vertices.offset((i + (peripheries - 1 as libc::c_int) * sides) as isize);
+                bb.x = if 2.0f64 * fabs(P_2.x) > bb.x {
                     2.0f64 * fabs(P_2.x)
                 } else {
                     bb.x
                 };
-                bb
-                    .y = if 2.0f64 * fabs(P_2.y) > bb.y {
+                bb.y = if 2.0f64 * fabs(P_2.y) > bb.y {
                     2.0f64 * fabs(P_2.y)
                 } else {
                     bb.y
@@ -6450,34 +5812,28 @@ unsafe extern "C" fn poly_init(mut n: *mut node_t) {
     let ref mut fresh21 = (*poly).vertices;
     *fresh21 = vertices;
     if (*poly).option & (1 as libc::c_int) << 11 as libc::c_int != 0 {
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .width = (if dimen.x > bb.x { dimen.x } else { bb.x })
-            / 72 as libc::c_int as libc::c_double;
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .height = (if dimen.y > bb.y { dimen.y } else { bb.y })
-            / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width =
+            (if dimen.x > bb.x { dimen.x } else { bb.x }) / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height =
+            (if dimen.y > bb.y { dimen.y } else { bb.y }) / 72 as libc::c_int as libc::c_double;
     } else {
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .width = bb.x / 72 as libc::c_int as libc::c_double;
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .height = bb.y / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width =
+            bb.x / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height =
+            bb.y / 72 as libc::c_int as libc::c_double;
     }
-    let ref mut fresh22 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape_info;
+    let ref mut fresh22 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info;
     *fresh22 = poly as *mut libc::c_void;
 }
 unsafe extern "C" fn poly_free(mut n: *mut node_t) {
-    let mut p: *mut polygon_t = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape_info as *mut polygon_t;
+    let mut p: *mut polygon_t =
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
     if !p.is_null() {
         free((*p).vertices as *mut libc::c_void);
         free(p as *mut libc::c_void);
     }
 }
-unsafe extern "C" fn poly_inside(
-    mut inside_context: *mut inside_t,
-    mut p: pointf,
-) -> bool {
+unsafe extern "C" fn poly_inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     static mut lastn: *mut node_t = 0 as *const node_t as *mut node_t;
     static mut poly: *mut polygon_t = 0 as *const polygon_t as *mut polygon_t;
     static mut last: libc::c_int = 0;
@@ -6511,27 +5867,28 @@ unsafe extern "C" fn poly_inside(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     if !bp.is_null() {
         let mut bbox: boxf = *bp;
-        return bbox.LL.x <= P.x && P.x <= bbox.UR.x
-            && (bbox.LL.y <= P.y && P.y <= bbox.UR.y);
+        return bbox.LL.x <= P.x && P.x <= bbox.UR.x && (bbox.LL.y <= P.y && P.y <= bbox.UR.y);
     }
     if n != lastn {
         let mut n_width: libc::c_double = 0.;
         let mut n_height: libc::c_double = 0.;
-        poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-            as *mut polygon_t;
+        poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
         vertex = (*poly).vertices;
         sides = (*poly).sides;
         if (*poly).option & (1 as libc::c_int) << 11 as libc::c_int != 0 {
             let mut bb: boxf = polyBB(poly);
             n_width = bb.UR.x - bb.LL.x;
             n_height = bb.UR.y - bb.LL.y;
-            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0
+            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+                .rankdir
+                & 0x3 as libc::c_int
+                & 1 as libc::c_int
+                != 0
             {
                 ysize = n_width;
                 xsize = n_height;
@@ -6540,9 +5897,11 @@ unsafe extern "C" fn poly_inside(
                 ysize = n_height;
             }
         } else {
-            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0
+            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+                .rankdir
+                & 0x3 as libc::c_int
+                & 1 as libc::c_int
+                != 0
             {
                 ysize = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw
                     + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw;
@@ -6557,20 +5916,24 @@ unsafe extern "C" fn poly_inside(
                 >= 0 as libc::c_int as libc::c_double
             {
                 ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                    * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    + 0.5f64) as libc::c_int
             } else {
                 ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                    * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    - 0.5f64) as libc::c_int
             }) as libc::c_double;
             n_height = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
                 * 72 as libc::c_int as libc::c_double
                 >= 0 as libc::c_int as libc::c_double
             {
                 ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                    * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    + 0.5f64) as libc::c_int
             } else {
                 ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                    * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                    * 72 as libc::c_int as libc::c_double
+                    - 0.5f64) as libc::c_int
             }) as libc::c_double;
         }
         if xsize == 0.0f64 {
@@ -6641,57 +6004,48 @@ unsafe extern "C" fn poly_path(
 ) -> libc::c_int {
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn invflip_side(
-    mut side: libc::c_int,
-    mut rankdir: libc::c_int,
-) -> libc::c_int {
+unsafe extern "C" fn invflip_side(mut side: libc::c_int, mut rankdir: libc::c_int) -> libc::c_int {
     match rankdir {
         0 => {}
-        2 => {
-            match side {
-                4 => {
-                    side = (1 as libc::c_int) << 0 as libc::c_int;
-                }
-                1 => {
-                    side = (1 as libc::c_int) << 2 as libc::c_int;
-                }
-                _ => {}
+        2 => match side {
+            4 => {
+                side = (1 as libc::c_int) << 0 as libc::c_int;
             }
-        }
-        1 => {
-            match side {
-                4 => {
-                    side = (1 as libc::c_int) << 1 as libc::c_int;
-                }
-                1 => {
-                    side = (1 as libc::c_int) << 3 as libc::c_int;
-                }
-                8 => {
-                    side = (1 as libc::c_int) << 2 as libc::c_int;
-                }
-                2 => {
-                    side = (1 as libc::c_int) << 0 as libc::c_int;
-                }
-                _ => {}
+            1 => {
+                side = (1 as libc::c_int) << 2 as libc::c_int;
             }
-        }
-        3 => {
-            match side {
-                4 => {
-                    side = (1 as libc::c_int) << 1 as libc::c_int;
-                }
-                1 => {
-                    side = (1 as libc::c_int) << 3 as libc::c_int;
-                }
-                8 => {
-                    side = (1 as libc::c_int) << 0 as libc::c_int;
-                }
-                2 => {
-                    side = (1 as libc::c_int) << 2 as libc::c_int;
-                }
-                _ => {}
+            _ => {}
+        },
+        1 => match side {
+            4 => {
+                side = (1 as libc::c_int) << 1 as libc::c_int;
             }
-        }
+            1 => {
+                side = (1 as libc::c_int) << 3 as libc::c_int;
+            }
+            8 => {
+                side = (1 as libc::c_int) << 2 as libc::c_int;
+            }
+            2 => {
+                side = (1 as libc::c_int) << 0 as libc::c_int;
+            }
+            _ => {}
+        },
+        3 => match side {
+            4 => {
+                side = (1 as libc::c_int) << 1 as libc::c_int;
+            }
+            1 => {
+                side = (1 as libc::c_int) << 3 as libc::c_int;
+            }
+            8 => {
+                side = (1 as libc::c_int) << 0 as libc::c_int;
+            }
+            2 => {
+                side = (1 as libc::c_int) << 2 as libc::c_int;
+            }
+            _ => {}
+        },
         _ => {
             fprintf(
                 stderr,
@@ -6743,8 +6097,8 @@ unsafe extern "C" fn compassPoint(
     let mut curve: [pointf; 4] = [pointf { x: 0., y: 0. }; 4];
     let mut n: *mut node_t = (*ictxt).s.n;
     let mut g: *mut graph_t = agraphof(n as *mut libc::c_void);
-    let mut rd: libc::c_int = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
-        .rankdir & 0x3 as libc::c_int;
+    let mut rd: libc::c_int =
+        (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankdir & 0x3 as libc::c_int;
     let mut p: pointf = pointf { x: 0., y: 0. };
     p.x = x;
     p.y = y;
@@ -6763,11 +6117,8 @@ unsafe extern "C" fn compassPoint(
         1 as libc::c_int != 0,
     );
     if rd != 0 {
-        curve[0 as libc::c_int
-            as usize] = ccwrotatepf(
-            curve[0 as libc::c_int as usize],
-            90 as libc::c_int * rd,
-        );
+        curve[0 as libc::c_int as usize] =
+            ccwrotatepf(curve[0 as libc::c_int as usize], 90 as libc::c_int * rd);
     }
     return curve[0 as libc::c_int as usize];
 }
@@ -6803,9 +6154,11 @@ unsafe extern "C" fn compassPort(
     } else {
         p.y = 0.0f64;
         p.x = p.y;
-        if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-            as *mut Agraphinfo_t))
-            .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0
+        if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+            .rankdir
+            & 0x3 as libc::c_int
+            & 1 as libc::c_int
+            != 0
         {
             b.UR.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht / 2.0f64;
             b.LL.x = -b.UR.x;
@@ -6967,54 +6320,45 @@ unsafe extern "C" fn compassPort(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     if dyna {
         (*pp).side = side as libc::c_uchar;
     } else {
-        (*pp)
-            .side = invflip_side(
+        (*pp).side = invflip_side(
             side,
-            (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int,
+            (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+                .rankdir
+                & 0x3 as libc::c_int,
         ) as libc::c_uchar;
     }
     let ref mut fresh24 = (*pp).bp;
     *fresh24 = bp;
-    (*pp)
-        .p
-        .x = (if p.x >= 0 as libc::c_int as libc::c_double {
+    (*pp).p.x = (if p.x >= 0 as libc::c_int as libc::c_double {
         (p.x + 0.5f64) as libc::c_int
     } else {
         (p.x - 0.5f64) as libc::c_int
     }) as libc::c_double;
-    (*pp)
-        .p
-        .y = (if p.y >= 0 as libc::c_int as libc::c_double {
+    (*pp).p.y = (if p.y >= 0 as libc::c_int as libc::c_double {
         (p.y + 0.5f64) as libc::c_int
     } else {
         (p.y - 0.5f64) as libc::c_int
     }) as libc::c_double;
-    (*pp)
-        .theta = invflip_angle(
+    (*pp).theta = invflip_angle(
         theta,
-        (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-            as *mut Agraphinfo_t))
-            .rankdir & 0x3 as libc::c_int,
+        (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+            .rankdir
+            & 0x3 as libc::c_int,
     );
-    if p.x == 0 as libc::c_int as libc::c_double
-        && p.y == 0 as libc::c_int as libc::c_double
-    {
+    if p.x == 0 as libc::c_int as libc::c_double && p.y == 0 as libc::c_int as libc::c_double {
         (*pp).order = (256 as libc::c_int / 2 as libc::c_int) as libc::c_uchar;
     } else {
-        let mut angle: libc::c_double = atan2(p.y, p.x)
-            + 1.5f64 * 3.14159265358979323846f64;
+        let mut angle: libc::c_double = atan2(p.y, p.x) + 1.5f64 * 3.14159265358979323846f64;
         if angle >= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64 {
             angle -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
         }
-        (*pp)
-            .order = (256 as libc::c_int as libc::c_double * angle
+        (*pp).order = (256 as libc::c_int as libc::c_double * angle
             / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64))
             as libc::c_int as libc::c_uchar;
     }
@@ -7050,20 +6394,18 @@ unsafe extern "C" fn poly_port(
         compass = b"_\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     }
     sides = (1 as libc::c_int) << 0 as libc::c_int
-        | (1 as libc::c_int) << 1 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int
+        | (1 as libc::c_int) << 1 as libc::c_int
+        | (1 as libc::c_int) << 2 as libc::c_int
         | (1 as libc::c_int) << 3 as libc::c_int;
-    if (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).html as libc::c_int
-        != 0
-        && {
-            bp = html_port(n, portname, &mut sides);
-            !bp.is_null()
-        }
-    {
+    if (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).html as libc::c_int != 0 && {
+        bp = html_port(n, portname, &mut sides);
+        !bp.is_null()
+    } {
         if compassPort(n, bp, &mut rv, compass, sides, 0 as *mut inside_t) != 0 {
             agerr(
                 AGWARN,
-                b"node %s, port %s, unrecognized compass point '%s' - ignored\n\0"
-                    as *const u8 as *const libc::c_char,
+                b"node %s, port %s, unrecognized compass point '%s' - ignored\n\0" as *const u8
+                    as *const libc::c_char,
                 agnameof(n as *mut libc::c_void),
                 portname,
                 compass,
@@ -7112,16 +6454,15 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     let mut pfilled: bool = false;
     let mut color: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut name: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut doMap: libc::c_int = (!((*obj).url).is_null()
-        || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
+    let mut doMap: libc::c_int =
+        (!((*obj).url).is_null() || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
     let mut fillcolor: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut pencolor: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut clrs: [*mut libc::c_char; 2] = [0 as *mut libc::c_char; 2];
     if doMap != 0 && (*job).flags & (1 as libc::c_int) << 2 as libc::c_int == 0 {
         gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
     }
-    poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-        as *mut polygon_t;
+    poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
     vertices = (*poly).vertices;
     sides = (*poly).sides;
     peripheries = (*poly).peripheries;
@@ -7140,33 +6481,40 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             ) as *mut pointf
         };
     }
-    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
-        .pos = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord;
+    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).pos =
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord;
     xsize = ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw
         + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw)
         / (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-            * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+            * 72 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                + 0.5f64) as libc::c_int
         } else {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-                * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                - 0.5f64) as libc::c_int
         }) as libc::c_double;
     ysize = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
         / (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-            * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+            * 72 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                + 0.5f64) as libc::c_int
         } else {
             ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                * 72 as libc::c_int as libc::c_double
+                - 0.5f64) as libc::c_int
         }) as libc::c_double;
     style = stylenode(job, n);
     clrs[0 as libc::c_int as usize] = 0 as *mut libc::c_char;
     if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
-        & (1 as libc::c_int) << 0 as libc::c_int != 0
+        & (1 as libc::c_int) << 0 as libc::c_int
+        != 0
     {
         pencolor = late_nnstring(
             n as *mut libc::c_void,
@@ -7181,9 +6529,10 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         );
         gvrender_set_fillcolor(job, color);
         filled = 1 as libc::c_int;
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 1 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 1 as libc::c_int
+        != 0
+    {
         pencolor = late_nnstring(
             n as *mut libc::c_void,
             N_selectedpencolor,
@@ -7197,9 +6546,10 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         );
         gvrender_set_fillcolor(job, color);
         filled = 1 as libc::c_int;
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 3 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 3 as libc::c_int
+        != 0
+    {
         pencolor = late_nnstring(
             n as *mut libc::c_void,
             N_deletedpencolor,
@@ -7213,9 +6563,10 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         );
         gvrender_set_fillcolor(job, color);
         filled = 1 as libc::c_int;
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 2 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 2 as libc::c_int
+        != 0
+    {
         pencolor = late_nnstring(
             n as *mut libc::c_void,
             N_visitedpencolor,
@@ -7250,8 +6601,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
                 } else {
                     gvrender_set_gradient_vals(
                         job,
-                        b"black\0" as *const u8 as *const libc::c_char
-                            as *mut libc::c_char,
+                        b"black\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                         late_int(
                             n as *mut libc::c_void,
                             N_gradientangle,
@@ -7271,9 +6621,9 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
                 filled = 1 as libc::c_int;
             }
         } else if style
-                & ((1 as libc::c_int) << 6 as libc::c_int
-                    | (1 as libc::c_int) << 9 as libc::c_int) != 0
-            {
+            & ((1 as libc::c_int) << 6 as libc::c_int | (1 as libc::c_int) << 9 as libc::c_int)
+            != 0
+        {
             fillcolor = findFill(n);
             filled = 1 as libc::c_int;
         } else {
@@ -7286,8 +6636,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).name,
             b"custom\0" as *const u8 as *const libc::c_char,
         ) == 0;
-    if peripheries == 0 as libc::c_int && filled != 0 as libc::c_int
-        && pfilled as libc::c_int != 0
+    if peripheries == 0 as libc::c_int && filled != 0 as libc::c_int && pfilled as libc::c_int != 0
     {
         peripheries = 1 as libc::c_int;
         gvrender_set_pencolor(
@@ -7300,17 +6649,20 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         i = 0 as libc::c_int;
         while i < sides {
             P = *vertices.offset((i + j * sides) as isize);
-            (*AF.offset(i as isize))
-                .x = P.x * xsize
-                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x;
-            (*AF.offset(i as isize))
-                .y = P.y * ysize
-                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y;
+            (*AF.offset(i as isize)).x = P.x * xsize
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .x;
+            (*AF.offset(i as isize)).y = P.y * ysize
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .y;
             i += 1;
         }
         if sides <= 2 as libc::c_int {
             if style & (1 as libc::c_int) << 9 as libc::c_int != 0
-                && j == 0 as libc::c_int && !(strchr(fillcolor, ':' as i32)).is_null()
+                && j == 0 as libc::c_int
+                && !(strchr(fillcolor, ':' as i32)).is_null()
             {
                 let mut rv: libc::c_int = wedgedEllipse(job, AF, fillcolor);
                 if rv > 1 as libc::c_int {
@@ -7328,12 +6680,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             }
         } else if style & (1 as libc::c_int) << 6 as libc::c_int != 0 {
             if j == 0 as libc::c_int {
-                let mut rv_0: libc::c_int = stripedBox(
-                    job,
-                    AF,
-                    fillcolor,
-                    1 as libc::c_int,
-                );
+                let mut rv_0: libc::c_int = stripedBox(job, AF, fillcolor, 1 as libc::c_int);
                 if rv_0 > 1 as libc::c_int {
                     agerr(
                         AGPREV,
@@ -7350,16 +6697,13 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             );
             gvrender_polygon(job, AF, sides, filled);
             gvrender_set_pencolor(job, pencolor);
-            gvrender_polyline(
-                job,
-                AF.offset(2 as libc::c_int as isize),
-                2 as libc::c_int,
-            );
+            gvrender_polyline(job, AF.offset(2 as libc::c_int as isize), 2 as libc::c_int);
         } else if style
-                & ((1 as libc::c_int) << 2 as libc::c_int
-                    | (1 as libc::c_int) << 3 as libc::c_int
-                    | (127 as libc::c_int) << 24 as libc::c_int) != 0
-            {
+            & ((1 as libc::c_int) << 2 as libc::c_int
+                | (1 as libc::c_int) << 3 as libc::c_int
+                | (127 as libc::c_int) << 24 as libc::c_int)
+            != 0
+        {
             round_corners(job, AF, sides, style, filled);
         } else {
             gvrender_polygon(job, AF, sides, filled);
@@ -7375,9 +6719,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
                 n as *mut libc::c_void,
                 b"shapefile\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             );
-            if !name.is_null()
-                && *name.offset(0 as libc::c_int as isize) as libc::c_int != 0
-            {
+            if !name.is_null() && *name.offset(0 as libc::c_int as isize) as libc::c_int != 0 {
                 usershape_p = 1 as libc::c_int != 0;
             }
         } else {
@@ -7388,8 +6730,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             n as *mut libc::c_void,
             b"image\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         );
-        if !name.is_null() && *name.offset(0 as libc::c_int as isize) as libc::c_int != 0
-        {
+        if !name.is_null() && *name.offset(0 as libc::c_int as isize) as libc::c_int != 0 {
             usershape_p = 1 as libc::c_int != 0;
         }
     }
@@ -7397,12 +6738,14 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         i = 0 as libc::c_int;
         while i < sides {
             P = *vertices.offset(i as isize);
-            (*AF.offset(i as isize))
-                .x = P.x * xsize
-                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x;
-            (*AF.offset(i as isize))
-                .y = P.y * ysize
-                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y;
+            (*AF.offset(i as isize)).x = P.x * xsize
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .x;
+            (*AF.offset(i as isize)).y = P.y * ysize
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .y;
             i += 1;
         }
         if filled != 0 as libc::c_int && pfilled as libc::c_int != 0 {
@@ -7426,12 +6769,7 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
                     Mcircle_hack(job, n);
                 }
             } else if style & (1 as libc::c_int) << 6 as libc::c_int != 0 {
-                let mut rv_2: libc::c_int = stripedBox(
-                    job,
-                    AF,
-                    fillcolor,
-                    1 as libc::c_int,
-                );
+                let mut rv_2: libc::c_int = stripedBox(job, AF, fillcolor, 1 as libc::c_int);
                 if rv_2 > 1 as libc::c_int {
                     agerr(
                         AGPREV,
@@ -7441,9 +6779,9 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
                 }
                 gvrender_polygon(job, AF, sides, 0 as libc::c_int);
             } else if style
-                    & ((1 as libc::c_int) << 2 as libc::c_int
-                        | (1 as libc::c_int) << 3 as libc::c_int) != 0
-                {
+                & ((1 as libc::c_int) << 2 as libc::c_int | (1 as libc::c_int) << 3 as libc::c_int)
+                != 0
+            {
                 round_corners(job, AF, sides, style, filled);
             } else {
                 gvrender_polygon(job, AF, sides, filled);
@@ -7476,28 +6814,18 @@ unsafe extern "C" fn poly_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     );
     if doMap != 0 {
         if (*job).flags & (1 as libc::c_int) << 2 as libc::c_int != 0 {
-            gvrender_begin_anchor(
-                job,
-                (*obj).url,
-                (*obj).tooltip,
-                (*obj).target,
-                (*obj).id,
-            );
+            gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
         }
         gvrender_end_anchor(job);
     }
 }
 unsafe extern "C" fn point_init(mut n: *mut node_t) {
-    let mut poly: *mut polygon_t = zmalloc(
-        ::std::mem::size_of::<polygon_t>() as libc::c_ulong,
-    ) as *mut polygon_t;
+    let mut poly: *mut polygon_t =
+        zmalloc(::std::mem::size_of::<polygon_t>() as libc::c_ulong) as *mut polygon_t;
     let mut sides: libc::c_int = 0;
     let mut outp: libc::c_int = 0;
-    let mut peripheries: libc::c_int = (*(*(*((*(n as *mut Agobj_t)).data
-        as *mut Agnodeinfo_t))
-        .shape)
-        .polygon)
-        .peripheries;
+    let mut peripheries: libc::c_int =
+        (*(*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).polygon).peripheries;
     let mut sz: libc::c_double = 0.;
     let mut P: pointf = pointf { x: 0., y: 0. };
     let mut vertices: *mut pointf = 0 as *mut pointf;
@@ -7505,7 +6833,12 @@ unsafe extern "C" fn point_init(mut n: *mut node_t) {
     let mut j: libc::c_int = 0;
     let mut w: libc::c_double = 0.;
     let mut h: libc::c_double = 0.;
-    w = late_double(n as *mut libc::c_void, N_width, 1.7976931348623157e+308f64, 0.0f64);
+    w = late_double(
+        n as *mut libc::c_void,
+        N_width,
+        1.7976931348623157e+308f64,
+        0.0f64,
+    );
     h = late_double(
         n as *mut libc::c_void,
         N_height,
@@ -7514,8 +6847,7 @@ unsafe extern "C" fn point_init(mut n: *mut node_t) {
     );
     w = if w < h { w } else { h };
     if w == 1.7976931348623157e+308f64 && h == 1.7976931348623157e+308f64 {
-        let ref mut fresh25 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .height;
+        let ref mut fresh25 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height;
         *fresh25 = 0.05f64;
         (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width = *fresh25;
     } else {
@@ -7523,8 +6855,7 @@ unsafe extern "C" fn point_init(mut n: *mut node_t) {
         if w > 0.0f64 {
             w = if w > 0.0003f64 { w } else { 0.0003f64 };
         }
-        let ref mut fresh26 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .height;
+        let ref mut fresh26 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height;
         *fresh26 = w;
         (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width = *fresh26;
     }
@@ -7578,14 +6909,10 @@ unsafe extern "C" fn point_init(mut n: *mut node_t) {
     let ref mut fresh28 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
     *fresh28 = sz / 72 as libc::c_int as libc::c_double;
     (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height = *fresh28;
-    let ref mut fresh29 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape_info;
+    let ref mut fresh29 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info;
     *fresh29 = poly as *mut libc::c_void;
 }
-unsafe extern "C" fn point_inside(
-    mut inside_context: *mut inside_t,
-    mut p: pointf,
-) -> bool {
+unsafe extern "C" fn point_inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     static mut lastn: *mut node_t = 0 as *const node_t as *mut node_t;
     static mut radius: libc::c_double = 0.;
     let mut P: pointf = pointf { x: 0., y: 0. };
@@ -7600,13 +6927,13 @@ unsafe extern "C" fn point_inside(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     if n != lastn {
         let mut outp: libc::c_int = 0;
-        let mut poly: *mut polygon_t = (*((*(n as *mut Agobj_t)).data
-            as *mut Agnodeinfo_t))
-            .shape_info as *mut polygon_t;
+        let mut poly: *mut polygon_t =
+            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
         outp = 2 as libc::c_int * ((*poly).peripheries - 1 as libc::c_int);
         if outp < 0 as libc::c_int {
             outp = 0 as libc::c_int;
@@ -7633,13 +6960,12 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     static mut A_size: libc::c_int = 0;
     let mut filled: bool = false;
     let mut color: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut doMap: libc::c_int = (!((*obj).url).is_null()
-        || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
+    let mut doMap: libc::c_int =
+        (!((*obj).url).is_null() || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
     if doMap != 0 && (*job).flags & (1 as libc::c_int) << 2 as libc::c_int == 0 {
         gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
     }
-    poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-        as *mut polygon_t;
+    poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
     vertices = (*poly).vertices;
     sides = (*poly).sides;
     peripheries = (*poly).peripheries;
@@ -7674,7 +7000,8 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         );
     }
     if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
-        & (1 as libc::c_int) << 0 as libc::c_int != 0
+        & (1 as libc::c_int) << 0 as libc::c_int
+        != 0
     {
         color = late_nnstring(
             n as *mut libc::c_void,
@@ -7688,9 +7015,10 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             b"#fcfcfc\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         );
         gvrender_set_fillcolor(job, color);
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 1 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 1 as libc::c_int
+        != 0
+    {
         color = late_nnstring(
             n as *mut libc::c_void,
             N_selectedpencolor,
@@ -7703,9 +7031,10 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             b"#e8e8e8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         );
         gvrender_set_fillcolor(job, color);
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 3 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 3 as libc::c_int
+        != 0
+    {
         color = late_nnstring(
             n as *mut libc::c_void,
             N_deletedpencolor,
@@ -7718,9 +7047,10 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
             b"#f0f0f0\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         );
         gvrender_set_fillcolor(job, color);
-    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state
-            as libc::c_int & (1 as libc::c_int) << 2 as libc::c_int != 0
-        {
+    } else if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state as libc::c_int
+        & (1 as libc::c_int) << 2 as libc::c_int
+        != 0
+    {
         color = late_nnstring(
             n as *mut libc::c_void,
             N_visitedpencolor,
@@ -7753,10 +7083,14 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
         i = 0 as libc::c_int;
         while i < sides {
             P = *vertices.offset((i + j * sides) as isize);
-            (*AF.offset(i as isize))
-                .x = P.x + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x;
-            (*AF.offset(i as isize))
-                .y = P.y + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y;
+            (*AF.offset(i as isize)).x = P.x
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .x;
+            (*AF.offset(i as isize)).y = P.y
+                + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .y;
             i += 1;
         }
         gvrender_ellipse(job, AF, sides, filled as libc::c_int);
@@ -7765,13 +7099,7 @@ unsafe extern "C" fn point_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     }
     if doMap != 0 {
         if (*job).flags & (1 as libc::c_int) << 2 as libc::c_int != 0 {
-            gvrender_begin_anchor(
-                job,
-                (*obj).url,
-                (*obj).tooltip,
-                (*obj).target,
-                (*obj).id,
-            );
+            gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
         }
         gvrender_end_anchor(job);
     }
@@ -7806,8 +7134,8 @@ unsafe extern "C" fn parse_reclbl(
     mut text: *mut libc::c_char,
 ) -> *mut field_t {
     let mut fp: *mut field_t = 0 as *mut field_t;
-    let mut rv: *mut field_t = zmalloc(::std::mem::size_of::<field_t>() as libc::c_ulong)
-        as *mut field_t;
+    let mut rv: *mut field_t =
+        zmalloc(::std::mem::size_of::<field_t>() as libc::c_ulong) as *mut field_t;
     let mut tsp: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut psp: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut hstsp: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -7820,8 +7148,7 @@ unsafe extern "C" fn parse_reclbl(
     let mut wflag: libc::c_int = 0;
     let mut ishardspace: libc::c_int = 0;
     let mut fi: libc::c_int = 0;
-    let mut lbl: *mut textlabel_t = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .label;
+    let mut lbl: *mut textlabel_t = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label;
     let mut uc: libc::c_uchar = 0;
     fp = 0 as *mut field_t;
     let mut current_block_8: u64;
@@ -7832,7 +7159,8 @@ unsafe extern "C" fn parse_reclbl(
         if *sp as libc::c_int == '\\' as i32 {
             sp = sp.offset(1);
             if *sp as libc::c_int != 0
-                && (*sp as libc::c_int == '{' as i32 || *sp as libc::c_int == '}' as i32
+                && (*sp as libc::c_int == '{' as i32
+                    || *sp as libc::c_int == '}' as i32
                     || *sp as libc::c_int == '|' as i32
                     || *sp as libc::c_int == '\\' as i32)
             {
@@ -7932,9 +7260,8 @@ unsafe extern "C" fn parse_reclbl(
                         let fresh33 = fi;
                         fi = fi + 1;
                         let ref mut fresh34 = *((*rv).fld).offset(fresh33 as isize);
-                        *fresh34 = zmalloc(
-                            ::std::mem::size_of::<field_t>() as libc::c_ulong,
-                        ) as *mut field_t;
+                        *fresh34 = zmalloc(::std::mem::size_of::<field_t>() as libc::c_ulong)
+                            as *mut field_t;
                         fp = *fresh34;
                     }
                     if !tmpport.is_null() {
@@ -7970,9 +7297,7 @@ unsafe extern "C" fn parse_reclbl(
                             (*lbl).fontname,
                             (*lbl).fontcolor,
                         );
-                        (*fp)
-                            .LR = (0 as libc::c_int == 0) as libc::c_int
-                            as libc::c_uchar;
+                        (*fp).LR = (0 as libc::c_int == 0) as libc::c_int as libc::c_uchar;
                         tsp = text;
                         hstsp = tsp;
                     }
@@ -7991,8 +7316,7 @@ unsafe extern "C" fn parse_reclbl(
                 }
                 92 => {
                     if *reclblp.offset(1 as libc::c_int as isize) != 0 {
-                        if *reclblp.offset(1 as libc::c_int as isize) as libc::c_int
-                            == '{' as i32
+                        if *reclblp.offset(1 as libc::c_int as isize) as libc::c_int == '{' as i32
                             || *reclblp.offset(1 as libc::c_int as isize) as libc::c_int
                                 == '}' as i32
                             || *reclblp.offset(1 as libc::c_int as isize) as libc::c_int
@@ -8003,9 +7327,10 @@ unsafe extern "C" fn parse_reclbl(
                                 == '>' as i32
                         {
                             reclblp = reclblp.offset(1);
-                        } else if *reclblp.offset(1 as libc::c_int as isize)
-                                as libc::c_int == ' ' as i32 && !(*lbl).html
-                            {
+                        } else if *reclblp.offset(1 as libc::c_int as isize) as libc::c_int
+                            == ' ' as i32
+                            && !(*lbl).html
+                        {
                             ishardspace = (0 as libc::c_int == 0) as libc::c_int;
                             reclblp = reclblp.offset(1);
                         } else {
@@ -8028,9 +7353,10 @@ unsafe extern "C" fn parse_reclbl(
                 mode |= 8 as libc::c_int | 1 as libc::c_int;
             }
             if mode & 8 as libc::c_int != 0 {
-                if !(*reclblp as libc::c_int == ' ' as i32 && ishardspace == 0
-                    && *tsp.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                        == ' ' as i32 && !(*lbl).html)
+                if !(*reclblp as libc::c_int == ' ' as i32
+                    && ishardspace == 0
+                    && *tsp.offset(-(1 as libc::c_int as isize)) as libc::c_int == ' ' as i32
+                    && !(*lbl).html)
                 {
                     let fresh39 = tsp;
                     tsp = tsp.offset(1);
@@ -8040,10 +7366,10 @@ unsafe extern "C" fn parse_reclbl(
                     hstsp = tsp.offset(-(1 as libc::c_int as isize));
                 }
             } else if mode & 16 as libc::c_int != 0 {
-                if !(*reclblp as libc::c_int == ' ' as i32 && ishardspace == 0
+                if !(*reclblp as libc::c_int == ' ' as i32
+                    && ishardspace == 0
                     && (psp == text
-                        || *psp.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                            == ' ' as i32))
+                        || *psp.offset(-(1 as libc::c_int as isize)) as libc::c_int == ' ' as i32))
                 {
                     let fresh40 = psp;
                     psp = psp.offset(1);
@@ -8089,8 +7415,27 @@ unsafe extern "C" fn size_reclbl(mut n: *mut node_t, mut f: *mut field_t) -> poi
                     &mut marginy as *mut libc::c_double,
                 );
                 if i > 0 as libc::c_int {
-                    dimen.x
-                        += (2 as libc::c_int
+                    dimen.x += (2 as libc::c_int
+                        * (if marginx * 72 as libc::c_int as libc::c_double
+                            >= 0 as libc::c_int as libc::c_double
+                        {
+                            (marginx * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+                        } else {
+                            (marginx * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+                        })) as libc::c_double;
+                    if i > 1 as libc::c_int {
+                        dimen.y += (2 as libc::c_int
+                            * (if marginy * 72 as libc::c_int as libc::c_double
+                                >= 0 as libc::c_int as libc::c_double
+                            {
+                                (marginy * 72 as libc::c_int as libc::c_double + 0.5f64)
+                                    as libc::c_int
+                            } else {
+                                (marginy * 72 as libc::c_int as libc::c_double - 0.5f64)
+                                    as libc::c_int
+                            })) as libc::c_double;
+                    } else {
+                        dimen.y += (2 as libc::c_int
                             * (if marginx * 72 as libc::c_int as libc::c_double
                                 >= 0 as libc::c_int as libc::c_double
                             {
@@ -8100,30 +7445,6 @@ unsafe extern "C" fn size_reclbl(mut n: *mut node_t, mut f: *mut field_t) -> poi
                                 (marginx * 72 as libc::c_int as libc::c_double - 0.5f64)
                                     as libc::c_int
                             })) as libc::c_double;
-                    if i > 1 as libc::c_int {
-                        dimen.y
-                            += (2 as libc::c_int
-                                * (if marginy * 72 as libc::c_int as libc::c_double
-                                    >= 0 as libc::c_int as libc::c_double
-                                {
-                                    (marginy * 72 as libc::c_int as libc::c_double + 0.5f64)
-                                        as libc::c_int
-                                } else {
-                                    (marginy * 72 as libc::c_int as libc::c_double - 0.5f64)
-                                        as libc::c_int
-                                })) as libc::c_double;
-                    } else {
-                        dimen.y
-                            += (2 as libc::c_int
-                                * (if marginx * 72 as libc::c_int as libc::c_double
-                                    >= 0 as libc::c_int as libc::c_double
-                                {
-                                    (marginx * 72 as libc::c_int as libc::c_double + 0.5f64)
-                                        as libc::c_int
-                                } else {
-                                    (marginx * 72 as libc::c_int as libc::c_double - 0.5f64)
-                                        as libc::c_int
-                                })) as libc::c_double;
                     }
                 } else {
                     dimen.x += (4 as libc::c_int * 4 as libc::c_int) as libc::c_double;
@@ -8193,11 +7514,7 @@ unsafe extern "C" fn resize_reclbl(
         }
     }
 }
-unsafe extern "C" fn pos_reclbl(
-    mut f: *mut field_t,
-    mut ul: pointf,
-    mut sides: libc::c_int,
-) {
+unsafe extern "C" fn pos_reclbl(mut f: *mut field_t, mut ul: pointf, mut sides: libc::c_int) {
     let mut i: libc::c_int = 0;
     let mut last: libc::c_int = 0;
     let mut mask: libc::c_int = 0;
@@ -8244,8 +7561,8 @@ unsafe extern "C" fn pos_reclbl(
                     | (1 as libc::c_int) << 0 as libc::c_int
                     | (1 as libc::c_int) << 1 as libc::c_int;
             } else {
-                mask = (1 as libc::c_int) << 3 as libc::c_int
-                    | (1 as libc::c_int) << 1 as libc::c_int;
+                mask =
+                    (1 as libc::c_int) << 3 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int;
             }
         } else {
             mask = 0 as libc::c_int;
@@ -8267,11 +7584,14 @@ unsafe extern "C" fn record_init(mut n: *mut node_t) {
     let mut len: size_t = 0;
     let mut textbuf: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut sides: libc::c_int = (1 as libc::c_int) << 0 as libc::c_int
-        | (1 as libc::c_int) << 1 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int
+        | (1 as libc::c_int) << 1 as libc::c_int
+        | (1 as libc::c_int) << 2 as libc::c_int
         | (1 as libc::c_int) << 3 as libc::c_int;
-    flip = ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-        as *mut Agraphinfo_t))
-        .rankdir >> 2 as libc::c_int & 1 as libc::c_int == 0) as libc::c_int;
+    flip = ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .rankdir
+        >> 2 as libc::c_int
+        & 1 as libc::c_int
+        == 0) as libc::c_int;
     reclblp = (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).text;
     len = strlen(reclblp);
     len = if (if len > 1 as libc::c_int as libc::c_ulong {
@@ -8304,48 +7624,57 @@ unsafe extern "C" fn record_init(mut n: *mut node_t) {
     }
     free(textbuf as *mut libc::c_void);
     size_reclbl(n, info);
-    sz
-        .x = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-        * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+    sz.x = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
+        * 72 as libc::c_int as libc::c_double
+        >= 0 as libc::c_int as libc::c_double
     {
         ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-            * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+            * 72 as libc::c_int as libc::c_double
+            + 0.5f64) as libc::c_int
     } else {
         ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
-            * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+            * 72 as libc::c_int as libc::c_double
+            - 0.5f64) as libc::c_int
     }) as libc::c_double;
-    sz
-        .y = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-        * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+    sz.y = (if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+        * 72 as libc::c_int as libc::c_double
+        >= 0 as libc::c_int as libc::c_double
     {
         ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-            * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+            * 72 as libc::c_int as libc::c_double
+            + 0.5f64) as libc::c_int
     } else {
         ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-            * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+            * 72 as libc::c_int as libc::c_double
+            - 0.5f64) as libc::c_int
     }) as libc::c_double;
-    if mapbool(
-        late_string(
-            n as *mut libc::c_void,
-            N_fixed,
-            b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-        ),
-    ) {
+    if mapbool(late_string(
+        n as *mut libc::c_void,
+        N_fixed,
+        b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    )) {
         sz.x < (*info).size.x || sz.y < (*info).size.y;
     } else {
-        sz.x = if (*info).size.x > sz.x { (*info).size.x } else { sz.x };
-        sz.y = if (*info).size.y > sz.y { (*info).size.y } else { sz.y };
+        sz.x = if (*info).size.x > sz.x {
+            (*info).size.x
+        } else {
+            sz.x
+        };
+        sz.y = if (*info).size.y > sz.y {
+            (*info).size.y
+        } else {
+            sz.y
+        };
     }
     resize_reclbl(
         info,
         sz,
-        if mapbool(
-            late_string(
-                n as *mut libc::c_void,
-                N_nojustify,
-                b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            ),
-        ) as libc::c_int != 0
+        if mapbool(late_string(
+            n as *mut libc::c_void,
+            N_nojustify,
+            b"false\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        )) as libc::c_int
+            != 0
         {
             (0 as libc::c_int == 0) as libc::c_int
         } else {
@@ -8354,24 +7683,19 @@ unsafe extern "C" fn record_init(mut n: *mut node_t) {
     );
     ul = pointfof(-sz.x / 2.0f64, sz.y / 2.0f64);
     pos_reclbl(info, ul, sides);
-    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .width = (*info).size.x / 72 as libc::c_int as libc::c_double;
-    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .height = ((*info).size.y + 1 as libc::c_int as libc::c_double)
-        / 72 as libc::c_int as libc::c_double;
-    let ref mut fresh43 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape_info;
+    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width =
+        (*info).size.x / 72 as libc::c_int as libc::c_double;
+    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height =
+        ((*info).size.y + 1 as libc::c_int as libc::c_double) / 72 as libc::c_int as libc::c_double;
+    let ref mut fresh43 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info;
     *fresh43 = info as *mut libc::c_void;
 }
 unsafe extern "C" fn record_free(mut n: *mut node_t) {
-    let mut p: *mut field_t = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .shape_info as *mut field_t;
+    let mut p: *mut field_t =
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut field_t;
     free_field(p);
 }
-unsafe extern "C" fn map_rec_port(
-    mut f: *mut field_t,
-    mut str: *mut libc::c_char,
-) -> *mut field_t {
+unsafe extern "C" fn map_rec_port(mut f: *mut field_t, mut str: *mut libc::c_char) -> *mut field_t {
     let mut rv: *mut field_t = 0 as *mut field_t;
     let mut sub: libc::c_int = 0;
     if !((*f).id).is_null() && strcmp((*f).id, str) == 0 {
@@ -8413,7 +7737,8 @@ unsafe extern "C" fn record_port(
         return Center;
     }
     sides = (1 as libc::c_int) << 0 as libc::c_int
-        | (1 as libc::c_int) << 1 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int
+        | (1 as libc::c_int) << 1 as libc::c_int
+        | (1 as libc::c_int) << 2 as libc::c_int
         | (1 as libc::c_int) << 3 as libc::c_int;
     if compass.is_null() {
         compass = b"_\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
@@ -8432,24 +7757,19 @@ unsafe extern "C" fn record_port(
         {
             agerr(
                 AGWARN,
-                b"node %s, port %s, unrecognized compass point '%s' - ignored\n\0"
-                    as *const u8 as *const libc::c_char,
+                b"node %s, port %s, unrecognized compass point '%s' - ignored\n\0" as *const u8
+                    as *const libc::c_char,
                 agnameof(n as *mut libc::c_void),
                 portname,
                 compass,
             );
         }
-    } else if compassPort(n, &mut (*f).b, &mut rv, portname, sides, 0 as *mut inside_t)
-            != 0
-        {
+    } else if compassPort(n, &mut (*f).b, &mut rv, portname, sides, 0 as *mut inside_t) != 0 {
         unrecognized(n, portname);
     }
     return rv;
 }
-unsafe extern "C" fn record_inside(
-    mut inside_context: *mut inside_t,
-    mut p: pointf,
-) -> bool {
+unsafe extern "C" fn record_inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     let mut fld0: *mut field_t = 0 as *mut field_t;
     let mut bp: *mut boxf = (*inside_context).s.bp;
     let mut n: *mut node_t = (*inside_context).s.n;
@@ -8462,17 +7782,16 @@ unsafe extern "C" fn record_inside(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     if bp.is_null() {
-        fld0 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-            as *mut field_t;
+        fld0 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut field_t;
         bbox = (*fld0).b;
     } else {
         bbox = *bp;
     }
-    return bbox.LL.x <= p.x && p.x <= bbox.UR.x
-        && (bbox.LL.y <= p.y && p.y <= bbox.UR.y);
+    return bbox.LL.x <= p.x && p.x <= bbox.UR.x && (bbox.LL.y <= p.y && p.y <= bbox.UR.y);
 }
 unsafe extern "C" fn record_path(
     mut n: *mut node_t,
@@ -8490,13 +7809,14 @@ unsafe extern "C" fn record_path(
         return 0 as libc::c_int;
     }
     p = (*prt).p;
-    info = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-        as *mut field_t;
+    info = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut field_t;
     i = 0 as libc::c_int;
     while i < (*info).n_flds {
-        if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-            as *mut Agraphinfo_t))
-            .rankdir & 0x3 as libc::c_int & 1 as libc::c_int == 0
+        if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+            .rankdir
+            & 0x3 as libc::c_int
+            & 1 as libc::c_int
+            == 0
         {
             ls = (**((*info).fld).offset(i as isize)).b.LL.x as libc::c_int;
             rs = (**((*info).fld).offset(i as isize)).b.UR.x as libc::c_int;
@@ -8505,35 +7825,38 @@ unsafe extern "C" fn record_path(
             rs = (**((*info).fld).offset(i as isize)).b.UR.y as libc::c_int;
         }
         if ls as libc::c_double <= p.x && p.x <= rs as libc::c_double {
-            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0
+            if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+                .rankdir
+                & 0x3 as libc::c_int
+                & 1 as libc::c_int
+                != 0
             {
-                *rv
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ) = flip_rec_boxf(
+                *rv.offset(0 as libc::c_int as isize) = flip_rec_boxf(
                     (**((*info).fld).offset(i as isize)).b,
                     (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord,
                 );
             } else {
-                (*rv.offset(0 as libc::c_int as isize))
-                    .LL
-                    .x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x
+                (*rv.offset(0 as libc::c_int as isize)).LL.x = (*((*(n as *mut Agobj_t)).data
+                    as *mut Agnodeinfo_t))
+                    .coord
+                    .x
                     + ls as libc::c_double;
-                (*rv.offset(0 as libc::c_int as isize))
-                    .LL
-                    .y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y
+                (*rv.offset(0 as libc::c_int as isize)).LL.y = (*((*(n as *mut Agobj_t)).data
+                    as *mut Agnodeinfo_t))
+                    .coord
+                    .y
                     - (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
                         / 2 as libc::c_int as libc::c_double;
-                (*rv.offset(0 as libc::c_int as isize))
-                    .UR
-                    .x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x
+                (*rv.offset(0 as libc::c_int as isize)).UR.x = (*((*(n as *mut Agobj_t)).data
+                    as *mut Agnodeinfo_t))
+                    .coord
+                    .x
                     + rs as libc::c_double;
             }
-            (*rv.offset(0 as libc::c_int as isize))
-                .UR
-                .y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y
+            (*rv.offset(0 as libc::c_int as isize)).UR.y = (*((*(n as *mut Agobj_t)).data
+                as *mut Agnodeinfo_t))
+                .coord
+                .y
                 + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
                     / 2 as libc::c_int as libc::c_double;
             *kptr = 1 as libc::c_int;
@@ -8544,17 +7867,12 @@ unsafe extern "C" fn record_path(
     }
     return side;
 }
-unsafe extern "C" fn gen_fields(
-    mut job: *mut GVJ_t,
-    mut n: *mut node_t,
-    mut f: *mut field_t,
-) {
+unsafe extern "C" fn gen_fields(mut job: *mut GVJ_t, mut n: *mut node_t, mut f: *mut field_t) {
     let mut i: libc::c_int = 0;
     let mut AF: [pointf; 2] = [pointf { x: 0., y: 0. }; 2];
     let mut coord: pointf = pointf { x: 0., y: 0. };
     if !((*f).lp).is_null() {
-        (*(*f).lp)
-            .pos = add_pointf(
+        (*(*f).lp).pos = add_pointf(
             mid_pointf((*f).b.LL, (*f).b.UR),
             (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord,
         );
@@ -8568,18 +7886,14 @@ unsafe extern "C" fn gen_fields(
             if (*f).LR != 0 {
                 AF[0 as libc::c_int as usize] = (**((*f).fld).offset(i as isize)).b.LL;
                 AF[1 as libc::c_int as usize].x = AF[0 as libc::c_int as usize].x;
-                AF[1 as libc::c_int as usize]
-                    .y = (**((*f).fld).offset(i as isize)).b.UR.y;
+                AF[1 as libc::c_int as usize].y = (**((*f).fld).offset(i as isize)).b.UR.y;
             } else {
                 AF[1 as libc::c_int as usize] = (**((*f).fld).offset(i as isize)).b.UR;
-                AF[0 as libc::c_int as usize]
-                    .x = (**((*f).fld).offset(i as isize)).b.LL.x;
+                AF[0 as libc::c_int as usize].x = (**((*f).fld).offset(i as isize)).b.LL.x;
                 AF[0 as libc::c_int as usize].y = AF[1 as libc::c_int as usize].y;
             }
-            AF[0 as libc::c_int
-                as usize] = add_pointf(AF[0 as libc::c_int as usize], coord);
-            AF[1 as libc::c_int
-                as usize] = add_pointf(AF[1 as libc::c_int as usize], coord);
+            AF[0 as libc::c_int as usize] = add_pointf(AF[0 as libc::c_int as usize], coord);
+            AF[1 as libc::c_int as usize] = add_pointf(AF[1 as libc::c_int as usize], coord);
             gvrender_polyline(job, AF.as_mut_ptr(), 2 as libc::c_int);
         }
         gen_fields(job, n, *((*f).fld).offset(i as isize));
@@ -8595,16 +7909,24 @@ unsafe extern "C" fn record_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     let mut AF: [pointf; 4] = [pointf { x: 0., y: 0. }; 4];
     let mut style: libc::c_int = 0;
     let mut f: *mut field_t = 0 as *mut field_t;
-    let mut doMap: libc::c_int = (!((*obj).url).is_null()
-        || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
+    let mut doMap: libc::c_int =
+        (!((*obj).url).is_null() || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
     let mut filled: libc::c_int = 0;
     let mut clrs: [*mut libc::c_char; 2] = [0 as *mut libc::c_char; 2];
     f = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut field_t;
     BF = (*f).b;
-    BF.LL.x += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x;
-    BF.LL.y += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y;
-    BF.UR.x += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x;
-    BF.UR.y += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y;
+    BF.LL.x += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+        .coord
+        .x;
+    BF.LL.y += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+        .coord
+        .y;
+    BF.UR.x += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+        .coord
+        .x;
+    BF.UR.y += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+        .coord
+        .y;
     if doMap != 0 && (*job).flags & (1 as libc::c_int) << 2 as libc::c_int == 0 {
         gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
     }
@@ -8663,7 +7985,8 @@ unsafe extern "C" fn record_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     if style
         & ((1 as libc::c_int) << 2 as libc::c_int
             | (1 as libc::c_int) << 3 as libc::c_int
-            | (127 as libc::c_int) << 24 as libc::c_int) != 0
+            | (127 as libc::c_int) << 24 as libc::c_int)
+        != 0
     {
         AF[0 as libc::c_int as usize] = BF.LL;
         AF[2 as libc::c_int as usize] = BF.UR;
@@ -8679,24 +8002,15 @@ unsafe extern "C" fn record_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     free(clrs[0 as libc::c_int as usize] as *mut libc::c_void);
     if doMap != 0 {
         if (*job).flags & (1 as libc::c_int) << 2 as libc::c_int != 0 {
-            gvrender_begin_anchor(
-                job,
-                (*obj).url,
-                (*obj).tooltip,
-                (*obj).target,
-                (*obj).id,
-            );
+            gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
         }
         gvrender_end_anchor(job);
     }
 }
-static mut UserShape: *mut *mut shape_desc = 0 as *const *mut shape_desc
-    as *mut *mut shape_desc;
+static mut UserShape: *mut *mut shape_desc = 0 as *const *mut shape_desc as *mut *mut shape_desc;
 static mut N_UserShape: libc::c_int = 0;
 #[no_mangle]
-pub unsafe extern "C" fn find_user_shape(
-    mut name: *const libc::c_char,
-) -> *mut shape_desc {
+pub unsafe extern "C" fn find_user_shape(mut name: *const libc::c_char) -> *mut shape_desc {
     let mut i: libc::c_int = 0;
     if !UserShape.is_null() {
         i = 0 as libc::c_int;
@@ -8732,15 +8046,12 @@ unsafe extern "C" fn user_shape(mut name: *mut libc::c_char) -> *mut shape_desc 
         ) as *mut *mut shape_desc
     };
     let ref mut fresh45 = *UserShape.offset(i as isize);
-    *fresh45 = zmalloc(::std::mem::size_of::<shape_desc>() as libc::c_ulong)
-        as *mut shape_desc;
+    *fresh45 = zmalloc(::std::mem::size_of::<shape_desc>() as libc::c_ulong) as *mut shape_desc;
     p = *fresh45;
     *p = Shapes[0 as libc::c_int as usize];
     let ref mut fresh46 = (*p).name;
     *fresh46 = strdup(name);
-    if Lib.is_null()
-        && strcmp(name, b"custom\0" as *const u8 as *const libc::c_char) != 0
-    {
+    if Lib.is_null() && strcmp(name, b"custom\0" as *const u8 as *const libc::c_char) != 0 {
         agerr(
             AGWARN,
             b"using %s for unknown shape %s\n\0" as *const u8 as *const libc::c_char,
@@ -8761,14 +8072,11 @@ pub unsafe extern "C" fn bind_shape(
     let mut ptr: *mut shape_desc = 0 as *mut shape_desc;
     let mut rv: *mut shape_desc = 0 as *mut shape_desc;
     let mut str: *const libc::c_char = 0 as *const libc::c_char;
-    str = safefile(
-        agget(
-            np as *mut libc::c_void,
-            b"shapefile\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-        ),
-    );
-    if !str.is_null() && strcmp(name, b"epsf\0" as *const u8 as *const libc::c_char) != 0
-    {
+    str = safefile(agget(
+        np as *mut libc::c_void,
+        b"shapefile\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    ));
+    if !str.is_null() && strcmp(name, b"epsf\0" as *const u8 as *const libc::c_char) != 0 {
         name = b"custom\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     }
     if strcmp(name, b"custom\0" as *const u8 as *const libc::c_char) != 0 {
@@ -8787,10 +8095,7 @@ pub unsafe extern "C" fn bind_shape(
     }
     return rv;
 }
-unsafe extern "C" fn epsf_inside(
-    mut inside_context: *mut inside_t,
-    mut p: pointf,
-) -> bool {
+unsafe extern "C" fn epsf_inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     let mut P: pointf = pointf { x: 0., y: 0. };
     let mut x2: libc::c_double = 0.;
     let mut n: *mut node_t = (*inside_context).s.n;
@@ -8799,21 +8104,22 @@ unsafe extern "C" fn epsf_inside(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     x2 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
         / 2 as libc::c_int as libc::c_double;
-    return P.y >= -x2 && P.y <= x2
+    return P.y >= -x2
+        && P.y <= x2
         && P.x >= -(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw
         && P.x <= (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw;
 }
 unsafe extern "C" fn epsf_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     let mut obj: *mut obj_state_t = (*job).obj;
     let mut desc: *mut epsf_t = 0 as *mut epsf_t;
-    let mut doMap: libc::c_int = (!((*obj).url).is_null()
-        || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
-    desc = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-        as *mut epsf_t;
+    let mut doMap: libc::c_int =
+        (!((*obj).url).is_null() || (*obj).explicit_tooltip() as libc::c_int != 0) as libc::c_int;
+    desc = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut epsf_t;
     if desc.is_null() {
         return;
     }
@@ -8823,17 +8129,20 @@ unsafe extern "C" fn epsf_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     if !desc.is_null() {
         fprintf(
             (*job).output_file,
-            b"%.5g %.5g translate newpath user_shape_%d\n\0" as *const u8
-                as *const libc::c_char,
-            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x
+            b"%.5g %.5g translate newpath user_shape_%d\n\0" as *const u8 as *const libc::c_char,
+            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .coord
+                .x
                 + (*desc).offset.x as libc::c_double,
-            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y
+            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .coord
+                .y
                 + (*desc).offset.y as libc::c_double,
             (*desc).macro_id,
         );
     }
-    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label)
-        .pos = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord;
+    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label).pos =
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord;
     emit_label(
         job,
         EMIT_NLABEL,
@@ -8841,13 +8150,7 @@ unsafe extern "C" fn epsf_gencode(mut job: *mut GVJ_t, mut n: *mut node_t) {
     );
     if doMap != 0 {
         if (*job).flags & (1 as libc::c_int) << 2 as libc::c_int != 0 {
-            gvrender_begin_anchor(
-                job,
-                (*obj).url,
-                (*obj).tooltip,
-                (*obj).target,
-                (*obj).id,
-            );
+            gvrender_begin_anchor(job, (*obj).url, (*obj).tooltip, (*obj).target, (*obj).id);
         }
         gvrender_end_anchor(job);
     }
@@ -8858,39 +8161,22 @@ unsafe extern "C" fn star_size(mut sz0: pointf) -> pointf {
     let mut r: libc::c_double = 0.;
     let mut rx: libc::c_double = 0.;
     let mut ry: libc::c_double = 0.;
-    rx = sz0.x
-        / (2 as libc::c_int as libc::c_double
-            * cos(3.14159265358979323846f64 / 10.0f64));
+    rx = sz0.x / (2 as libc::c_int as libc::c_double * cos(3.14159265358979323846f64 / 10.0f64));
     ry = sz0.y
         / (sin(3.14159265358979323846f64 / 10.0f64)
-            + sin(
-                3 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64),
-            ));
+            + sin(3 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)));
     r0 = if rx > ry { rx } else { ry };
     r = r0
-        * sin(
-            2 as libc::c_int as libc::c_double
-                * (2 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64)),
-        )
+        * sin(2 as libc::c_int as libc::c_double
+            * (2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)))
         * cos(2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64))
         / (cos(3.14159265358979323846f64 / 10.0f64)
-            * cos(
-                2 as libc::c_int as libc::c_double
-                    * (2 as libc::c_int as libc::c_double
-                        * (3.14159265358979323846f64 / 10.0f64)),
-            ));
-    sz
-        .x = 2 as libc::c_int as libc::c_double * r
-        * cos(3.14159265358979323846f64 / 10.0f64);
-    sz
-        .y = r
+            * cos(2 as libc::c_int as libc::c_double
+                * (2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64))));
+    sz.x = 2 as libc::c_int as libc::c_double * r * cos(3.14159265358979323846f64 / 10.0f64);
+    sz.y = r
         * (1 as libc::c_int as libc::c_double
-            + sin(
-                3 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64),
-            ));
+            + sin(3 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)));
     return sz;
 }
 unsafe extern "C" fn star_vertices(mut vertices: *mut pointf, mut bb: *mut pointf) {
@@ -8899,11 +8185,8 @@ unsafe extern "C" fn star_vertices(mut vertices: *mut pointf, mut bb: *mut point
     let mut offset: libc::c_double = 0.;
     let mut a: libc::c_double = 0.;
     let mut aspect: libc::c_double = (1 as libc::c_int as libc::c_double
-        + sin(
-            3 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64),
-        ))
-        / (2 as libc::c_int as libc::c_double
-            * cos(3.14159265358979323846f64 / 10.0f64));
+        + sin(3 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)))
+        / (2 as libc::c_int as libc::c_double * cos(3.14159265358979323846f64 / 10.0f64));
     let mut r: libc::c_double = 0.;
     let mut r0: libc::c_double = 0.;
     let mut theta: libc::c_double = 3.14159265358979323846f64 / 10.0f64;
@@ -8913,50 +8196,31 @@ unsafe extern "C" fn star_vertices(mut vertices: *mut pointf, mut bb: *mut point
     } else if a < aspect {
         sz.y = sz.x * aspect;
     }
-    r = sz.x
-        / (2 as libc::c_int as libc::c_double
-            * cos(3.14159265358979323846f64 / 10.0f64));
-    r0 = r * cos(3.14159265358979323846f64 / 10.0f64)
-        * cos(
-            2 as libc::c_int as libc::c_double
-                * (2 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64)),
-        )
-        / (sin(
-            2 as libc::c_int as libc::c_double
-                * (2 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64)),
-        )
-            * cos(
-                2 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64),
-            ));
+    r = sz.x / (2 as libc::c_int as libc::c_double * cos(3.14159265358979323846f64 / 10.0f64));
+    r0 = r
+        * cos(3.14159265358979323846f64 / 10.0f64)
+        * cos(2 as libc::c_int as libc::c_double
+            * (2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)))
+        / (sin(2 as libc::c_int as libc::c_double
+            * (2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)))
+            * cos(2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)));
     offset = r
         * (1 as libc::c_int as libc::c_double
-            - sin(
-                3 as libc::c_int as libc::c_double
-                    * (3.14159265358979323846f64 / 10.0f64),
-            )) / 2 as libc::c_int as libc::c_double;
+            - sin(3 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64)))
+        / 2 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < 10 as libc::c_int {
         (*vertices.offset(i as isize)).x = r * cos(theta);
         (*vertices.offset(i as isize)).y = r * sin(theta) - offset;
-        theta
-            += 2 as libc::c_int as libc::c_double
-                * (3.14159265358979323846f64 / 10.0f64);
+        theta += 2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64);
         (*vertices.offset((i + 1 as libc::c_int) as isize)).x = r0 * cos(theta);
         (*vertices.offset((i + 1 as libc::c_int) as isize)).y = r0 * sin(theta) - offset;
-        theta
-            += 2 as libc::c_int as libc::c_double
-                * (3.14159265358979323846f64 / 10.0f64);
+        theta += 2 as libc::c_int as libc::c_double * (3.14159265358979323846f64 / 10.0f64);
         i += 2 as libc::c_int;
     }
     *bb = sz;
 }
-unsafe extern "C" fn star_inside(
-    mut inside_context: *mut inside_t,
-    mut p: pointf,
-) -> bool {
+unsafe extern "C" fn star_inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     static mut lastn: *mut node_t = 0 as *const node_t as *mut node_t;
     static mut poly: *mut polygon_t = 0 as *const polygon_t as *mut polygon_t;
     static mut outp: libc::c_int = 0;
@@ -8979,16 +8243,15 @@ unsafe extern "C" fn star_inside(
         90 as libc::c_int
             * ((*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
                 as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int),
+                .rankdir
+                & 0x3 as libc::c_int),
     );
     if !bp.is_null() {
         let mut bbox: boxf = *bp;
-        return bbox.LL.x <= P.x && P.x <= bbox.UR.x
-            && (bbox.LL.y <= P.y && P.y <= bbox.UR.y);
+        return bbox.LL.x <= P.x && P.x <= bbox.UR.x && (bbox.LL.y <= P.y && P.y <= bbox.UR.y);
     }
     if n != lastn {
-        poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
-            as *mut polygon_t;
+        poly = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info as *mut polygon_t;
         vertex = (*poly).vertices;
         sides = (*poly).sides;
         outp = ((*poly).peripheries - 1 as libc::c_int) * sides;
@@ -9023,8 +8286,8 @@ unsafe extern "C" fn cylinder_vertices(mut vertices: *mut pointf, mut bb: *mut p
     (*vertices.offset(0 as libc::c_int as isize)).x = x;
     (*vertices.offset(0 as libc::c_int as isize)).y = y - yr;
     (*vertices.offset(1 as libc::c_int as isize)).x = x;
-    (*vertices.offset(1 as libc::c_int as isize))
-        .y = y - (1 as libc::c_int as libc::c_double - 0.551784f64) * yr;
+    (*vertices.offset(1 as libc::c_int as isize)).y =
+        y - (1 as libc::c_int as libc::c_double - 0.551784f64) * yr;
     (*vertices.offset(2 as libc::c_int as isize)).x = 0.551784f64 * x;
     (*vertices.offset(2 as libc::c_int as isize)).y = y;
     (*vertices.offset(3 as libc::c_int as isize)).x = 0 as libc::c_int as libc::c_double;
@@ -9032,43 +8295,38 @@ unsafe extern "C" fn cylinder_vertices(mut vertices: *mut pointf, mut bb: *mut p
     (*vertices.offset(4 as libc::c_int as isize)).x = -0.551784f64 * x;
     (*vertices.offset(4 as libc::c_int as isize)).y = y;
     (*vertices.offset(5 as libc::c_int as isize)).x = -x;
-    (*vertices.offset(5 as libc::c_int as isize))
-        .y = (*vertices.offset(1 as libc::c_int as isize)).y;
+    (*vertices.offset(5 as libc::c_int as isize)).y =
+        (*vertices.offset(1 as libc::c_int as isize)).y;
     (*vertices.offset(6 as libc::c_int as isize)).x = -x;
     (*vertices.offset(6 as libc::c_int as isize)).y = y - yr;
-    *vertices
-        .offset(7 as libc::c_int as isize) = *vertices.offset(6 as libc::c_int as isize);
+    *vertices.offset(7 as libc::c_int as isize) = *vertices.offset(6 as libc::c_int as isize);
     (*vertices.offset(8 as libc::c_int as isize)).x = -x;
     (*vertices.offset(8 as libc::c_int as isize)).y = yr - y;
-    *vertices
-        .offset(9 as libc::c_int as isize) = *vertices.offset(8 as libc::c_int as isize);
+    *vertices.offset(9 as libc::c_int as isize) = *vertices.offset(8 as libc::c_int as isize);
     (*vertices.offset(10 as libc::c_int as isize)).x = -x;
-    (*vertices.offset(10 as libc::c_int as isize))
-        .y = -(*vertices.offset(1 as libc::c_int as isize)).y;
-    (*vertices.offset(11 as libc::c_int as isize))
-        .x = (*vertices.offset(4 as libc::c_int as isize)).x;
-    (*vertices.offset(11 as libc::c_int as isize))
-        .y = -(*vertices.offset(4 as libc::c_int as isize)).y;
-    (*vertices.offset(12 as libc::c_int as isize))
-        .x = (*vertices.offset(3 as libc::c_int as isize)).x;
-    (*vertices.offset(12 as libc::c_int as isize))
-        .y = -(*vertices.offset(3 as libc::c_int as isize)).y;
-    (*vertices.offset(13 as libc::c_int as isize))
-        .x = (*vertices.offset(2 as libc::c_int as isize)).x;
-    (*vertices.offset(13 as libc::c_int as isize))
-        .y = -(*vertices.offset(2 as libc::c_int as isize)).y;
-    (*vertices.offset(14 as libc::c_int as isize))
-        .x = (*vertices.offset(1 as libc::c_int as isize)).x;
-    (*vertices.offset(14 as libc::c_int as isize))
-        .y = -(*vertices.offset(1 as libc::c_int as isize)).y;
-    (*vertices.offset(15 as libc::c_int as isize))
-        .x = (*vertices.offset(0 as libc::c_int as isize)).x;
-    (*vertices.offset(15 as libc::c_int as isize))
-        .y = -(*vertices.offset(0 as libc::c_int as isize)).y;
-    *vertices
-        .offset(
-            16 as libc::c_int as isize,
-        ) = *vertices.offset(15 as libc::c_int as isize);
+    (*vertices.offset(10 as libc::c_int as isize)).y =
+        -(*vertices.offset(1 as libc::c_int as isize)).y;
+    (*vertices.offset(11 as libc::c_int as isize)).x =
+        (*vertices.offset(4 as libc::c_int as isize)).x;
+    (*vertices.offset(11 as libc::c_int as isize)).y =
+        -(*vertices.offset(4 as libc::c_int as isize)).y;
+    (*vertices.offset(12 as libc::c_int as isize)).x =
+        (*vertices.offset(3 as libc::c_int as isize)).x;
+    (*vertices.offset(12 as libc::c_int as isize)).y =
+        -(*vertices.offset(3 as libc::c_int as isize)).y;
+    (*vertices.offset(13 as libc::c_int as isize)).x =
+        (*vertices.offset(2 as libc::c_int as isize)).x;
+    (*vertices.offset(13 as libc::c_int as isize)).y =
+        -(*vertices.offset(2 as libc::c_int as isize)).y;
+    (*vertices.offset(14 as libc::c_int as isize)).x =
+        (*vertices.offset(1 as libc::c_int as isize)).x;
+    (*vertices.offset(14 as libc::c_int as isize)).y =
+        -(*vertices.offset(1 as libc::c_int as isize)).y;
+    (*vertices.offset(15 as libc::c_int as isize)).x =
+        (*vertices.offset(0 as libc::c_int as isize)).x;
+    (*vertices.offset(15 as libc::c_int as isize)).y =
+        -(*vertices.offset(0 as libc::c_int as isize)).y;
+    *vertices.offset(16 as libc::c_int as isize) = *vertices.offset(15 as libc::c_int as isize);
     let ref mut fresh47 = *vertices.offset(17 as libc::c_int as isize);
     *fresh47 = *vertices.offset(0 as libc::c_int as isize);
     *vertices.offset(18 as libc::c_int as isize) = *fresh47;
@@ -9084,20 +8342,15 @@ unsafe extern "C" fn cylinder_draw(
     let mut y02: libc::c_double = y0 + y0;
     vertices[0 as libc::c_int as usize] = *AF.offset(0 as libc::c_int as isize);
     vertices[1 as libc::c_int as usize].x = (*AF.offset(1 as libc::c_int as isize)).x;
-    vertices[1 as libc::c_int as usize]
-        .y = y02 - (*AF.offset(1 as libc::c_int as isize)).y;
+    vertices[1 as libc::c_int as usize].y = y02 - (*AF.offset(1 as libc::c_int as isize)).y;
     vertices[2 as libc::c_int as usize].x = (*AF.offset(2 as libc::c_int as isize)).x;
-    vertices[2 as libc::c_int as usize]
-        .y = y02 - (*AF.offset(2 as libc::c_int as isize)).y;
+    vertices[2 as libc::c_int as usize].y = y02 - (*AF.offset(2 as libc::c_int as isize)).y;
     vertices[3 as libc::c_int as usize].x = (*AF.offset(3 as libc::c_int as isize)).x;
-    vertices[3 as libc::c_int as usize]
-        .y = y02 - (*AF.offset(3 as libc::c_int as isize)).y;
+    vertices[3 as libc::c_int as usize].y = y02 - (*AF.offset(3 as libc::c_int as isize)).y;
     vertices[4 as libc::c_int as usize].x = (*AF.offset(4 as libc::c_int as isize)).x;
-    vertices[4 as libc::c_int as usize]
-        .y = y02 - (*AF.offset(4 as libc::c_int as isize)).y;
+    vertices[4 as libc::c_int as usize].y = y02 - (*AF.offset(4 as libc::c_int as isize)).y;
     vertices[5 as libc::c_int as usize].x = (*AF.offset(5 as libc::c_int as isize)).x;
-    vertices[5 as libc::c_int as usize]
-        .y = y02 - (*AF.offset(5 as libc::c_int as isize)).y;
+    vertices[5 as libc::c_int as usize].y = y02 - (*AF.offset(5 as libc::c_int as isize)).y;
     vertices[6 as libc::c_int as usize] = *AF.offset(6 as libc::c_int as isize);
     gvrender_beziercurve(job, AF, sides, 0 as libc::c_int, 0 as libc::c_int, filled);
     gvrender_beziercurve(
@@ -9151,14 +8404,12 @@ unsafe extern "C" fn cvtPt(mut p: pointf, mut rankdir: libc::c_int) -> point {
             abort();
         }
     }
-    Q
-        .x = (if q.x >= 0 as libc::c_int as libc::c_double {
+    Q.x = (if q.x >= 0 as libc::c_int as libc::c_double {
         (q.x + 0.5f64) as libc::c_int
     } else {
         (q.x - 0.5f64) as libc::c_int
     });
-    Q
-        .y = (if q.y >= 0 as libc::c_int as libc::c_double {
+    Q.y = (if q.y >= 0 as libc::c_int as libc::c_double {
         (q.y + 0.5f64) as libc::c_int
     } else {
         (q.y - 0.5f64) as libc::c_int
@@ -9174,9 +8425,8 @@ unsafe extern "C" fn closestSide(
         LL: pointf { x: 0., y: 0. },
         UR: pointf { x: 0., y: 0. },
     };
-    let mut rkd: libc::c_int = (*((*((*agraphof(n as *mut libc::c_void)).root
-        as *mut Agobj_t))
-        .data as *mut Agraphinfo_t))
+    let mut rkd: libc::c_int = (*((*((*agraphof(n as *mut libc::c_void)).root as *mut Agobj_t)).data
+        as *mut Agraphinfo_t))
         .rankdir & 0x3 as libc::c_int;
     let mut p: point = {
         let mut init = point {
@@ -9209,21 +8459,19 @@ unsafe extern "C" fn closestSide(
     }
     if !((*oldport).bp).is_null() {
         b = *(*oldport).bp;
-    } else if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-            as *mut Agraphinfo_t))
-            .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0
-        {
-        b
-            .UR
-            .x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
+    } else if (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .rankdir
+        & 0x3 as libc::c_int
+        & 1 as libc::c_int
+        != 0
+    {
+        b.UR.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
             / 2 as libc::c_int as libc::c_double;
         b.LL.x = -b.UR.x;
         b.UR.y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw;
         b.LL.y = -b.UR.y;
     } else {
-        b
-            .UR
-            .y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
+        b.UR.y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht
             / 2 as libc::c_int as libc::c_double;
         b.LL.y = -b.UR.y;
         b.UR.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw;
@@ -9235,27 +8483,19 @@ unsafe extern "C" fn closestSide(
             match i {
                 0 => {
                     p.y = b.LL.y as libc::c_int;
-                    p
-                        .x = ((b.LL.x + b.UR.x) / 2 as libc::c_int as libc::c_double)
-                        as libc::c_int;
+                    p.x = ((b.LL.x + b.UR.x) / 2 as libc::c_int as libc::c_double) as libc::c_int;
                 }
                 1 => {
                     p.x = b.UR.x as libc::c_int;
-                    p
-                        .y = ((b.LL.y + b.UR.y) / 2 as libc::c_int as libc::c_double)
-                        as libc::c_int;
+                    p.y = ((b.LL.y + b.UR.y) / 2 as libc::c_int as libc::c_double) as libc::c_int;
                 }
                 2 => {
                     p.y = b.UR.y as libc::c_int;
-                    p
-                        .x = ((b.LL.x + b.UR.x) / 2 as libc::c_int as libc::c_double)
-                        as libc::c_int;
+                    p.x = ((b.LL.x + b.UR.x) / 2 as libc::c_int as libc::c_double) as libc::c_int;
                 }
                 3 => {
                     p.x = b.LL.x as libc::c_int;
-                    p
-                        .y = ((b.LL.y + b.UR.y) / 2 as libc::c_int as libc::c_double)
-                        as libc::c_int;
+                    p.y = ((b.LL.y + b.UR.y) / 2 as libc::c_int as libc::c_double) as libc::c_int;
                 }
                 _ => {
                     fprintf(
@@ -9312,47 +8552,43 @@ pub unsafe extern "C" fn resolvePort(
 }
 #[no_mangle]
 pub unsafe extern "C" fn resolvePorts(mut e: *mut edge_t) {
-    if (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).tail_port.dyna {
-        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-            .tail_port = resolvePort(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 3 as libc::c_int
-            {
+    if (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
+        .tail_port
+        .dyna
+    {
+        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).tail_port = resolvePort(
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                 e
             } else {
                 e.offset(1 as libc::c_int as isize)
             })
-                .node,
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+            .node,
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node,
+            .node,
             &mut (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).tail_port,
         );
     }
-    if (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).head_port.dyna {
-        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-            .head_port = resolvePort(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+    if (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
+        .head_port
+        .dyna
+    {
+        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).head_port = resolvePort(
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node,
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 3 as libc::c_int
-            {
+            .node,
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                 e
             } else {
                 e.offset(1 as libc::c_int as isize)
             })
-                .node,
+            .node,
             &mut (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).head_port,
         );
     }

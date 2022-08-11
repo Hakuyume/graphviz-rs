@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -88,17 +96,11 @@ pub unsafe extern "C" fn solve(
         ii = ip;
         while ii < n {
             pivot = *a.offset((ii * n + i) as isize) / *a.offset((i * n + i) as isize);
-            *c
-                .offset(
-                    ii as isize,
-                ) = *c.offset(ii as isize) - pivot * *c.offset(i as isize);
+            *c.offset(ii as isize) = *c.offset(ii as isize) - pivot * *c.offset(i as isize);
             j = 0 as libc::c_int;
             while j < n {
-                *a
-                    .offset(
-                        (ii * n + j) as isize,
-                    ) = *a.offset((ii * n + j) as isize)
-                    - pivot * *a.offset((i * n + j) as isize);
+                *a.offset((ii * n + j) as isize) =
+                    *a.offset((ii * n + j) as isize) - pivot * *a.offset((i * n + j) as isize);
                 j += 1;
             }
             ii += 1;
@@ -108,10 +110,8 @@ pub unsafe extern "C" fn solve(
     match current_block {
         5330834795799507926 => {
             if !(fabs(*a.offset((n * n - 1 as libc::c_int) as isize)) < 1.0e-10f64) {
-                *b
-                    .offset(
-                        (n - 1 as libc::c_int) as isize,
-                    ) = *c.offset((n - 1 as libc::c_int) as isize)
+                *b.offset((n - 1 as libc::c_int) as isize) = *c
+                    .offset((n - 1 as libc::c_int) as isize)
                     / *a.offset((n * n - 1 as libc::c_int) as isize);
                 k = 0 as libc::c_int;
                 while k < nm {
@@ -120,17 +120,11 @@ pub unsafe extern "C" fn solve(
                     mp = m + 1 as libc::c_int;
                     j = mp;
                     while j < n {
-                        *b
-                            .offset(
-                                m as isize,
-                            ) = *b.offset(m as isize)
+                        *b.offset(m as isize) = *b.offset(m as isize)
                             - *a.offset((m * n + j) as isize) * *b.offset(j as isize);
                         j += 1;
                     }
-                    *b
-                        .offset(
-                            m as isize,
-                        ) = *b.offset(m as isize) / *a.offset((m * n + m) as isize);
+                    *b.offset(m as isize) = *b.offset(m as isize) / *a.offset((m * n + m) as isize);
                     k += 1;
                 }
                 i = 0 as libc::c_int;

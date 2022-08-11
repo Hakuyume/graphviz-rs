@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -42,7 +50,10 @@ static mut sfl: Freelist = Freelist {
 static mut nvertices: libc::c_int = 0;
 #[no_mangle]
 pub unsafe extern "C" fn siteinit() {
-    freeinit(&mut sfl, ::std::mem::size_of::<Site>() as libc::c_ulong as libc::c_int);
+    freeinit(
+        &mut sfl,
+        ::std::mem::size_of::<Site>() as libc::c_ulong as libc::c_int,
+    );
     nvertices = 0 as libc::c_int;
 }
 #[no_mangle]

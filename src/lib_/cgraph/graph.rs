@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -31,11 +39,7 @@ extern "C" {
         size: size_t,
         disc: *mut Dtdisc_t,
     ) -> *mut libc::c_void;
-    fn agdtopen(
-        g: *mut Agraph_t,
-        disc: *mut Dtdisc_t,
-        method: *mut Dtmethod_t,
-    ) -> *mut Dict_t;
+    fn agdtopen(g: *mut Agraph_t, disc: *mut Dtdisc_t, method: *mut Dtmethod_t) -> *mut Dict_t;
     static mut Ag_mainedge_id_disc: Dtdisc_t;
     static mut Ag_subedge_seq_disc: Dtdisc_t;
     static mut Ag_mainedge_seq_disc: Dtdisc_t;
@@ -93,13 +97,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -124,16 +123,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -153,10 +146,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -164,16 +156,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -254,17 +239,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -297,26 +276,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -325,29 +296,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -355,8 +318,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -415,11 +378,10 @@ unsafe extern "C" fn agclos(mut proto: *mut Agdisc_t) -> *mut Agclos_t {
         &mut AgMemDisc
     };
     memclosure = ((*memdisc).open).expect("non-null function pointer")(proto);
-    rv = ((*memdisc).alloc)
-        .expect(
-            "non-null function pointer",
-        )(memclosure, ::std::mem::size_of::<Agclos_t>() as libc::c_ulong)
-        as *mut Agclos_t;
+    rv = ((*memdisc).alloc).expect("non-null function pointer")(
+        memclosure,
+        ::std::mem::size_of::<Agclos_t>() as libc::c_ulong,
+    ) as *mut Agclos_t;
     let ref mut fresh0 = (*rv).disc.mem;
     *fresh0 = memdisc;
     let ref mut fresh1 = (*rv).state.mem;
@@ -449,11 +411,10 @@ pub unsafe extern "C" fn agopen(
     let mut clos: *mut Agclos_t = 0 as *mut Agclos_t;
     let mut gid: IDTYPE = 0;
     clos = agclos(arg_disc);
-    g = ((*(*clos).disc.mem).alloc)
-        .expect(
-            "non-null function pointer",
-        )((*clos).state.mem, ::std::mem::size_of::<Agraph_t>() as libc::c_ulong)
-        as *mut Agraph_t;
+    g = ((*(*clos).disc.mem).alloc).expect("non-null function pointer")(
+        (*clos).state.mem,
+        ::std::mem::size_of::<Agraph_t>() as libc::c_ulong,
+    ) as *mut Agraph_t;
     let ref mut fresh4 = (*(g as *mut Agobj_t)).tag;
     (*fresh4).set_objtype(0 as libc::c_int as libc::c_uint);
     let ref mut fresh5 = (*g).clos;
@@ -464,8 +425,7 @@ pub unsafe extern "C" fn agopen(
     let ref mut fresh7 = (*g).root;
     *fresh7 = g;
     let ref mut fresh8 = (*(*g).clos).state.id;
-    *fresh8 = ((*(*(*g).clos).disc.id).open)
-        .expect("non-null function pointer")(g, arg_disc);
+    *fresh8 = ((*(*(*g).clos).disc.id).open).expect("non-null function pointer")(g, arg_disc);
     if agmapnametoid(
         g,
         0 as libc::c_int,
@@ -513,12 +473,12 @@ pub unsafe extern "C" fn agopen1(mut g: *mut Agraph_t) -> *mut Agraph_t {
     if !par.is_null() {
         let ref mut fresh14 = (*(g as *mut Agobj_t)).tag;
         (*fresh14).set_seq(agnextseq(par, 0 as libc::c_int) as libc::c_uint);
-        (Some(
-            ((*((*par).g_dict as *mut Dt_t)).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )((*par).g_dict, g as *mut libc::c_void, 0o1 as libc::c_int);
+        (Some(((*((*par).g_dict as *mut Dt_t)).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
+            (*par).g_dict,
+            g as *mut libc::c_void,
+            0o1 as libc::c_int,
+        );
     }
     if par.is_null() || ((*par).desc).has_attrs() as libc::c_int != 0 {
         agraphattr_init(g);
@@ -537,8 +497,9 @@ pub unsafe extern "C" fn agclose(mut g: *mut Agraph_t) -> libc::c_int {
     if par.is_null() && ((*(*(*g).clos).disc.mem).close).is_some() {
         agmethod_delete(g, g as *mut libc::c_void);
         agfreeid(g, 0 as libc::c_int, (*(g as *mut Agobj_t)).tag.id);
-        ((*(*(*g).clos).disc.mem).close)
-            .expect("non-null function pointer")((*(*g).clos).state.mem);
+        ((*(*(*g).clos).disc.mem).close).expect("non-null function pointer")(
+            (*(*g).clos).state.mem,
+        );
         return 0 as libc::c_int;
     }
     subg = agfstsubg(g);
@@ -555,76 +516,76 @@ pub unsafe extern "C" fn agclose(mut g: *mut Agraph_t) -> libc::c_int {
     }
     aginternalmapclose(g);
     agmethod_delete(g, g as *mut libc::c_void);
-    if dtsize((*g).n_id) == 0 as libc::c_int {} else {
+    if dtsize((*g).n_id) == 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->n_id) == 0\0" as *const u8 as *const libc::c_char,
             b"graph.c\0" as *const u8 as *const libc::c_char,
             116 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 24],
-                &[libc::c_char; 24],
-            >(b"int agclose(Agraph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 24], &[libc::c_char; 24]>(
+                b"int agclose(Agraph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if agdtclose(g, (*g).n_id) != 0 {
         return -(1 as libc::c_int);
     }
-    if dtsize((*g).n_seq) == 0 as libc::c_int {} else {
+    if dtsize((*g).n_seq) == 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->n_seq) == 0\0" as *const u8 as *const libc::c_char,
             b"graph.c\0" as *const u8 as *const libc::c_char,
             118 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 24],
-                &[libc::c_char; 24],
-            >(b"int agclose(Agraph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 24], &[libc::c_char; 24]>(
+                b"int agclose(Agraph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if agdtclose(g, (*g).n_seq) != 0 {
         return -(1 as libc::c_int);
     }
-    if dtsize((*g).e_id) == 0 as libc::c_int {} else {
+    if dtsize((*g).e_id) == 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->e_id) == 0\0" as *const u8 as *const libc::c_char,
             b"graph.c\0" as *const u8 as *const libc::c_char,
             121 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 24],
-                &[libc::c_char; 24],
-            >(b"int agclose(Agraph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 24], &[libc::c_char; 24]>(
+                b"int agclose(Agraph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if agdtclose(g, (*g).e_id) != 0 {
         return -(1 as libc::c_int);
     }
-    if dtsize((*g).e_seq) == 0 as libc::c_int {} else {
+    if dtsize((*g).e_seq) == 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->e_seq) == 0\0" as *const u8 as *const libc::c_char,
             b"graph.c\0" as *const u8 as *const libc::c_char,
             123 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 24],
-                &[libc::c_char; 24],
-            >(b"int agclose(Agraph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 24], &[libc::c_char; 24]>(
+                b"int agclose(Agraph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if agdtclose(g, (*g).e_seq) != 0 {
         return -(1 as libc::c_int);
     }
-    if dtsize((*g).g_dict) == 0 as libc::c_int {} else {
+    if dtsize((*g).g_dict) == 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->g_dict) == 0\0" as *const u8 as *const libc::c_char,
             b"graph.c\0" as *const u8 as *const libc::c_char,
             126 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 24],
-                &[libc::c_char; 24],
-            >(b"int agclose(Agraph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 24], &[libc::c_char; 24]>(
+                b"int agclose(Agraph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if agdtclose(g, (*g).g_dict) != 0 {
@@ -647,25 +608,20 @@ pub unsafe extern "C" fn agclose(mut g: *mut Agraph_t) -> libc::c_int {
         while !((*(*g).clos).cb).is_null() {
             agpopdisc(g, (*(*(*g).clos).cb).f);
         }
-        ((*(*(*g).clos).disc.id).close)
-            .expect("non-null function pointer")((*(*g).clos).state.id);
+        ((*(*(*g).clos).disc.id).close).expect("non-null function pointer")((*(*g).clos).state.id);
         if agstrclose(g) != 0 {
             return -(1 as libc::c_int);
         }
         memdisc = (*(*g).clos).disc.mem;
         memclos = (*(*g).clos).state.mem;
         clos = (*g).clos as *mut libc::c_void;
-        ((*memdisc).free)
-            .expect("non-null function pointer")(memclos, g as *mut libc::c_void);
+        ((*memdisc).free).expect("non-null function pointer")(memclos, g as *mut libc::c_void);
         ((*memdisc).free).expect("non-null function pointer")(memclos, clos);
     }
     return 0 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn agnextseq(
-    mut g: *mut Agraph_t,
-    mut objtype: libc::c_int,
-) -> uint64_t {
+pub unsafe extern "C" fn agnextseq(mut g: *mut Agraph_t, mut objtype: libc::c_int) -> uint64_t {
     let ref mut fresh15 = (*(*g).clos).seq[objtype as usize];
     *fresh15 = (*fresh15).wrapping_add(1);
     return *fresh15;
@@ -680,7 +636,12 @@ pub unsafe extern "C" fn agnedges(mut g: *mut Agraph_t) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     n = agfstnode(g);
     while !n.is_null() {
-        rv += agdegree(g, n, 0 as libc::c_int, (0 as libc::c_int == 0) as libc::c_int);
+        rv += agdegree(
+            g,
+            n,
+            0 as libc::c_int,
+            (0 as libc::c_int == 0) as libc::c_int,
+        );
         n = agnxtnode(g, n);
     }
     return rv;
@@ -703,13 +664,10 @@ pub unsafe extern "C" fn agisstrict(mut g: *mut Agraph_t) -> libc::c_int {
 }
 #[no_mangle]
 pub unsafe extern "C" fn agissimple(mut g: *mut Agraph_t) -> libc::c_int {
-    return (((*g).desc).strict() as libc::c_int != 0
-        && ((*g).desc).no_loop() as libc::c_int != 0) as libc::c_int;
+    return (((*g).desc).strict() as libc::c_int != 0 && ((*g).desc).no_loop() as libc::c_int != 0)
+        as libc::c_int;
 }
-unsafe extern "C" fn cnt(
-    mut d: *mut Dict_t,
-    mut set: *mut *mut Dtlink_t,
-) -> libc::c_int {
+unsafe extern "C" fn cnt(mut d: *mut Dict_t, mut set: *mut *mut Dtlink_t) -> libc::c_int {
     let mut rv: libc::c_int = 0;
     dtrestore(d, *set);
     rv = dtsize(d);

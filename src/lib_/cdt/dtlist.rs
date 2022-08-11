@@ -1,12 +1,16 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
-    fn memcmp(
-        _: *const libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn memcmp(_: *const libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> libc::c_int;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn dtrestore(_: *mut Dt_t, _: *mut Dtlink_t) -> libc::c_int;
 }
@@ -44,13 +48,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -75,16 +74,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -104,10 +97,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -115,16 +107,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 unsafe extern "C" fn dtlist(
     mut dt: *mut Dt_t,
     mut obj: *mut libc::c_void,
@@ -142,7 +127,8 @@ unsafe extern "C" fn dtlist(
     let mut k: *mut libc::c_void = 0 as *mut libc::c_void;
     if (*(*dt).data).type_0 & 0o10000 as libc::c_int != 0 {
         dtrestore(dt, 0 as *mut Dtlink_t);
-    } else {};
+    } else {
+    };
     disc = (*dt).disc;
     ky = (*disc).key;
     sz = (*disc).size;
@@ -169,12 +155,10 @@ unsafe extern "C" fn dtlist(
                 0 as *mut libc::c_void
             };
         } else if type_0 & (0o2 as libc::c_int | 0o10000 as libc::c_int) != 0 {
-            if (*(*dt).data).type_0 & (0o20 as libc::c_int | 0o200 as libc::c_int) != 0
-                || {
-                    r = (*(*dt).data).hh._head;
-                    r.is_null()
-                }
-            {
+            if (*(*dt).data).type_0 & (0o20 as libc::c_int | 0o200 as libc::c_int) != 0 || {
+                r = (*(*dt).data).hh._head;
+                r.is_null()
+            } {
                 return 0 as *mut libc::c_void;
             }
         } else if type_0 & 0o100 as libc::c_int != 0 {
@@ -183,25 +167,18 @@ unsafe extern "C" fn dtlist(
                 while !r.is_null() {
                     t = (*r).right;
                     if ((*disc).freef).is_some() {
-                        ((*disc).freef)
-                            .expect(
-                                "non-null function pointer",
-                            )(
+                        ((*disc).freef).expect("non-null function pointer")(
                             dt,
                             if lk < 0 as libc::c_int {
                                 (*(r as *mut Dthold_t)).obj
                             } else {
-                                (r as *mut libc::c_char).offset(-(lk as isize))
-                                    as *mut libc::c_void
+                                (r as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                             },
                             disc,
                         );
                     }
                     if (*disc).link < 0 as libc::c_int {
-                        ((*dt).memoryf)
-                            .expect(
-                                "non-null function pointer",
-                            )(
+                        ((*dt).memoryf).expect("non-null function pointer")(
                             dt,
                             r as *mut libc::c_void,
                             0 as libc::c_int as size_t,
@@ -218,24 +195,19 @@ unsafe extern "C" fn dtlist(
             (*(*dt).data).size = 0 as libc::c_int;
             return 0 as *mut libc::c_void;
         } else {
-            return 0 as *mut libc::c_void
+            return 0 as *mut libc::c_void;
         }
     } else if type_0 & (0o1 as libc::c_int | 0o4000 as libc::c_int) != 0 {
-        if ((*disc).makef).is_some() && type_0 & 0o1 as libc::c_int != 0
-            && {
-                obj = ((*disc).makef).expect("non-null function pointer")(dt, obj, disc);
-                obj.is_null()
-            }
-        {
+        if ((*disc).makef).is_some() && type_0 & 0o1 as libc::c_int != 0 && {
+            obj = ((*disc).makef).expect("non-null function pointer")(dt, obj, disc);
+            obj.is_null()
+        } {
             return 0 as *mut libc::c_void;
         }
         if lk >= 0 as libc::c_int {
             r = (obj as *mut libc::c_char).offset(lk as isize) as *mut Dtlink_t;
         } else {
-            r = ((*dt).memoryf)
-                .expect(
-                    "non-null function pointer",
-                )(
+            r = ((*dt).memoryf).expect("non-null function pointer")(
                 dt,
                 0 as *mut libc::c_void,
                 ::std::mem::size_of::<Dthold_t>() as libc::c_ulong,
@@ -245,7 +217,8 @@ unsafe extern "C" fn dtlist(
                 let ref mut fresh3 = (*(r as *mut Dthold_t)).obj;
                 *fresh3 = obj;
             } else {
-                if ((*disc).makef).is_some() && ((*disc).freef).is_some()
+                if ((*disc).makef).is_some()
+                    && ((*disc).freef).is_some()
                     && type_0 & 0o1 as libc::c_int != 0
                 {
                     ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
@@ -359,8 +332,7 @@ unsafe extern "C" fn dtlist(
                 obj
             } else {
                 (if sz < 0 as libc::c_int {
-                    *((obj as *mut libc::c_char).offset(ky as isize)
-                        as *mut *mut libc::c_char)
+                    *((obj as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                 } else {
                     (obj as *mut libc::c_char).offset(ky as isize)
                 }) as *mut libc::c_void
@@ -373,8 +345,7 @@ unsafe extern "C" fn dtlist(
                     (r as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                 };
                 k = (if sz < 0 as libc::c_int {
-                    *((k as *mut libc::c_char).offset(ky as isize)
-                        as *mut *mut libc::c_char)
+                    *((k as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                 } else {
                     (k as *mut libc::c_char).offset(ky as isize)
                 }) as *mut libc::c_void;
@@ -442,7 +413,11 @@ unsafe extern "C" fn dtlist(
         }
     }
     let ref mut fresh29 = (*(*dt).data).here;
-    *fresh29 = if r == (*(*dt).data).here { (*r).right } else { 0 as *mut Dtlink_t };
+    *fresh29 = if r == (*(*dt).data).here {
+        (*r).right
+    } else {
+        0 as *mut Dtlink_t
+    };
     (*(*dt).data).size -= 1 as libc::c_int;
     obj = if lk < 0 as libc::c_int {
         (*(r as *mut Dthold_t)).obj
@@ -453,10 +428,12 @@ unsafe extern "C" fn dtlist(
         ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
     }
     if (*disc).link < 0 as libc::c_int {
-        ((*dt).memoryf)
-            .expect(
-                "non-null function pointer",
-            )(dt, r as *mut libc::c_void, 0 as libc::c_int as size_t, disc);
+        ((*dt).memoryf).expect("non-null function pointer")(
+            dt,
+            r as *mut libc::c_void,
+            0 as libc::c_int as size_t,
+            disc,
+        );
     }
     return obj;
 }
@@ -529,18 +506,14 @@ pub static mut _Dtqueue: Dtmethod_t = unsafe {
     }
 };
 #[no_mangle]
-pub static mut Dtlist: *mut Dtmethod_t = unsafe {
-    &_Dtlist as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtlist: *mut Dtmethod_t =
+    unsafe { &_Dtlist as *const Dtmethod_t as *mut Dtmethod_t };
 #[no_mangle]
-pub static mut Dtdeque: *mut Dtmethod_t = unsafe {
-    &_Dtdeque as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtdeque: *mut Dtmethod_t =
+    unsafe { &_Dtdeque as *const Dtmethod_t as *mut Dtmethod_t };
 #[no_mangle]
-pub static mut Dtstack: *mut Dtmethod_t = unsafe {
-    &_Dtstack as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtstack: *mut Dtmethod_t =
+    unsafe { &_Dtstack as *const Dtmethod_t as *mut Dtmethod_t };
 #[no_mangle]
-pub static mut Dtqueue: *mut Dtmethod_t = unsafe {
-    &_Dtqueue as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtqueue: *mut Dtmethod_t =
+    unsafe { &_Dtqueue as *const Dtmethod_t as *mut Dtmethod_t };

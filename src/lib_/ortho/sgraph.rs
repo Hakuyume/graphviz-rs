@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -51,8 +59,7 @@ pub unsafe extern "C" fn gsave(mut G: *mut sgraph) {
     (*G).save_nedges = (*G).nedges;
     i = 0 as libc::c_int;
     while i < (*G).nnodes {
-        (*((*G).nodes).offset(i as isize))
-            .save_n_adj = (*((*G).nodes).offset(i as isize)).n_adj;
+        (*((*G).nodes).offset(i as isize)).save_n_adj = (*((*G).nodes).offset(i as isize)).n_adj;
         i += 1;
     }
 }
@@ -63,8 +70,7 @@ pub unsafe extern "C" fn reset(mut G: *mut sgraph) {
     (*G).nedges = (*G).save_nedges;
     i = 0 as libc::c_int;
     while i < (*G).nnodes {
-        (*((*G).nodes).offset(i as isize))
-            .n_adj = (*((*G).nodes).offset(i as isize)).save_n_adj;
+        (*((*G).nodes).offset(i as isize)).n_adj = (*((*G).nodes).offset(i as isize)).save_n_adj;
         i += 1;
     }
     while i < (*G).nnodes + 2 as libc::c_int {
@@ -100,12 +106,14 @@ pub unsafe extern "C" fn initSEdges(mut g: *mut sgraph, mut maxdeg: libc::c_int)
 }
 #[no_mangle]
 pub unsafe extern "C" fn createSGraph(mut nnodes: libc::c_int) -> *mut sgraph {
-    let mut g: *mut sgraph = zmalloc(::std::mem::size_of::<sgraph>() as libc::c_ulong)
-        as *mut sgraph;
+    let mut g: *mut sgraph =
+        zmalloc(::std::mem::size_of::<sgraph>() as libc::c_ulong) as *mut sgraph;
     (*g).nnodes = 0 as libc::c_int;
     let ref mut fresh3 = (*g).nodes;
-    *fresh3 = gcalloc(nnodes as size_t, ::std::mem::size_of::<snode>() as libc::c_ulong)
-        as *mut snode;
+    *fresh3 = gcalloc(
+        nnodes as size_t,
+        ::std::mem::size_of::<snode>() as libc::c_ulong,
+    ) as *mut snode;
     return g;
 }
 #[no_mangle]
@@ -144,10 +152,7 @@ pub unsafe extern "C" fn createSEdge(
 }
 #[no_mangle]
 pub unsafe extern "C" fn freeSGraph(mut g: *mut sgraph) {
-    free(
-        (*((*g).nodes).offset(0 as libc::c_int as isize)).adj_edge_list
-            as *mut libc::c_void,
-    );
+    free((*((*g).nodes).offset(0 as libc::c_int as isize)).adj_edge_list as *mut libc::c_void);
     free((*g).nodes as *mut libc::c_void);
     free((*g).edges as *mut libc::c_void);
     free(g as *mut libc::c_void);
@@ -158,9 +163,9 @@ unsafe extern "C" fn adjacentNode(
     mut n: *mut snode,
 ) -> *mut snode {
     if (*e).v1 == (*n).index {
-        return &mut *((*g).nodes).offset((*e).v2 as isize) as *mut snode
+        return &mut *((*g).nodes).offset((*e).v2 as isize) as *mut snode;
     } else {
-        return &mut *((*g).nodes).offset((*e).v1 as isize) as *mut snode
+        return &mut *((*g).nodes).offset((*e).v1 as isize) as *mut snode;
     };
 }
 #[no_mangle]
@@ -199,8 +204,8 @@ pub unsafe extern "C" fn shortPath(
         }
         y = 0 as libc::c_int;
         while y < (*n).n_adj as libc::c_int {
-            e = &mut *((*g).edges)
-                .offset(*((*n).adj_edge_list).offset(y as isize) as isize) as *mut sedge;
+            e = &mut *((*g).edges).offset(*((*n).adj_edge_list).offset(y as isize) as isize)
+                as *mut sedge;
             adjn = adjacentNode(g, e, n);
             if (*adjn).n_val < 0 as libc::c_int {
                 d = -((*n).n_val as libc::c_double + (*e).weight) as libc::c_int;

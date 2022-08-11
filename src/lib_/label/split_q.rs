@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -75,96 +83,92 @@ pub unsafe extern "C" fn SplitNode(
     mut b: *mut Branch_t,
     mut nn: *mut *mut Node_t,
 ) {
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             35 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 59],
-                &[libc::c_char; 59],
-            >(b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 59], &[libc::c_char; 59]>(
+                b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !b.is_null() {} else {
+    if !b.is_null() {
+    } else {
         __assert_fail(
             b"b\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             36 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 59],
-                &[libc::c_char; 59],
-            >(b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 59], &[libc::c_char; 59]>(
+                b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut level: libc::c_int = (*n).level;
     GetBranches(rtp, n, b);
     let mut p: *mut PartitionVars = &mut *((*rtp).split.Partitions)
         .as_mut_ptr()
-        .offset(0 as libc::c_int as isize) as *mut PartitionVars;
+        .offset(0 as libc::c_int as isize)
+        as *mut PartitionVars;
     MethodZero(rtp);
     *nn = RTreeNewNode();
     let ref mut fresh0 = (*n).level;
     *fresh0 = level;
     (**nn).level = *fresh0;
     LoadNodes(rtp, n, *nn, p);
-    if (*n).count + (**nn).count == 64 as libc::c_int + 1 as libc::c_int {} else {
+    if (*n).count + (**nn).count == 64 as libc::c_int + 1 as libc::c_int {
+    } else {
         __assert_fail(
-            b"n->count + (*nn)->count == NODECARD + 1\0" as *const u8
-                as *const libc::c_char,
+            b"n->count + (*nn)->count == NODECARD + 1\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             67 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 59],
-                &[libc::c_char; 59],
-            >(b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 59], &[libc::c_char; 59]>(
+                b"void SplitNode(RTree_t *, Node_t *, Branch_t *, Node_t **)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
-unsafe extern "C" fn GetBranches(
-    mut rtp: *mut RTree_t,
-    mut n: *mut Node_t,
-    mut b: *mut Branch_t,
-) {
-    if !n.is_null() {} else {
+unsafe extern "C" fn GetBranches(mut rtp: *mut RTree_t, mut n: *mut Node_t, mut b: *mut Branch_t) {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             85 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !b.is_null() {} else {
+    if !b.is_null() {
+    } else {
         __assert_fail(
             b"b\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             86 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < 64 as libc::c_int as libc::c_ulong {
-        if !((*n).branch[i as usize].child).is_null() {} else {
+        if !((*n).branch[i as usize].child).is_null() {
+        } else {
             __assert_fail(
                 b"n->branch[i].child\0" as *const u8 as *const libc::c_char,
                 b"split.q.c\0" as *const u8 as *const libc::c_char,
                 90 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 50],
-                    &[libc::c_char; 50],
-                >(b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                    b"void GetBranches(RTree_t *, Node_t *, Branch_t *)\0",
+                ))
+                .as_ptr(),
             );
         }
         (*rtp).split.BranchBuf[i as usize] = (*n).branch[i as usize];
@@ -174,9 +178,7 @@ unsafe extern "C" fn GetBranches(
     (*rtp).split.CoverSplit = (*rtp).split.BranchBuf[0 as libc::c_int as usize].rect;
     let mut i_0: size_t = 1 as libc::c_int as size_t;
     while i_0 < (64 as libc::c_int + 1 as libc::c_int) as libc::c_ulong {
-        (*rtp)
-            .split
-            .CoverSplit = CombineRect(
+        (*rtp).split.CoverSplit = CombineRect(
             &mut (*rtp).split.CoverSplit,
             &mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i_0 as isize)).rect,
         );
@@ -196,15 +198,24 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
     let mut betterGroup: libc::c_int = 0 as libc::c_int;
     InitPVars(rtp);
     PickSeeds(rtp);
-    while (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
+    while (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[0 as libc::c_int as usize]
+        + (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[1 as libc::c_int as usize]
+        < 64 as libc::c_int + 1 as libc::c_int
+        && (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
         .count[0 as libc::c_int as usize]
-        + (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[1 as libc::c_int as usize] < 64 as libc::c_int + 1 as libc::c_int
-        && (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[0 as libc::c_int as usize]
             < 64 as libc::c_int + 1 as libc::c_int - (*rtp).MinFill
-        && (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[1 as libc::c_int as usize]
+        && (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[1 as libc::c_int as usize]
             < 64 as libc::c_int + 1 as libc::c_int - (*rtp).MinFill
     {
         biggestDiff = -(1 as libc::c_int);
@@ -213,43 +224,41 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
             if (*((*rtp).split.Partitions)
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .taken[i as usize] == 0
+            .taken[i as usize]
+                == 0
             {
                 let mut rect: Rect_t = Rect_t { boundary: [0; 4] };
-                r = &mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize))
-                    .rect;
+                r = &mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize)).rect;
                 rect = CombineRect(
                     r,
                     &mut *((*((*rtp).split.Partitions)
                         .as_mut_ptr()
                         .offset(0 as libc::c_int as isize))
-                        .cover)
+                    .cover)
                         .as_mut_ptr()
                         .offset(0 as libc::c_int as isize),
                 );
-                growth0 = (RectArea(&mut rect))
-                    .wrapping_sub(
-                        (*((*rtp).split.Partitions)
-                            .as_mut_ptr()
-                            .offset(0 as libc::c_int as isize))
-                            .area[0 as libc::c_int as usize] as libc::c_uint,
-                    ) as libc::c_int;
+                growth0 = (RectArea(&mut rect)).wrapping_sub(
+                    (*((*rtp).split.Partitions)
+                        .as_mut_ptr()
+                        .offset(0 as libc::c_int as isize))
+                    .area[0 as libc::c_int as usize] as libc::c_uint,
+                ) as libc::c_int;
                 rect = CombineRect(
                     r,
                     &mut *((*((*rtp).split.Partitions)
                         .as_mut_ptr()
                         .offset(0 as libc::c_int as isize))
-                        .cover)
+                    .cover)
                         .as_mut_ptr()
                         .offset(1 as libc::c_int as isize),
                 );
-                growth1 = (RectArea(&mut rect))
-                    .wrapping_sub(
-                        (*((*rtp).split.Partitions)
-                            .as_mut_ptr()
-                            .offset(0 as libc::c_int as isize))
-                            .area[1 as libc::c_int as usize] as libc::c_uint,
-                    ) as libc::c_int;
+                growth1 = (RectArea(&mut rect)).wrapping_sub(
+                    (*((*rtp).split.Partitions)
+                        .as_mut_ptr()
+                        .offset(0 as libc::c_int as isize))
+                    .area[1 as libc::c_int as usize] as libc::c_uint,
+                ) as libc::c_int;
                 diff = growth1 - growth0;
                 if diff >= 0 as libc::c_int {
                     group = 0 as libc::c_int;
@@ -262,15 +271,15 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
                     chosen = i;
                     betterGroup = group;
                 } else if diff == biggestDiff
-                        && (*((*rtp).split.Partitions)
+                    && (*((*rtp).split.Partitions)
+                        .as_mut_ptr()
+                        .offset(0 as libc::c_int as isize))
+                    .count[group as usize]
+                        < (*((*rtp).split.Partitions)
                             .as_mut_ptr()
                             .offset(0 as libc::c_int as isize))
-                            .count[group as usize]
-                            < (*((*rtp).split.Partitions)
-                                .as_mut_ptr()
-                                .offset(0 as libc::c_int as isize))
-                                .count[betterGroup as usize]
-                    {
+                        .count[betterGroup as usize]
+                {
                     chosen = i;
                     betterGroup = group;
                 }
@@ -279,14 +288,21 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
         }
         Classify(rtp, chosen, betterGroup);
     }
-    if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .count[0 as libc::c_int as usize]
-        + (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[1 as libc::c_int as usize] < 64 as libc::c_int + 1 as libc::c_int
+    if (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[0 as libc::c_int as usize]
+        + (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[1 as libc::c_int as usize]
+        < 64 as libc::c_int + 1 as libc::c_int
     {
         group = 0 as libc::c_int;
-        if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[0 as libc::c_int as usize]
+        if (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[0 as libc::c_int as usize]
             >= 64 as libc::c_int + 1 as libc::c_int - (*rtp).MinFill
         {
             group = 1 as libc::c_int;
@@ -296,18 +312,25 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
             if (*((*rtp).split.Partitions)
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .taken[i_0 as usize] == 0
+            .taken[i_0 as usize]
+                == 0
             {
                 Classify(rtp, i_0, group);
             }
             i_0 += 1;
         }
     }
-    if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .count[0 as libc::c_int as usize]
-        + (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[1 as libc::c_int as usize] == 64 as libc::c_int + 1 as libc::c_int
-    {} else {
+    if (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[0 as libc::c_int as usize]
+        + (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[1 as libc::c_int as usize]
+        == 64 as libc::c_int + 1 as libc::c_int
+    {
+    } else {
         __assert_fail(
             b"rtp->split.Partitions[0].count[0] + rtp->split.Partitions[0].count[1] == NODECARD + 1\0"
                 as *const u8 as *const libc::c_char,
@@ -320,11 +343,18 @@ unsafe extern "C" fn MethodZero(mut rtp: *mut RTree_t) {
                 .as_ptr(),
         );
     }
-    if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .count[0 as libc::c_int as usize] >= (*rtp).MinFill
-        && (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .count[1 as libc::c_int as usize] >= (*rtp).MinFill
-    {} else {
+    if (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[0 as libc::c_int as usize]
+        >= (*rtp).MinFill
+        && (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .count[1 as libc::c_int as usize]
+            >= (*rtp).MinFill
+    {
+    } else {
         __assert_fail(
             b"rtp->split.Partitions[0].count[0] >= rtp->MinFill && rtp->split.Partitions[0].count[1] >= rtp->MinFill\0"
                 as *const u8 as *const libc::c_char,
@@ -344,10 +374,8 @@ unsafe extern "C" fn PickSeeds(mut rtp: *mut RTree_t) {
     let mut area: [libc::c_uint; 65] = [0; 65];
     let mut i: libc::c_int = 0 as libc::c_int;
     while i < 64 as libc::c_int + 1 as libc::c_int {
-        area[i
-            as usize] = RectArea(
-            &mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize)).rect,
-        );
+        area[i as usize] =
+            RectArea(&mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize)).rect);
         i += 1;
     }
     let mut worst: libc::c_uint = 0 as libc::c_int as libc::c_uint;
@@ -375,61 +403,71 @@ unsafe extern "C" fn PickSeeds(mut rtp: *mut RTree_t) {
     Classify(rtp, seed0, 0 as libc::c_int);
     Classify(rtp, seed1, 1 as libc::c_int);
 }
-unsafe extern "C" fn Classify(
-    mut rtp: *mut RTree_t,
-    mut i: libc::c_int,
-    mut group: libc::c_int,
-) {
-    if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .taken[i as usize] == 0
-    {} else {
+unsafe extern "C" fn Classify(mut rtp: *mut RTree_t, mut i: libc::c_int, mut group: libc::c_int) {
+    if (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .taken[i as usize]
+        == 0
+    {
+    } else {
         __assert_fail(
             b"!rtp->split.Partitions[0].taken[i]\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             222 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 35],
-                &[libc::c_char; 35],
-            >(b"void Classify(RTree_t *, int, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 35], &[libc::c_char; 35]>(
+                b"void Classify(RTree_t *, int, int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .partition[i as usize] = group;
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .taken[i as usize] = (0 as libc::c_int == 0) as libc::c_int;
-    if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .count[group as usize] == 0 as libc::c_int
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .partition[i as usize] = group;
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .taken[i as usize] = (0 as libc::c_int == 0) as libc::c_int;
+    if (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[group as usize]
+        == 0 as libc::c_int
     {
-        (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .cover[group as usize] = (*rtp).split.BranchBuf[i as usize].rect;
+        (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .cover[group as usize] = (*rtp).split.BranchBuf[i as usize].rect;
     } else {
-        (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .cover[group
-            as usize] = CombineRect(
+        (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .cover[group as usize] = CombineRect(
             &mut (*((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize)).rect,
             &mut *((*((*rtp).split.Partitions)
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .cover)
+            .cover)
                 .as_mut_ptr()
                 .offset(group as isize),
         );
     }
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .area[group
-        as usize] = RectArea(
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .area[group as usize] = RectArea(
         &mut *((*((*rtp).split.Partitions)
             .as_mut_ptr()
             .offset(0 as libc::c_int as isize))
-            .cover)
+        .cover)
             .as_mut_ptr()
             .offset(group as isize),
     ) as libc::c_int;
     let ref mut fresh1 = (*((*rtp).split.Partitions)
         .as_mut_ptr()
         .offset(0 as libc::c_int as isize))
-        .count[group as usize];
+    .count[group as usize];
     *fresh1 += 1;
 }
 unsafe extern "C" fn LoadNodes(
@@ -438,57 +476,56 @@ unsafe extern "C" fn LoadNodes(
     mut q: *mut Node_t,
     mut p: *mut PartitionVars,
 ) {
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             261 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 70],
-                &[libc::c_char; 70],
-            >(
+            (*::std::mem::transmute::<&[u8; 70], &[libc::c_char; 70]>(
                 b"void LoadNodes(RTree_t *, Node_t *, Node_t *, struct PartitionVars *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if !q.is_null() {} else {
+    if !q.is_null() {
+    } else {
         __assert_fail(
             b"q\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             262 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 70],
-                &[libc::c_char; 70],
-            >(
+            (*::std::mem::transmute::<&[u8; 70], &[libc::c_char; 70]>(
                 b"void LoadNodes(RTree_t *, Node_t *, Node_t *, struct PartitionVars *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if !p.is_null() {} else {
+    if !p.is_null() {
+    } else {
         __assert_fail(
             b"p\0" as *const u8 as *const libc::c_char,
             b"split.q.c\0" as *const u8 as *const libc::c_char,
             263 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 70],
-                &[libc::c_char; 70],
-            >(
+            (*::std::mem::transmute::<&[u8; 70], &[libc::c_char; 70]>(
                 b"void LoadNodes(RTree_t *, Node_t *, Node_t *, struct PartitionVars *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < (64 as libc::c_int + 1 as libc::c_int) as libc::c_ulong {
-        if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .partition[i as usize] == 0 as libc::c_int
+        if (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .partition[i as usize]
+            == 0 as libc::c_int
             || (*((*rtp).split.Partitions)
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .partition[i as usize] == 1 as libc::c_int
-        {} else {
+            .partition[i as usize]
+                == 1 as libc::c_int
+        {
+        } else {
             __assert_fail(
                 b"rtp->split.Partitions[0].partition[i] == 0 || rtp->split.Partitions[0].partition[i] == 1\0"
                     as *const u8 as *const libc::c_char,
@@ -503,8 +540,11 @@ unsafe extern "C" fn LoadNodes(
                     .as_ptr(),
             );
         }
-        if (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .partition[i as usize] == 0 as libc::c_int
+        if (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .partition[i as usize]
+            == 0 as libc::c_int
         {
             AddBranch(
                 rtp,
@@ -513,10 +553,11 @@ unsafe extern "C" fn LoadNodes(
                 0 as *mut *mut Node_t,
             );
         } else if (*((*rtp).split.Partitions)
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize))
-                .partition[i as usize] == 1 as libc::c_int
-            {
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .partition[i as usize]
+            == 1 as libc::c_int
+        {
             AddBranch(
                 rtp,
                 &mut *((*rtp).split.BranchBuf).as_mut_ptr().offset(i as isize),
@@ -531,30 +572,40 @@ unsafe extern "C" fn InitPVars(mut rtp: *mut RTree_t) {
     let ref mut fresh2 = (*((*rtp).split.Partitions)
         .as_mut_ptr()
         .offset(0 as libc::c_int as isize))
-        .count[1 as libc::c_int as usize];
+    .count[1 as libc::c_int as usize];
     *fresh2 = 0 as libc::c_int;
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .count[0 as libc::c_int as usize] = *fresh2;
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .count[0 as libc::c_int as usize] = *fresh2;
     let ref mut fresh3 = (*((*rtp).split.Partitions)
         .as_mut_ptr()
         .offset(0 as libc::c_int as isize))
-        .cover[1 as libc::c_int as usize];
+    .cover[1 as libc::c_int as usize];
     *fresh3 = NullRect();
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .cover[0 as libc::c_int as usize] = *fresh3;
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .cover[0 as libc::c_int as usize] = *fresh3;
     let ref mut fresh4 = (*((*rtp).split.Partitions)
         .as_mut_ptr()
         .offset(0 as libc::c_int as isize))
-        .area[1 as libc::c_int as usize];
+    .area[1 as libc::c_int as usize];
     *fresh4 = 0 as libc::c_int;
-    (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-        .area[0 as libc::c_int as usize] = *fresh4;
+    (*((*rtp).split.Partitions)
+        .as_mut_ptr()
+        .offset(0 as libc::c_int as isize))
+    .area[0 as libc::c_int as usize] = *fresh4;
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < (64 as libc::c_int + 1 as libc::c_int) as libc::c_ulong {
-        (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .taken[i as usize] = 0 as libc::c_int;
-        (*((*rtp).split.Partitions).as_mut_ptr().offset(0 as libc::c_int as isize))
-            .partition[i as usize] = -(1 as libc::c_int);
+        (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .taken[i as usize] = 0 as libc::c_int;
+        (*((*rtp).split.Partitions)
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize))
+        .partition[i as usize] = -(1 as libc::c_int);
         i = i.wrapping_add(1);
     }
 }

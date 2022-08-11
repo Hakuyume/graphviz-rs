@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -34,13 +42,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -65,16 +68,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -94,10 +91,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -105,16 +101,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _dtstat_s {
@@ -182,7 +171,8 @@ pub unsafe extern "C" fn dtstat(
     static mut Size: libc::c_int = 0;
     if (*(*dt).data).type_0 & 0o10000 as libc::c_int != 0 {
         dtrestore(dt, 0 as *mut Dtlink_t);
-    } else {};
+    } else {
+    };
     let ref mut fresh0 = (*ds).dt_max;
     *fresh0 = 0 as libc::c_int;
     (*ds).dt_n = *fresh0;
@@ -216,16 +206,19 @@ pub unsafe extern "C" fn dtstat(
         dthstat((*dt).data, ds, Count);
     } else if (*(*dt).data).type_0 & (0o4 as libc::c_int | 0o10 as libc::c_int) != 0 {
         if !((*(*dt).data).here).is_null() {
-            dttstat(ds, (*(*dt).data).here, 0 as libc::c_int, 0 as *mut libc::c_int);
+            dttstat(
+                ds,
+                (*(*dt).data).here,
+                0 as libc::c_int,
+                0 as *mut libc::c_int,
+            );
             if (*ds).dt_n + 1 as libc::c_int > Size {
                 if Size > 0 as libc::c_int {
                     free(Count as *mut libc::c_void);
                 }
                 Count = malloc(
                     (((*ds).dt_n + 1 as libc::c_int) as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        ),
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
                 ) as *mut libc::c_int;
                 if Count.is_null() {
                     return -(1 as libc::c_int);

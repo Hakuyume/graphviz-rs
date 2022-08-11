@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -117,10 +125,7 @@ pub unsafe extern "C" fn ELinitialize() {
     *fresh6 = ELrightend;
 }
 #[no_mangle]
-pub unsafe extern "C" fn hintersect(
-    mut el1: *mut Halfedge,
-    mut el2: *mut Halfedge,
-) -> *mut Site {
+pub unsafe extern "C" fn hintersect(mut el1: *mut Halfedge, mut el2: *mut Halfedge) -> *mut Site {
     let mut e1: *mut Edge = 0 as *mut Edge;
     let mut e2: *mut Edge = 0 as *mut Edge;
     let mut e: *mut Edge = 0 as *mut Edge;
@@ -170,10 +175,7 @@ pub unsafe extern "C" fn hintersect(
     return v;
 }
 #[no_mangle]
-pub unsafe extern "C" fn right_of(
-    mut el: *mut Halfedge,
-    mut p: *mut Point,
-) -> libc::c_int {
+pub unsafe extern "C" fn right_of(mut el: *mut Halfedge, mut p: *mut Point) -> libc::c_int {
     let mut e: *mut Edge = 0 as *mut Edge;
     let mut topsite: *mut Site = 0 as *mut Site;
     let mut above: libc::c_int = 0;
@@ -188,8 +190,7 @@ pub unsafe extern "C" fn right_of(
     e = (*el).ELedge;
     topsite = (*e).reg[1 as libc::c_int as usize];
     let mut right_of_site: bool = (*p).x > (*topsite).coord.x;
-    if right_of_site as libc::c_int != 0 && (*el).ELpm as libc::c_int == 0 as libc::c_int
-    {
+    if right_of_site as libc::c_int != 0 && (*el).ELpm as libc::c_int == 0 as libc::c_int {
         return 1 as libc::c_int;
     }
     if !right_of_site && (*el).ELpm as libc::c_int == 1 as libc::c_int {
@@ -236,10 +237,7 @@ pub unsafe extern "C" fn right_of(
     };
 }
 #[no_mangle]
-pub unsafe extern "C" fn HEcreate(
-    mut e: *mut Edge,
-    mut pm: libc::c_char,
-) -> *mut Halfedge {
+pub unsafe extern "C" fn HEcreate(mut e: *mut Edge, mut pm: libc::c_char) -> *mut Halfedge {
     let mut answer: *mut Halfedge = 0 as *mut Halfedge;
     answer = getfree(&mut hfl) as *mut Halfedge;
     let ref mut fresh7 = (*answer).ELedge;

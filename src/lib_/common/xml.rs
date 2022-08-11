@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -105,13 +113,15 @@ unsafe extern "C" fn xml_isentity(mut s: *const libc::c_char) -> bool {
         if *s as libc::c_int == 'x' as i32 || *s as libc::c_int == 'X' as i32 {
             s = s.offset(1);
             while *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
-                & _ISxdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISxdigit as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
             {
                 s = s.offset(1);
             }
         } else {
             while *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
-                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
             {
                 s = s.offset(1);
             }
@@ -130,77 +140,72 @@ unsafe extern "C" fn xml_core(
     mut previous: libc::c_char,
     mut current: *mut *const libc::c_char,
     mut flags: xml_flags_t,
-    mut cb: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
+    mut cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
     mut state: *mut libc::c_void,
 ) -> libc::c_int {
     let mut s: *const libc::c_char = *current;
     let mut c: libc::c_char = *s;
     *current = (*current).offset(1);
-    if c as libc::c_int == '&' as i32
-        && (flags.raw() as libc::c_int != 0 || !xml_isentity(s))
-    {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&amp;\0" as *const u8 as *const libc::c_char);
+    if c as libc::c_int == '&' as i32 && (flags.raw() as libc::c_int != 0 || !xml_isentity(s)) {
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&amp;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '<' as i32 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&lt;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&lt;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '>' as i32 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&gt;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&gt;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '-' as i32 && flags.dash() as libc::c_int != 0 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&#45;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&#45;\0" as *const u8 as *const libc::c_char,
+        );
     }
-    if c as libc::c_int == ' ' as i32 && previous as libc::c_int == ' ' as i32
+    if c as libc::c_int == ' ' as i32
+        && previous as libc::c_int == ' ' as i32
         && flags.nbsp() as libc::c_int != 0
     {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&#160;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&#160;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '"' as i32 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&quot;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&quot;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '\'' as i32 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&#39;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&#39;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '\n' as i32 && flags.raw() as libc::c_int != 0 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&#10;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&#10;\0" as *const u8 as *const libc::c_char,
+        );
     }
     if c as libc::c_int == '\r' as i32 && flags.raw() as libc::c_int != 0 {
-        return cb
-            .expect(
-                "non-null function pointer",
-            )(state, b"&#13;\0" as *const u8 as *const libc::c_char);
+        return cb.expect("non-null function pointer")(
+            state,
+            b"&#13;\0" as *const u8 as *const libc::c_char,
+        );
     }
     let mut uc: libc::c_uchar = c as libc::c_uchar;
     if uc as libc::c_int > 0x7f as libc::c_int && flags.utf8() as libc::c_int != 0 {
-        let mut length: size_t = (if uc as libc::c_int >> 5 as libc::c_int
-            == 6 as libc::c_int
-        {
+        let mut length: size_t = (if uc as libc::c_int >> 5 as libc::c_int == 6 as libc::c_int {
             2 as libc::c_int
         } else if uc as libc::c_int >> 4 as libc::c_int == 14 as libc::c_int {
             3 as libc::c_int
@@ -229,44 +234,32 @@ unsafe extern "C" fn xml_core(
         match length {
             2 => {
                 let mut low: uint32_t = *s.offset(1 as libc::c_int as isize) as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
                 let mut high: uint32_t = *s.offset(0 as libc::c_int as isize) as uint32_t
-                    & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
+                    & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
                 utf8_char = low | high << 6 as libc::c_int;
             }
             3 => {
-                let mut low_0: uint32_t = *s.offset(2 as libc::c_int as isize)
-                    as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
+                let mut low_0: uint32_t = *s.offset(2 as libc::c_int as isize) as uint32_t
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
                 let mut mid: uint32_t = *s.offset(1 as libc::c_int as isize) as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
-                let mut high_0: uint32_t = *s.offset(0 as libc::c_int as isize)
-                    as uint32_t
-                    & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
-                utf8_char = low_0 | mid << 6 as libc::c_int
-                    | high_0 << 12 as libc::c_int;
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
+                let mut high_0: uint32_t = *s.offset(0 as libc::c_int as isize) as uint32_t
+                    & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
+                utf8_char = low_0 | mid << 6 as libc::c_int | high_0 << 12 as libc::c_int;
             }
             4 => {
-                let mut low_1: uint32_t = *s.offset(3 as libc::c_int as isize)
-                    as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
+                let mut low_1: uint32_t = *s.offset(3 as libc::c_int as isize) as uint32_t
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
                 let mut mid1: uint32_t = *s.offset(2 as libc::c_int as isize) as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
                 let mut mid2: uint32_t = *s.offset(1 as libc::c_int as isize) as uint32_t
-                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
-                let mut high_1: uint32_t = *s.offset(0 as libc::c_int as isize)
-                    as uint32_t
-                    & (((1 as libc::c_int) << 3 as libc::c_int) - 1 as libc::c_int)
-                        as libc::c_uint;
-                utf8_char = low_1 | mid1 << 6 as libc::c_int | mid2 << 12 as libc::c_int
+                    & (((1 as libc::c_int) << 6 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
+                let mut high_1: uint32_t = *s.offset(0 as libc::c_int as isize) as uint32_t
+                    & (((1 as libc::c_int) << 3 as libc::c_int) - 1 as libc::c_int) as libc::c_uint;
+                utf8_char = low_1
+                    | mid1 << 6 as libc::c_int
+                    | mid2 << 12 as libc::c_int
                     | high_1 << 18 as libc::c_int;
             }
             _ => {
@@ -287,8 +280,8 @@ unsafe extern "C" fn xml_core(
             b"&#x%x;\0" as *const u8 as *const libc::c_char,
             utf8_char,
         );
-        *current = (*current)
-            .offset(length.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
+        *current =
+            (*current).offset(length.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
         return cb.expect("non-null function pointer")(state, buffer.as_mut_ptr());
     }
     let mut buffer_0: [libc::c_char; 2] = [c, '\0' as i32 as libc::c_char];
@@ -298,9 +291,7 @@ unsafe extern "C" fn xml_core(
 pub unsafe extern "C" fn xml_escape(
     mut s: *const libc::c_char,
     mut flags: xml_flags_t,
-    mut cb: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
+    mut cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
     mut state: *mut libc::c_void,
 ) -> libc::c_int {
     let mut previous: libc::c_char = '\0' as i32 as libc::c_char;

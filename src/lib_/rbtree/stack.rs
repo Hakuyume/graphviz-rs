@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -46,8 +54,7 @@ pub unsafe extern "C" fn StackJoin(
 #[no_mangle]
 pub unsafe extern "C" fn StackCreate() -> *mut stk_stack {
     let mut newStack: *mut stk_stack = 0 as *mut stk_stack;
-    newStack = malloc(::std::mem::size_of::<stk_stack>() as libc::c_ulong)
-        as *mut stk_stack;
+    newStack = malloc(::std::mem::size_of::<stk_stack>() as libc::c_ulong) as *mut stk_stack;
     if newStack.is_null() {
         return 0 as *mut stk_stack;
     }
@@ -64,8 +71,8 @@ pub unsafe extern "C" fn StackPush(
 ) -> libc::c_int {
     let mut newNode: *mut stk_stack_node = 0 as *mut stk_stack_node;
     if ((*theStack).top).is_null() {
-        newNode = malloc(::std::mem::size_of::<stk_stack_node>() as libc::c_ulong)
-            as *mut stk_stack_node;
+        newNode =
+            malloc(::std::mem::size_of::<stk_stack_node>() as libc::c_ulong) as *mut stk_stack_node;
         if newNode.is_null() {
             return -(1 as libc::c_int);
         }
@@ -78,8 +85,8 @@ pub unsafe extern "C" fn StackPush(
         let ref mut fresh7 = (*theStack).tail;
         *fresh7 = newNode;
     } else {
-        newNode = malloc(::std::mem::size_of::<stk_stack_node>() as libc::c_ulong)
-            as *mut stk_stack_node;
+        newNode =
+            malloc(::std::mem::size_of::<stk_stack_node>() as libc::c_ulong) as *mut stk_stack_node;
         if newNode.is_null() {
             return -(1 as libc::c_int);
         }
@@ -114,7 +121,7 @@ pub unsafe extern "C" fn StackPop(mut theStack: *mut stk_stack) -> *mut libc::c_
 #[no_mangle]
 pub unsafe extern "C" fn StackDestroy(
     mut theStack: *mut stk_stack,
-    mut DestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut DestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     if !theStack.is_null() {
         let mut x: *mut stk_stack_node = (*theStack).top;

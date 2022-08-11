@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -26,11 +34,7 @@ extern "C" {
         __function: *const libc::c_char,
     ) -> !;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     static mut Dtoset: *mut Dtmethod_t;
@@ -42,11 +46,7 @@ extern "C" {
     fn agnameof(_: *mut libc::c_void) -> *mut libc::c_char;
     fn agnxtout(g: *mut Agraph_t, e: *mut Agedge_t) -> *mut Agedge_t;
     fn agfstout(g: *mut Agraph_t, n: *mut Agnode_t) -> *mut Agedge_t;
-    fn agsubedge(
-        g: *mut Agraph_t,
-        e: *mut Agedge_t,
-        createflag: libc::c_int,
-    ) -> *mut Agedge_t;
+    fn agsubedge(g: *mut Agraph_t, e: *mut Agedge_t, createflag: libc::c_int) -> *mut Agedge_t;
     fn agnxtnode(g: *mut Agraph_t, n: *mut Agnode_t) -> *mut Agnode_t;
     fn agfstnode(g: *mut Agraph_t) -> *mut Agnode_t;
     fn agidnode(g: *mut Agraph_t, id: IDTYPE, createflag: libc::c_int) -> *mut Agnode_t;
@@ -71,9 +71,7 @@ extern "C" {
     fn xml_escape(
         s: *const libc::c_char,
         flags: xml_flags_t,
-        cb: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-        >,
+        cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
         state: *mut libc::c_void,
     ) -> libc::c_int;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
@@ -146,13 +144,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -177,16 +170,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -206,10 +193,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -217,16 +203,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -307,17 +286,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -350,26 +323,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -378,29 +343,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -408,8 +365,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -537,16 +494,17 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -558,10 +516,11 @@ unsafe extern "C" fn gv_alloc(mut size: size_t) -> *mut libc::c_void {
 #[inline]
 unsafe extern "C" fn gv_strdup(mut original: *const libc::c_char) -> *mut libc::c_char {
     let mut copy: *mut libc::c_char = strdup(original);
-    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int
-        as libc::c_long != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return copy;
@@ -574,20 +533,15 @@ unsafe extern "C" fn make_nitem(
     mut objp: *mut namev_t,
     mut disc: *mut Dtdisc_t,
 ) -> *mut namev_t {
-    let mut np: *mut namev_t = gv_alloc(
-        ::std::mem::size_of::<namev_t>() as libc::c_ulong,
-    ) as *mut namev_t;
+    let mut np: *mut namev_t =
+        gv_alloc(::std::mem::size_of::<namev_t>() as libc::c_ulong) as *mut namev_t;
     let ref mut fresh0 = (*np).name;
     *fresh0 = (*objp).name;
     let ref mut fresh1 = (*np).unique_name;
     *fresh1 = 0 as *mut libc::c_char;
     return np;
 }
-unsafe extern "C" fn free_nitem(
-    mut d: *mut Dt_t,
-    mut np: *mut namev_t,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn free_nitem(mut d: *mut Dt_t, mut np: *mut namev_t, mut disc: *mut Dtdisc_t) {
     free(np as *mut libc::c_void);
 }
 static mut nameDisc: Dtdisc_t = unsafe {
@@ -597,39 +551,20 @@ static mut nameDisc: Dtdisc_t = unsafe {
             size: -(1 as libc::c_int),
             link: 0 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut Dt_t,
-                        *mut namev_t,
-                        *mut Dtdisc_t,
-                    ) -> *mut namev_t,
+                Option<
+                    unsafe extern "C" fn(*mut Dt_t, *mut namev_t, *mut Dtdisc_t) -> *mut namev_t,
                 >,
                 Dtmake_f,
-            >(
-                Some(
-                    make_nitem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut namev_t,
-                            *mut Dtdisc_t,
-                        ) -> *mut namev_t,
-                ),
-            ),
+            >(Some(
+                make_nitem
+                    as unsafe extern "C" fn(*mut Dt_t, *mut namev_t, *mut Dtdisc_t) -> *mut namev_t,
+            )),
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut namev_t, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut namev_t, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    free_nitem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut namev_t,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                free_nitem as unsafe extern "C" fn(*mut Dt_t, *mut namev_t, *mut Dtdisc_t) -> (),
+            )),
             comparf: None,
             hashf: None,
             memoryf: None,
@@ -638,11 +573,7 @@ static mut nameDisc: Dtdisc_t = unsafe {
         init
     }
 };
-unsafe extern "C" fn free_iditem(
-    mut d: *mut Dt_t,
-    mut idp: *mut idv_t,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn free_iditem(mut d: *mut Dt_t, mut idp: *mut idv_t, mut disc: *mut Dtdisc_t) {
     free((*idp).name as *mut libc::c_void);
     free(idp as *mut libc::c_void);
 }
@@ -654,20 +585,11 @@ static mut idDisc: Dtdisc_t = unsafe {
             link: 0 as libc::c_ulong as libc::c_int,
             makef: None,
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut idv_t, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut idv_t, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    free_iditem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut idv_t,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                free_iditem as unsafe extern "C" fn(*mut Dt_t, *mut idv_t, *mut Dtdisc_t) -> (),
+            )),
             comparf: None,
             hashf: None,
             memoryf: None,
@@ -686,15 +608,17 @@ unsafe extern "C" fn tabover(mut gxlFile: *mut FILE) {
             break;
         }
         putc('\t' as i32, gxlFile);
-    };
+    }
 }
 unsafe extern "C" fn legalGXLName(mut id: *mut libc::c_char) -> libc::c_int {
     let fresh3 = id;
     id = id.offset(1);
     let mut c: libc::c_char = *fresh3;
     if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-        & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int == 0
-        && c as libc::c_int != '_' as i32 && c as libc::c_int != ':' as i32
+        & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+        == 0
+        && c as libc::c_int != '_' as i32
+        && c as libc::c_int != ':' as i32
     {
         return 0 as libc::c_int;
     }
@@ -706,9 +630,12 @@ unsafe extern "C" fn legalGXLName(mut id: *mut libc::c_char) -> libc::c_int {
             break;
         }
         if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int == 0
-            && c as libc::c_int != '_' as i32 && c as libc::c_int != ':' as i32
-            && c as libc::c_int != '-' as i32 && c as libc::c_int != '.' as i32
+            & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
+            == 0
+            && c as libc::c_int != '_' as i32
+            && c as libc::c_int != ':' as i32
+            && c as libc::c_int != '-' as i32
+            && c as libc::c_int != '.' as i32
         {
             return 0 as libc::c_int;
         }
@@ -716,17 +643,11 @@ unsafe extern "C" fn legalGXLName(mut id: *mut libc::c_char) -> libc::c_int {
     return 1 as libc::c_int;
 }
 #[inline]
-unsafe extern "C" fn put(
-    mut stream: *mut libc::c_void,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn put(mut stream: *mut libc::c_void, mut s: *const libc::c_char) -> libc::c_int {
     return fputs(s, stream as *mut FILE);
 }
 #[inline]
-unsafe extern "C" fn xml_puts(
-    mut stream: *mut FILE,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn xml_puts(mut stream: *mut FILE, mut s: *const libc::c_char) -> libc::c_int {
     let flags: xml_flags_t = {
         let mut init = xml_flags_t {
             raw_dash_nbsp_utf8: [0; 1],
@@ -741,20 +662,11 @@ unsafe extern "C" fn xml_puts(
     return xml_escape(
         s,
         flags,
-        Some(
-            put
-                as unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                ) -> libc::c_int,
-        ),
+        Some(put as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int),
         stream as *mut libc::c_void,
     );
 }
-unsafe extern "C" fn xml_url_puts(
-    mut f: *mut FILE,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn xml_url_puts(mut f: *mut FILE, mut s: *const libc::c_char) -> libc::c_int {
     let flags: xml_flags_t = {
         let mut init = xml_flags_t {
             raw_dash_nbsp_utf8: [0; 1],
@@ -769,13 +681,7 @@ unsafe extern "C" fn xml_url_puts(
     return xml_escape(
         s,
         flags,
-        Some(
-            put
-                as unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                ) -> libc::c_int,
-        ),
+        Some(put as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int),
         f as *mut libc::c_void,
     );
 }
@@ -795,27 +701,19 @@ unsafe extern "C" fn isLocatorType(mut name: *mut libc::c_char) -> libc::c_int {
             .wrapping_sub(1 as libc::c_int as libc::c_ulong),
     ) == 0 as libc::c_int) as libc::c_int;
 }
-unsafe extern "C" fn idexists(
-    mut ids: *mut Dt_t,
-    mut id: *mut libc::c_char,
-) -> *mut libc::c_void {
+unsafe extern "C" fn idexists(mut ids: *mut Dt_t, mut id: *mut libc::c_char) -> *mut libc::c_void {
     return (Some(((*ids).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(ids, id as *mut libc::c_void, 0o1000 as libc::c_int);
+        .expect("non-null function pointer")(
+        ids, id as *mut libc::c_void, 0o1000 as libc::c_int
+    );
 }
-unsafe extern "C" fn addid(
-    mut ids: *mut Dt_t,
-    mut id: *mut libc::c_char,
-) -> *mut libc::c_char {
-    let mut idp: *mut idv_t = gv_alloc(::std::mem::size_of::<idv_t>() as libc::c_ulong)
-        as *mut idv_t;
+unsafe extern "C" fn addid(mut ids: *mut Dt_t, mut id: *mut libc::c_char) -> *mut libc::c_char {
+    let mut idp: *mut idv_t =
+        gv_alloc(::std::mem::size_of::<idv_t>() as libc::c_ulong) as *mut idv_t;
     let ref mut fresh5 = (*idp).name;
     *fresh5 = gv_strdup(id);
     (Some(((*ids).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(ids, idp as *mut libc::c_void, 0o1 as libc::c_int);
+        .expect("non-null function pointer")(ids, idp as *mut libc::c_void, 0o1 as libc::c_int);
     return (*idp).name;
 }
 unsafe extern "C" fn createGraphId(mut ids: *mut Dt_t) -> *mut libc::c_char {
@@ -858,36 +756,31 @@ unsafe extern "C" fn mapLookup(
     mut nm: *mut Dt_t,
     mut name: *mut libc::c_char,
 ) -> *mut libc::c_char {
-    let mut objp: *mut namev_t = (Some(
-        ((*nm).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )(nm, name as *mut libc::c_void, 0o1000 as libc::c_int) as *mut namev_t;
+    let mut objp: *mut namev_t = (Some(((*nm).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        nm, name as *mut libc::c_void, 0o1000 as libc::c_int
+    ) as *mut namev_t;
     if !objp.is_null() {
-        return (*objp).unique_name
+        return (*objp).unique_name;
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     };
 }
-unsafe extern "C" fn nodeID(
-    mut stp: *mut gxlstate_t,
-    mut n: *mut Agnode_t,
-) -> *mut libc::c_char {
+unsafe extern "C" fn nodeID(mut stp: *mut gxlstate_t, mut n: *mut Agnode_t) -> *mut libc::c_char {
     let mut name: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut uniqueName: *mut libc::c_char = 0 as *mut libc::c_char;
     name = agnameof(n as *mut libc::c_void);
     uniqueName = mapLookup((*stp).nodeMap, name);
-    if !uniqueName.is_null() {} else {
+    if !uniqueName.is_null() {
+    } else {
         __assert_fail(
             b"uniqueName\0" as *const u8 as *const libc::c_char,
             b"gv2gxl.c\0" as *const u8 as *const libc::c_char,
             239 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"char *nodeID(gxlstate_t *, Agnode_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"char *nodeID(gxlstate_t *, Agnode_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return uniqueName;
@@ -904,7 +797,7 @@ unsafe extern "C" fn createEdgeId(
         } else {
             e.offset(-(1 as libc::c_int as isize))
         })
-            .node,
+        .node,
     );
     let mut tname: *mut libc::c_char = nodeID(
         stp,
@@ -913,7 +806,7 @@ unsafe extern "C" fn createEdgeId(
         } else {
             e.offset(1 as libc::c_int as isize)
         })
-            .node,
+        .node,
     );
     let mut baselen: size_t = (strlen(hname))
         .wrapping_add(strlen(tname))
@@ -921,10 +814,8 @@ unsafe extern "C" fn createEdgeId(
     let mut len: size_t = baselen.wrapping_add(32 as libc::c_int as libc::c_ulong);
     let mut endp: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut rv: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut bp: *mut libc::c_char = gv_calloc(
-        len,
-        ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-    ) as *mut libc::c_char;
+    let mut bp: *mut libc::c_char =
+        gv_calloc(len, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong) as *mut libc::c_char;
     endp = bp.offset(baselen.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
     sprintf(
         bp,
@@ -958,20 +849,21 @@ unsafe extern "C" fn addToMap(
     let mut objp: *mut namev_t = 0 as *mut namev_t;
     obj.name = name;
     objp = (Some(((*map).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(map, &mut obj as *mut namev_t as *mut libc::c_void, 0o1 as libc::c_int)
-        as *mut namev_t;
-    if ((*objp).unique_name).is_null() {} else {
+        .expect("non-null function pointer")(
+        map,
+        &mut obj as *mut namev_t as *mut libc::c_void,
+        0o1 as libc::c_int,
+    ) as *mut namev_t;
+    if ((*objp).unique_name).is_null() {
+    } else {
         __assert_fail(
             b"objp->unique_name == 0\0" as *const u8 as *const libc::c_char,
             b"gv2gxl.c\0" as *const u8 as *const libc::c_char,
             276 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"void addToMap(Dt_t *, char *, char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"void addToMap(Dt_t *, char *, char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let ref mut fresh9 = (*objp).unique_name;
@@ -993,7 +885,10 @@ unsafe extern "C" fn graphAttrs(mut gxlFile: *mut FILE, mut g: *mut Agraph_t) {
         b"_gxl_hypergraph\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     );
     if !(val.is_null() || *val as libc::c_int == '\0' as i32) {
-        fprintf(gxlFile, b" hypergraph=\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b" hypergraph=\"\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, val);
         fprintf(gxlFile, b"\"\0" as *const u8 as *const libc::c_char);
     }
@@ -1014,7 +909,10 @@ unsafe extern "C" fn edgeAttrs(mut gxlFile: *mut FILE, mut e: *mut Agedge_t) {
         b"_gxl_fromorder\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     );
     if !(val.is_null() || *val as libc::c_int == '\0' as i32) {
-        fprintf(gxlFile, b" fromorder=\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b" fromorder=\"\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, val);
         fprintf(gxlFile, b"\"\0" as *const u8 as *const libc::c_char);
     }
@@ -1023,7 +921,10 @@ unsafe extern "C" fn edgeAttrs(mut gxlFile: *mut FILE, mut e: *mut Agedge_t) {
         b"_gxl_toorder\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     );
     if !(val.is_null() || *val as libc::c_int == '\0' as i32) {
-        fprintf(gxlFile, b" toorder=\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b" toorder=\"\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, val);
         fprintf(gxlFile, b"\"\0" as *const u8 as *const libc::c_char);
     }
@@ -1036,11 +937,17 @@ unsafe extern "C" fn printHref(mut gxlFile: *mut FILE, mut n: *mut libc::c_void)
     );
     if !(val.is_null() || *val as libc::c_int == '\0' as i32) {
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t<type xlink:href=\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t<type xlink:href=\"\0" as *const u8 as *const libc::c_char,
+        );
         xml_url_puts(gxlFile, val);
         fprintf(gxlFile, b"\">\n\0" as *const u8 as *const libc::c_char);
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</type>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</type>\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
 unsafe extern "C" fn writeDict(
@@ -1056,27 +963,24 @@ unsafe extern "C" fn writeDict(
     view = dtview(dict, 0 as *mut Dt_t);
     let mut current_block_55: u64;
     sym = (Some(((*(dict as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(dict, 0 as *mut libc::c_void, 0o200 as libc::c_int) as *mut Agsym_t;
+        .expect("non-null function pointer")(
+        dict, 0 as *mut libc::c_void, 0o200 as libc::c_int
+    ) as *mut Agsym_t;
     while !sym.is_null() {
         if isGxlGrammar((*sym).name) == 0 {
-            if ((*sym).defval).is_null() || *(*sym).defval as libc::c_int == '\0' as i32
-            {
+            if ((*sym).defval).is_null() || *(*sym).defval as libc::c_int == '\0' as i32 {
                 if view.is_null() {
                     current_block_55 = 10680521327981672866;
                 } else {
                     psym = (Some(
-                        ((*(view as *mut Dt_t)).searchf)
-                            .expect("non-null function pointer"),
+                        ((*(view as *mut Dt_t)).searchf).expect("non-null function pointer"),
                     ))
-                        .expect(
-                            "non-null function pointer",
-                        )(view, sym as *mut libc::c_void, 0o4 as libc::c_int)
-                        as *mut Agsym_t;
-                    if ((*psym).defval).is_null()
-                        || *(*psym).defval as libc::c_int == '\0' as i32
-                    {
+                    .expect("non-null function pointer")(
+                        view,
+                        sym as *mut libc::c_void,
+                        0o4 as libc::c_int,
+                    ) as *mut Agsym_t;
+                    if ((*psym).defval).is_null() || *(*psym).defval as libc::c_int == '\0' as i32 {
                         current_block_55 = 10680521327981672866;
                     } else {
                         current_block_55 = 13109137661213826276;
@@ -1102,14 +1006,10 @@ unsafe extern "C" fn writeDict(
                         tabover(gxlFile);
                         fprintf(
                             gxlFile,
-                            b"\t\t<locator xlink:href=\"\0" as *const u8
-                                as *const libc::c_char,
+                            b"\t\t<locator xlink:href=\"\0" as *const u8 as *const libc::c_char,
                         );
                         xml_url_puts(gxlFile, locatorVal);
-                        fprintf(
-                            gxlFile,
-                            b"\"/>\n\0" as *const u8 as *const libc::c_char,
-                        );
+                        fprintf(gxlFile, b"\"/>\n\0" as *const u8 as *const libc::c_char);
                         tabover(gxlFile);
                         fprintf(
                             gxlFile,
@@ -1123,19 +1023,10 @@ unsafe extern "C" fn writeDict(
                                 b"\t<attr name=\"\0" as *const u8 as *const libc::c_char,
                             );
                             xml_puts(gxlFile, (*sym).name);
-                            fprintf(
-                                gxlFile,
-                                b"\" \0" as *const u8 as *const libc::c_char,
-                            );
-                            fprintf(
-                                gxlFile,
-                                b"kind=\"\0" as *const u8 as *const libc::c_char,
-                            );
+                            fprintf(gxlFile, b"\" \0" as *const u8 as *const libc::c_char);
+                            fprintf(gxlFile, b"kind=\"\0" as *const u8 as *const libc::c_char);
                             xml_puts(gxlFile, name);
-                            fprintf(
-                                gxlFile,
-                                b"\">\n\0" as *const u8 as *const libc::c_char,
-                            );
+                            fprintf(gxlFile, b"\">\n\0" as *const u8 as *const libc::c_char);
                         } else {
                             fprintf(
                                 gxlFile,
@@ -1144,15 +1035,9 @@ unsafe extern "C" fn writeDict(
                             xml_puts(gxlFile, name);
                             fprintf(gxlFile, b":\0" as *const u8 as *const libc::c_char);
                             xml_puts(gxlFile, (*sym).name);
-                            fprintf(
-                                gxlFile,
-                                b"\" kind=\"\0" as *const u8 as *const libc::c_char,
-                            );
+                            fprintf(gxlFile, b"\" kind=\"\0" as *const u8 as *const libc::c_char);
                             xml_puts(gxlFile, name);
-                            fprintf(
-                                gxlFile,
-                                b"\">\n\0" as *const u8 as *const libc::c_char,
-                            );
+                            fprintf(gxlFile, b"\">\n\0" as *const u8 as *const libc::c_char);
                         }
                         tabover(gxlFile);
                         fprintf(
@@ -1173,28 +1058,25 @@ unsafe extern "C" fn writeDict(
                 }
             }
         } else if strncmp(
-                (*sym).name,
-                b"_gxl_composite_\0" as *const u8 as *const libc::c_char,
-                (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong),
-            ) == 0 as libc::c_int
-            {
-            if ((*sym).defval).is_null() || *(*sym).defval as libc::c_int == '\0' as i32
-            {
+            (*sym).name,
+            b"_gxl_composite_\0" as *const u8 as *const libc::c_char,
+            (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
+                .wrapping_sub(1 as libc::c_int as libc::c_ulong),
+        ) == 0 as libc::c_int
+        {
+            if ((*sym).defval).is_null() || *(*sym).defval as libc::c_int == '\0' as i32 {
                 if view.is_null() {
                     current_block_55 = 10680521327981672866;
                 } else {
                     psym = (Some(
-                        ((*(view as *mut Dt_t)).searchf)
-                            .expect("non-null function pointer"),
+                        ((*(view as *mut Dt_t)).searchf).expect("non-null function pointer"),
                     ))
-                        .expect(
-                            "non-null function pointer",
-                        )(view, sym as *mut libc::c_void, 0o4 as libc::c_int)
-                        as *mut Agsym_t;
-                    if ((*psym).defval).is_null()
-                        || *(*psym).defval as libc::c_int == '\0' as i32
-                    {
+                    .expect("non-null function pointer")(
+                        view,
+                        sym as *mut libc::c_void,
+                        0o4 as libc::c_int,
+                    ) as *mut Agsym_t;
+                    if ((*psym).defval).is_null() || *(*psym).defval as libc::c_int == '\0' as i32 {
                         current_block_55 = 10680521327981672866;
                     } else {
                         current_block_55 = 6476622998065200121;
@@ -1213,12 +1095,11 @@ unsafe extern "C" fn writeDict(
                     );
                     xml_puts(
                         gxlFile,
-                        ((*sym).name)
-                            .offset(
-                                (::std::mem::size_of::<[libc::c_char; 16]>()
-                                    as libc::c_ulong)
-                                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
-                            ),
+                        ((*sym).name).offset(
+                            (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
+                                .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                                as isize,
+                        ),
                     );
                     fprintf(gxlFile, b"\" \0" as *const u8 as *const libc::c_char);
                     fprintf(gxlFile, b"kind=\"\0" as *const u8 as *const libc::c_char);
@@ -1236,12 +1117,12 @@ unsafe extern "C" fn writeDict(
                 }
             }
         }
-        sym = (Some(
-            ((*(dict as *mut Dt_t)).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )(dict, sym as *mut libc::c_void, 0o10 as libc::c_int) as *mut Agsym_t;
+        sym = (Some(((*(dict as *mut Dt_t)).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
+            dict,
+            sym as *mut libc::c_void,
+            0o10 as libc::c_int,
+        ) as *mut Agsym_t;
     }
     dtview(dict, view);
 }
@@ -1293,10 +1174,9 @@ unsafe extern "C" fn writeHdr(
     if top == 0 && !(agparent(g)).is_null() {
         len = (strlen(name))
             .wrapping_add(::std::mem::size_of::<[libc::c_char; 3]>() as libc::c_ulong);
-        let mut bp: *mut libc::c_char = gv_calloc(
-            len,
-            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-        ) as *mut libc::c_char;
+        let mut bp: *mut libc::c_char =
+            gv_calloc(len, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
+                as *mut libc::c_char;
         sprintf(bp, b"N_%s\0" as *const u8 as *const libc::c_char, name);
         if !(idexists((*stp).idList, bp)).is_null() || legalGXLName(bp) == 0 {
             bp = createNodeId((*stp).idList);
@@ -1330,8 +1210,7 @@ unsafe extern "C" fn writeHdr(
     tabover(gxlFile);
     fprintf(
         gxlFile,
-        b"<graph id=\"%s\" edgeids=\"true\" edgemode=\"%s\"\0" as *const u8
-            as *const libc::c_char,
+        b"<graph id=\"%s\" edgeids=\"true\" edgemode=\"%s\"\0" as *const u8 as *const libc::c_char,
         uniqueName,
         kind,
     );
@@ -1344,11 +1223,20 @@ unsafe extern "C" fn writeHdr(
             b"\t<attr name=\"name\">\n\0" as *const u8 as *const libc::c_char,
         );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t\t<string>\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t\t<string>\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, name);
-        fprintf(gxlFile, b"</string>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"</string>\n\0" as *const u8 as *const libc::c_char,
+        );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</attr>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</attr>\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     if agisstrict(g) != 0 {
         tabover(gxlFile);
@@ -1362,21 +1250,18 @@ unsafe extern "C" fn writeHdr(
             b"\t\t<string>true</string>\n\0" as *const u8 as *const libc::c_char,
         );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</attr>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</attr>\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     writeDicts(g, gxlFile);
     printHref(gxlFile, g as *mut libc::c_void);
     let ref mut fresh10 = (*(g as *mut Agobj_t)).tag;
     (*fresh10)
-        .set_attrwf(
-            (((*(g as *mut Agobj_t)).tag).attrwf() == 0) as libc::c_int as libc::c_uint,
-        );
+        .set_attrwf((((*(g as *mut Agobj_t)).tag).attrwf() == 0) as libc::c_int as libc::c_uint);
 }
-unsafe extern "C" fn writeTrl(
-    mut g: *mut Agraph_t,
-    mut gxlFile: *mut FILE,
-    mut top: libc::c_int,
-) {
+unsafe extern "C" fn writeTrl(mut g: *mut Agraph_t, mut gxlFile: *mut FILE, mut top: libc::c_int) {
     tabover(gxlFile);
     fprintf(gxlFile, b"</graph>\n\0" as *const u8 as *const libc::c_char);
     Level -= 1;
@@ -1400,10 +1285,7 @@ unsafe extern "C" fn writeSubgs(
         subg = agnxtsubg(subg);
     }
 }
-unsafe extern "C" fn writeEdgeName(
-    mut e: *mut Agedge_t,
-    mut gxlFile: *mut FILE,
-) -> libc::c_int {
+unsafe extern "C" fn writeEdgeName(mut e: *mut Agedge_t, mut gxlFile: *mut FILE) -> libc::c_int {
     let mut rv: libc::c_int = 0;
     let mut p: *mut libc::c_char = 0 as *mut libc::c_char;
     p = agnameof(e as *mut libc::c_void);
@@ -1414,11 +1296,20 @@ unsafe extern "C" fn writeEdgeName(
             b"\t<attr name=\"key\">\n\0" as *const u8 as *const libc::c_char,
         );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t\t<string>\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t\t<string>\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, p);
-        fprintf(gxlFile, b"</string>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"</string>\n\0" as *const u8 as *const libc::c_char,
+        );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</attr>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</attr>\n\0" as *const u8 as *const libc::c_char,
+        );
         rv = (0 as libc::c_int == 0) as libc::c_int;
     } else {
         rv = 0 as libc::c_int;
@@ -1442,18 +1333,16 @@ unsafe extern "C" fn writeNondefaultAttr(
     let mut data: *mut Agattr_t = agattrrec(obj);
     if !data.is_null() {
         let mut current_block_48: u64;
-        sym = (Some(
-            ((*(defdict as *mut Dt_t)).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )(defdict, 0 as *mut libc::c_void, 0o200 as libc::c_int) as *mut Agsym_t;
+        sym = (Some(((*(defdict as *mut Dt_t)).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
+            defdict,
+            0 as *mut libc::c_void,
+            0o200 as libc::c_int,
+        ) as *mut Agsym_t;
         while !sym.is_null() {
             if isGxlGrammar((*sym).name) == 0 {
-                if ((*(obj as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 3 as libc::c_int
-                    || ((*(obj as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
+                if ((*(obj as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int
+                    || ((*(obj as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int
                 {
                     if !Tailport.is_null() && (*sym).id == (*Tailport).id {
                         current_block_48 = 11006700562992250127;
@@ -1474,12 +1363,8 @@ unsafe extern "C" fn writeNondefaultAttr(
                                 b"\0" as *const u8 as *const libc::c_char,
                             ) == 0 as libc::c_int)
                             {
-                                if isLocatorType(
-                                    *((*data).str_0).offset((*sym).id as isize),
-                                ) != 0
-                                {
-                                    let mut locatorVal: *mut libc::c_char = 0
-                                        as *mut libc::c_char;
+                                if isLocatorType(*((*data).str_0).offset((*sym).id as isize)) != 0 {
+                                    let mut locatorVal: *mut libc::c_char = 0 as *mut libc::c_char;
                                     locatorVal = *((*data).str_0).offset((*sym).id as isize);
                                     locatorVal = locatorVal.offset(13 as libc::c_int as isize);
                                     tabover(gxlFile);
@@ -1515,32 +1400,21 @@ unsafe extern "C" fn writeNondefaultAttr(
                                         b"\t<attr name=\"\0" as *const u8 as *const libc::c_char,
                                     );
                                     xml_puts(gxlFile, (*sym).name);
-                                    fprintf(
-                                        gxlFile,
-                                        b"\"\0" as *const u8 as *const libc::c_char,
-                                    );
-                                    if aghtmlstr(*((*data).str_0).offset((*sym).id as isize))
-                                        != 0
-                                    {
+                                    fprintf(gxlFile, b"\"\0" as *const u8 as *const libc::c_char);
+                                    if aghtmlstr(*((*data).str_0).offset((*sym).id as isize)) != 0 {
                                         fprintf(
                                             gxlFile,
                                             b" kind=\"HTML-like string\"\0" as *const u8
                                                 as *const libc::c_char,
                                         );
                                     }
-                                    fprintf(
-                                        gxlFile,
-                                        b">\n\0" as *const u8 as *const libc::c_char,
-                                    );
+                                    fprintf(gxlFile, b">\n\0" as *const u8 as *const libc::c_char);
                                     tabover(gxlFile);
                                     fprintf(
                                         gxlFile,
                                         b"\t\t<string>\0" as *const u8 as *const libc::c_char,
                                     );
-                                    xml_puts(
-                                        gxlFile,
-                                        *((*data).str_0).offset((*sym).id as isize),
-                                    );
+                                    xml_puts(gxlFile, *((*data).str_0).offset((*sym).id as isize));
                                     fprintf(
                                         gxlFile,
                                         b"</string>\n\0" as *const u8 as *const libc::c_char,
@@ -1556,12 +1430,12 @@ unsafe extern "C" fn writeNondefaultAttr(
                     }
                 }
             } else if strncmp(
-                    (*sym).name,
-                    b"_gxl_composite_\0" as *const u8 as *const libc::c_char,
-                    (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
-                        .wrapping_sub(1 as libc::c_int as libc::c_ulong),
-                ) == 0 as libc::c_int
-                {
+                (*sym).name,
+                b"_gxl_composite_\0" as *const u8 as *const libc::c_char,
+                (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong),
+            ) == 0 as libc::c_int
+            {
                 if *((*data).str_0).offset((*sym).id as isize) != (*sym).defval {
                     tabover(gxlFile);
                     fprintf(
@@ -1570,12 +1444,11 @@ unsafe extern "C" fn writeNondefaultAttr(
                     );
                     xml_puts(
                         gxlFile,
-                        ((*sym).name)
-                            .offset(
-                                (::std::mem::size_of::<[libc::c_char; 16]>()
-                                    as libc::c_ulong)
-                                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
-                            ),
+                        ((*sym).name).offset(
+                            (::std::mem::size_of::<[libc::c_char; 16]>() as libc::c_ulong)
+                                .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                                as isize,
+                        ),
                     );
                     fprintf(gxlFile, b"\">\n\0" as *const u8 as *const libc::c_char);
                     tabover(gxlFile);
@@ -1589,20 +1462,17 @@ unsafe extern "C" fn writeNondefaultAttr(
                     );
                 }
             }
-            sym = (Some(
-                ((*(defdict as *mut Dt_t)).searchf).expect("non-null function pointer"),
-            ))
-                .expect(
-                    "non-null function pointer",
-                )(defdict, sym as *mut libc::c_void, 0o10 as libc::c_int)
-                as *mut Agsym_t;
+            sym = (Some(((*(defdict as *mut Dt_t)).searchf).expect("non-null function pointer")))
+                .expect("non-null function pointer")(
+                defdict,
+                sym as *mut libc::c_void,
+                0o10 as libc::c_int,
+            ) as *mut Agsym_t;
         }
     }
     let ref mut fresh11 = (*(obj as *mut Agobj_t)).tag;
     (*fresh11)
-        .set_attrwf(
-            (((*(obj as *mut Agobj_t)).tag).attrwf() == 0) as libc::c_int as libc::c_uint,
-        );
+        .set_attrwf((((*(obj as *mut Agobj_t)).tag).attrwf() == 0) as libc::c_int as libc::c_uint);
 }
 unsafe extern "C" fn attrs_written(
     mut stp: *mut gxlstate_t,
@@ -1636,11 +1506,20 @@ unsafe extern "C" fn writeNode(
             b"\t<attr name=\"name\">\n\0" as *const u8 as *const libc::c_char,
         );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t\t<string>\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t\t<string>\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, name);
-        fprintf(gxlFile, b"</string>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"</string>\n\0" as *const u8 as *const libc::c_char,
+        );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</attr>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</attr>\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     if attrs_written(stp, n as *mut libc::c_void) == 0 {
         writeNondefaultAttr(n as *mut libc::c_void, gxlFile, d);
@@ -1658,21 +1537,30 @@ unsafe extern "C" fn writePort(
     val = agget(e as *mut libc::c_void, name);
     if !val.is_null() && *val.offset(0 as libc::c_int as isize) as libc::c_int != 0 {
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t<attr name=\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t<attr name=\"\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, name);
         fprintf(gxlFile, b"\">\n\0" as *const u8 as *const libc::c_char);
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t\t<string>\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t\t<string>\0" as *const u8 as *const libc::c_char,
+        );
         xml_puts(gxlFile, val);
-        fprintf(gxlFile, b"</string>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"</string>\n\0" as *const u8 as *const libc::c_char,
+        );
         tabover(gxlFile);
-        fprintf(gxlFile, b"\t</attr>\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b"\t</attr>\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
-unsafe extern "C" fn writeEdgeTest(
-    mut g: *mut Agraph_t,
-    mut e: *mut Agedge_t,
-) -> libc::c_int {
+unsafe extern "C" fn writeEdgeTest(mut g: *mut Agraph_t, mut e: *mut Agedge_t) -> libc::c_int {
     let mut subg: *mut Agraph_t = 0 as *mut Agraph_t;
     subg = agfstsubg(g);
     while !subg.is_null() {
@@ -1698,13 +1586,13 @@ unsafe extern "C" fn writeEdge(
     } else {
         e.offset(1 as libc::c_int as isize)
     })
-        .node;
+    .node;
     h = (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
         e
     } else {
         e.offset(-(1 as libc::c_int as isize))
     })
-        .node;
+    .node;
     Level += 1;
     tabover(gxlFile);
     fprintf(
@@ -1712,12 +1600,22 @@ unsafe extern "C" fn writeEdge(
         b"<edge from=\"%s\" \0" as *const u8 as *const libc::c_char,
         nodeID(stp, t),
     );
-    fprintf(gxlFile, b"to=\"%s\"\0" as *const u8 as *const libc::c_char, nodeID(stp, h));
+    fprintf(
+        gxlFile,
+        b"to=\"%s\"\0" as *const u8 as *const libc::c_char,
+        nodeID(stp, h),
+    );
     edgeAttrs(gxlFile, e);
     if (*stp).directed != 0 {
-        fprintf(gxlFile, b" isdirected=\"true\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b" isdirected=\"true\"\0" as *const u8 as *const libc::c_char,
+        );
     } else {
-        fprintf(gxlFile, b" isdirected=\"false\"\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            gxlFile,
+            b" isdirected=\"false\"\0" as *const u8 as *const libc::c_char,
+        );
     }
     edge_id = agget(
         e as *mut libc::c_void,
@@ -1727,7 +1625,11 @@ unsafe extern "C" fn writeEdge(
         fprintf(gxlFile, b">\n\0" as *const u8 as *const libc::c_char);
     } else {
         bp = createEdgeId(stp, e);
-        fprintf(gxlFile, b" id=\"%s\">\n\0" as *const u8 as *const libc::c_char, bp);
+        fprintf(
+            gxlFile,
+            b" id=\"%s\">\n\0" as *const u8 as *const libc::c_char,
+            bp,
+        );
     }
     printHref(gxlFile, e as *mut libc::c_void);
     writePort(
@@ -1763,8 +1665,7 @@ unsafe extern "C" fn writeBody(
     while !n.is_null() {
         realn = agidnode((*stp).root, (*(n as *mut Agobj_t)).tag.id, 0 as libc::c_int);
         if (*((*realn).base.data as *mut Local_Agnodeinfo_t)).written == 0 {
-            (*((*realn).base.data as *mut Local_Agnodeinfo_t))
-                .written = 1 as libc::c_int;
+            (*((*realn).base.data as *mut Local_Agnodeinfo_t)).written = 1 as libc::c_int;
             writeNode(stp, n, gxlFile, (*dd).dict.n);
         }
         e = agfstout(g, n);
@@ -1844,9 +1745,8 @@ unsafe extern "C" fn iterateBody(mut stp: *mut gxlstate_t, mut g: *mut Agraph_t)
     }
 }
 unsafe extern "C" fn initState(mut g: *mut Agraph_t) -> *mut gxlstate_t {
-    let mut stp: *mut gxlstate_t = gv_alloc(
-        ::std::mem::size_of::<gxlstate_t>() as libc::c_ulong,
-    ) as *mut gxlstate_t;
+    let mut stp: *mut gxlstate_t =
+        gv_alloc(::std::mem::size_of::<gxlstate_t>() as libc::c_ulong) as *mut gxlstate_t;
     let ref mut fresh12 = (*stp).nodeMap;
     *fresh12 = dtopen(&mut nameDisc, Dtoset);
     let ref mut fresh13 = (*stp).graphMap;
@@ -1858,8 +1758,7 @@ unsafe extern "C" fn initState(mut g: *mut Agraph_t) -> *mut gxlstate_t {
     (*stp).attrsNotWritten = 0 as libc::c_int as libc::c_char;
     let ref mut fresh16 = (*stp).root;
     *fresh16 = g;
-    (*stp)
-        .directed = (agisdirected(g) != 0 as libc::c_int) as libc::c_int as libc::c_char;
+    (*stp).directed = (agisdirected(g) != 0 as libc::c_int) as libc::c_int as libc::c_char;
     return stp;
 }
 unsafe extern "C" fn freeState(mut stp: *mut gxlstate_t) {
@@ -1884,8 +1783,7 @@ pub unsafe extern "C" fn gv_to_gxl(mut g: *mut Agraph_t, mut gxlFile: *mut FILE)
     Level = 0 as libc::c_int;
     fprintf(
         gxlFile,
-        b"<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n\0" as *const u8
-            as *const libc::c_char,
+        b"<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n\0" as *const u8 as *const libc::c_char,
     );
     fprintf(gxlFile, b"<gxl>\n\0" as *const u8 as *const libc::c_char);
     writeHdr(stp, g, gxlFile, (0 as libc::c_int == 0) as libc::c_int);

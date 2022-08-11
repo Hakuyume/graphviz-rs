@@ -1,13 +1,17 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
     fn dtrestore(_: *mut Dt_t, _: *mut Dtlink_t) -> libc::c_int;
-    fn memcmp(
-        _: *const libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn memcmp(_: *const libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> libc::c_int;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
 }
 pub type size_t = libc::c_ulong;
@@ -44,13 +48,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -75,16 +74,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -104,10 +97,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -115,16 +107,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 unsafe extern "C" fn dtvsearch(
     mut dt: *mut Dt_t,
     mut obj: *mut libc::c_void,
@@ -142,8 +127,8 @@ unsafe extern "C" fn dtvsearch(
     let mut ky: libc::c_int = 0;
     let mut cmpf: Dtcompar_f = None;
     if type_0
-        & (0o1 as libc::c_int | 0o2 as libc::c_int | 0o100 as libc::c_int
-            | 0o40 as libc::c_int) != 0
+        & (0o1 as libc::c_int | 0o2 as libc::c_int | 0o100 as libc::c_int | 0o40 as libc::c_int)
+        != 0
     {
         return (Some(((*(*dt).meth).searchf).expect("non-null function pointer")))
             .expect("non-null function pointer")(dt, obj, type_0);
@@ -154,8 +139,7 @@ unsafe extern "C" fn dtvsearch(
     {
         d = dt;
         while !d.is_null() {
-            o = ((*(*d).meth).searchf)
-                .expect("non-null function pointer")(d, obj, type_0);
+            o = ((*(*d).meth).searchf).expect("non-null function pointer")(d, obj, type_0);
             if !o.is_null() {
                 break;
             }
@@ -167,8 +151,11 @@ unsafe extern "C" fn dtvsearch(
     }
     if (*(*dt).meth).type_0 & (0o10 as libc::c_int | 0o4 as libc::c_int) != 0 {
         if type_0
-            & (0o200 as libc::c_int | 0o400 as libc::c_int | 0o10 as libc::c_int
-                | 0o20 as libc::c_int) == 0
+            & (0o200 as libc::c_int
+                | 0o400 as libc::c_int
+                | 0o10 as libc::c_int
+                | 0o20 as libc::c_int)
+            == 0
         {
             return 0 as *mut libc::c_void;
         }
@@ -177,16 +164,14 @@ unsafe extern "C" fn dtvsearch(
         p = 0 as *mut Dt_t;
         d = dt;
         while !d.is_null() {
-            o = ((*(*d).meth).searchf)
-                .expect("non-null function pointer")(d, obj, type_0);
+            o = ((*(*d).meth).searchf).expect("non-null function pointer")(d, obj, type_0);
             if !o.is_null() {
                 ky = (*(*d).disc).key;
                 sz = (*(*d).disc).size;
                 lk = (*(*d).disc).link;
                 cmpf = (*(*d).disc).comparf;
                 ok = (if sz < 0 as libc::c_int {
-                    *((o as *mut libc::c_char).offset(ky as isize)
-                        as *mut *mut libc::c_char)
+                    *((o as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                 } else {
                     (o as *mut libc::c_char).offset(ky as isize)
                 }) as *mut libc::c_void;
@@ -194,7 +179,9 @@ unsafe extern "C" fn dtvsearch(
                 if !n.is_null() {
                     cmp = if cmpf.is_some() {
                         (Some(cmpf.expect("non-null function pointer")))
-                            .expect("non-null function pointer")(d, ok, nk, (*d).disc)
+                            .expect("non-null function pointer")(
+                            d, ok, nk, (*d).disc
+                        )
                     } else if sz <= 0 as libc::c_int {
                         strcmp(ok as *const libc::c_char, nk as *const libc::c_char)
                     } else {
@@ -236,13 +223,17 @@ unsafe extern "C" fn dtvsearch(
                 (*((*(*(*dt).walk).data).here as *mut Dthold_t)).obj
             } else {
                 ((*(*(*dt).walk).data).here as *mut libc::c_char)
-                    .offset(-((*(*(*dt).walk).disc).link as isize)) as *mut libc::c_void
+                    .offset(-((*(*(*dt).walk).disc).link as isize))
+                    as *mut libc::c_void
             })
     {
         d = dt;
         while !d.is_null() {
-            o = ((*(*d).meth).searchf)
-                .expect("non-null function pointer")(d, obj, 0o4 as libc::c_int);
+            o = ((*(*d).meth).searchf).expect("non-null function pointer")(
+                d,
+                obj,
+                0o4 as libc::c_int,
+            );
             if !o.is_null() {
                 break;
             }
@@ -264,47 +255,53 @@ unsafe extern "C" fn dtvsearch(
                 if p == d {
                     return obj;
                 }
-                if !(((*(*p).meth).searchf)
-                    .expect("non-null function pointer")(p, obj, 0o4 as libc::c_int))
-                    .is_null()
+                if !(((*(*p).meth).searchf).expect("non-null function pointer")(
+                    p,
+                    obj,
+                    0o4 as libc::c_int,
+                ))
+                .is_null()
                 {
                     break;
                 }
                 p = (*p).view;
             }
-            obj = ((*(*d).meth).searchf)
-                .expect("non-null function pointer")(d, obj, type_0);
+            obj = ((*(*d).meth).searchf).expect("non-null function pointer")(d, obj, type_0);
         }
         let ref mut fresh3 = (*dt).walk;
         *fresh3 = (*d).view;
         d = *fresh3;
         if d.is_null() {
-            return 0 as *mut libc::c_void
+            return 0 as *mut libc::c_void;
         } else {
             if type_0 & 0o10 as libc::c_int != 0 {
-                obj = ((*(*d).meth).searchf)
-                    .expect(
-                        "non-null function pointer",
-                    )(d, 0 as *mut libc::c_void, 0o200 as libc::c_int);
+                obj = ((*(*d).meth).searchf).expect("non-null function pointer")(
+                    d,
+                    0 as *mut libc::c_void,
+                    0o200 as libc::c_int,
+                );
             } else {
-                obj = ((*(*d).meth).searchf)
-                    .expect(
-                        "non-null function pointer",
-                    )(d, 0 as *mut libc::c_void, 0o400 as libc::c_int);
+                obj = ((*(*d).meth).searchf).expect("non-null function pointer")(
+                    d,
+                    0 as *mut libc::c_void,
+                    0o400 as libc::c_int,
+                );
             }
         }
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn dtview(mut dt: *mut Dt_t, mut view: *mut Dt_t) -> *mut Dt_t {
     let mut d: *mut Dt_t = 0 as *mut Dt_t;
     if (*(*dt).data).type_0 & 0o10000 as libc::c_int != 0 {
         dtrestore(dt, 0 as *mut Dtlink_t);
-    } else {};
+    } else {
+    };
     if !view.is_null() {
         if (*(*view).data).type_0 & 0o10000 as libc::c_int != 0 {
             dtrestore(view, 0 as *mut Dtlink_t);
-        } else {};
+        } else {
+        };
         if (*view).meth != (*dt).meth {
             return 0 as *mut Dt_t;
         }
@@ -334,11 +331,7 @@ pub unsafe extern "C" fn dtview(mut dt: *mut Dt_t, mut view: *mut Dt_t) -> *mut 
     let ref mut fresh8 = (*dt).searchf;
     *fresh8 = Some(
         dtvsearch
-            as unsafe extern "C" fn(
-                *mut Dt_t,
-                *mut libc::c_void,
-                libc::c_int,
-            ) -> *mut libc::c_void,
+            as unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
     );
     (*view).nview += 1 as libc::c_int;
     return view;

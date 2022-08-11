@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -214,9 +222,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -230,25 +236,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -261,9 +260,7 @@ pub type gvloadimage_engine_t = gvloadimage_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvloadimage_engine_s {
-    pub loadimage: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
-    >,
+    pub loadimage: Option<unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> ()>,
 }
 pub type usershape_t = usershape_s;
 #[derive(Copy, Clone)]
@@ -284,7 +281,7 @@ pub struct usershape_s {
     pub dpi: libc::c_int,
     pub data: *mut libc::c_void,
     pub datasize: size_t,
-    pub datafree: Option::<unsafe extern "C" fn(*mut usershape_t) -> ()>,
+    pub datafree: Option<unsafe extern "C" fn(*mut usershape_t) -> ()>,
 }
 pub type imagetype_t = libc::c_uint;
 pub const FT_TIFF: imagetype_t = 13;
@@ -406,7 +403,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -554,16 +552,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -579,18 +571,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -598,16 +584,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -649,9 +628,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -681,13 +659,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -720,26 +693,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -748,29 +713,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -778,8 +735,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -813,7 +770,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -874,13 +831,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -889,7 +845,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -948,47 +904,50 @@ unsafe extern "C" fn core_loadimage_svg(
 ) {
     let mut width: libc::c_double = b.UR.x - b.LL.x;
     let mut height: libc::c_double = b.UR.y - b.LL.y;
-    let mut originx: libc::c_double = (b.UR.x + b.LL.x - width)
-        / 2 as libc::c_int as libc::c_double;
-    let mut originy: libc::c_double = (b.UR.y + b.LL.y + height)
-        / 2 as libc::c_int as libc::c_double;
-    if !job.is_null() {} else {
+    let mut originx: libc::c_double =
+        (b.UR.x + b.LL.x - width) / 2 as libc::c_int as libc::c_double;
+    let mut originy: libc::c_double =
+        (b.UR.y + b.LL.y + height) / 2 as libc::c_int as libc::c_double;
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             52 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             53 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             54 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_svg(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    gvputs(job, b"<image xlink:href=\"\0" as *const u8 as *const libc::c_char);
+    gvputs(
+        job,
+        b"<image xlink:href=\"\0" as *const u8 as *const libc::c_char,
+    );
     gvputs(job, (*us).name);
     if (*job).rotation != 0 {
         gvprintf(
@@ -1047,66 +1006,58 @@ unsafe extern "C" fn core_loadimage_fig(
         LL: point { x: 0, y: 0 },
         UR: point { x: 0, y: 0 },
     };
-    if !job.is_null() {} else {
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             98 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             99 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             100 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"void core_loadimage_fig(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    b
-        .LL
-        .x = (if bf.LL.x >= 0 as libc::c_int as libc::c_double {
+    b.LL.x = (if bf.LL.x >= 0 as libc::c_int as libc::c_double {
         (bf.LL.x + 0.5f64) as libc::c_int
     } else {
         (bf.LL.x - 0.5f64) as libc::c_int
     });
-    b
-        .LL
-        .y = (if bf.LL.y >= 0 as libc::c_int as libc::c_double {
+    b.LL.y = (if bf.LL.y >= 0 as libc::c_int as libc::c_double {
         (bf.LL.y + 0.5f64) as libc::c_int
     } else {
         (bf.LL.y - 0.5f64) as libc::c_int
     });
-    b
-        .UR
-        .x = (if bf.UR.x >= 0 as libc::c_int as libc::c_double {
+    b.UR.x = (if bf.UR.x >= 0 as libc::c_int as libc::c_double {
         (bf.UR.x + 0.5f64) as libc::c_int
     } else {
         (bf.UR.x - 0.5f64) as libc::c_int
     });
-    b
-        .UR
-        .y = (if bf.UR.y >= 0 as libc::c_int as libc::c_double {
+    b.UR.y = (if bf.UR.y >= 0 as libc::c_int as libc::c_double {
         (bf.UR.y + 0.5f64) as libc::c_int
     } else {
         (bf.UR.y - 0.5f64) as libc::c_int
@@ -1157,81 +1108,89 @@ unsafe extern "C" fn core_loadimage_vrml(
 ) {
     let mut obj: *mut obj_state_t = 0 as *mut obj_state_t;
     let mut n: *mut node_t = 0 as *mut node_t;
-    if !job.is_null() {} else {
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             125 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     obj = (*job).obj;
-    if !obj.is_null() {} else {
+    if !obj.is_null() {
+    } else {
         __assert_fail(
             b"obj\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             127 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             128 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             129 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     n = (*(*job).obj).u.n;
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             132 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void core_loadimage_vrml(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     gvprintf(job, b"Shape {\n\0" as *const u8 as *const libc::c_char);
-    gvprintf(job, b"  appearance Appearance {\n\0" as *const u8 as *const libc::c_char);
-    gvprintf(job, b"    material Material {\n\0" as *const u8 as *const libc::c_char);
+    gvprintf(
+        job,
+        b"  appearance Appearance {\n\0" as *const u8 as *const libc::c_char,
+    );
+    gvprintf(
+        job,
+        b"    material Material {\n\0" as *const u8 as *const libc::c_char,
+    );
     gvprintf(
         job,
         b"      ambientIntensity 0.33\n\0" as *const u8 as *const libc::c_char,
     );
-    gvprintf(job, b"        diffuseColor 1 1 1\n\0" as *const u8 as *const libc::c_char);
+    gvprintf(
+        job,
+        b"        diffuseColor 1 1 1\n\0" as *const u8 as *const libc::c_char,
+    );
     gvprintf(job, b"    }\n\0" as *const u8 as *const libc::c_char);
     gvprintf(
         job,
-        b"    texture ImageTexture { url \"%s\" }\n\0" as *const u8
-            as *const libc::c_char,
+        b"    texture ImageTexture { url \"%s\" }\n\0" as *const u8 as *const libc::c_char,
         (*us).name,
     );
     gvprintf(job, b"  }\n\0" as *const u8 as *const libc::c_char);
@@ -1246,46 +1205,44 @@ unsafe extern "C" fn core_loadimage_ps(
     mut b: boxf,
     mut filled: bool,
 ) {
-    if !job.is_null() {} else {
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             159 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 60],
-                &[libc::c_char; 60],
-            >(b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 60], &[libc::c_char; 60]>(
+                b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             160 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 60],
-                &[libc::c_char; 60],
-            >(b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 60], &[libc::c_char; 60]>(
+                b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             161 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 60],
-                &[libc::c_char; 60],
-            >(b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 60], &[libc::c_char; 60]>(
+                b"void core_loadimage_ps(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     if !((*us).data).is_null() {
-        if (*us).datafree
-            != Some(ps_freeimage as unsafe extern "C" fn(*mut usershape_t) -> ())
-        {
+        if (*us).datafree != Some(ps_freeimage as unsafe extern "C" fn(*mut usershape_t) -> ()) {
             ((*us).datafree).expect("non-null function pointer")(us);
             let ref mut fresh0 = (*us).data;
             *fresh0 = 0 as *mut libc::c_void;
@@ -1308,9 +1265,18 @@ unsafe extern "C" fn core_loadimage_ps(
             st_size: 0,
             st_blksize: 0,
             st_blocks: 0,
-            st_atim: timespec { tv_sec: 0, tv_nsec: 0 },
-            st_mtim: timespec { tv_sec: 0, tv_nsec: 0 },
-            st_ctim: timespec { tv_sec: 0, tv_nsec: 0 },
+            st_atim: timespec {
+                tv_sec: 0,
+                tv_nsec: 0,
+            },
+            st_mtim: timespec {
+                tv_sec: 0,
+                tv_nsec: 0,
+            },
+            st_ctim: timespec {
+                tv_sec: 0,
+                tv_nsec: 0,
+            },
             __glibc_reserved: [0; 3],
         };
         if !gvusershape_file_access(us) {
@@ -1372,40 +1338,40 @@ unsafe extern "C" fn core_loadimage_pslib(
     let mut i: libc::c_int = 0;
     let mut AF: [pointf; 4] = [pointf { x: 0., y: 0. }; 4];
     let mut shape: *mut shape_desc = 0 as *mut shape_desc;
-    if !job.is_null() {} else {
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             220 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             221 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_core.c\0" as *const u8 as *const libc::c_char,
             222 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"void core_loadimage_pslib(GVJ_t *, usershape_t *, boxf, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     shape = (*us).data as *mut shape_desc;
@@ -1494,15 +1460,13 @@ unsafe extern "C" fn core_loadimage_tk(
 ) {
     gvprintf(
         job,
-        b"image create photo \"photo_%s\" -file \"%s\"\n\0" as *const u8
-            as *const libc::c_char,
+        b"image create photo \"photo_%s\" -file \"%s\"\n\0" as *const u8 as *const libc::c_char,
         (*us).name,
         (*us).name,
     );
     gvprintf(
         job,
-        b"$c create image %.2f %.2f -image \"photo_%s\"\n\0" as *const u8
-            as *const libc::c_char,
+        b"$c create image %.2f %.2f -image \"photo_%s\"\n\0" as *const u8 as *const libc::c_char,
         (*us).name,
         (b.UR.x + b.LL.x) / 2 as libc::c_int as libc::c_double,
         (b.UR.y + b.LL.y) / 2 as libc::c_int as libc::c_double,
@@ -1513,18 +1477,14 @@ unsafe extern "C" fn core_loadimage_null(
     mut us: *mut usershape_t,
     mut b: boxf,
     mut filled: bool,
-) {}
+) {
+}
 static mut engine_svg: gvloadimage_engine_t = unsafe {
     {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_svg
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1535,12 +1495,7 @@ static mut engine_fig: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_fig
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1551,12 +1506,7 @@ static mut engine_vrml: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_vrml
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1567,12 +1517,7 @@ static mut engine_ps: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_ps
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1583,12 +1528,7 @@ static mut engine_pslib: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_pslib
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1599,12 +1539,7 @@ static mut engine_null: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_null
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1615,12 +1550,7 @@ static mut engine_xdot: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_xdot
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1631,12 +1561,7 @@ static mut engine_vml: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_vml
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1647,12 +1572,7 @@ static mut engine_tk: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 core_loadimage_tk
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1666,8 +1586,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_SVG as libc::c_int,
                 type_0: b"png:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1677,8 +1597,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_SVG as libc::c_int,
                 type_0: b"gif:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1688,8 +1608,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_SVG as libc::c_int,
                 type_0: b"jpeg:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1699,8 +1619,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_SVG as libc::c_int,
                 type_0: b"jpe:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1710,8 +1630,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_SVG as libc::c_int,
                 type_0: b"jpg:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1721,8 +1641,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_FIG as libc::c_int,
                 type_0: b"png:fig\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_fig as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_fig as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1732,8 +1652,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_FIG as libc::c_int,
                 type_0: b"gif:fig\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_fig as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_fig as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1743,8 +1663,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_FIG as libc::c_int,
                 type_0: b"jpeg:fig\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_fig as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_fig as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1754,8 +1674,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_FIG as libc::c_int,
                 type_0: b"jpe:fig\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_fig as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_fig as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1765,8 +1685,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_FIG as libc::c_int,
                 type_0: b"jpg:fig\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_fig as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_fig as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1776,8 +1696,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_VRML as libc::c_int,
                 type_0: b"png:vrml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vrml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vrml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1787,8 +1707,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_VRML as libc::c_int,
                 type_0: b"gif:vrml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vrml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vrml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1798,8 +1718,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VRML as libc::c_int,
                 type_0: b"jpeg:vrml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vrml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vrml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1809,8 +1729,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VRML as libc::c_int,
                 type_0: b"jpe:vrml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vrml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vrml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1820,8 +1740,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VRML as libc::c_int,
                 type_0: b"jpg:vrml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vrml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vrml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1831,8 +1751,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_PS as libc::c_int,
                 type_0: b"eps:ps\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_ps as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_ps as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1842,8 +1762,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_PS as libc::c_int,
                 type_0: b"ps:ps\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_ps as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_ps as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1853,8 +1773,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PSLIB_PS as libc::c_int,
                 type_0: b"(lib):ps\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_pslib as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_pslib as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1864,8 +1784,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_MAP as libc::c_int,
                 type_0: b"png:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1875,8 +1795,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_MAP as libc::c_int,
                 type_0: b"gif:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1886,8 +1806,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_MAP as libc::c_int,
                 type_0: b"jpeg:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1897,8 +1817,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_MAP as libc::c_int,
                 type_0: b"jpe:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1908,8 +1828,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_MAP as libc::c_int,
                 type_0: b"jpg:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1919,8 +1839,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_MAP as libc::c_int,
                 type_0: b"ps:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1930,8 +1850,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_MAP as libc::c_int,
                 type_0: b"eps:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1941,8 +1861,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_SVG_MAP as libc::c_int,
                 type_0: b"svg:map\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1952,8 +1872,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_DOT as libc::c_int,
                 type_0: b"png:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1963,8 +1883,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_DOT as libc::c_int,
                 type_0: b"gif:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1974,8 +1894,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_DOT as libc::c_int,
                 type_0: b"jpeg:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1985,8 +1905,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_DOT as libc::c_int,
                 type_0: b"jpe:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1996,8 +1916,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_DOT as libc::c_int,
                 type_0: b"jpg:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2007,8 +1927,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_DOT as libc::c_int,
                 type_0: b"ps:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2018,8 +1938,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_DOT as libc::c_int,
                 type_0: b"eps:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2029,8 +1949,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_SVG_DOT as libc::c_int,
                 type_0: b"svg:dot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_null as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_null as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2040,8 +1960,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_XDOT as libc::c_int,
                 type_0: b"png:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2051,8 +1971,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_XDOT as libc::c_int,
                 type_0: b"gif:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2062,8 +1982,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_XDOT as libc::c_int,
                 type_0: b"jpeg:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2073,8 +1993,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_XDOT as libc::c_int,
                 type_0: b"jpe:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2084,8 +2004,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_XDOT as libc::c_int,
                 type_0: b"jpg:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2095,8 +2015,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_XDOT as libc::c_int,
                 type_0: b"ps:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2106,8 +2026,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PS_XDOT as libc::c_int,
                 type_0: b"eps:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2117,8 +2037,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_SVG_XDOT as libc::c_int,
                 type_0: b"svg:xdot\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_xdot as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_xdot as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2128,8 +2048,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_SVG_SVG as libc::c_int,
                 type_0: b"svg:svg\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_svg as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_svg as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2139,8 +2059,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_PNG_VML as libc::c_int,
                 type_0: b"png:vml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2150,8 +2070,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_VML as libc::c_int,
                 type_0: b"gif:vml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2161,8 +2081,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VML as libc::c_int,
                 type_0: b"jpeg:vml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2172,8 +2092,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VML as libc::c_int,
                 type_0: b"jpe:vml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2183,8 +2103,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_JPEG_VML as libc::c_int,
                 type_0: b"jpg:vml\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_vml as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_vml as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -2194,8 +2114,8 @@ pub static mut gvloadimage_core_types: [gvplugin_installed_t; 50] = unsafe {
                 id: FORMAT_GIF_TK as libc::c_int,
                 type_0: b"gif:tk\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_tk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_tk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init

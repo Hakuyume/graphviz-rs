@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -16,11 +24,8 @@ extern "C" {
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn strcasecmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncasecmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncasecmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong)
+        -> libc::c_int;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
     fn __ctype_tolower_loc() -> *mut *const __int32_t;
     fn grealloc(_: *mut libc::c_void, _: size_t) -> *mut libc::c_void;
@@ -64,9 +69,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type C2RustUnnamed = libc::c_uint;
 pub const _ISalnum: C2RustUnnamed = 8;
 pub const _ISpunct: C2RustUnnamed = 4;
@@ -134,7 +138,9 @@ unsafe extern "C" fn bsearch(
     __l = 0 as libc::c_int as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l.wrapping_add(__u).wrapping_div(2 as libc::c_int as libc::c_ulong);
+        __idx = __l
+            .wrapping_add(__u)
+            .wrapping_div(2 as libc::c_int as libc::c_ulong);
         __p = (__base as *const libc::c_char).offset(__idx.wrapping_mul(__size) as isize)
             as *const libc::c_void;
         __comparison = (Some(__compar.expect("non-null function pointer")))
@@ -144,7 +150,7 @@ unsafe extern "C" fn bsearch(
         } else if __comparison > 0 as libc::c_int {
             __l = __idx.wrapping_add(1 as libc::c_int as libc::c_ulong);
         } else {
-            return __p as *mut libc::c_void
+            return __p as *mut libc::c_void;
         }
     }
     return 0 as *mut libc::c_void;
@@ -160,8 +166,7 @@ unsafe extern "C" fn tolower(mut __c: libc::c_int) -> libc::c_int {
 static mut color_lib: [hsvrgbacolor_t; 2515] = [
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -174,8 +179,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -188,8 +192,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -202,8 +205,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -216,8 +218,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -230,8 +231,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -244,8 +244,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -258,8 +257,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -272,8 +270,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -286,8 +283,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -300,8 +296,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -314,8 +309,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 176 as libc::c_int as libc::c_uchar,
@@ -328,8 +322,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -342,8 +335,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -356,8 +348,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -370,8 +361,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -384,8 +374,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 176 as libc::c_int as libc::c_uchar,
@@ -398,8 +387,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -412,8 +400,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -426,8 +413,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -440,8 +426,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -454,8 +439,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -468,8 +452,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 176 as libc::c_int as libc::c_uchar,
@@ -482,8 +465,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -496,8 +478,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 224 as libc::c_int as libc::c_uchar,
             v: 191 as libc::c_int as libc::c_uchar,
@@ -510,8 +491,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 93 as libc::c_int as libc::c_uchar,
             v: 201 as libc::c_int as libc::c_uchar,
@@ -524,8 +504,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 187 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 212 as libc::c_int as libc::c_uchar,
@@ -538,8 +517,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -552,8 +530,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -566,8 +543,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 176 as libc::c_int as libc::c_uchar,
@@ -580,8 +556,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -594,8 +569,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 224 as libc::c_int as libc::c_uchar,
             v: 191 as libc::c_int as libc::c_uchar,
@@ -608,8 +582,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/accent8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/accent8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 102 as libc::c_int as libc::c_uchar,
@@ -622,8 +595,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 25 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -636,8 +608,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 75 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -650,8 +621,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 145 as libc::c_int as libc::c_uchar,
             s: 188 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -664,8 +634,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -678,8 +647,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 46 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -692,8 +660,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -706,8 +673,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 181 as libc::c_int as libc::c_uchar,
@@ -720,8 +686,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -734,8 +699,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 46 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -748,8 +712,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -762,8 +725,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 145 as libc::c_int as libc::c_uchar,
             s: 188 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -776,8 +738,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 156 as libc::c_int as libc::c_uchar,
@@ -790,8 +751,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -804,8 +764,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -818,8 +777,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 75 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -832,8 +790,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -846,8 +803,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 145 as libc::c_int as libc::c_uchar,
             s: 188 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -860,8 +816,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 156 as libc::c_int as libc::c_uchar,
@@ -874,8 +829,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -888,8 +842,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -902,8 +855,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 75 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -916,8 +868,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -930,8 +881,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             v: 198 as libc::c_int as libc::c_uchar,
@@ -944,8 +894,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 181 as libc::c_int as libc::c_uchar,
@@ -958,8 +907,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 148 as libc::c_int as libc::c_uchar,
@@ -972,8 +920,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -986,8 +933,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 25 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -1000,8 +946,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -1014,8 +959,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 75 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -1028,8 +972,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -1042,8 +985,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             v: 198 as libc::c_int as libc::c_uchar,
@@ -1056,8 +998,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 181 as libc::c_int as libc::c_uchar,
@@ -1070,8 +1011,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 148 as libc::c_int as libc::c_uchar,
@@ -1084,8 +1024,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -1098,8 +1037,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 25 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -1112,8 +1050,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -1126,8 +1063,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 75 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -1140,8 +1076,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 127 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -1154,8 +1089,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             v: 198 as libc::c_int as libc::c_uchar,
@@ -1168,8 +1102,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 181 as libc::c_int as libc::c_uchar,
@@ -1182,8 +1115,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 156 as libc::c_int as libc::c_uchar,
@@ -1196,8 +1128,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/blues9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/blues9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 152 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             v: 107 as libc::c_int as libc::c_uchar,
@@ -1210,8 +1141,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 239 as libc::c_int as libc::c_uchar,
             v: 84 as libc::c_int as libc::c_uchar,
@@ -1224,8 +1154,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 119 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 60 as libc::c_int as libc::c_uchar,
@@ -1238,8 +1167,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 236 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -1252,8 +1180,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 191 as libc::c_int as libc::c_uchar,
@@ -1266,8 +1193,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 29 as libc::c_int as libc::c_uchar,
             s: 112 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -1280,8 +1206,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 52 as libc::c_int as libc::c_uchar,
             v: 246 as libc::c_int as libc::c_uchar,
@@ -1294,8 +1219,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 121 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 234 as libc::c_int as libc::c_uchar,
@@ -1308,8 +1232,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 120 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -1322,8 +1245,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 124 as libc::c_int as libc::c_uchar,
             s: 165 as libc::c_int as libc::c_uchar,
             v: 151 as libc::c_int as libc::c_uchar,
@@ -1336,8 +1258,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 124 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 102 as libc::c_int as libc::c_uchar,
@@ -1350,8 +1271,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 239 as libc::c_int as libc::c_uchar,
             v: 84 as libc::c_int as libc::c_uchar,
@@ -1364,8 +1284,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 124 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 102 as libc::c_int as libc::c_uchar,
@@ -1378,8 +1297,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 119 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 60 as libc::c_int as libc::c_uchar,
@@ -1392,8 +1310,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 236 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -1406,8 +1323,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 191 as libc::c_int as libc::c_uchar,
@@ -1420,8 +1336,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 29 as libc::c_int as libc::c_uchar,
             s: 112 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -1434,8 +1349,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 52 as libc::c_int as libc::c_uchar,
             v: 246 as libc::c_int as libc::c_uchar,
@@ -1448,8 +1362,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -1462,8 +1375,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 121 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 234 as libc::c_int as libc::c_uchar,
@@ -1476,8 +1388,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 120 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -1490,8 +1401,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/brbg11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/brbg11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 124 as libc::c_int as libc::c_uchar,
             s: 165 as libc::c_int as libc::c_uchar,
             v: 151 as libc::c_int as libc::c_uchar,
@@ -3142,8 +3052,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark23/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark23/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3156,8 +3065,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark23/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark23/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3170,8 +3078,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark23/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark23/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3184,8 +3091,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark24/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark24/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3198,8 +3104,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark24/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark24/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3212,8 +3117,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark24/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark24/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3226,8 +3130,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark24/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark24/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -3240,8 +3143,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark25/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark25/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3254,8 +3156,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark25/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark25/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3268,8 +3169,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark25/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark25/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3282,8 +3182,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark25/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark25/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -3296,8 +3195,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark25/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark25/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3310,8 +3208,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3324,8 +3221,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3338,8 +3234,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3352,8 +3247,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -3366,8 +3260,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3380,8 +3273,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark26/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark26/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -3394,8 +3286,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3408,8 +3299,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3422,8 +3312,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3436,8 +3325,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -3450,8 +3338,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3464,8 +3351,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -3478,8 +3364,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark27/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark27/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 27 as libc::c_int as libc::c_uchar,
             s: 210 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3492,8 +3377,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -3506,8 +3390,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -3520,8 +3403,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -3534,8 +3416,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 231 as libc::c_int as libc::c_uchar,
@@ -3548,8 +3429,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3562,8 +3442,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -3576,8 +3455,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 27 as libc::c_int as libc::c_uchar,
             s: 210 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -3590,8 +3468,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/dark28/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/dark28/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 102 as libc::c_int as libc::c_uchar,
@@ -4150,8 +4027,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 74 as libc::c_int as libc::c_uchar,
             s: 21 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -4164,8 +4040,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4178,8 +4053,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -4192,8 +4066,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 73 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -4206,8 +4079,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 78 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -4220,8 +4092,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4234,8 +4105,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 190 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -4248,8 +4118,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 73 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -4262,8 +4131,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 78 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -4276,8 +4144,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4290,8 +4157,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -4304,8 +4170,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 102 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 109 as libc::c_int as libc::c_uchar,
@@ -4318,8 +4183,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 73 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -4332,8 +4196,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -4346,8 +4209,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4360,8 +4222,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4374,8 +4235,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -4388,8 +4248,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 102 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 109 as libc::c_int as libc::c_uchar,
@@ -4402,8 +4261,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 73 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -4416,8 +4274,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -4430,8 +4287,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4444,8 +4300,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4458,8 +4313,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 96 as libc::c_int as libc::c_uchar,
             s: 158 as libc::c_int as libc::c_uchar,
             v: 171 as libc::c_int as libc::c_uchar,
@@ -4472,8 +4326,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 190 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -4486,8 +4339,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 90 as libc::c_int as libc::c_uchar,
@@ -4500,8 +4352,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 72 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -4514,8 +4365,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 74 as libc::c_int as libc::c_uchar,
             s: 21 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -4528,8 +4378,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -4542,8 +4391,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4556,8 +4404,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4570,8 +4417,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 96 as libc::c_int as libc::c_uchar,
             s: 158 as libc::c_int as libc::c_uchar,
             v: 171 as libc::c_int as libc::c_uchar,
@@ -4584,8 +4430,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 190 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -4598,8 +4443,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 90 as libc::c_int as libc::c_uchar,
@@ -4612,8 +4456,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 72 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -4626,8 +4469,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 74 as libc::c_int as libc::c_uchar,
             s: 21 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -4640,8 +4482,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -4654,8 +4495,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4668,8 +4508,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 86 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -4682,8 +4521,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 96 as libc::c_int as libc::c_uchar,
             s: 158 as libc::c_int as libc::c_uchar,
             v: 171 as libc::c_int as libc::c_uchar,
@@ -4696,8 +4534,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 190 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -4710,8 +4547,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 102 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 109 as libc::c_int as libc::c_uchar,
@@ -4724,8 +4560,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greens9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greens9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 101 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 68 as libc::c_int as libc::c_uchar,
@@ -4738,8 +4573,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -4752,8 +4586,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -4766,8 +4599,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 99 as libc::c_int as libc::c_uchar,
@@ -4780,8 +4612,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -4794,8 +4625,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -4808,8 +4638,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -4822,8 +4651,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 82 as libc::c_int as libc::c_uchar,
@@ -4836,8 +4664,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -4850,8 +4677,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -4864,8 +4690,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -4878,8 +4703,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 99 as libc::c_int as libc::c_uchar,
@@ -4892,8 +4716,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 37 as libc::c_int as libc::c_uchar,
@@ -4906,8 +4729,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -4920,8 +4742,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -4934,8 +4755,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -4948,8 +4768,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -4962,8 +4781,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 99 as libc::c_int as libc::c_uchar,
@@ -4976,8 +4794,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 37 as libc::c_int as libc::c_uchar,
@@ -4990,8 +4807,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -5004,8 +4820,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5018,8 +4833,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -5032,8 +4846,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -5046,8 +4859,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 115 as libc::c_int as libc::c_uchar,
@@ -5060,8 +4872,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 82 as libc::c_int as libc::c_uchar,
@@ -5074,8 +4885,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 37 as libc::c_int as libc::c_uchar,
@@ -5088,8 +4898,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -5102,8 +4911,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -5116,8 +4924,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5130,8 +4937,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -5144,8 +4950,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -5158,8 +4963,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 115 as libc::c_int as libc::c_uchar,
@@ -5172,8 +4976,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 82 as libc::c_int as libc::c_uchar,
@@ -5186,8 +4989,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 37 as libc::c_int as libc::c_uchar,
@@ -5200,8 +5002,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -5214,8 +5015,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -5228,8 +5028,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5242,8 +5041,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -5256,8 +5054,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -5270,8 +5067,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 115 as libc::c_int as libc::c_uchar,
@@ -5284,8 +5080,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 82 as libc::c_int as libc::c_uchar,
@@ -5298,8 +5093,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 37 as libc::c_int as libc::c_uchar,
@@ -5312,8 +5106,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/greys9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/greys9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 0 as libc::c_int as libc::c_uchar,
@@ -5326,8 +5119,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 48 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5340,8 +5132,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5354,8 +5145,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 14 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -5368,8 +5158,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5382,8 +5171,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5396,8 +5184,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5410,8 +5197,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5424,8 +5210,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5438,8 +5223,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5452,8 +5236,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5466,8 +5249,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 14 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -5480,8 +5262,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 250 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -5494,8 +5275,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5508,8 +5288,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 91 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5522,8 +5301,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5536,8 +5314,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5550,8 +5327,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 14 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -5564,8 +5340,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 250 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -5578,8 +5353,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5592,8 +5366,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 91 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5606,8 +5379,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5620,8 +5392,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5634,8 +5405,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 234 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -5648,8 +5418,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5662,8 +5431,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 247 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -5676,8 +5444,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -5690,8 +5457,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 48 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5704,8 +5470,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 91 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5718,8 +5483,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5732,8 +5496,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5746,8 +5509,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 234 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -5760,8 +5522,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5774,8 +5535,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 247 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -5788,8 +5548,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -5802,8 +5561,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 48 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -5816,8 +5574,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 91 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5830,8 +5587,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5844,8 +5600,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -5858,8 +5613,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 234 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -5872,8 +5626,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -5886,8 +5639,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 250 as libc::c_int as libc::c_uchar,
             v: 166 as libc::c_int as libc::c_uchar,
@@ -5900,8 +5652,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/oranges9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/oranges9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 246 as libc::c_int as libc::c_uchar,
             v: 127 as libc::c_int as libc::c_uchar,
@@ -6460,8 +6211,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6474,8 +6224,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 190 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 154 as libc::c_int as libc::c_uchar,
@@ -6488,8 +6237,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -6502,8 +6250,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -6516,8 +6263,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -6530,8 +6276,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -6544,8 +6289,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6558,8 +6302,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -6572,8 +6315,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -6586,8 +6328,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -6600,8 +6341,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6614,8 +6354,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 190 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 154 as libc::c_int as libc::c_uchar,
@@ -6628,8 +6367,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -6642,8 +6380,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -6656,8 +6393,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -6670,8 +6406,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -6684,8 +6419,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -6698,8 +6432,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6712,8 +6445,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -6726,8 +6458,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -6740,8 +6471,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -6754,8 +6484,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6768,8 +6497,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 190 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 154 as libc::c_int as libc::c_uchar,
@@ -6782,8 +6510,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -6796,8 +6523,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/12\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/12\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 197 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -6810,8 +6536,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -6824,8 +6549,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -6838,8 +6562,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -6852,8 +6575,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -6866,8 +6588,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6880,8 +6601,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -6894,8 +6614,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -6908,8 +6627,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired12/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired12/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -6922,8 +6640,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6936,8 +6653,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -6950,8 +6666,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -6964,8 +6679,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -6978,8 +6692,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -6992,8 +6705,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7006,8 +6718,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7020,8 +6731,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7034,8 +6744,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -7048,8 +6757,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7062,8 +6770,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7076,8 +6783,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7090,8 +6796,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7104,8 +6809,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -7118,8 +6822,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7132,8 +6835,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7146,8 +6848,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7160,8 +6861,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7174,8 +6874,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7188,8 +6887,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -7202,8 +6900,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7216,8 +6913,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7230,8 +6926,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7244,8 +6939,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7258,8 +6952,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -7272,8 +6965,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7286,8 +6978,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -7300,8 +6991,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7314,8 +7004,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7328,8 +7017,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7342,8 +7030,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7356,8 +7043,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -7370,8 +7056,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -7384,8 +7069,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7398,8 +7082,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -7412,8 +7095,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 65 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 223 as libc::c_int as libc::c_uchar,
@@ -7426,8 +7108,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 82 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -7440,8 +7121,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7454,8 +7134,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7468,8 +7147,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -7482,8 +7160,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -7496,8 +7173,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/paired9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/paired9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -7510,8 +7186,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel13/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel13/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7524,8 +7199,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel13/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel13/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7538,8 +7212,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel13/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel13/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7552,8 +7225,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel14/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel14/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7566,8 +7238,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel14/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel14/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7580,8 +7251,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel14/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel14/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7594,8 +7264,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel14/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel14/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -7608,8 +7277,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel15/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel15/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7622,8 +7290,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel15/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel15/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7636,8 +7303,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel15/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel15/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7650,8 +7316,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel15/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel15/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -7664,8 +7329,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel15/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel15/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 88 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -7678,8 +7342,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7692,8 +7355,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7706,8 +7368,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7720,8 +7381,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -7734,8 +7394,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 88 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -7748,8 +7407,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel16/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel16/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -7762,8 +7420,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7776,8 +7433,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7790,8 +7446,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7804,8 +7459,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -7818,8 +7472,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 88 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -7832,8 +7485,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -7846,8 +7498,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel17/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel17/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 229 as libc::c_int as libc::c_uchar,
@@ -7860,8 +7511,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7874,8 +7524,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -7888,8 +7537,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -7902,8 +7550,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -7916,8 +7563,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 88 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -7930,8 +7576,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -7944,8 +7589,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 229 as libc::c_int as libc::c_uchar,
@@ -7958,8 +7602,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel18/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel18/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -7972,8 +7615,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -7986,8 +7628,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -8000,8 +7641,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -8014,8 +7654,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 202 as libc::c_int as libc::c_uchar,
             s: 27 as libc::c_int as libc::c_uchar,
             v: 228 as libc::c_int as libc::c_uchar,
@@ -8028,8 +7667,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 88 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -8042,8 +7680,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -8056,8 +7693,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 44 as libc::c_int as libc::c_uchar,
             v: 229 as libc::c_int as libc::c_uchar,
@@ -8070,8 +7706,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8084,8 +7719,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel19/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel19/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 242 as libc::c_int as libc::c_uchar,
@@ -8098,8 +7732,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel23/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel23/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8112,8 +7745,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel23/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel23/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8126,8 +7758,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel23/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel23/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8140,8 +7771,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel24/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel24/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8154,8 +7784,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel24/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel24/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8168,8 +7797,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel24/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel24/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8182,8 +7810,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel24/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel24/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -8196,8 +7823,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel25/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel25/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8210,8 +7836,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel25/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel25/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8224,8 +7849,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel25/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel25/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8238,8 +7862,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel25/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel25/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -8252,8 +7875,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel25/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel25/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8266,8 +7888,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8280,8 +7901,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8294,8 +7914,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8308,8 +7927,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -8322,8 +7940,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8336,8 +7953,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel26/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel26/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -8350,8 +7966,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8364,8 +7979,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8378,8 +7992,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8392,8 +8005,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -8406,8 +8018,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8420,8 +8031,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -8434,8 +8044,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel27/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel27/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 39 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -8448,8 +8057,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 108 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -8462,8 +8070,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8476,8 +8083,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -8490,8 +8096,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 43 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -8504,8 +8109,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 45 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8518,8 +8122,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -8532,8 +8135,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 39 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -8546,8 +8148,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pastel28/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pastel28/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -8560,8 +8161,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 230 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 142 as libc::c_int as libc::c_uchar,
@@ -8574,8 +8174,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 191 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -8588,8 +8187,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 230 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 197 as libc::c_int as libc::c_uchar,
@@ -8602,8 +8200,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 118 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -8616,8 +8213,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 229 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -8630,8 +8226,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8644,8 +8239,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 59 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8658,8 +8252,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 61 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -8672,8 +8265,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 166 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -8686,8 +8278,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 68 as libc::c_int as libc::c_uchar,
             s: 197 as libc::c_int as libc::c_uchar,
             v: 146 as libc::c_int as libc::c_uchar,
@@ -8700,8 +8291,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 230 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 142 as libc::c_int as libc::c_uchar,
@@ -8714,8 +8304,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 68 as libc::c_int as libc::c_uchar,
             s: 197 as libc::c_int as libc::c_uchar,
             v: 146 as libc::c_int as libc::c_uchar,
@@ -8728,8 +8317,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 191 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -8742,8 +8330,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 230 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 197 as libc::c_int as libc::c_uchar,
@@ -8756,8 +8343,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 118 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -8770,8 +8356,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 229 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 241 as libc::c_int as libc::c_uchar,
@@ -8784,8 +8369,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -8798,8 +8382,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -8812,8 +8395,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 59 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -8826,8 +8408,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 61 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -8840,8 +8421,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/piyg11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/piyg11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 166 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -9400,8 +8980,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 206 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 75 as libc::c_int as libc::c_uchar,
@@ -9414,8 +8993,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 101 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 68 as libc::c_int as libc::c_uchar,
@@ -9428,8 +9006,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 206 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 131 as libc::c_int as libc::c_uchar,
@@ -9442,8 +9019,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 87 as libc::c_int as libc::c_uchar,
             v: 171 as libc::c_int as libc::c_uchar,
@@ -9456,8 +9032,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 51 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -9470,8 +9045,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 210 as libc::c_int as libc::c_uchar,
             s: 21 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -9484,8 +9058,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 76 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -9498,8 +9071,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -9512,8 +9084,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 88 as libc::c_int as libc::c_uchar,
             s: 123 as libc::c_int as libc::c_uchar,
             v: 174 as libc::c_int as libc::c_uchar,
@@ -9526,8 +9097,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 97 as libc::c_int as libc::c_uchar,
             s: 197 as libc::c_int as libc::c_uchar,
             v: 120 as libc::c_int as libc::c_uchar,
@@ -9540,8 +9110,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 206 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 75 as libc::c_int as libc::c_uchar,
@@ -9554,8 +9123,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 97 as libc::c_int as libc::c_uchar,
             s: 197 as libc::c_int as libc::c_uchar,
             v: 120 as libc::c_int as libc::c_uchar,
@@ -9568,8 +9136,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 101 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 68 as libc::c_int as libc::c_uchar,
@@ -9582,8 +9149,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 206 as libc::c_int as libc::c_uchar,
             s: 173 as libc::c_int as libc::c_uchar,
             v: 131 as libc::c_int as libc::c_uchar,
@@ -9596,8 +9162,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 87 as libc::c_int as libc::c_uchar,
             v: 171 as libc::c_int as libc::c_uchar,
@@ -9610,8 +9175,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 51 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -9624,8 +9188,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 210 as libc::c_int as libc::c_uchar,
             s: 21 as libc::c_int as libc::c_uchar,
             v: 232 as libc::c_int as libc::c_uchar,
@@ -9638,8 +9201,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -9652,8 +9214,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 76 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -9666,8 +9227,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 80 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -9680,8 +9240,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/prgn11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/prgn11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 88 as libc::c_int as libc::c_uchar,
             s: 123 as libc::c_int as libc::c_uchar,
             v: 174 as libc::c_int as libc::c_uchar,
@@ -10786,8 +10345,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 200 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -10800,8 +10358,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -10814,8 +10371,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -10828,8 +10384,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 207 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -10842,8 +10397,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 40 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -10856,8 +10410,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -10870,8 +10423,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 251 as libc::c_int as libc::c_uchar,
             v: 138 as libc::c_int as libc::c_uchar,
@@ -10884,8 +10436,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 207 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -10898,8 +10449,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 155 as libc::c_int as libc::c_uchar,
             s: 40 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -10912,8 +10462,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -10926,8 +10475,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -10940,8 +10488,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 119 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 108 as libc::c_int as libc::c_uchar,
@@ -10954,8 +10501,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 207 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -10968,8 +10514,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -10982,8 +10527,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -10996,8 +10540,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -11010,8 +10553,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -11024,8 +10566,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 119 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 108 as libc::c_int as libc::c_uchar,
@@ -11038,8 +10579,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 207 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -11052,8 +10592,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -11066,8 +10605,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -11080,8 +10618,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -11094,8 +10631,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -11108,8 +10644,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 251 as libc::c_int as libc::c_uchar,
             v: 138 as libc::c_int as libc::c_uchar,
@@ -11122,8 +10657,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 118 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -11136,8 +10670,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -11150,8 +10683,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 200 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -11164,8 +10696,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -11178,8 +10709,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -11192,8 +10722,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -11206,8 +10735,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -11220,8 +10748,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 251 as libc::c_int as libc::c_uchar,
             v: 138 as libc::c_int as libc::c_uchar,
@@ -11234,8 +10761,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 118 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -11248,8 +10774,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -11262,8 +10787,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 200 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -11276,8 +10800,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -11290,8 +10813,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -11304,8 +10826,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -11318,8 +10839,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -11332,8 +10852,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 130 as libc::c_int as libc::c_uchar,
             s: 251 as libc::c_int as libc::c_uchar,
             v: 138 as libc::c_int as libc::c_uchar,
@@ -11346,8 +10865,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 119 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 108 as libc::c_int as libc::c_uchar,
@@ -11360,8 +10878,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/pubugn9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/pubugn9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 251 as libc::c_int as libc::c_uchar,
             v: 70 as libc::c_int as libc::c_uchar,
@@ -11374,8 +10891,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 238 as libc::c_int as libc::c_uchar,
             v: 127 as libc::c_int as libc::c_uchar,
@@ -11388,8 +10904,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 195 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 75 as libc::c_int as libc::c_uchar,
@@ -11402,8 +10917,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 246 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -11416,8 +10930,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 232 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -11430,8 +10943,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -11444,8 +10956,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -11458,8 +10969,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 165 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -11472,8 +10982,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 177 as libc::c_int as libc::c_uchar,
             s: 47 as libc::c_int as libc::c_uchar,
             v: 210 as libc::c_int as libc::c_uchar,
@@ -11486,8 +10995,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 179 as libc::c_int as libc::c_uchar,
             s: 84 as libc::c_int as libc::c_uchar,
             v: 172 as libc::c_int as libc::c_uchar,
@@ -11500,8 +11008,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 189 as libc::c_int as libc::c_uchar,
             s: 181 as libc::c_int as libc::c_uchar,
             v: 136 as libc::c_int as libc::c_uchar,
@@ -11514,8 +11021,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 238 as libc::c_int as libc::c_uchar,
             v: 127 as libc::c_int as libc::c_uchar,
@@ -11528,8 +11034,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 189 as libc::c_int as libc::c_uchar,
             s: 181 as libc::c_int as libc::c_uchar,
             v: 136 as libc::c_int as libc::c_uchar,
@@ -11542,8 +11047,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 195 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 75 as libc::c_int as libc::c_uchar,
@@ -11556,8 +11060,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 246 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -11570,8 +11073,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 232 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -11584,8 +11086,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -11598,8 +11099,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -11612,8 +11112,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -11626,8 +11125,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 165 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -11640,8 +11138,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 177 as libc::c_int as libc::c_uchar,
             s: 47 as libc::c_int as libc::c_uchar,
             v: 210 as libc::c_int as libc::c_uchar,
@@ -11654,8 +11151,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/puor11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/puor11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 179 as libc::c_int as libc::c_uchar,
             s: 84 as libc::c_int as libc::c_uchar,
             v: 172 as libc::c_int as libc::c_uchar,
@@ -12760,8 +12256,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 180 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -12774,8 +12269,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -12788,8 +12282,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 176 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -12802,8 +12295,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -12816,8 +12308,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 28 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -12830,8 +12321,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -12844,8 +12334,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -12858,8 +12347,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -12872,8 +12360,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 28 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -12886,8 +12373,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -12900,8 +12386,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 176 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -12914,8 +12399,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 188 as libc::c_int as libc::c_uchar,
             s: 185 as libc::c_int as libc::c_uchar,
             v: 143 as libc::c_int as libc::c_uchar,
@@ -12928,8 +12412,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -12942,8 +12425,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 18 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -12956,8 +12438,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -12970,8 +12451,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -12984,8 +12464,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 176 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -12998,8 +12477,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 188 as libc::c_int as libc::c_uchar,
             s: 185 as libc::c_int as libc::c_uchar,
             v: 143 as libc::c_int as libc::c_uchar,
@@ -13012,8 +12490,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -13026,8 +12503,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 18 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -13040,8 +12516,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -13054,8 +12529,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -13068,8 +12542,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 172 as libc::c_int as libc::c_uchar,
             s: 83 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -13082,8 +12555,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -13096,8 +12568,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 190 as libc::c_int as libc::c_uchar,
             s: 216 as libc::c_int as libc::c_uchar,
             v: 134 as libc::c_int as libc::c_uchar,
@@ -13110,8 +12581,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 191 as libc::c_int as libc::c_uchar,
             s: 2 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -13124,8 +12594,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 180 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -13138,8 +12607,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 18 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -13152,8 +12620,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -13166,8 +12633,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -13180,8 +12646,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 172 as libc::c_int as libc::c_uchar,
             s: 83 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -13194,8 +12659,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -13208,8 +12672,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 190 as libc::c_int as libc::c_uchar,
             s: 216 as libc::c_int as libc::c_uchar,
             v: 134 as libc::c_int as libc::c_uchar,
@@ -13222,8 +12685,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 191 as libc::c_int as libc::c_uchar,
             s: 2 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -13236,8 +12698,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 180 as libc::c_int as libc::c_uchar,
             s: 8 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -13250,8 +12711,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 18 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -13264,8 +12724,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 168 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -13278,8 +12737,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 173 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 200 as libc::c_int as libc::c_uchar,
@@ -13292,8 +12750,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 172 as libc::c_int as libc::c_uchar,
             s: 83 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -13306,8 +12763,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 182 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 163 as libc::c_int as libc::c_uchar,
@@ -13320,8 +12776,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 188 as libc::c_int as libc::c_uchar,
             s: 185 as libc::c_int as libc::c_uchar,
             v: 143 as libc::c_int as libc::c_uchar,
@@ -13334,8 +12789,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/purples9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/purples9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 191 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 125 as libc::c_int as libc::c_uchar,
@@ -13348,8 +12802,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 242 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 103 as libc::c_int as libc::c_uchar,
@@ -13362,8 +12815,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 97 as libc::c_int as libc::c_uchar,
@@ -13376,8 +12828,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -13390,8 +12841,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 163 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -13404,8 +12854,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -13418,8 +12867,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -13432,8 +12880,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -13446,8 +12893,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 141 as libc::c_int as libc::c_uchar,
             s: 87 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -13460,8 +12906,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 167 as libc::c_int as libc::c_uchar,
             v: 195 as libc::c_int as libc::c_uchar,
@@ -13474,8 +12919,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 172 as libc::c_int as libc::c_uchar,
@@ -13488,8 +12932,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 242 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 103 as libc::c_int as libc::c_uchar,
@@ -13502,8 +12945,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 172 as libc::c_int as libc::c_uchar,
@@ -13516,8 +12958,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 241 as libc::c_int as libc::c_uchar,
             v: 97 as libc::c_int as libc::c_uchar,
@@ -13530,8 +12971,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -13544,8 +12984,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 163 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -13558,8 +12997,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -13572,8 +13010,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -13586,8 +13023,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 247 as libc::c_int as libc::c_uchar,
@@ -13600,8 +13036,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 32 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -13614,8 +13049,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 141 as libc::c_int as libc::c_uchar,
             s: 87 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -13628,8 +13062,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdbu11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdbu11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 167 as libc::c_int as libc::c_uchar,
             v: 195 as libc::c_int as libc::c_uchar,
@@ -14188,8 +13621,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 242 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 103 as libc::c_int as libc::c_uchar,
@@ -14202,8 +13634,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 26 as libc::c_int as libc::c_uchar,
@@ -14216,8 +13647,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -14230,8 +13660,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 163 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -14244,8 +13673,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -14258,8 +13686,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -14272,8 +13699,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -14286,8 +13712,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -14300,8 +13725,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 135 as libc::c_int as libc::c_uchar,
@@ -14314,8 +13738,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 77 as libc::c_int as libc::c_uchar,
@@ -14328,8 +13751,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 242 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 103 as libc::c_int as libc::c_uchar,
@@ -14342,8 +13764,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 77 as libc::c_int as libc::c_uchar,
@@ -14356,8 +13777,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 26 as libc::c_int as libc::c_uchar,
@@ -14370,8 +13790,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -14384,8 +13803,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 163 as libc::c_int as libc::c_uchar,
             v: 214 as libc::c_int as libc::c_uchar,
@@ -14398,8 +13816,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -14412,8 +13829,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 54 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -14426,8 +13842,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -14440,8 +13855,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -14454,8 +13868,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -14468,8 +13881,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdgy11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdgy11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 135 as libc::c_int as libc::c_uchar,
@@ -15574,8 +14986,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 165 as libc::c_int as libc::c_uchar,
@@ -15588,8 +14999,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 167 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             v: 149 as libc::c_int as libc::c_uchar,
@@ -15602,8 +15012,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -15616,8 +15025,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -15630,8 +15038,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -15644,8 +15051,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -15658,8 +15064,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -15672,8 +15077,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -15686,8 +15090,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 113 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -15700,8 +15103,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -15714,8 +15116,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 165 as libc::c_int as libc::c_uchar,
@@ -15728,8 +15129,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -15742,8 +15142,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 167 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             v: 149 as libc::c_int as libc::c_uchar,
@@ -15756,8 +15155,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -15770,8 +15168,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -15784,8 +15181,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -15798,8 +15194,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -15812,8 +15207,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -15826,8 +15220,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -15840,8 +15233,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -15854,8 +15246,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 113 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -15868,8 +15259,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -15882,8 +15272,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -15896,8 +15285,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 86 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -15910,8 +15298,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -15924,8 +15311,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -15938,8 +15324,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -15952,8 +15337,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 145 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             v: 182 as libc::c_int as libc::c_uchar,
@@ -15966,8 +15350,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -15980,8 +15363,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -15994,8 +15376,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16008,8 +15389,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -16022,8 +15402,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 145 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             v: 182 as libc::c_int as libc::c_uchar,
@@ -16036,8 +15415,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16050,8 +15428,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -16064,8 +15441,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16078,8 +15454,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -16092,8 +15467,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 86 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -16106,8 +15480,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -16120,8 +15493,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16134,8 +15506,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -16148,8 +15519,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16162,8 +15532,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16176,8 +15545,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -16190,8 +15558,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 86 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -16204,8 +15571,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -16218,8 +15584,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16232,8 +15597,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -16246,8 +15610,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16260,8 +15623,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16274,8 +15636,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -16288,8 +15649,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -16302,8 +15662,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 113 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -16316,8 +15675,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -16330,8 +15688,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16344,8 +15701,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -16358,8 +15714,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16372,8 +15727,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16386,8 +15740,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16400,8 +15753,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 136 as libc::c_int as libc::c_uchar,
             s: 24 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -16414,8 +15766,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -16428,8 +15779,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 113 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -16442,8 +15792,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylbu9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylbu9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -16456,8 +15805,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 165 as libc::c_int as libc::c_uchar,
@@ -16470,8 +15818,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 107 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 104 as libc::c_int as libc::c_uchar,
@@ -16484,8 +15831,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16498,8 +15844,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -16512,8 +15857,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16526,8 +15870,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16540,8 +15883,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -16554,8 +15896,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -16568,8 +15909,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 83 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -16582,8 +15922,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -16596,8 +15935,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 165 as libc::c_int as libc::c_uchar,
@@ -16610,8 +15948,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -16624,8 +15961,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 107 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 104 as libc::c_int as libc::c_uchar,
@@ -16638,8 +15974,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16652,8 +15987,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -16666,8 +16000,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16680,8 +16013,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16694,8 +16026,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16708,8 +16039,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -16722,8 +16052,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -16736,8 +16065,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 83 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -16750,8 +16078,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -16764,8 +16091,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16778,8 +16104,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 66 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -16792,8 +16117,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16806,8 +16130,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16820,8 +16143,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -16834,8 +16156,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 210 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -16848,8 +16169,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16862,8 +16182,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -16876,8 +16195,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -16890,8 +16208,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -16904,8 +16221,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 98 as libc::c_int as libc::c_uchar,
             s: 210 as libc::c_int as libc::c_uchar,
             v: 150 as libc::c_int as libc::c_uchar,
@@ -16918,8 +16234,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -16932,8 +16247,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -16946,8 +16260,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -16960,8 +16273,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -16974,8 +16286,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 66 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -16988,8 +16299,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -17002,8 +16312,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -17016,8 +16325,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -17030,8 +16338,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -17044,8 +16351,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -17058,8 +16364,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -17072,8 +16377,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 66 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 207 as libc::c_int as libc::c_uchar,
@@ -17086,8 +16390,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -17100,8 +16403,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -17114,8 +16416,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -17128,8 +16429,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -17142,8 +16442,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -17156,8 +16455,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -17170,8 +16468,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -17184,8 +16481,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 83 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -17198,8 +16494,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -17212,8 +16507,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 2 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -17226,8 +16520,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -17240,8 +16533,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -17254,8 +16546,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -17268,8 +16559,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -17282,8 +16572,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 51 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 239 as libc::c_int as libc::c_uchar,
@@ -17296,8 +16585,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 62 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -17310,8 +16598,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 83 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -17324,8 +16611,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/rdylgn9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/rdylgn9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 211 as libc::c_int as libc::c_uchar,
             v: 152 as libc::c_int as libc::c_uchar,
@@ -18859,8 +18145,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 120 as libc::c_int as libc::c_uchar,
             s: 84 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -18873,8 +18158,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 211 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -18887,8 +18171,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 76 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -18901,8 +18184,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -18915,8 +18197,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 139 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -18929,8 +18210,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -18943,8 +18223,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -18957,8 +18236,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 134 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -18971,8 +18249,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 47 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -18985,8 +18262,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set310/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set310/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -18999,8 +18275,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 120 as libc::c_int as libc::c_uchar,
             s: 84 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -19013,8 +18288,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 211 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -19027,8 +18301,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -19041,8 +18314,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 76 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -19055,8 +18327,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -19069,8 +18340,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 139 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -19083,8 +18353,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -19097,8 +18366,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -19111,8 +18379,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 134 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -19125,8 +18392,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 47 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -19139,8 +18405,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set311/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set311/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -19153,8 +18418,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 120 as libc::c_int as libc::c_uchar,
             s: 84 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -19167,8 +18431,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 211 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -19181,8 +18444,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 77 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -19195,8 +18457,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/12\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/12\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -19209,8 +18470,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 76 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -19223,8 +18483,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 37 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -19237,8 +18496,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 139 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -19251,8 +18509,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -19265,8 +18522,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -19279,8 +18535,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 134 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -19293,8 +18548,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 47 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -19307,8 +18561,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/set312/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/set312/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -19867,8 +19120,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 237 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -19881,8 +19133,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 177 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 162 as libc::c_int as libc::c_uchar,
@@ -19895,8 +19146,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -19909,8 +19159,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -19923,8 +19172,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -19937,8 +19185,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -19951,8 +19198,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -19965,8 +19211,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -19979,8 +19224,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 194 as libc::c_int as libc::c_uchar,
@@ -19993,8 +19237,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral10/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral10/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20007,8 +19250,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 237 as libc::c_int as libc::c_uchar,
             s: 253 as libc::c_int as libc::c_uchar,
             v: 158 as libc::c_int as libc::c_uchar,
@@ -20021,8 +19263,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/10\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/10\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20035,8 +19276,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/11\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/11\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 177 as libc::c_int as libc::c_uchar,
             s: 130 as libc::c_int as libc::c_uchar,
             v: 162 as libc::c_int as libc::c_uchar,
@@ -20049,8 +19289,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20063,8 +19302,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -20077,8 +19315,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -20091,8 +19328,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -20105,8 +19341,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20119,8 +19354,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20133,8 +19367,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -20147,8 +19380,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral11/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral11/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 194 as libc::c_int as libc::c_uchar,
@@ -20161,8 +19393,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -20175,8 +19406,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20189,8 +19419,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 81 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20203,8 +19432,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -20217,8 +19445,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -20231,8 +19458,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -20245,8 +19471,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 196 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -20259,8 +19484,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 215 as libc::c_int as libc::c_uchar,
@@ -20273,8 +19497,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -20287,8 +19510,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20301,8 +19523,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -20315,8 +19536,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 196 as libc::c_int as libc::c_uchar,
             v: 186 as libc::c_int as libc::c_uchar,
@@ -20329,8 +19549,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20343,8 +19562,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -20357,8 +19575,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -20371,8 +19588,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20385,8 +19601,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 81 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20399,8 +19614,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20413,8 +19627,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20427,8 +19640,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 164 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -20441,8 +19653,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -20455,8 +19666,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20469,8 +19679,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20483,8 +19692,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 81 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20497,8 +19705,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20511,8 +19718,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20525,8 +19731,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -20539,8 +19744,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -20553,8 +19757,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -20567,8 +19770,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20581,8 +19783,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -20595,8 +19796,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 194 as libc::c_int as libc::c_uchar,
@@ -20609,8 +19809,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20623,8 +19822,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 250 as libc::c_int as libc::c_uchar,
             s: 180 as libc::c_int as libc::c_uchar,
             v: 213 as libc::c_int as libc::c_uchar,
@@ -20637,8 +19835,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -20651,8 +19848,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 157 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -20665,8 +19861,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -20679,8 +19874,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20693,8 +19887,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 96 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20707,8 +19900,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 79 as libc::c_int as libc::c_uchar,
             s: 65 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -20721,8 +19913,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 114 as libc::c_int as libc::c_uchar,
             s: 120 as libc::c_int as libc::c_uchar,
             v: 194 as libc::c_int as libc::c_uchar,
@@ -20735,8 +19926,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/spectral9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/spectral9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 187 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -20749,8 +19939,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/aliceblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/aliceblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20763,8 +19952,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/antiquewhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/antiquewhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -20777,8 +19965,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/aqua\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/aqua\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20791,8 +19978,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/aquamarine\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/aquamarine\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20805,8 +19991,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/azure\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/azure\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20819,8 +20004,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/beige\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/beige\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 26 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -20833,8 +20017,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/bisque\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/bisque\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20847,8 +20030,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/black\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/black\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 0 as libc::c_int as libc::c_uchar,
@@ -20861,8 +20043,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/blanchedalmond\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/blanchedalmond\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20875,8 +20056,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/blue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/blue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20889,8 +20069,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/blueviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/blueviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 192 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -20903,8 +20082,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/brown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/brown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 190 as libc::c_int as libc::c_uchar,
             v: 165 as libc::c_int as libc::c_uchar,
@@ -20917,8 +20095,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/burlywood\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/burlywood\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -20931,8 +20108,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/cadetblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/cadetblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -20945,8 +20121,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/chartreuse\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/chartreuse\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20959,8 +20134,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/chocolate\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/chocolate\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 210 as libc::c_int as libc::c_uchar,
@@ -20973,8 +20147,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/coral\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/coral\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -20987,8 +20160,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/cornflowerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/cornflowerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 154 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 237 as libc::c_int as libc::c_uchar,
@@ -21001,8 +20173,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/cornsilk\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/cornsilk\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 33 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21015,8 +20186,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/crimson\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/crimson\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 246 as libc::c_int as libc::c_uchar,
             s: 231 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -21029,8 +20199,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/cyan\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/cyan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21043,8 +20212,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21057,8 +20225,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkcyan\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkcyan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21071,8 +20238,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkgoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkgoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 239 as libc::c_int as libc::c_uchar,
             v: 184 as libc::c_int as libc::c_uchar,
@@ -21085,8 +20251,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkgray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkgray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 169 as libc::c_int as libc::c_uchar,
@@ -21099,8 +20264,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -21113,8 +20277,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkgrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkgrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 169 as libc::c_int as libc::c_uchar,
@@ -21127,8 +20290,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkkhaki\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkkhaki\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 39 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -21141,8 +20303,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkmagenta\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkmagenta\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21155,8 +20316,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkolivegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkolivegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 142 as libc::c_int as libc::c_uchar,
             v: 107 as libc::c_int as libc::c_uchar,
@@ -21169,8 +20329,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkorange\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkorange\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21183,8 +20342,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -21197,8 +20355,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21211,8 +20368,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darksalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darksalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -21225,8 +20381,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -21239,8 +20394,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21253,8 +20407,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 79 as libc::c_int as libc::c_uchar,
@@ -21267,8 +20420,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 79 as libc::c_int as libc::c_uchar,
@@ -21281,8 +20433,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -21295,8 +20446,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/darkviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/darkviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -21309,8 +20459,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/deeppink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/deeppink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21323,8 +20472,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/deepskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/deepskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21337,8 +20485,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/dimgray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/dimgray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 105 as libc::c_int as libc::c_uchar,
@@ -21351,8 +20498,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/dimgrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/dimgrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 105 as libc::c_int as libc::c_uchar,
@@ -21365,8 +20511,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/dodgerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/dodgerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21379,8 +20524,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/firebrick\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/firebrick\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -21393,8 +20537,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/floralwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/floralwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21407,8 +20550,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/forestgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/forestgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -21421,8 +20563,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/fuchsia\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/fuchsia\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21435,8 +20576,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/gainsboro\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/gainsboro\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -21449,8 +20589,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/ghostwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/ghostwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21463,8 +20602,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/gold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/gold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21477,8 +20615,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/goldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/goldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 217 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -21491,8 +20628,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/gray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/gray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -21505,8 +20641,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/green\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/green\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -21519,8 +20654,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/greenyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/greenyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 59 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21533,8 +20667,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/grey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/grey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -21547,8 +20680,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/honeydew\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/honeydew\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21561,8 +20693,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/hotpink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/hotpink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 233 as libc::c_int as libc::c_uchar,
             s: 150 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21575,8 +20706,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/indianred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/indianred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 140 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -21589,8 +20719,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/indigo\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/indigo\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 194 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 130 as libc::c_int as libc::c_uchar,
@@ -21603,8 +20732,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/ivory\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/ivory\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21617,8 +20745,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/khaki\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/khaki\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 106 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -21631,8 +20758,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lavender\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lavender\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -21645,8 +20771,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lavenderblush\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lavenderblush\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21659,8 +20784,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lawngreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lawngreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 64 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -21673,8 +20797,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lemonchiffon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lemonchiffon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21687,8 +20810,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 137 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -21701,8 +20823,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightcoral\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightcoral\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -21715,8 +20836,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightcyan\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightcyan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21743,8 +20863,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightgray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightgray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -21757,8 +20876,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -21771,8 +20889,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightgrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightgrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -21785,8 +20902,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightpink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightpink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 248 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21799,8 +20915,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightsalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightsalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21813,8 +20928,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 125 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -21827,8 +20941,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 117 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -21841,8 +20954,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -21855,8 +20967,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -21869,8 +20980,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightsteelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightsteelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 52 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -21883,8 +20993,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lightyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lightyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21897,8 +21006,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/lime\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/lime\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21911,8 +21019,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/limegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/limegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -21925,8 +21032,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/linen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/linen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 20 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -21939,8 +21045,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/magenta\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/magenta\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -21953,8 +21058,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/maroon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/maroon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -21981,8 +21085,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mediumblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mediumblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -21995,8 +21098,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mediumorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mediumorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 204 as libc::c_int as libc::c_uchar,
             s: 152 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -22009,8 +21111,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mediumpurple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mediumpurple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -22023,8 +21124,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mediumseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mediumseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -22093,8 +21193,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/midnightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/midnightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 198 as libc::c_int as libc::c_uchar,
             v: 112 as libc::c_int as libc::c_uchar,
@@ -22107,8 +21206,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mintcream\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mintcream\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 9 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22121,8 +21219,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/mistyrose\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/mistyrose\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22135,8 +21232,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/moccasin\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/moccasin\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 26 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22149,8 +21245,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/navajowhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/navajowhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22163,8 +21258,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/navy\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/navy\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -22177,8 +21271,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/oldlace\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/oldlace\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 27 as libc::c_int as libc::c_uchar,
             s: 23 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -22191,8 +21284,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/olive\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/olive\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -22205,8 +21297,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/olivedrab\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/olivedrab\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 142 as libc::c_int as libc::c_uchar,
@@ -22219,8 +21310,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/orange\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/orange\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 27 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22233,8 +21323,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/orangered\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/orangered\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22247,8 +21336,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/orchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/orchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 214 as libc::c_int as libc::c_uchar,
             s: 123 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -22261,8 +21349,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/palegoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/palegoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -22275,8 +21362,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/palegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/palegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -22289,8 +21375,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/paleturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/paleturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -22303,8 +21388,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/palevioletred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/palevioletred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -22317,8 +21401,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/papayawhip\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/papayawhip\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 26 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22331,8 +21414,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/peachpuff\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/peachpuff\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22345,8 +21427,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/peru\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/peru\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 176 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -22359,8 +21440,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/pink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/pink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 247 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22373,8 +21453,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/plum\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/plum\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             v: 221 as libc::c_int as libc::c_uchar,
@@ -22387,8 +21466,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/powderblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/powderblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 59 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -22401,8 +21479,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/purple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/purple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -22428,8 +21505,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/rosybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/rosybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -22442,8 +21518,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/royalblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/royalblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 181 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -22456,8 +21531,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/saddlebrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/saddlebrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -22470,8 +21544,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/salmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/salmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 138 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -22484,8 +21557,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/sandybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/sandybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 154 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -22498,8 +21570,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/seagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/seagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -22512,8 +21583,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/seashell\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/seashell\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22526,8 +21596,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/sienna\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/sienna\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -22540,8 +21609,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/silver\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/silver\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -22554,8 +21622,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/skyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/skyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 139 as libc::c_int as libc::c_uchar,
             s: 108 as libc::c_int as libc::c_uchar,
             v: 235 as libc::c_int as libc::c_uchar,
@@ -22568,8 +21635,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/slateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/slateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -22582,8 +21648,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/slategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/slategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 144 as libc::c_int as libc::c_uchar,
@@ -22596,8 +21661,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/slategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/slategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 144 as libc::c_int as libc::c_uchar,
@@ -22610,8 +21674,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/snow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/snow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 5 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22624,8 +21687,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/springgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/springgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22638,8 +21700,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/steelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/steelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -22665,8 +21726,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/teal\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/teal\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -22679,8 +21739,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/thistle\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/thistle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             v: 216 as libc::c_int as libc::c_uchar,
@@ -22693,8 +21752,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/tomato\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/tomato\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 6 as libc::c_int as libc::c_uchar,
             s: 184 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22707,8 +21765,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/turquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/turquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 123 as libc::c_int as libc::c_uchar,
             s: 182 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -22721,8 +21778,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/violet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/violet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -22735,8 +21791,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/wheat\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/wheat\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 27 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -22749,8 +21804,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/white\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/white\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22763,8 +21817,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/whitesmoke\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/whitesmoke\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -22777,8 +21830,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/yellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/yellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -22791,8 +21843,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/svg/yellowgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/svg/yellowgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23351,8 +22402,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -23365,8 +22415,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23379,8 +22428,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 184 as libc::c_int as libc::c_uchar,
@@ -23393,8 +22441,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23407,8 +22454,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 99 as libc::c_int as libc::c_uchar,
             s: 66 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -23421,8 +22467,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23435,8 +22480,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 203 as libc::c_int as libc::c_uchar,
             v: 168 as libc::c_int as libc::c_uchar,
@@ -23449,8 +22493,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23463,8 +22506,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 99 as libc::c_int as libc::c_uchar,
             s: 66 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -23477,8 +22519,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23491,8 +22532,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 184 as libc::c_int as libc::c_uchar,
@@ -23505,8 +22545,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 164 as libc::c_int as libc::c_uchar,
             s: 191 as libc::c_int as libc::c_uchar,
             v: 148 as libc::c_int as libc::c_uchar,
@@ -23519,8 +22558,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23533,8 +22571,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 69 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -23547,8 +22584,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23561,8 +22597,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23575,8 +22610,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 144 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 184 as libc::c_int as libc::c_uchar,
@@ -23589,8 +22623,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 164 as libc::c_int as libc::c_uchar,
             s: 191 as libc::c_int as libc::c_uchar,
             v: 148 as libc::c_int as libc::c_uchar,
@@ -23603,8 +22636,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23617,8 +22649,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 69 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -23631,8 +22662,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23645,8 +22675,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23659,8 +22688,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 139 as libc::c_int as libc::c_uchar,
             s: 216 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -23673,8 +22701,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 203 as libc::c_int as libc::c_uchar,
             v: 168 as libc::c_int as libc::c_uchar,
@@ -23687,8 +22714,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 158 as libc::c_int as libc::c_uchar,
             s: 231 as libc::c_int as libc::c_uchar,
             v: 132 as libc::c_int as libc::c_uchar,
@@ -23701,8 +22727,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23715,8 +22740,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -23729,8 +22753,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 69 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -23743,8 +22766,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23757,8 +22779,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23771,8 +22792,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 139 as libc::c_int as libc::c_uchar,
             s: 216 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -23785,8 +22805,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 203 as libc::c_int as libc::c_uchar,
             v: 168 as libc::c_int as libc::c_uchar,
@@ -23799,8 +22818,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 158 as libc::c_int as libc::c_uchar,
             s: 231 as libc::c_int as libc::c_uchar,
             v: 132 as libc::c_int as libc::c_uchar,
@@ -23813,8 +22831,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 38 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23827,8 +22844,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 49 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 248 as libc::c_int as libc::c_uchar,
@@ -23841,8 +22857,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 69 as libc::c_int as libc::c_uchar,
             s: 58 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -23855,8 +22870,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 117 as libc::c_int as libc::c_uchar,
             s: 97 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -23869,8 +22883,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 196 as libc::c_int as libc::c_uchar,
@@ -23883,8 +22896,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 139 as libc::c_int as libc::c_uchar,
             s: 216 as libc::c_int as libc::c_uchar,
             v: 192 as libc::c_int as libc::c_uchar,
@@ -23897,8 +22909,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 203 as libc::c_int as libc::c_uchar,
             v: 168 as libc::c_int as libc::c_uchar,
@@ -23911,8 +22922,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 164 as libc::c_int as libc::c_uchar,
             s: 191 as libc::c_int as libc::c_uchar,
             v: 148 as libc::c_int as libc::c_uchar,
@@ -23925,8 +22935,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylgnbu9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylgnbu9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 158 as libc::c_int as libc::c_uchar,
             s: 231 as libc::c_int as libc::c_uchar,
             v: 88 as libc::c_int as libc::c_uchar,
@@ -23939,8 +22948,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 66 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23953,8 +22961,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -23967,8 +22974,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 238 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -23981,8 +22987,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -23995,8 +23000,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 112 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24009,8 +23013,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24023,8 +23026,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -24037,8 +23039,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24051,8 +23052,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 112 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24065,8 +23065,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24079,8 +23078,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 238 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -24093,8 +23091,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 248 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -24107,8 +23104,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24121,8 +23117,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 109 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24135,8 +23130,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24149,8 +23143,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24163,8 +23156,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 16 as libc::c_int as libc::c_uchar,
             s: 238 as libc::c_int as libc::c_uchar,
             v: 217 as libc::c_int as libc::c_uchar,
@@ -24177,8 +23169,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 248 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -24191,8 +23182,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 42 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24205,8 +23195,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 109 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24219,8 +23208,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24233,8 +23221,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24247,8 +23234,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 233 as libc::c_int as libc::c_uchar,
             v: 236 as libc::c_int as libc::c_uchar,
@@ -24261,8 +23247,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -24275,8 +23260,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 247 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -24289,8 +23273,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 25 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24303,8 +23286,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 66 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24317,8 +23299,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 109 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24331,8 +23312,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24345,8 +23325,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24359,8 +23338,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 233 as libc::c_int as libc::c_uchar,
             v: 236 as libc::c_int as libc::c_uchar,
@@ -24373,8 +23351,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -24387,8 +23364,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 247 as libc::c_int as libc::c_uchar,
             v: 140 as libc::c_int as libc::c_uchar,
@@ -24401,8 +23377,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 25 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24415,8 +23390,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 66 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24429,8 +23403,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 31 as libc::c_int as libc::c_uchar,
             s: 109 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24443,8 +23416,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 175 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24457,8 +23429,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 22 as libc::c_int as libc::c_uchar,
             s: 213 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24471,8 +23442,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 233 as libc::c_int as libc::c_uchar,
             v: 236 as libc::c_int as libc::c_uchar,
@@ -24485,8 +23455,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 15 as libc::c_int as libc::c_uchar,
             s: 252 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -24499,8 +23468,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 248 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -24513,8 +23481,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorbr9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorbr9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 13 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 102 as libc::c_int as libc::c_uchar,
@@ -24527,8 +23494,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd3/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd3/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24541,8 +23507,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd3/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd3/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24555,8 +23520,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd3/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd3/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 221 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -24569,8 +23533,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd4/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd4/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24583,8 +23546,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd4/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd4/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 29 as libc::c_int as libc::c_uchar,
             s: 162 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24597,8 +23559,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd4/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd4/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -24611,8 +23572,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd4/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd4/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -24625,8 +23585,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd5/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd5/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24639,8 +23598,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd5/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd5/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 29 as libc::c_int as libc::c_uchar,
             s: 162 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24653,8 +23611,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd5/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd5/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -24667,8 +23624,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd5/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd5/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 221 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -24681,8 +23637,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd5/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd5/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 246 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -24695,8 +23650,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24709,8 +23663,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24723,8 +23676,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24737,8 +23689,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -24751,8 +23702,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 221 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -24765,8 +23715,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd6/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd6/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 246 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -24779,8 +23728,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 77 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24793,8 +23741,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24807,8 +23754,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24821,8 +23767,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -24835,8 +23780,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 7 as libc::c_int as libc::c_uchar,
             s: 212 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -24849,8 +23793,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -24863,8 +23806,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd7/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd7/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -24877,8 +23819,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24891,8 +23832,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -24905,8 +23845,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24919,8 +23858,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -24933,8 +23871,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -24947,8 +23884,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 7 as libc::c_int as libc::c_uchar,
             s: 212 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -24961,8 +23897,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -24975,8 +23910,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd8/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd8/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 245 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 177 as libc::c_int as libc::c_uchar,
@@ -24989,8 +23923,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25003,8 +23936,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 95 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25017,8 +23949,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 136 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -25031,8 +23962,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 178 as libc::c_int as libc::c_uchar,
             v: 254 as libc::c_int as libc::c_uchar,
@@ -25045,8 +23975,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/5\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/5\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 194 as libc::c_int as libc::c_uchar,
             v: 253 as libc::c_int as libc::c_uchar,
@@ -25059,8 +23988,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/6\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/6\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 7 as libc::c_int as libc::c_uchar,
             s: 212 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -25073,8 +24001,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/7\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/7\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 254 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 227 as libc::c_int as libc::c_uchar,
@@ -25087,8 +24014,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/8\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 246 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -25101,8 +24027,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"/ylorrd9/9\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"/ylorrd9/9\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 242 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -25115,8 +24040,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aliceblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aliceblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25129,8 +24053,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"antiquewhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -25143,8 +24066,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"antiquewhite1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25157,8 +24079,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"antiquewhite2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25171,8 +24092,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"antiquewhite3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25185,8 +24105,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"antiquewhite4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25212,8 +24131,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aquamarine\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25226,8 +24144,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aquamarine1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25240,8 +24157,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aquamarine2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25254,8 +24170,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aquamarine3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25268,8 +24183,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"aquamarine4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25438,8 +24352,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"blanchedalmond\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"blanchedalmond\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25517,8 +24430,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"blueviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"blueviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 192 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 226 as libc::c_int as libc::c_uchar,
@@ -25596,8 +24508,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"burlywood\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -25610,8 +24521,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"burlywood1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25624,8 +24534,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"burlywood2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25638,8 +24547,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"burlywood3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25652,8 +24560,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"burlywood4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25666,8 +24573,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cadetblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 160 as libc::c_int as libc::c_uchar,
@@ -25680,8 +24586,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cadetblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25694,8 +24599,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cadetblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25708,8 +24612,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cadetblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25722,8 +24625,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cadetblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25736,8 +24638,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chartreuse\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25750,8 +24651,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chartreuse1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25764,8 +24664,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chartreuse2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25778,8 +24677,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chartreuse3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25792,8 +24690,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chartreuse4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25806,8 +24703,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chocolate\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 210 as libc::c_int as libc::c_uchar,
@@ -25820,8 +24716,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chocolate1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 219 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25834,8 +24729,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chocolate2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 219 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25848,8 +24742,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chocolate3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -25862,8 +24755,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"chocolate4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -25941,8 +24833,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cornflowerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornflowerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 154 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             v: 237 as libc::c_int as libc::c_uchar,
@@ -25968,8 +24859,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cornsilk1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 33 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -25982,8 +24872,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cornsilk2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -25996,8 +24885,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cornsilk3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26010,8 +24898,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"cornsilk4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26128,8 +25015,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 239 as libc::c_int as libc::c_uchar,
             v: 184 as libc::c_int as libc::c_uchar,
@@ -26142,8 +25028,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgoldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26156,8 +25041,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgoldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26170,8 +25054,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgoldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26184,8 +25067,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgoldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26211,8 +25093,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 100 as libc::c_int as libc::c_uchar,
@@ -26238,8 +25119,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkkhaki\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkkhaki\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 39 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             v: 189 as libc::c_int as libc::c_uchar,
@@ -26252,8 +25132,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkmagenta\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkmagenta\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26266,8 +25145,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkolivegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 142 as libc::c_int as libc::c_uchar,
             v: 107 as libc::c_int as libc::c_uchar,
@@ -26280,8 +25158,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkolivegreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26294,8 +25171,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkolivegreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26308,8 +25184,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkolivegreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26322,8 +25197,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkolivegreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26336,8 +25210,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorange\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26350,8 +25223,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorange1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26364,8 +25236,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorange2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26378,8 +25249,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorange3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26392,8 +25262,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorange4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26406,8 +25275,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 204 as libc::c_int as libc::c_uchar,
@@ -26420,8 +25288,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorchid1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26434,8 +25301,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorchid2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26448,8 +25314,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorchid3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26462,8 +25327,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkorchid4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26489,8 +25353,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darksalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darksalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             v: 233 as libc::c_int as libc::c_uchar,
@@ -26503,8 +25366,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -26517,8 +25379,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkseagreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26531,8 +25392,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkseagreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26545,8 +25405,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkseagreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26559,8 +25418,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkseagreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26573,8 +25431,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26587,8 +25444,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 79 as libc::c_int as libc::c_uchar,
@@ -26601,8 +25457,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategray1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26615,8 +25470,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategray2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26629,8 +25483,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategray3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26643,8 +25496,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategray4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26657,8 +25509,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             v: 79 as libc::c_int as libc::c_uchar,
@@ -26671,8 +25522,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -26685,8 +25535,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"darkviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -26712,8 +25561,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deeppink1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26726,8 +25574,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deeppink2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26740,8 +25587,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deeppink3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26754,8 +25600,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deeppink4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 231 as libc::c_int as libc::c_uchar,
             s: 236 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26768,8 +25613,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deepskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26782,8 +25626,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deepskyblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26796,8 +25639,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deepskyblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26810,8 +25652,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deepskyblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26824,8 +25665,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"deepskyblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26864,8 +25704,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"dodgerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26878,8 +25717,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"dodgerblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26892,8 +25730,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"dodgerblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26906,8 +25743,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"dodgerblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26920,8 +25756,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"dodgerblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -26934,8 +25769,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"firebrick\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -26948,8 +25782,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"firebrick1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -26962,8 +25795,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"firebrick2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -26976,8 +25808,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"firebrick3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -26990,8 +25821,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"firebrick4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -27004,8 +25834,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"floralwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"floralwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -27018,8 +25847,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"forestgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"forestgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -27045,8 +25873,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"gainsboro\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"gainsboro\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 220 as libc::c_int as libc::c_uchar,
@@ -27059,8 +25886,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"ghostwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"ghostwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -27138,8 +25964,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"goldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 217 as libc::c_int as libc::c_uchar,
             v: 218 as libc::c_int as libc::c_uchar,
@@ -27152,8 +25977,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"goldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -27166,8 +25990,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"goldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -27180,8 +26003,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"goldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -27194,8 +26016,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"goldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -28599,8 +27420,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"greenyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"greenyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 59 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -29952,8 +28772,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"honeydew1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -29966,8 +28785,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"honeydew2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -29980,8 +28798,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"honeydew3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -29994,8 +28811,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"honeydew4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30073,8 +28889,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"indianred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 140 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30087,8 +28902,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"indianred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30101,8 +28915,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"indianred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30115,8 +28928,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"indianred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 149 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30129,8 +28941,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"indianred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30312,8 +29123,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lavenderblush\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30326,8 +29136,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lavenderblush1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30340,8 +29149,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lavenderblush2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 239 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30354,8 +29162,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lavenderblush3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30368,8 +29175,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lavenderblush4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 239 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30382,8 +29188,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lawngreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lawngreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 64 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 252 as libc::c_int as libc::c_uchar,
@@ -30396,8 +29201,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lemonchiffon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30410,8 +29214,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lemonchiffon1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30424,8 +29227,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lemonchiffon2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30438,8 +29240,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lemonchiffon3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30452,8 +29253,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lemonchiffon4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 39 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30466,8 +29266,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 137 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -30480,8 +29279,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30494,8 +29292,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30508,8 +29305,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30522,8 +29318,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 137 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30536,8 +29331,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcoral\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcoral\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -30550,8 +29344,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcyan\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30564,8 +29357,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcyan1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30578,8 +29370,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcyan2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30592,8 +29383,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcyan3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30606,8 +29396,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightcyan4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30620,8 +29409,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30634,8 +29422,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgoldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 116 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30648,8 +29435,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgoldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30662,8 +29448,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgoldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30676,8 +29461,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgoldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30704,8 +29488,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -30718,8 +29501,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30732,8 +29514,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightgrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -30746,8 +29527,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightpink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 248 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30760,8 +29540,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightpink1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30774,8 +29553,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightpink2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 248 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30788,8 +29566,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightpink3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 80 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30802,8 +29579,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightpink4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 80 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30816,8 +29592,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30830,8 +29605,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsalmon1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30844,8 +29618,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsalmon2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30858,8 +29631,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsalmon3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 133 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30872,8 +29644,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsalmon4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 133 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30886,8 +29657,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 125 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             v: 178 as libc::c_int as libc::c_uchar,
@@ -30900,8 +29670,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 117 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -30914,8 +29683,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightskyblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30928,8 +29696,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightskyblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -30942,8 +29709,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightskyblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -30956,8 +29722,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightskyblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -30970,8 +29735,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -30984,8 +29748,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -30998,8 +29761,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -31012,8 +29774,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsteelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 52 as libc::c_int as libc::c_uchar,
             v: 222 as libc::c_int as libc::c_uchar,
@@ -31026,8 +29787,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsteelblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31040,8 +29800,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsteelblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31054,8 +29813,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsteelblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31068,8 +29826,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightsteelblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31082,8 +29839,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31096,8 +29852,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightyellow1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31110,8 +29865,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightyellow2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31124,8 +29878,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightyellow3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31138,8 +29891,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"lightyellow4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31165,8 +29917,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"limegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"limegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31322,8 +30073,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumaquamarine\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumaquamarine\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31336,8 +30086,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31350,8 +30099,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 204 as libc::c_int as libc::c_uchar,
             s: 152 as libc::c_int as libc::c_uchar,
             v: 211 as libc::c_int as libc::c_uchar,
@@ -31364,8 +30112,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumorchid1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31378,8 +30125,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumorchid2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31392,8 +30138,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumorchid3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31406,8 +30151,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumorchid4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 154 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31420,8 +30164,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumpurple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -31434,8 +30177,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumpurple1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31448,8 +30190,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumpurple2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31462,8 +30203,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumpurple3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31476,8 +30216,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumpurple4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31490,8 +30229,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             v: 179 as libc::c_int as libc::c_uchar,
@@ -31504,8 +30242,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 176 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31518,8 +30255,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumspringgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumspringgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 111 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 250 as libc::c_int as libc::c_uchar,
@@ -31532,8 +30268,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 125 as libc::c_int as libc::c_uchar,
             s: 167 as libc::c_int as libc::c_uchar,
             v: 209 as libc::c_int as libc::c_uchar,
@@ -31546,8 +30281,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mediumvioletred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumvioletred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 228 as libc::c_int as libc::c_uchar,
             v: 199 as libc::c_int as libc::c_uchar,
@@ -31560,8 +30294,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"midnightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"midnightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 198 as libc::c_int as libc::c_uchar,
             v: 112 as libc::c_int as libc::c_uchar,
@@ -31574,8 +30307,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mintcream\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mintcream\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 9 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31588,8 +30320,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mistyrose\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31602,8 +30333,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mistyrose1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31616,8 +30346,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mistyrose2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31630,8 +30359,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mistyrose3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31644,8 +30372,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"mistyrose4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31671,8 +30398,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"navajowhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31685,8 +30411,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"navajowhite1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31699,8 +30424,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"navajowhite2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31713,8 +30437,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"navajowhite3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31727,8 +30450,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"navajowhite4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31806,8 +30528,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"olivedrab\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 142 as libc::c_int as libc::c_uchar,
@@ -31820,8 +30541,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"olivedrab1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31834,8 +30554,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"olivedrab2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31848,8 +30567,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"olivedrab3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31862,8 +30580,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"olivedrab4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -31941,8 +30658,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"orangered\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31955,8 +30671,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"orangered1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -31969,8 +30684,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"orangered2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -31983,8 +30697,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"orangered3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -31997,8 +30710,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"orangered4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32076,8 +30788,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32090,8 +30801,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 251 as libc::c_int as libc::c_uchar,
@@ -32104,8 +30814,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 101 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32118,8 +30827,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32132,8 +30840,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32146,8 +30853,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palegreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32160,8 +30866,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"paleturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32174,8 +30879,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"paleturquoise1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32188,8 +30892,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"paleturquoise2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32202,8 +30905,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"paleturquoise3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32216,8 +30918,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"paleturquoise4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32230,8 +30931,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palevioletred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 219 as libc::c_int as libc::c_uchar,
@@ -32244,8 +30944,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palevioletred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32258,8 +30957,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palevioletred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32272,8 +30970,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palevioletred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32286,8 +30983,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"palevioletred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32300,8 +30996,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"papayawhip\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"papayawhip\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 26 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32314,8 +31009,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"peachpuff\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32328,8 +31022,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"peachpuff1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32342,8 +31035,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"peachpuff2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32356,8 +31048,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"peachpuff3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32370,8 +31061,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"peachpuff4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32527,8 +31217,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"powderblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"powderblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 59 as libc::c_int as libc::c_uchar,
             v: 230 as libc::c_int as libc::c_uchar,
@@ -32606,8 +31295,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rebeccapurple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rebeccapurple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 191 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 153 as libc::c_int as libc::c_uchar,
@@ -32685,8 +31373,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rosybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             v: 188 as libc::c_int as libc::c_uchar,
@@ -32699,8 +31386,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rosybrown1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32713,8 +31399,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rosybrown2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32727,8 +31412,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rosybrown3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32741,8 +31425,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"rosybrown4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32755,8 +31438,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"royalblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 181 as libc::c_int as libc::c_uchar,
             v: 225 as libc::c_int as libc::c_uchar,
@@ -32769,8 +31451,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"royalblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32783,8 +31464,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"royalblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32797,8 +31477,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"royalblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 182 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32811,8 +31490,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"royalblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32825,8 +31503,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"saddlebrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"saddlebrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -32904,8 +31581,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"sandybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"sandybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 154 as libc::c_int as libc::c_uchar,
             v: 244 as libc::c_int as libc::c_uchar,
@@ -32931,8 +31607,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seagreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -32945,8 +31620,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seagreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -32959,8 +31633,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seagreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -32973,8 +31646,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seagreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33000,8 +31672,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seashell1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33014,8 +31685,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seashell2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 17 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33028,8 +31698,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seashell3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 17 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33042,8 +31711,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"seashell4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33199,8 +31867,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33213,8 +31880,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slateblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33227,8 +31893,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slateblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33241,8 +31906,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slateblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33255,8 +31919,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slateblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33269,8 +31932,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 144 as libc::c_int as libc::c_uchar,
@@ -33283,8 +31945,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategray1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33297,8 +31958,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategray2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33311,8 +31971,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategray3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 57 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33325,8 +31984,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategray4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33339,8 +31997,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"slategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             v: 144 as libc::c_int as libc::c_uchar,
@@ -33418,8 +32075,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"springgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33432,8 +32088,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"springgreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33446,8 +32101,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"springgreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33460,8 +32114,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"springgreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33474,8 +32127,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"springgreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33488,8 +32140,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"steelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             v: 180 as libc::c_int as libc::c_uchar,
@@ -33502,8 +32153,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"steelblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33516,8 +32166,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"steelblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33530,8 +32179,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"steelblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33544,8 +32192,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"steelblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33766,8 +32413,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"transparent\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"transparent\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33780,8 +32426,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"turquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 123 as libc::c_int as libc::c_uchar,
             s: 182 as libc::c_int as libc::c_uchar,
             v: 224 as libc::c_int as libc::c_uchar,
@@ -33794,8 +32439,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"turquoise1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33808,8 +32452,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"turquoise2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33822,8 +32465,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"turquoise3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33836,8 +32478,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"turquoise4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33863,8 +32504,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"violetred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 227 as libc::c_int as libc::c_uchar,
             s: 215 as libc::c_int as libc::c_uchar,
             v: 208 as libc::c_int as libc::c_uchar,
@@ -33877,8 +32517,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"violetred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             v: 255 as libc::c_int as libc::c_uchar,
@@ -33891,8 +32530,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"violetred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 238 as libc::c_int as libc::c_uchar,
@@ -33905,8 +32543,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"violetred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -33919,8 +32556,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"violetred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 139 as libc::c_int as libc::c_uchar,
@@ -33972,8 +32608,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"webmaroon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"webmaroon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -33986,8 +32621,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"webpurple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"webpurple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 212 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             v: 128 as libc::c_int as libc::c_uchar,
@@ -34078,8 +32712,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"whitesmoke\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"whitesmoke\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             v: 245 as libc::c_int as libc::c_uchar,
@@ -34131,8 +32764,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"x11maroon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"x11maroon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 239 as libc::c_int as libc::c_uchar,
             s: 185 as libc::c_int as libc::c_uchar,
             v: 176 as libc::c_int as libc::c_uchar,
@@ -34145,8 +32777,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"x11purple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"x11purple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 196 as libc::c_int as libc::c_uchar,
             s: 221 as libc::c_int as libc::c_uchar,
             v: 240 as libc::c_int as libc::c_uchar,
@@ -34224,8 +32855,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
     },
     {
         let mut init = hsvrgbacolor_t {
-            name: b"yellowgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"yellowgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             v: 205 as libc::c_int as libc::c_uchar,
@@ -34237,8 +32867,7 @@ static mut color_lib: [hsvrgbacolor_t; 2515] = [
         init
     },
 ];
-static mut colorscheme: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+static mut colorscheme: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 unsafe extern "C" fn hsv2rgb(
     mut h: libc::c_double,
     mut s: libc::c_double,
@@ -34265,9 +32894,7 @@ unsafe extern "C" fn hsv2rgb(
         f = h - i as libc::c_double;
         p = v * (1 as libc::c_int as libc::c_double - s);
         q = v * (1 as libc::c_int as libc::c_double - s * f);
-        t = v
-            * (1 as libc::c_int as libc::c_double
-                - s * (1 as libc::c_int as libc::c_double - f));
+        t = v * (1 as libc::c_int as libc::c_double - s * (1 as libc::c_int as libc::c_double - f));
         match i {
             0 => {
                 *r = v;
@@ -34404,7 +33031,8 @@ pub unsafe extern "C" fn canontoken(mut str: *mut libc::c_char) -> *mut libc::c_
             break;
         }
         if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int != 0
+            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
         {
             c = ({
                 let mut __res: libc::c_int = 0;
@@ -34413,9 +33041,7 @@ pub unsafe extern "C" fn canontoken(mut str: *mut libc::c_char) -> *mut libc::c_
                 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = c as libc::c_int;
-                        __res = if __c < -(128 as libc::c_int)
-                            || __c > 255 as libc::c_int
-                        {
+                        __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                             __c
                         } else {
                             *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -34449,7 +33075,12 @@ unsafe extern "C" fn fullColor(
         allocated = len.wrapping_add(10 as libc::c_int as libc::c_ulong);
         fulls = grealloc(fulls as *mut libc::c_void, allocated) as *mut libc::c_char;
     }
-    sprintf(fulls, b"/%s/%s\0" as *const u8 as *const libc::c_char, prefix, str);
+    sprintf(
+        fulls,
+        b"/%s/%s\0" as *const u8 as *const libc::c_char,
+        prefix,
+        str,
+    );
     return fulls;
 }
 unsafe extern "C" fn resolveColor(mut str: *mut libc::c_char) -> *mut libc::c_char {
@@ -34470,15 +33101,14 @@ unsafe extern "C" fn resolveColor(mut str: *mut libc::c_char) -> *mut libc::c_ch
         ss = strchr(c2, '/' as i32);
         if !ss.is_null() {
             if *c2 as libc::c_int == '/' as i32 {
-                if !colorscheme.is_null() && *colorscheme as libc::c_int != 0
+                if !colorscheme.is_null()
+                    && *colorscheme as libc::c_int != 0
                     && strncasecmp(
                         b"X11/\0" as *const u8 as *const libc::c_char,
                         colorscheme,
                         (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
                             .wrapping_sub(1 as libc::c_int as libc::c_ulong)
-                            .wrapping_div(
-                                ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-                            )
+                            .wrapping_div(::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
                             .wrapping_sub(1 as libc::c_int as libc::c_ulong),
                     ) != 0
                 {
@@ -34487,15 +33117,13 @@ unsafe extern "C" fn resolveColor(mut str: *mut libc::c_char) -> *mut libc::c_ch
                     s = c2.offset(1 as libc::c_int as isize);
                 }
             } else if strncasecmp(
-                    b"X11/\0" as *const u8 as *const libc::c_char,
-                    c2,
-                    (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                        .wrapping_sub(1 as libc::c_int as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-                        ),
-                ) != 0
-                {
+                b"X11/\0" as *const u8 as *const libc::c_char,
+                c2,
+                (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    .wrapping_div(::std::mem::size_of::<libc::c_char>() as libc::c_ulong),
+            ) != 0
+            {
                 s = str;
             } else {
                 s = ss.offset(1 as libc::c_int as isize);
@@ -34503,16 +33131,17 @@ unsafe extern "C" fn resolveColor(mut str: *mut libc::c_char) -> *mut libc::c_ch
         } else {
             s = c2;
         }
-    } else if !colorscheme.is_null() && *colorscheme as libc::c_int != 0
-            && strncasecmp(
-                b"X11/\0" as *const u8 as *const libc::c_char,
-                colorscheme,
-                (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
-                    .wrapping_div(::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong),
-            ) != 0
-        {
+    } else if !colorscheme.is_null()
+        && *colorscheme as libc::c_int != 0
+        && strncasecmp(
+            b"X11/\0" as *const u8 as *const libc::c_char,
+            colorscheme,
+            (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
+                .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                .wrapping_div(::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
+                .wrapping_sub(1 as libc::c_int as libc::c_ulong),
+        ) != 0
+    {
         s = fullColor(colorscheme, str);
     } else {
         s = str;
@@ -34525,8 +33154,7 @@ pub unsafe extern "C" fn colorxlate(
     mut color: *mut gvcolor_t,
     mut target_type: color_type_t,
 ) -> libc::c_int {
-    static mut last: *mut hsvrgbacolor_t = 0 as *const hsvrgbacolor_t
-        as *mut hsvrgbacolor_t;
+    static mut last: *mut hsvrgbacolor_t = 0 as *const hsvrgbacolor_t as *mut hsvrgbacolor_t;
     static mut canon: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
     static mut allocated: size_t = 0;
     let mut p: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -34599,62 +33227,38 @@ pub unsafe extern "C" fn colorxlate(
                 G = g as libc::c_double / 255.0f64;
                 B = b as libc::c_double / 255.0f64;
                 rgb2cmyk(R, G, B, &mut C, &mut M, &mut Y, &mut K);
-                (*color)
-                    .u
-                    .cmyk[0 as libc::c_int
-                    as usize] = (C as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[1 as libc::c_int
-                    as usize] = (M as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[2 as libc::c_int
-                    as usize] = (Y as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[3 as libc::c_int
-                    as usize] = (K as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[0 as libc::c_int as usize] =
+                    (C as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[1 as libc::c_int as usize] =
+                    (M as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[2 as libc::c_int as usize] =
+                    (Y as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[3 as libc::c_int as usize] =
+                    (K as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
             }
             2 => {
-                (*color)
-                    .u
-                    .rrggbbaa[0 as libc::c_int
-                    as usize] = r
+                (*color).u.rrggbbaa[0 as libc::c_int as usize] = r
                     .wrapping_mul(65535 as libc::c_int as libc::c_uint)
-                    .wrapping_div(255 as libc::c_int as libc::c_uint) as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[1 as libc::c_int
-                    as usize] = g
+                    .wrapping_div(255 as libc::c_int as libc::c_uint)
+                    as libc::c_int;
+                (*color).u.rrggbbaa[1 as libc::c_int as usize] = g
                     .wrapping_mul(65535 as libc::c_int as libc::c_uint)
-                    .wrapping_div(255 as libc::c_int as libc::c_uint) as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[2 as libc::c_int
-                    as usize] = b
+                    .wrapping_div(255 as libc::c_int as libc::c_uint)
+                    as libc::c_int;
+                (*color).u.rrggbbaa[2 as libc::c_int as usize] = b
                     .wrapping_mul(65535 as libc::c_int as libc::c_uint)
-                    .wrapping_div(255 as libc::c_int as libc::c_uint) as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[3 as libc::c_int
-                    as usize] = a
+                    .wrapping_div(255 as libc::c_int as libc::c_uint)
+                    as libc::c_int;
+                (*color).u.rrggbbaa[3 as libc::c_int as usize] = a
                     .wrapping_mul(65535 as libc::c_int as libc::c_uint)
-                    .wrapping_div(255 as libc::c_int as libc::c_uint) as libc::c_int;
+                    .wrapping_div(255 as libc::c_int as libc::c_uint)
+                    as libc::c_int;
             }
             4 => {
-                (*color)
-                    .u
-                    .RGBA[0 as libc::c_int as usize] = r as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[1 as libc::c_int as usize] = g as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[2 as libc::c_int as usize] = b as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[3 as libc::c_int as usize] = a as libc::c_double / 255.0f64;
+                (*color).u.RGBA[0 as libc::c_int as usize] = r as libc::c_double / 255.0f64;
+                (*color).u.RGBA[1 as libc::c_int as usize] = g as libc::c_double / 255.0f64;
+                (*color).u.RGBA[2 as libc::c_int as usize] = b as libc::c_double / 255.0f64;
+                (*color).u.RGBA[3 as libc::c_int as usize] = a as libc::c_double / 255.0f64;
             }
             5 | 6 => {}
             _ => {
@@ -34673,7 +33277,8 @@ pub unsafe extern "C" fn colorxlate(
     c = *p;
     if c as libc::c_int == '.' as i32
         || *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+            & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
     {
         len = strlen(p);
         if len >= allocated {
@@ -34718,70 +33323,36 @@ pub unsafe extern "C" fn colorxlate(
                 }
                 1 => {
                     hsv2rgb(H, S, V, &mut R, &mut G, &mut B);
-                    (*color)
-                        .u
-                        .rgba[0 as libc::c_int
-                        as usize] = (R * 255 as libc::c_int as libc::c_double)
-                        as libc::c_int as libc::c_uchar;
-                    (*color)
-                        .u
-                        .rgba[1 as libc::c_int
-                        as usize] = (G * 255 as libc::c_int as libc::c_double)
-                        as libc::c_int as libc::c_uchar;
-                    (*color)
-                        .u
-                        .rgba[2 as libc::c_int
-                        as usize] = (B * 255 as libc::c_int as libc::c_double)
-                        as libc::c_int as libc::c_uchar;
-                    (*color)
-                        .u
-                        .rgba[3 as libc::c_int
-                        as usize] = 255 as libc::c_int as libc::c_uchar;
+                    (*color).u.rgba[0 as libc::c_int as usize] =
+                        (R * 255 as libc::c_int as libc::c_double) as libc::c_int as libc::c_uchar;
+                    (*color).u.rgba[1 as libc::c_int as usize] =
+                        (G * 255 as libc::c_int as libc::c_double) as libc::c_int as libc::c_uchar;
+                    (*color).u.rgba[2 as libc::c_int as usize] =
+                        (B * 255 as libc::c_int as libc::c_double) as libc::c_int as libc::c_uchar;
+                    (*color).u.rgba[3 as libc::c_int as usize] =
+                        255 as libc::c_int as libc::c_uchar;
                 }
                 3 => {
                     hsv2rgb(H, S, V, &mut R, &mut G, &mut B);
                     rgb2cmyk(R, G, B, &mut C, &mut M, &mut Y, &mut K);
-                    (*color)
-                        .u
-                        .cmyk[0 as libc::c_int
-                        as usize] = (C as libc::c_int * 255 as libc::c_int)
-                        as libc::c_uchar;
-                    (*color)
-                        .u
-                        .cmyk[1 as libc::c_int
-                        as usize] = (M as libc::c_int * 255 as libc::c_int)
-                        as libc::c_uchar;
-                    (*color)
-                        .u
-                        .cmyk[2 as libc::c_int
-                        as usize] = (Y as libc::c_int * 255 as libc::c_int)
-                        as libc::c_uchar;
-                    (*color)
-                        .u
-                        .cmyk[3 as libc::c_int
-                        as usize] = (K as libc::c_int * 255 as libc::c_int)
-                        as libc::c_uchar;
+                    (*color).u.cmyk[0 as libc::c_int as usize] =
+                        (C as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                    (*color).u.cmyk[1 as libc::c_int as usize] =
+                        (M as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                    (*color).u.cmyk[2 as libc::c_int as usize] =
+                        (Y as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                    (*color).u.cmyk[3 as libc::c_int as usize] =
+                        (K as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
                 }
                 2 => {
                     hsv2rgb(H, S, V, &mut R, &mut G, &mut B);
-                    (*color)
-                        .u
-                        .rrggbbaa[0 as libc::c_int
-                        as usize] = (R * 65535 as libc::c_int as libc::c_double)
-                        as libc::c_int;
-                    (*color)
-                        .u
-                        .rrggbbaa[1 as libc::c_int
-                        as usize] = (G * 65535 as libc::c_int as libc::c_double)
-                        as libc::c_int;
-                    (*color)
-                        .u
-                        .rrggbbaa[2 as libc::c_int
-                        as usize] = (B * 65535 as libc::c_int as libc::c_double)
-                        as libc::c_int;
-                    (*color)
-                        .u
-                        .rrggbbaa[3 as libc::c_int as usize] = 65535 as libc::c_int;
+                    (*color).u.rrggbbaa[0 as libc::c_int as usize] =
+                        (R * 65535 as libc::c_int as libc::c_double) as libc::c_int;
+                    (*color).u.rrggbbaa[1 as libc::c_int as usize] =
+                        (G * 65535 as libc::c_int as libc::c_double) as libc::c_int;
+                    (*color).u.rrggbbaa[2 as libc::c_int as usize] =
+                        (B * 65535 as libc::c_int as libc::c_double) as libc::c_int;
+                    (*color).u.rrggbbaa[3 as libc::c_int as usize] = 65535 as libc::c_int;
                 }
                 4 => {
                     hsv2rgb(H, S, V, &mut R, &mut G, &mut B);
@@ -34828,22 +33399,10 @@ pub unsafe extern "C" fn colorxlate(
     if !last.is_null() {
         match target_type as libc::c_uint {
             0 => {
-                (*color)
-                    .u
-                    .HSVA[0 as libc::c_int
-                    as usize] = (*last).h as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .HSVA[1 as libc::c_int
-                    as usize] = (*last).s as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .HSVA[2 as libc::c_int
-                    as usize] = (*last).v as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .HSVA[3 as libc::c_int
-                    as usize] = (*last).a as libc::c_double / 255.0f64;
+                (*color).u.HSVA[0 as libc::c_int as usize] = (*last).h as libc::c_double / 255.0f64;
+                (*color).u.HSVA[1 as libc::c_int as usize] = (*last).s as libc::c_double / 255.0f64;
+                (*color).u.HSVA[2 as libc::c_int as usize] = (*last).v as libc::c_double / 255.0f64;
+                (*color).u.HSVA[3 as libc::c_int as usize] = (*last).a as libc::c_double / 255.0f64;
             }
             1 => {
                 (*color).u.rgba[0 as libc::c_int as usize] = (*last).r;
@@ -34856,62 +33415,34 @@ pub unsafe extern "C" fn colorxlate(
                 G = (*last).g as libc::c_int as libc::c_double / 255.0f64;
                 B = (*last).b as libc::c_int as libc::c_double / 255.0f64;
                 rgb2cmyk(R, G, B, &mut C, &mut M, &mut Y, &mut K);
-                (*color)
-                    .u
-                    .cmyk[0 as libc::c_int
-                    as usize] = (C as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[1 as libc::c_int
-                    as usize] = (M as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[2 as libc::c_int
-                    as usize] = (Y as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
-                (*color)
-                    .u
-                    .cmyk[3 as libc::c_int
-                    as usize] = (K as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[0 as libc::c_int as usize] =
+                    (C as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[1 as libc::c_int as usize] =
+                    (M as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[2 as libc::c_int as usize] =
+                    (Y as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
+                (*color).u.cmyk[3 as libc::c_int as usize] =
+                    (K as libc::c_int * 255 as libc::c_int) as libc::c_uchar;
             }
             2 => {
-                (*color)
-                    .u
-                    .rrggbbaa[0 as libc::c_int
-                    as usize] = (*last).r as libc::c_int * 65535 as libc::c_int
-                    / 255 as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[1 as libc::c_int
-                    as usize] = (*last).g as libc::c_int * 65535 as libc::c_int
-                    / 255 as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[2 as libc::c_int
-                    as usize] = (*last).b as libc::c_int * 65535 as libc::c_int
-                    / 255 as libc::c_int;
-                (*color)
-                    .u
-                    .rrggbbaa[3 as libc::c_int
-                    as usize] = (*last).a as libc::c_int * 65535 as libc::c_int
-                    / 255 as libc::c_int;
+                (*color).u.rrggbbaa[0 as libc::c_int as usize] =
+                    (*last).r as libc::c_int * 65535 as libc::c_int / 255 as libc::c_int;
+                (*color).u.rrggbbaa[1 as libc::c_int as usize] =
+                    (*last).g as libc::c_int * 65535 as libc::c_int / 255 as libc::c_int;
+                (*color).u.rrggbbaa[2 as libc::c_int as usize] =
+                    (*last).b as libc::c_int * 65535 as libc::c_int / 255 as libc::c_int;
+                (*color).u.rrggbbaa[3 as libc::c_int as usize] =
+                    (*last).a as libc::c_int * 65535 as libc::c_int / 255 as libc::c_int;
             }
             4 => {
-                (*color)
-                    .u
-                    .RGBA[0 as libc::c_int
-                    as usize] = (*last).r as libc::c_int as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[1 as libc::c_int
-                    as usize] = (*last).g as libc::c_int as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[2 as libc::c_int
-                    as usize] = (*last).b as libc::c_int as libc::c_double / 255.0f64;
-                (*color)
-                    .u
-                    .RGBA[3 as libc::c_int
-                    as usize] = (*last).a as libc::c_int as libc::c_double / 255.0f64;
+                (*color).u.RGBA[0 as libc::c_int as usize] =
+                    (*last).r as libc::c_int as libc::c_double / 255.0f64;
+                (*color).u.RGBA[1 as libc::c_int as usize] =
+                    (*last).g as libc::c_int as libc::c_double / 255.0f64;
+                (*color).u.RGBA[2 as libc::c_int as usize] =
+                    (*last).b as libc::c_int as libc::c_double / 255.0f64;
+                (*color).u.RGBA[3 as libc::c_int as usize] =
+                    (*last).a as libc::c_int as libc::c_double / 255.0f64;
             }
             5 | 6 => {}
             _ => {
@@ -34943,9 +33474,7 @@ pub unsafe extern "C" fn colorxlate(
             let ref mut fresh7 = (*color).u.rgba[1 as libc::c_int as usize];
             *fresh7 = *fresh6;
             (*color).u.rgba[0 as libc::c_int as usize] = *fresh7;
-            (*color)
-                .u
-                .rgba[3 as libc::c_int as usize] = 255 as libc::c_int as libc::c_uchar;
+            (*color).u.rgba[3 as libc::c_int as usize] = 255 as libc::c_int as libc::c_uchar;
         }
         3 => {
             let ref mut fresh8 = (*color).u.cmyk[3 as libc::c_int as usize];

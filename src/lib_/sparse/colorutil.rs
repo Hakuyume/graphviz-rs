@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -6,8 +14,7 @@ extern "C" {
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
 }
 unsafe extern "C" fn r2i(mut r: libc::c_float) -> libc::c_int {
-    return ((255 as libc::c_int as libc::c_float * r) as libc::c_double + 0.5f64)
-        as libc::c_int;
+    return ((255 as libc::c_int as libc::c_float * r) as libc::c_double + 0.5f64) as libc::c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn rgb2hex(
@@ -25,14 +32,8 @@ pub unsafe extern "C" fn rgb2hex(
         r2i(b),
     );
     if !opacity.is_null() && strlen(opacity) >= 2 as libc::c_int as libc::c_ulong {
-        *cstring
-            .offset(
-                7 as libc::c_int as isize,
-            ) = *opacity.offset(0 as libc::c_int as isize);
-        *cstring
-            .offset(
-                8 as libc::c_int as isize,
-            ) = *opacity.offset(1 as libc::c_int as isize);
+        *cstring.offset(7 as libc::c_int as isize) = *opacity.offset(0 as libc::c_int as isize);
+        *cstring.offset(8 as libc::c_int as isize) = *opacity.offset(1 as libc::c_int as isize);
         *cstring.offset(9 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
     } else {
         *cstring.offset(7 as libc::c_int as isize) = '\0' as i32 as libc::c_char;

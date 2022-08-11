@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -19,11 +27,7 @@ extern "C" {
         __line: libc::c_uint,
         __function: *const libc::c_char,
     ) -> !;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn pow(_: libc::c_double, _: libc::c_double) -> libc::c_double;
     fn time(__timer: *mut time_t) -> time_t;
@@ -78,7 +82,7 @@ pub struct gv_stack_t {
 }
 pub const FIRST_ALLOCATION: C2RustUnnamed = 512;
 pub type C2RustUnnamed = libc::c_uint;
-pub type edgefn = Option::<unsafe extern "C" fn(libc::c_int, libc::c_int) -> ()>;
+pub type edgefn = Option<unsafe extern "C" fn(libc::c_int, libc::c_int) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct vtx_data {
@@ -113,16 +117,16 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
 }
 #[inline]
 unsafe extern "C" fn stack_reset(mut stack: *mut gv_stack_t) {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             95 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 31],
-                &[libc::c_char; 31],
-            >(b"void stack_reset(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 31], &[libc::c_char; 31]>(
+                b"void stack_reset(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     free((*stack).base as *mut libc::c_void);
@@ -141,54 +145,48 @@ unsafe extern "C" fn stack_pop(mut stack: *mut gv_stack_t) -> *mut libc::c_void 
 }
 #[inline]
 unsafe extern "C" fn stack_top(mut stack: *mut gv_stack_t) -> *mut libc::c_void {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             81 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void *stack_top(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void *stack_top(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if !stack_is_empty(stack)
-        && !(b"access to top of an empty stack\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"access to top of an empty stack\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
-            b"!stack_is_empty(stack) && \"access to top of an empty stack\"\0"
-                as *const u8 as *const libc::c_char,
+            b"!stack_is_empty(stack) && \"access to top of an empty stack\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             82 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void *stack_top(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void *stack_top(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return *((*stack).base)
-        .offset(
-            ((*stack).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
-        );
+        .offset(((*stack).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
 }
 #[inline]
-unsafe extern "C" fn stack_push_or_exit(
-    mut stack: *mut gv_stack_t,
-    mut item: *mut libc::c_void,
-) {
-    if !stack.is_null() {} else {
+unsafe extern "C" fn stack_push_or_exit(mut stack: *mut gv_stack_t, mut item: *mut libc::c_void) {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             70 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 46],
-                &[libc::c_char; 46],
-            >(b"void stack_push_or_exit(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                b"void stack_push_or_exit(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut r: libc::c_int = stack_push(stack, item);
@@ -206,22 +204,22 @@ unsafe extern "C" fn stack_push(
     mut stack: *mut gv_stack_t,
     mut item: *mut libc::c_void,
 ) -> libc::c_int {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             34 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*stack).size == (*stack).capacity {
-        if ((18446744073709551615 as libc::c_ulong)
-            .wrapping_div(2 as libc::c_int as libc::c_ulong) < (*stack).capacity)
-            as libc::c_int as libc::c_long != 0
+        if ((18446744073709551615 as libc::c_ulong).wrapping_div(2 as libc::c_int as libc::c_ulong)
+            < (*stack).capacity) as libc::c_int as libc::c_long
+            != 0
         {
             return 75 as libc::c_int;
         }
@@ -234,8 +232,8 @@ unsafe extern "C" fn stack_push(
             (*stack).base as *mut libc::c_void,
             (::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong).wrapping_mul(c),
         ) as *mut *mut libc::c_void;
-        if (b == 0 as *mut libc::c_void as *mut *mut libc::c_void) as libc::c_int
-            as libc::c_long != 0
+        if (b == 0 as *mut libc::c_void as *mut *mut libc::c_void) as libc::c_int as libc::c_long
+            != 0
         {
             return 12 as libc::c_int;
         }
@@ -243,28 +241,28 @@ unsafe extern "C" fn stack_push(
         let ref mut fresh1 = (*stack).base;
         *fresh1 = b;
     }
-    if !((*stack).base).is_null() {} else {
+    if !((*stack).base).is_null() {
+    } else {
         __assert_fail(
             b"stack->base != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*stack).capacity > (*stack).size {} else {
+    if (*stack).capacity > (*stack).size {
+    } else {
         __assert_fail(
             b"stack->capacity > stack->size\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             59 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let ref mut fresh2 = *((*stack).base).offset((*stack).size as isize);
@@ -275,32 +273,32 @@ unsafe extern "C" fn stack_push(
 }
 #[inline]
 unsafe extern "C" fn stack_is_empty(mut stack: *const gv_stack_t) -> bool {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             28 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"_Bool stack_is_empty(const gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"_Bool stack_is_empty(const gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return stack_size(stack) == 0 as libc::c_int as libc::c_ulong;
 }
 #[inline]
 unsafe extern "C" fn stack_size(mut stack: *const gv_stack_t) -> size_t {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             23 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"size_t stack_size(const gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"size_t stack_size(const gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return (*stack).size;
@@ -342,8 +340,7 @@ pub unsafe extern "C" fn makeCircle(mut n: libc::c_int, mut ef: edgefn) {
     if n < 3 as libc::c_int {
         fprintf(
             stderr,
-            b"Warning: degenerate circle of %d vertices\n\0" as *const u8
-                as *const libc::c_char,
+            b"Warning: degenerate circle of %d vertices\n\0" as *const u8 as *const libc::c_char,
             n,
         );
         makePath(n, ef);
@@ -362,8 +359,7 @@ pub unsafe extern "C" fn makeStar(mut n: libc::c_int, mut ef: edgefn) {
     if n < 3 as libc::c_int {
         fprintf(
             stderr,
-            b"Warning: degenerate star of %d vertices\n\0" as *const u8
-                as *const libc::c_char,
+            b"Warning: degenerate star of %d vertices\n\0" as *const u8 as *const libc::c_char,
             n,
         );
         makePath(n, ef);
@@ -381,8 +377,7 @@ pub unsafe extern "C" fn makeWheel(mut n: libc::c_int, mut ef: edgefn) {
     if n < 4 as libc::c_int {
         fprintf(
             stderr,
-            b"Warning: degenerate wheel of %d vertices\n\0" as *const u8
-                as *const libc::c_char,
+            b"Warning: degenerate wheel of %d vertices\n\0" as *const u8 as *const libc::c_char,
             n,
         );
         makeComplete(n, ef);
@@ -415,11 +410,7 @@ pub unsafe extern "C" fn makeCompleteB(
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn makeTorus(
-    mut dim1: libc::c_int,
-    mut dim2: libc::c_int,
-    mut ef: edgefn,
-) {
+pub unsafe extern "C" fn makeTorus(mut dim1: libc::c_int, mut dim2: libc::c_int, mut ef: edgefn) {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut n: libc::c_int = 0 as libc::c_int;
@@ -438,10 +429,7 @@ pub unsafe extern "C" fn makeTorus(
     while i <= dim2 {
         j = 1 as libc::c_int;
         while j < dim1 {
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(dim2 * (j - 1 as libc::c_int) + i, dim2 * j + i);
+            ef.expect("non-null function pointer")(dim2 * (j - 1 as libc::c_int) + i, dim2 * j + i);
             j += 1;
         }
         ef.expect("non-null function pointer")(i, dim2 * (dim1 - 1 as libc::c_int) + i);
@@ -466,16 +454,16 @@ pub unsafe extern "C" fn makeTwistedTorus(
         while j < dim2 {
             li = (i + t1) % dim1;
             lj = (j + 1 as libc::c_int) % dim2;
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(i + j * dim1 + 1 as libc::c_int, li + lj * dim1 + 1 as libc::c_int);
+            ef.expect("non-null function pointer")(
+                i + j * dim1 + 1 as libc::c_int,
+                li + lj * dim1 + 1 as libc::c_int,
+            );
             li = (i + 1 as libc::c_int) % dim1;
             lj = (j + t2) % dim2;
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(i + j * dim1 + 1 as libc::c_int, li + lj * dim1 + 1 as libc::c_int);
+            ef.expect("non-null function pointer")(
+                i + j * dim1 + 1 as libc::c_int,
+                li + lj * dim1 + 1 as libc::c_int,
+            );
             j += 1;
         }
         i += 1;
@@ -505,10 +493,7 @@ pub unsafe extern "C" fn makeCylinder(
     while i <= dim2 {
         j = 1 as libc::c_int;
         while j < dim1 {
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(dim2 * (j - 1 as libc::c_int) + i, dim2 * j + i);
+            ef.expect("non-null function pointer")(dim2 * (j - 1 as libc::c_int) + i, dim2 * j + i);
             j += 1;
         }
         i += 1;
@@ -532,7 +517,8 @@ pub unsafe extern "C" fn makeSquareGrid(
         while j < dim2 {
             tl = i * dim2 + j + 1 as libc::c_int;
             if j > 0 as libc::c_int
-                && (partial == 0 || j <= 2 as libc::c_int * dim2 / 6 as libc::c_int
+                && (partial == 0
+                    || j <= 2 as libc::c_int * dim2 / 6 as libc::c_int
                     || j > 4 as libc::c_int * dim2 / 6 as libc::c_int
                     || i <= 2 as libc::c_int * dim1 / 6 as libc::c_int
                     || i > 4 as libc::c_int * dim1 / 6 as libc::c_int)
@@ -543,7 +529,8 @@ pub unsafe extern "C" fn makeSquareGrid(
                 }
             }
             if j < dim2 - 1 as libc::c_int
-                && (partial == 0 || j < 2 as libc::c_int * dim2 / 6 as libc::c_int
+                && (partial == 0
+                    || j < 2 as libc::c_int * dim2 / 6 as libc::c_int
                     || j >= 4 as libc::c_int * dim2 / 6 as libc::c_int
                     || i <= 2 as libc::c_int * dim1 / 6 as libc::c_int
                     || i > 4 as libc::c_int * dim1 / 6 as libc::c_int)
@@ -636,13 +623,8 @@ unsafe extern "C" fn ipow(mut base: libc::c_int, mut power: libc::c_int) -> libc
     return ip;
 }
 #[no_mangle]
-pub unsafe extern "C" fn makeTree(
-    mut depth: libc::c_int,
-    mut nary: libc::c_int,
-    mut ef: edgefn,
-) {
-    let mut n: libc::c_int = (ipow(nary, depth) - 1 as libc::c_int)
-        / (nary - 1 as libc::c_int);
+pub unsafe extern "C" fn makeTree(mut depth: libc::c_int, mut nary: libc::c_int, mut ef: edgefn) {
+    let mut n: libc::c_int = (ipow(nary, depth) - 1 as libc::c_int) / (nary - 1 as libc::c_int);
     let mut idx: libc::c_int = 2 as libc::c_int;
     let mut i: libc::c_int = 1 as libc::c_int;
     while i <= n {
@@ -663,10 +645,7 @@ pub unsafe extern "C" fn makeBinaryTree(mut depth: libc::c_int, mut ef: edgefn) 
     i = 1 as libc::c_int;
     while i <= n {
         ef.expect("non-null function pointer")(i, 2 as libc::c_int * i);
-        ef
-            .expect(
-                "non-null function pointer",
-            )(i, 2 as libc::c_int * i + 1 as libc::c_int);
+        ef.expect("non-null function pointer")(i, 2 as libc::c_int * i + 1 as libc::c_int);
         i += 1;
     }
 }
@@ -729,8 +708,8 @@ pub unsafe extern "C" fn makeSierpinski(mut depth: libc::c_int, mut ef: edgefn) 
     depth -= 1;
     n = 3 as libc::c_int
         * (1 as libc::c_int
-            + ((pow(3.0f64, depth as libc::c_double) + 0.5f64) as libc::c_int
-                - 1 as libc::c_int) / 2 as libc::c_int);
+            + ((pow(3.0f64, depth as libc::c_double) + 0.5f64) as libc::c_int - 1 as libc::c_int)
+                / 2 as libc::c_int);
     graph = calloc(
         (n + 1 as libc::c_int) as libc::c_ulong,
         ::std::mem::size_of::<vtx_data>() as libc::c_ulong,
@@ -860,8 +839,7 @@ pub unsafe extern "C" fn makeTetrix(mut depth: libc::c_int, mut ef: edgefn) {
     depth -= 1;
     n = 4 as libc::c_int
         + 2 as libc::c_int
-            * ((pow(4.0f64, depth as libc::c_double) + 0.5f64) as libc::c_int
-                - 1 as libc::c_int);
+            * ((pow(4.0f64, depth as libc::c_double) + 0.5f64) as libc::c_int - 1 as libc::c_int);
     graph = calloc(
         (n + 1 as libc::c_int) as libc::c_ulong,
         ::std::mem::size_of::<vtx_data>() as libc::c_ulong,
@@ -956,11 +934,7 @@ pub unsafe extern "C" fn makeTriMesh(mut sz: libc::c_int, mut ef: edgefn) {
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn makeBall(
-    mut w: libc::c_int,
-    mut h: libc::c_int,
-    mut ef: edgefn,
-) {
+pub unsafe extern "C" fn makeBall(mut w: libc::c_int, mut h: libc::c_int, mut ef: edgefn) {
     let mut i: libc::c_int = 0;
     let mut cap: libc::c_int = 0;
     makeCylinder(w, h, ef);
@@ -977,11 +951,7 @@ pub unsafe extern "C" fn makeBall(
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn makeRandom(
-    mut h: libc::c_int,
-    mut w: libc::c_int,
-    mut ef: edgefn,
-) {
+pub unsafe extern "C" fn makeRandom(mut h: libc::c_int, mut w: libc::c_int, mut ef: edgefn) {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut type_0: libc::c_int = 0;
@@ -1011,8 +981,8 @@ pub unsafe extern "C" fn makeRandom(
         while j < i - 1 as libc::c_int {
             let mut th: libc::c_int = rand() % (size * size);
             if th <= w * w
-                && (i < 5 as libc::c_int
-                    || i > h - 4 as libc::c_int && j > h - 4 as libc::c_int) || th <= w
+                && (i < 5 as libc::c_int || i > h - 4 as libc::c_int && j > h - 4 as libc::c_int)
+                || th <= w
             {
                 ef.expect("non-null function pointer")(j, i);
             }
@@ -1022,11 +992,7 @@ pub unsafe extern "C" fn makeRandom(
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn makeMobius(
-    mut w: libc::c_int,
-    mut h: libc::c_int,
-    mut ef: edgefn,
-) {
+pub unsafe extern "C" fn makeMobius(mut w: libc::c_int, mut h: libc::c_int, mut ef: edgefn) {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     if h == 1 as libc::c_int {
@@ -1053,24 +1019,15 @@ pub unsafe extern "C" fn makeMobius(
     while i < w - 1 as libc::c_int {
         j = 1 as libc::c_int;
         while j < h {
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(j + i * h, j + (i + 1 as libc::c_int) * h);
-            ef
-                .expect(
-                    "non-null function pointer",
-                )(j + i * h, j + 1 as libc::c_int + i * h);
+            ef.expect("non-null function pointer")(j + i * h, j + (i + 1 as libc::c_int) * h);
+            ef.expect("non-null function pointer")(j + i * h, j + 1 as libc::c_int + i * h);
             j += 1;
         }
         i += 1;
     }
     i = 1 as libc::c_int;
     while i < h {
-        ef
-            .expect(
-                "non-null function pointer",
-            )(
+        ef.expect("non-null function pointer")(
             i + (w - 1 as libc::c_int) * h,
             i + 1 as libc::c_int + (w - 1 as libc::c_int) * h,
         );
@@ -1146,11 +1103,7 @@ unsafe extern "C" fn treeDup(mut tp: *mut tree_t, mut J: libc::c_int) {
     }
     (*tp).top = LS + M;
 }
-unsafe extern "C" fn push(
-    mut sp: *mut gv_stack_t,
-    mut j: libc::c_int,
-    mut d: libc::c_int,
-) {
+unsafe extern "C" fn push(mut sp: *mut gv_stack_t, mut j: libc::c_int, mut d: libc::c_int) {
     let mut j_ptr: *mut libc::c_void = j as intptr_t as *mut libc::c_void;
     let mut d_ptr: *mut libc::c_void = d as intptr_t as *mut libc::c_void;
     stack_push_or_exit(sp, j_ptr);
@@ -1270,7 +1223,7 @@ unsafe extern "C" fn genTree(
                 treePop(TREE);
             }
         }
-    };
+    }
 }
 unsafe extern "C" fn writeTree(mut tp: *mut tree_t, mut ef: edgefn) {
     let mut i: libc::c_int = 0;
@@ -1289,8 +1242,7 @@ pub unsafe extern "C" fn makeTreeGen(mut N: libc::c_int) -> *mut treegen_t {
     (*tg).N = N;
     let ref mut fresh27 = (*tg).T;
     *fresh27 = genCnt(N);
-    (*tg)
-        .sp = {
+    (*tg).sp = {
         let mut init = gv_stack_t {
             base: 0 as *mut *mut libc::c_void,
             size: 0,

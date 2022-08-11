@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -68,7 +76,7 @@ pub struct Halfedge {
 #[no_mangle]
 pub unsafe extern "C" fn voronoi(
     mut triangulate: libc::c_int,
-    mut nextsite: Option::<unsafe extern "C" fn() -> *mut Site>,
+    mut nextsite: Option<unsafe extern "C" fn() -> *mut Site>,
 ) {
     let mut newsite: *mut Site = 0 as *mut Site;
     let mut bot: *mut Site = 0 as *mut Site;
@@ -101,9 +109,9 @@ pub unsafe extern "C" fn voronoi(
             newintstar = PQ_min();
         }
         if !newsite.is_null()
-            && (PQempty() as libc::c_int != 0 || (*newsite).coord.y < newintstar.y
-                || (*newsite).coord.y == newintstar.y
-                    && (*newsite).coord.x < newintstar.x)
+            && (PQempty() as libc::c_int != 0
+                || (*newsite).coord.y < newintstar.y
+                || (*newsite).coord.y == newintstar.y && (*newsite).coord.x < newintstar.x)
         {
             lbnd = ELleftbnd(&mut (*newsite).coord);
             rbnd = ELright(lbnd);

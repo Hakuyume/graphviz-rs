@@ -1,15 +1,19 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
     pub type _IO_wide_data;
     pub type _IO_codecvt;
     pub type _IO_marker;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn pow(_: libc::c_double, _: libc::c_double) -> libc::c_double;
     fn sqrt(_: libc::c_double) -> libc::c_double;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
@@ -45,14 +49,8 @@ extern "C" {
         method: libc::c_int,
         flag: *mut libc::c_int,
     ) -> libc::c_double;
-    fn Operator_uniform_stress_matmul(
-        A: SparseMatrix,
-        alpha: libc::c_double,
-    ) -> Operator;
-    fn Operator_uniform_stress_diag_precon_new(
-        A: SparseMatrix,
-        alpha: libc::c_double,
-    ) -> Operator;
+    fn Operator_uniform_stress_matmul(A: SparseMatrix, alpha: libc::c_double) -> Operator;
+    fn Operator_uniform_stress_diag_precon_new(A: SparseMatrix, alpha: libc::c_double) -> Operator;
     fn SparseMatrix_add(A: SparseMatrix, B: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_delete(A: SparseMatrix);
     fn SparseMatrix_from_coordinate_arrays(
@@ -91,10 +89,7 @@ extern "C" {
         y: *mut libc::c_double,
     ) -> libc::c_double;
     fn SparseMatrix_copy(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
     fn SparseMatrix_multiply_dense(
         A: SparseMatrix,
         v: *mut libc::c_double,
@@ -111,16 +106,8 @@ extern "C" {
         x: *mut libc::c_double,
         flag: *mut libc::c_int,
     );
-    fn call_tri(
-        n: libc::c_int,
-        dim: libc::c_int,
-        x: *mut libc::c_double,
-    ) -> SparseMatrix;
-    fn call_tri2(
-        n: libc::c_int,
-        dim: libc::c_int,
-        x: *mut libc::c_double,
-    ) -> SparseMatrix;
+    fn call_tri(n: libc::c_int, dim: libc::c_int, x: *mut libc::c_double) -> SparseMatrix;
+    fn call_tri2(n: libc::c_int, dim: libc::c_int, x: *mut libc::c_double) -> SparseMatrix;
 }
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -193,7 +180,7 @@ pub const SOLVE_METHOD_CG: C2RustUnnamed_1 = 0;
 #[repr(C)]
 pub struct Operator_struct {
     pub data: *mut libc::c_void,
-    pub Operator_apply: Option::<
+    pub Operator_apply: Option<
         unsafe extern "C" fn(
             Operator,
             *mut libc::c_double,
@@ -255,7 +242,7 @@ pub struct StressMajorizationSmoother_struct {
     pub Lw: SparseMatrix,
     pub Lwd: SparseMatrix,
     pub lambda: *mut libc::c_double,
-    pub data_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub data_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub data: *mut libc::c_void,
     pub scheme: libc::c_int,
     pub scaling: libc::c_double,
@@ -322,16 +309,16 @@ unsafe extern "C" fn ideal_distance_matrix(
     let mut di: libc::c_double = 0.;
     let mut sum: libc::c_double = 0.;
     let mut sumd: libc::c_double = 0.;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"post_process.c\0" as *const u8 as *const libc::c_char,
             42 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 64],
-                &[libc::c_char; 64],
-            >(b"SparseMatrix ideal_distance_matrix(SparseMatrix, int, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 64], &[libc::c_char; 64]>(
+                b"SparseMatrix ideal_distance_matrix(SparseMatrix, int, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     D = SparseMatrix_copy(A);
@@ -373,8 +360,8 @@ unsafe extern "C" fn ideal_distance_matrix(
             k = *ja.offset(j as isize);
             if !(i == k) {
                 len = di
-                    + (*ia.offset((k + 1 as libc::c_int) as isize)
-                        - *ia.offset(k as isize)) as libc::c_double;
+                    + (*ia.offset((k + 1 as libc::c_int) as isize) - *ia.offset(k as isize))
+                        as libc::c_double;
                 l = *ia.offset(k as isize);
                 while l < *ia.offset((k + 1 as libc::c_int) as isize) {
                     if *mask.offset(*ja.offset(l as isize) as isize) == i {
@@ -383,18 +370,16 @@ unsafe extern "C" fn ideal_distance_matrix(
                     l += 1;
                 }
                 *d.offset(j as isize) = len;
-                if len > 0 as libc::c_int as libc::c_double {} else {
+                if len > 0 as libc::c_int as libc::c_double {
+                } else {
                     __assert_fail(
                         b"len > 0\0" as *const u8 as *const libc::c_char,
                         b"post_process.c\0" as *const u8 as *const libc::c_char,
                         72 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 64],
-                            &[libc::c_char; 64],
-                        >(
+                        (*::std::mem::transmute::<&[u8; 64], &[libc::c_char; 64]>(
                             b"SparseMatrix ideal_distance_matrix(SparseMatrix, int, double *)\0",
                         ))
-                            .as_ptr(),
+                        .as_ptr(),
                     );
                 }
             }
@@ -467,7 +452,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
     let mut stop: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut sbot: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut ID: SparseMatrix = 0 as *mut SparseMatrix_struct;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -482,9 +468,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
         );
     }
     ID = ideal_distance_matrix(A, dim, x);
-    sm = gmalloc(
-        ::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong,
-    ) as *mut StressMajorizationSmoother_struct;
+    sm = gmalloc(::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong)
+        as *mut StressMajorizationSmoother_struct;
     (*sm).scaling = 1.0f64;
     let ref mut fresh1 = (*sm).data;
     *fresh1 = 0 as *mut libc::c_void;
@@ -502,8 +487,10 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
         *((*sm).lambda).offset(i as isize) = lambda0;
         i += 1;
     }
-    mask = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    mask = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     avg_dist = gcalloc(
         m as size_t,
         ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
@@ -515,13 +502,13 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             if !(i == *ja.offset(j as isize)) {
-                *avg_dist.offset(i as isize)
-                    += distance(x, dim, i, *ja.offset(j as isize));
+                *avg_dist.offset(i as isize) += distance(x, dim, i, *ja.offset(j as isize));
                 nz += 1;
             }
             j += 1;
         }
-        if nz > 0 as libc::c_int {} else {
+        if nz > 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"nz > 0\0" as *const u8 as *const libc::c_char,
                 b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -615,15 +602,13 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
                 if ideal_dist_scheme == IDEAL_GRAPH_DIST as libc::c_int {
                     dist = 1 as libc::c_int as libc::c_double;
                 } else if ideal_dist_scheme == IDEAL_AVG_DIST as libc::c_int {
-                    dist = (*avg_dist.offset(i as isize) + *avg_dist.offset(k as isize))
-                        * 0.5f64;
+                    dist = (*avg_dist.offset(i as isize) + *avg_dist.offset(k as isize)) * 0.5f64;
                 } else if ideal_dist_scheme == IDEAL_POWER_DIST as libc::c_int {
                     dist = pow(distance_cropped(x, dim, i, k), 0.4f64);
                 } else {
                     fprintf(
                         stderr,
-                        b"ideal_dist_scheme value wrong\0" as *const u8
-                            as *const libc::c_char,
+                        b"ideal_dist_scheme value wrong\0" as *const u8 as *const libc::c_char,
                     );
                     __assert_fail(
                         b"0\0" as *const u8 as *const libc::c_char,
@@ -639,10 +624,7 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
                     );
                     graphviz_exit(1 as libc::c_int);
                 }
-                *w
-                    .offset(
-                        nz as isize,
-                    ) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
+                *w.offset(nz as isize) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
                 diag_w += *w.offset(nz as isize);
                 *jd.offset(nz as isize) = k;
                 *d.offset(nz as isize) = *w.offset(nz as isize) * dist;
@@ -664,20 +646,15 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
                         dist = 2 as libc::c_int as libc::c_double;
                     } else if ideal_dist_scheme == IDEAL_AVG_DIST as libc::c_int {
                         dist = (*avg_dist.offset(i as isize)
-                            + 2 as libc::c_int as libc::c_double
-                                * *avg_dist.offset(k as isize)
+                            + 2 as libc::c_int as libc::c_double * *avg_dist.offset(k as isize)
                             + *avg_dist.offset(*ja.offset(l as isize) as isize))
                             * 0.5f64;
                     } else if ideal_dist_scheme == IDEAL_POWER_DIST as libc::c_int {
-                        dist = pow(
-                            distance_cropped(x, dim, i, *ja.offset(l as isize)),
-                            0.4f64,
-                        );
+                        dist = pow(distance_cropped(x, dim, i, *ja.offset(l as isize)), 0.4f64);
                     } else {
                         fprintf(
                             stderr,
-                            b"ideal_dist_scheme value wrong\0" as *const u8
-                                as *const libc::c_char,
+                            b"ideal_dist_scheme value wrong\0" as *const u8 as *const libc::c_char,
                         );
                         __assert_fail(
                             b"0\0" as *const u8 as *const libc::c_char,
@@ -694,16 +671,11 @@ pub unsafe extern "C" fn StressMajorizationSmoother2_new(
                         graphviz_exit(1 as libc::c_int);
                     }
                     *jw.offset(nz as isize) = *ja.offset(l as isize);
-                    *w
-                        .offset(
-                            nz as isize,
-                        ) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
+                    *w.offset(nz as isize) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
                     diag_w += *w.offset(nz as isize);
                     *jd.offset(nz as isize) = *ja.offset(l as isize);
                     *d.offset(nz as isize) = *w.offset(nz as isize) * dist;
-                    stop
-                        += *d.offset(nz as isize)
-                            * distance(x, dim, *ja.offset(l as isize), k);
+                    stop += *d.offset(nz as isize) * distance(x, dim, *ja.offset(l as isize), k);
                     sbot += *d.offset(nz as isize) * dist;
                     diag_d += *d.offset(nz as isize);
                     nz += 1;
@@ -770,7 +742,8 @@ pub unsafe extern "C" fn SparseStressMajorizationSmoother_new(
     let mut xdot: libc::c_double = 0 as libc::c_int as libc::c_double;
     if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0
         && (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false) && A->type == MATRIX_TYPE_REAL\0"
                 as *const u8 as *const libc::c_char,
@@ -800,9 +773,8 @@ pub unsafe extern "C" fn SparseStressMajorizationSmoother_new(
     ia = (*A).ia;
     ja = (*A).ja;
     a = (*A).a as *mut libc::c_double;
-    sm = gmalloc(
-        ::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong,
-    ) as StressMajorizationSmoother;
+    sm = gmalloc(::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong)
+        as StressMajorizationSmoother;
     (*sm).scaling = 1.0f64;
     let ref mut fresh6 = (*sm).data;
     *fresh6 = 0 as *mut libc::c_void;
@@ -813,8 +785,7 @@ pub unsafe extern "C" fn SparseStressMajorizationSmoother_new(
     (*sm).maxit_cg = sqrt((*A).m as libc::c_double) as libc::c_int;
     let ref mut fresh8 = (*sm).lambda;
     *fresh8 = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(m as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(m as libc::c_ulong),
     ) as *mut libc::c_double;
     lambda = *fresh8;
     i = 0 as libc::c_int;
@@ -866,28 +837,17 @@ pub unsafe extern "C" fn SparseStressMajorizationSmoother_new(
                 match weighting_scheme {
                     2 => {
                         if dist * dist == 0 as libc::c_int as libc::c_double {
-                            *w
-                                .offset(
-                                    nz as isize,
-                                ) = -(100000 as libc::c_int) as libc::c_double;
+                            *w.offset(nz as isize) = -(100000 as libc::c_int) as libc::c_double;
                         } else {
-                            *w
-                                .offset(
-                                    nz as isize,
-                                ) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
+                            *w.offset(nz as isize) =
+                                -(1 as libc::c_int) as libc::c_double / (dist * dist);
                         }
                     }
                     1 => {
                         if dist * dist == 0 as libc::c_int as libc::c_double {
-                            *w
-                                .offset(
-                                    nz as isize,
-                                ) = -(100000 as libc::c_int) as libc::c_double;
+                            *w.offset(nz as isize) = -(100000 as libc::c_int) as libc::c_double;
                         } else {
-                            *w
-                                .offset(
-                                    nz as isize,
-                                ) = -(1 as libc::c_int) as libc::c_double / dist;
+                            *w.offset(nz as isize) = -(1 as libc::c_int) as libc::c_double / dist;
                         }
                     }
                     0 => {
@@ -962,11 +922,8 @@ unsafe extern "C" fn total_distance(
         dist = 0.0f64;
         j = 0 as libc::c_int;
         while j < dim {
-            dist
-                += (*y.offset((i * dim + j) as isize)
-                    - *x.offset((i * dim + j) as isize))
-                    * (*y.offset((i * dim + j) as isize)
-                        - *x.offset((i * dim + j) as isize));
+            dist += (*y.offset((i * dim + j) as isize) - *x.offset((i * dim + j) as isize))
+                * (*y.offset((i * dim + j) as isize) - *x.offset((i * dim + j) as isize));
             j += 1;
         }
         total += sqrt(dist);
@@ -1024,7 +981,8 @@ unsafe extern "C" fn get_edge_label_matrix(
         || edge_labeling_scheme == ELSCHEME_STRAIGHTLINE_PENALTY as libc::c_int
     {
         if irn.is_null() {
-            if jcn.is_null() && val.is_null() {} else {
+            if jcn.is_null() && val.is_null() {
+            } else {
                 __assert_fail(
                     b"(!jcn) && (!val)\0" as *const u8 as *const libc::c_char,
                     b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1042,11 +1000,11 @@ unsafe extern "C" fn get_edge_label_matrix(
             i = 0 as libc::c_int;
             while i < n_constr_nodes {
                 ii = *constr_nodes.offset(i as isize);
-                k = (*ia.offset((ii + 1 as libc::c_int) as isize)
-                    - *ia.offset(ii as isize)) as libc::c_double;
-                nz
-                    += ((k + 1 as libc::c_int as libc::c_double)
-                        * (k + 1 as libc::c_int as libc::c_double)) as libc::c_int;
+                k = (*ia.offset((ii + 1 as libc::c_int) as isize) - *ia.offset(ii as isize))
+                    as libc::c_double;
+                nz += ((k + 1 as libc::c_int as libc::c_double)
+                    * (k + 1 as libc::c_int as libc::c_double))
+                    as libc::c_int;
                 i += 1;
             }
             let ref mut fresh12 = (*data).irn;
@@ -1077,8 +1035,8 @@ unsafe extern "C" fn get_edge_label_matrix(
             if !(jj == ll) {
                 dist = distance_cropped(x, dim, jj, ll);
                 dist *= dist;
-                k = (*ia.offset((ii + 1 as libc::c_int) as isize)
-                    - *ia.offset(ii as isize)) as libc::c_double;
+                k = (*ia.offset((ii + 1 as libc::c_int) as isize) - *ia.offset(ii as isize))
+                    as libc::c_double;
                 kk = k * k;
                 *irn.offset(nz as isize) = ii;
                 *jcn.offset(nz as isize) = ii;
@@ -1130,10 +1088,11 @@ unsafe extern "C" fn get_edge_label_matrix(
             ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
         );
     } else if edge_labeling_scheme == ELSCHEME_PENALTY2 as libc::c_int
-            || edge_labeling_scheme == ELSCHEME_STRAIGHTLINE_PENALTY2 as libc::c_int
-        {
+        || edge_labeling_scheme == ELSCHEME_STRAIGHTLINE_PENALTY2 as libc::c_int
+    {
         if irn.is_null() {
-            if jcn.is_null() && val.is_null() {} else {
+            if jcn.is_null() && val.is_null() {
+            } else {
                 __assert_fail(
                     b"(!jcn) && (!val)\0" as *const u8 as *const libc::c_char,
                     b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1194,18 +1153,17 @@ unsafe extern "C" fn get_edge_label_matrix(
                 jj = *ja.offset(j as isize);
                 l = 0 as libc::c_int;
                 while l < dim {
-                    *x00.offset((ii * dim + l) as isize)
-                        += *x.offset((jj * dim + l) as isize);
+                    *x00.offset((ii * dim + l) as isize) += *x.offset((jj * dim + l) as isize);
                     l += 1;
                 }
                 j += 1;
             }
             l = 0 as libc::c_int;
             while l < dim {
-                *x00.offset((ii * dim + l) as isize)
-                    *= constr_penalty / dist
-                        / (*ia.offset((ii + 1 as libc::c_int) as isize)
-                            - *ia.offset(ii as isize)) as libc::c_double;
+                *x00.offset((ii * dim + l) as isize) *= constr_penalty
+                    / dist
+                    / (*ia.offset((ii + 1 as libc::c_int) as isize) - *ia.offset(ii as isize))
+                        as libc::c_double;
                 l += 1;
             }
             i += 1;
@@ -1248,14 +1206,12 @@ pub unsafe extern "C" fn get_stress(
             if !(i == *jw.offset(j as isize)) {
                 dist = *d.offset(j as isize) / *w.offset(j as isize);
                 if weighted != 0 {
-                    res
-                        += -*w.offset(j as isize)
-                            * (dist - distance(x, dim, i, *jw.offset(j as isize)))
-                            * (dist - distance(x, dim, i, *jw.offset(j as isize)));
+                    res += -*w.offset(j as isize)
+                        * (dist - distance(x, dim, i, *jw.offset(j as isize)))
+                        * (dist - distance(x, dim, i, *jw.offset(j as isize)));
                 } else {
-                    res
-                        += (dist - distance(x, dim, i, *jw.offset(j as isize)))
-                            * (dist - distance(x, dim, i, *jw.offset(j as isize)));
+                    res += (dist - distance(x, dim, i, *jw.offset(j as isize)))
+                        * (dist - distance(x, dim, i, *jw.offset(j as isize)));
                 }
             }
             j += 1;
@@ -1284,8 +1240,8 @@ unsafe extern "C" fn uniform_stress_augment_rhs(
             dist = distance_cropped(x, dim, i, j);
             k = 0 as libc::c_int;
             while k < dim {
-                distij = (*x.offset((i * dim + k) as isize)
-                    - *x.offset((j * dim + k) as isize)) / dist;
+                distij =
+                    (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize)) / dist;
                 *y.offset((i * dim + k) as isize) += alpha * M * distij;
                 *y.offset((j * dim + k) as isize) += alpha * M * -distij;
                 k += 1;
@@ -1385,10 +1341,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                     Lw = SparseMatrix_add(Lw, Lc);
                 }
             } else if (*sm).scheme == SM_SCHEME_UNIFORM_STRESS as libc::c_int {
-                alpha = *((*sm).data as *mut libc::c_double)
-                    .offset(0 as libc::c_int as isize);
-                M = *((*sm).data as *mut libc::c_double)
-                    .offset(1 as libc::c_int as isize);
+                alpha = *((*sm).data as *mut libc::c_double).offset(0 as libc::c_int as isize);
+                M = *((*sm).data as *mut libc::c_double).offset(1 as libc::c_int as isize);
             }
             loop {
                 let fresh23 = iter;
@@ -1407,17 +1361,16 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                                 idiag = j;
                             } else {
                                 dist = distance(x, dim, i, *jd.offset(j as isize));
-                                if *d.offset(j as isize)
-                                    == 0 as libc::c_int as libc::c_double
-                                {
+                                if *d.offset(j as isize) == 0 as libc::c_int as libc::c_double {
                                     *dd.offset(j as isize) = 0 as libc::c_int as libc::c_double;
                                 } else {
                                     if dist == 0 as libc::c_int as libc::c_double {
                                         dij = *d.offset(j as isize) / *w.offset(j as isize);
                                         k = 0 as libc::c_int;
                                         while k < dim {
-                                            *x.offset((*jd.offset(j as isize) * dim + k) as isize)
-                                                += 0.0001f64 * (drand() + 0.0001f64) * dij;
+                                            *x.offset(
+                                                (*jd.offset(j as isize) * dim + k) as isize,
+                                            ) += 0.0001f64 * (drand() + 0.0001f64) * dij;
                                             k += 1;
                                         }
                                         dist = distance(x, dim, i, *jd.offset(j as isize));
@@ -1428,7 +1381,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                             }
                             j += 1;
                         }
-                        if idiag >= 0 as libc::c_int {} else {
+                        if idiag >= 0 as libc::c_int {
+                        } else {
                             __assert_fail(
                                 b"idiag >= 0\0" as *const u8 as *const libc::c_char,
                                 b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1451,10 +1405,7 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                     while i < m {
                         j = 0 as libc::c_int;
                         while j < dim {
-                            *y
-                                .offset(
-                                    (i * dim + j) as isize,
-                                ) = 0 as libc::c_int as libc::c_double;
+                            *y.offset((i * dim + j) as isize) = 0 as libc::c_int as libc::c_double;
                             j += 1;
                         }
                         i += 1;
@@ -1465,9 +1416,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                     while i < m {
                         j = 0 as libc::c_int;
                         while j < dim {
-                            *y.offset((i * dim + j) as isize)
-                                += *lambda.offset(i as isize)
-                                    * *x0.offset((i * dim + j) as isize);
+                            *y.offset((i * dim + j) as isize) +=
+                                *lambda.offset(i as isize) * *x0.offset((i * dim + j) as isize);
                             j += 1;
                         }
                         i += 1;
@@ -1479,8 +1429,8 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                         while i < m {
                             j = 0 as libc::c_int;
                             while j < dim {
-                                *y.offset((i * dim + j) as isize)
-                                    += *x00.offset((i * dim + j) as isize);
+                                *y.offset((i * dim + j) as isize) +=
+                                    *x00.offset((i * dim + j) as isize);
                                 j += 1;
                             }
                             i += 1;
@@ -1492,15 +1442,7 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                     _ => {}
                 }
                 if (*sm).scheme == SM_SCHEME_UNIFORM_STRESS as libc::c_int {
-                    uniform_stress_solve(
-                        Lw,
-                        alpha,
-                        dim,
-                        x,
-                        y,
-                        (*sm).tol_cg,
-                        (*sm).maxit_cg,
-                    );
+                    uniform_stress_solve(Lw, alpha, dim, x, y, (*sm).tol_cg, (*sm).maxit_cg);
                 } else {
                     SparseMatrix_solve(
                         Lw,
@@ -1516,8 +1458,7 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
                 if flag != 0 {
                     break;
                 }
-                diff = total_distance(m, dim, x, y)
-                    / sqrt(vector_product(m * dim, x, x));
+                diff = total_distance(m, dim, x, y) / sqrt(vector_product(m * dim, x, x));
                 memcpy(
                     x as *mut libc::c_void,
                     y as *const libc::c_void,
@@ -1539,9 +1480,7 @@ pub unsafe extern "C" fn StressMajorizationSmoother_smooth(
     return diff;
 }
 #[no_mangle]
-pub unsafe extern "C" fn StressMajorizationSmoother_delete(
-    mut sm: StressMajorizationSmoother,
-) {
+pub unsafe extern "C" fn StressMajorizationSmoother_delete(mut sm: StressMajorizationSmoother) {
     if sm.is_null() {
         return;
     }
@@ -1587,7 +1526,8 @@ pub unsafe extern "C" fn TriangleSmoother_new(
     let mut s: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut stop: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut sbot: libc::c_double = 0 as libc::c_int as libc::c_double;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1612,13 +1552,13 @@ pub unsafe extern "C" fn TriangleSmoother_new(
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             if !(i == *ja.offset(j as isize)) {
-                *avg_dist.offset(i as isize)
-                    += distance(x, dim, i, *ja.offset(j as isize));
+                *avg_dist.offset(i as isize) += distance(x, dim, i, *ja.offset(j as isize));
                 nz += 1;
             }
             j += 1;
         }
-        if nz > 0 as libc::c_int {} else {
+        if nz > 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"nz > 0\0" as *const u8 as *const libc::c_char,
                 b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1690,10 +1630,7 @@ pub unsafe extern "C" fn TriangleSmoother_new(
                 jdiag = j;
             } else {
                 dist = pow(distance_cropped(x, dim, i, k), 0.6f64);
-                *w
-                    .offset(
-                        j as isize,
-                    ) = 1 as libc::c_int as libc::c_double / (dist * dist);
+                *w.offset(j as isize) = 1 as libc::c_int as libc::c_double / (dist * dist);
                 diag_w += *w.offset(j as isize);
                 *d.offset(j as isize) = *w.offset(j as isize) * dist;
                 stop += *d.offset(j as isize) * distance(x, dim, i, k);
@@ -1703,7 +1640,8 @@ pub unsafe extern "C" fn TriangleSmoother_new(
             j += 1;
         }
         *lambda.offset(i as isize) *= -diag_w;
-        if jdiag >= 0 as libc::c_int {} else {
+        if jdiag >= 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"jdiag >= 0\0" as *const u8 as *const libc::c_char,
                 b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1766,7 +1704,8 @@ pub unsafe extern "C" fn SpringSmoother_new(
     let mut dd: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut avg_dist: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut ID: SparseMatrix = 0 as SparseMatrix;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1786,8 +1725,10 @@ pub unsafe extern "C" fn SpringSmoother_new(
         1 as libc::c_int as size_t,
         ::std::mem::size_of::<SpringSmoother_struct>() as libc::c_ulong,
     ) as *mut SpringSmoother_struct;
-    mask = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    mask = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     avg_dist = gcalloc(
         m as size_t,
         ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
@@ -1799,13 +1740,13 @@ pub unsafe extern "C" fn SpringSmoother_new(
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             if !(i == *ja.offset(j as isize)) {
-                *avg_dist.offset(i as isize)
-                    += distance(x, dim, i, *ja.offset(j as isize));
+                *avg_dist.offset(i as isize) += distance(x, dim, i, *ja.offset(j as isize));
                 nz += 1;
             }
             j += 1;
         }
-        if nz > 0 as libc::c_int {} else {
+        if nz > 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"nz > 0\0" as *const u8 as *const libc::c_char,
                 b"post_process.c\0" as *const u8 as *const libc::c_char,
@@ -1881,11 +1822,8 @@ pub unsafe extern "C" fn SpringSmoother_new(
             if *mask.offset(k as isize) != i + m {
                 *mask.offset(k as isize) = i + m;
                 *jd.offset(nz as isize) = k;
-                *d
-                    .offset(
-                        nz as isize,
-                    ) = (*avg_dist.offset(i as isize) + *avg_dist.offset(k as isize))
-                    * 0.5f64;
+                *d.offset(nz as isize) =
+                    (*avg_dist.offset(i as isize) + *avg_dist.offset(k as isize)) * 0.5f64;
                 *d.offset(nz as isize) = *dd.offset(j as isize);
                 nz += 1;
             }
@@ -1899,17 +1837,11 @@ pub unsafe extern "C" fn SpringSmoother_new(
                 if *mask.offset(*ja.offset(l as isize) as isize) != i + m {
                     *mask.offset(*ja.offset(l as isize) as isize) = i + m;
                     *jd.offset(nz as isize) = *ja.offset(l as isize);
-                    *d
-                        .offset(
-                            nz as isize,
-                        ) = (*avg_dist.offset(i as isize)
-                        + 2 as libc::c_int as libc::c_double
-                            * *avg_dist.offset(k as isize)
-                        + *avg_dist.offset(*ja.offset(l as isize) as isize)) * 0.5f64;
-                    *d
-                        .offset(
-                            nz as isize,
-                        ) = *dd.offset(j as isize) + *dd.offset(l as isize);
+                    *d.offset(nz as isize) = (*avg_dist.offset(i as isize)
+                        + 2 as libc::c_int as libc::c_double * *avg_dist.offset(k as isize)
+                        + *avg_dist.offset(*ja.offset(l as isize) as isize))
+                        * 0.5f64;
+                    *d.offset(nz as isize) = *dd.offset(j as isize) + *dd.offset(l as isize);
                     nz += 1;
                 }
                 l += 1;
@@ -1953,18 +1885,16 @@ pub unsafe extern "C" fn SpringSmoother_smooth(
 ) {
     let mut flag: libc::c_int = 0 as libc::c_int;
     spring_electrical_spring_embedding(dim, A, (*sm).D, (*sm).ctrl, x, &mut flag);
-    if flag == 0 {} else {
+    if flag == 0 {
+    } else {
         __assert_fail(
             b"!flag\0" as *const u8 as *const libc::c_char,
             b"post_process.c\0" as *const u8 as *const libc::c_char,
             996 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 72],
-                &[libc::c_char; 72],
-            >(
+            (*::std::mem::transmute::<&[u8; 72], &[libc::c_char; 72]>(
                 b"void SpringSmoother_smooth(SpringSmoother, SparseMatrix, int, double *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     };
 }
@@ -2003,33 +1933,20 @@ pub unsafe extern "C" fn post_process_smoothing(
             }
         }
         1 | 3 | 2 => {
-            let mut sm_0: StressMajorizationSmoother = 0
-                as *mut StressMajorizationSmoother_struct;
+            let mut sm_0: StressMajorizationSmoother = 0 as *mut StressMajorizationSmoother_struct;
             let mut k: libc::c_int = 0;
             let mut dist_scheme: libc::c_int = IDEAL_AVG_DIST as libc::c_int;
-            if (*ctrl).smoothing
-                == SMOOTHING_STRESS_MAJORIZATION_GRAPH_DIST as libc::c_int
-            {
+            if (*ctrl).smoothing == SMOOTHING_STRESS_MAJORIZATION_GRAPH_DIST as libc::c_int {
                 dist_scheme = IDEAL_GRAPH_DIST as libc::c_int;
-            } else if (*ctrl).smoothing
-                    == SMOOTHING_STRESS_MAJORIZATION_AVG_DIST as libc::c_int
-                {
+            } else if (*ctrl).smoothing == SMOOTHING_STRESS_MAJORIZATION_AVG_DIST as libc::c_int {
                 dist_scheme = IDEAL_AVG_DIST as libc::c_int;
-            } else if (*ctrl).smoothing
-                    == SMOOTHING_STRESS_MAJORIZATION_POWER_DIST as libc::c_int
-                {
+            } else if (*ctrl).smoothing == SMOOTHING_STRESS_MAJORIZATION_POWER_DIST as libc::c_int {
                 dist_scheme = IDEAL_POWER_DIST as libc::c_int;
             }
             k = 0 as libc::c_int;
             while k < 1 as libc::c_int {
                 sm_0 = StressMajorizationSmoother2_new(A, dim, 0.05f64, x, dist_scheme);
-                StressMajorizationSmoother_smooth(
-                    sm_0,
-                    dim,
-                    x,
-                    50 as libc::c_int,
-                    0.001f64,
-                );
+                StressMajorizationSmoother_smooth(sm_0, dim, x, 50 as libc::c_int, 0.001f64);
                 StressMajorizationSmoother_delete(sm_0);
                 k += 1;
             }

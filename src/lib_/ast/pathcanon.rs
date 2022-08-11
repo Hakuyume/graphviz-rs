@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 #[no_mangle]
@@ -87,11 +95,10 @@ pub unsafe extern "C" fn pathcanon(mut path: *mut libc::c_char) -> *mut libc::c_
                         t = t.offset(1);
                         *fresh2 = '.' as i32 as libc::c_char;
                     } else if (s <= path
-                            || *s.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                                != '/' as i32) && t > path.offset(1 as libc::c_int as isize)
-                            && *t.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                                == '/' as i32
-                        {
+                        || *s.offset(-(1 as libc::c_int as isize)) as libc::c_int != '/' as i32)
+                        && t > path.offset(1 as libc::c_int as isize)
+                        && *t.offset(-(1 as libc::c_int as isize)) as libc::c_int == '/' as i32
+                    {
                         t = t.offset(-1);
                     }
                     *t = 0 as libc::c_int as libc::c_char;
@@ -101,5 +108,5 @@ pub unsafe extern "C" fn pathcanon(mut path: *mut libc::c_char) -> *mut libc::c_
             }
             _ => {}
         }
-    };
+    }
 }

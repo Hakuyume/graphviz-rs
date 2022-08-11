@@ -1,24 +1,24 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
     pub type _GData;
     pub type _PangoFontDescription;
     pub type _GdkRegion;
-    fn g_log(
-        log_domain: *const gchar,
-        log_level: GLogLevelFlags,
-        format: *const gchar,
-        _: ...
-    );
+    fn g_log(log_domain: *const gchar, log_level: GLogLevelFlags, format: *const gchar, _: ...);
     fn g_type_check_instance_cast(
         instance: *mut GTypeInstance,
         iface_type: GType,
     ) -> *mut GTypeInstance;
-    fn g_type_check_instance_is_a(
-        instance: *mut GTypeInstance,
-        iface_type: GType,
-    ) -> gboolean;
+    fn g_type_check_instance_is_a(instance: *mut GTypeInstance, iface_type: GType) -> gboolean;
     fn g_object_get_data(object: *mut GObject, key: *const gchar) -> gpointer;
     fn gtk_menu_get_type() -> GType;
     fn gtk_menu_get_attach_widget(menu: *mut GtkMenu) -> *mut GtkWidget;
@@ -118,10 +118,11 @@ pub struct _GClosure {
     #[bitfield(name = "derivative_flag", ty = "guint", bits = "29..=29")]
     #[bitfield(name = "in_marshal", ty = "guint", bits = "30..=30")]
     #[bitfield(name = "is_invalid", ty = "guint", bits = "31..=31")]
-    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid: [u8; 4],
+    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid:
+        [u8; 4],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 4],
-    pub marshal: Option::<
+    pub marshal: Option<
         unsafe extern "C" fn(
             *mut GClosure,
             *mut GValue,
@@ -141,7 +142,7 @@ pub struct _GClosureNotifyData {
     pub data: gpointer,
     pub notify: GClosureNotify,
 }
-pub type GClosureNotify = Option::<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
+pub type GClosureNotify = Option<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
 pub type GClosure = _GClosure;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -467,19 +468,13 @@ pub struct _GtkMenu {
     #[bitfield(name = "lower_arrow_visible", ty = "guint", bits = "5..=5")]
     #[bitfield(name = "upper_arrow_prelight", ty = "guint", bits = "6..=6")]
     #[bitfield(name = "lower_arrow_prelight", ty = "guint", bits = "7..=7")]
-    pub needs_destruction_ref_count_torn_off_tearoff_active_scroll_fast_upper_arrow_visible_lower_arrow_visible_upper_arrow_prelight_lower_arrow_prelight: [u8; 1],
+    pub needs_destruction_ref_count_torn_off_tearoff_active_scroll_fast_upper_arrow_visible_lower_arrow_visible_upper_arrow_prelight_lower_arrow_prelight:
+        [u8; 1],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 3],
 }
-pub type GtkMenuPositionFunc = Option::<
-    unsafe extern "C" fn(
-        *mut GtkMenu,
-        *mut gint,
-        *mut gint,
-        *mut gboolean,
-        gpointer,
-    ) -> (),
->;
+pub type GtkMenuPositionFunc =
+    Option<unsafe extern "C" fn(*mut GtkMenu, *mut gint, *mut gint, *mut gboolean, gpointer) -> ()>;
 pub type GtkMenu = _GtkMenu;
 #[no_mangle]
 pub unsafe extern "C" fn lookup_widget(
@@ -495,9 +490,7 @@ pub unsafe extern "C" fn lookup_widget(
             let mut __r: gboolean = 0;
             if __inst.is_null() {
                 __r = 0 as libc::c_int;
-            } else if !((*__inst).g_class).is_null()
-                    && (*(*__inst).g_class).g_type == __t
-                {
+            } else if !((*__inst).g_class).is_null() && (*(*__inst).g_class).g_type == __t {
                 __r = (0 as libc::c_int == 0) as libc::c_int;
             } else {
                 __r = g_type_check_instance_is_a(__inst, __t);
@@ -505,12 +498,10 @@ pub unsafe extern "C" fn lookup_widget(
             __r
         }) != 0
         {
-            parent = gtk_menu_get_attach_widget(
-                g_type_check_instance_cast(
-                    widget as *mut GTypeInstance,
-                    gtk_menu_get_type(),
-                ) as *mut libc::c_void as *mut GtkMenu,
-            );
+            parent = gtk_menu_get_attach_widget(g_type_check_instance_cast(
+                widget as *mut GTypeInstance,
+                gtk_menu_get_type(),
+            ) as *mut libc::c_void as *mut GtkMenu);
         } else {
             parent = (*widget).parent;
         }

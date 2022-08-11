@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -26,17 +34,8 @@ extern "C" {
     fn gdImageCreateFromGif(fd: *mut FILE) -> gdImagePtr;
     fn gdImageCreateFromJpeg(infile: *mut FILE) -> gdImagePtr;
     fn gdImageDestroy(im: gdImagePtr);
-    fn gdImageSetPixel(
-        im: gdImagePtr,
-        x: libc::c_int,
-        y: libc::c_int,
-        color: libc::c_int,
-    );
-    fn gdImageGetTrueColorPixel(
-        im: gdImagePtr,
-        x: libc::c_int,
-        y: libc::c_int,
-    ) -> libc::c_int;
+    fn gdImageSetPixel(im: gdImagePtr, x: libc::c_int, y: libc::c_int, color: libc::c_int);
+    fn gdImageGetTrueColorPixel(im: gdImagePtr, x: libc::c_int, y: libc::c_int) -> libc::c_int;
     fn gdImageFilledRectangle(
         im: gdImagePtr,
         x1: libc::c_int,
@@ -159,9 +158,8 @@ pub const GD_BILINEAR_FIXED: gdInterpolationMethod = 3;
 pub const GD_BESSEL: gdInterpolationMethod = 2;
 pub const GD_BELL: gdInterpolationMethod = 1;
 pub const GD_DEFAULT: gdInterpolationMethod = 0;
-pub type interpolation_method = Option::<
-    unsafe extern "C" fn(libc::c_double, libc::c_double) -> libc::c_double,
->;
+pub type interpolation_method =
+    Option<unsafe extern "C" fn(libc::c_double, libc::c_double) -> libc::c_double>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gdImageStruct {
@@ -209,16 +207,17 @@ pub struct gdImageStruct {
 pub type gdImage = gdImageStruct;
 pub type gdImagePtr = *mut gdImage;
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -232,7 +231,8 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
 static mut pstopng: *mut libc::c_char = b"gs -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=- -q -\0"
-    as *const u8 as *const libc::c_char as *mut libc::c_char;
+    as *const u8 as *const libc::c_char
+    as *mut libc::c_char;
 unsafe extern "C" fn imageLoad(mut filename: *mut libc::c_char) -> gdImagePtr {
     let mut f: *mut FILE = 0 as *mut FILE;
     let mut ext: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -252,17 +252,25 @@ unsafe extern "C" fn imageLoad(mut filename: *mut libc::c_char) -> gdImagePtr {
         st_size: 0,
         st_blksize: 0,
         st_blocks: 0,
-        st_atim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_mtim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_ctim: timespec { tv_sec: 0, tv_nsec: 0 },
+        st_atim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_mtim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_ctim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
         __glibc_reserved: [0; 3],
     };
     ext = strrchr(filename, '.' as i32);
     if ext.is_null() {
         fprintf(
             stderr,
-            b"Filename \"%s\" has no file extension.\n\0" as *const u8
-                as *const libc::c_char,
+            b"Filename \"%s\" has no file extension.\n\0" as *const u8 as *const libc::c_char,
             filename,
         );
         graphviz_exit(64 as libc::c_int);
@@ -276,8 +284,7 @@ unsafe extern "C" fn imageLoad(mut filename: *mut libc::c_char) -> gdImagePtr {
         );
         graphviz_exit(66 as libc::c_int);
     }
-    if strcasecmp(ext, b".ps\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
-    {
+    if strcasecmp(ext, b".ps\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         ext = b".png\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         tmp = gv_alloc(
             (strlen(filename))
@@ -306,8 +313,7 @@ unsafe extern "C" fn imageLoad(mut filename: *mut libc::c_char) -> gdImagePtr {
         if f.is_null() {
             fprintf(
                 stderr,
-                b"Failed to open converted \"%s%s\"\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Failed to open converted \"%s%s\"\n\0" as *const u8 as *const libc::c_char,
                 filename,
                 ext,
             );
@@ -325,24 +331,18 @@ unsafe extern "C" fn imageLoad(mut filename: *mut libc::c_char) -> gdImagePtr {
         }
     }
     im = 0 as gdImagePtr;
-    if strcasecmp(ext, b".png\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
-    {
+    if strcasecmp(ext, b".png\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         im = gdImageCreateFromPng(f);
-    } else if strcasecmp(ext, b".gif\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(ext, b".gif\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         im = gdImageCreateFromGif(f);
-    } else if strcasecmp(ext, b".jpg\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(ext, b".jpg\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         im = gdImageCreateFromJpeg(f);
     }
     fclose(f);
     if im.is_null() {
         fprintf(
             stderr,
-            b"Loading image from file  \"%s\" failed!\n\0" as *const u8
-                as *const libc::c_char,
+            b"Loading image from file  \"%s\" failed!\n\0" as *const u8 as *const libc::c_char,
             filename,
         );
         graphviz_exit(65 as libc::c_int);
@@ -367,8 +367,7 @@ unsafe extern "C" fn imageDiff(
     while y < h {
         x = 0 as libc::c_int;
         while x < w {
-            d = gdImageGetTrueColorPixel(B, x, y) - gdImageGetTrueColorPixel(A, x, y)
-                != 0;
+            d = gdImageGetTrueColorPixel(B, x, y) - gdImageGetTrueColorPixel(A, x, y) != 0;
             gdImageSetPixel(C, x, y, if d as libc::c_int != 0 { white } else { black });
             rc = (rc as libc::c_int | d as libc::c_int) as bool;
             x += 1;
@@ -377,10 +376,7 @@ unsafe extern "C" fn imageDiff(
     }
     return rc;
 }
-unsafe fn main_0(
-    mut argc: libc::c_int,
-    mut argv: *mut *mut libc::c_char,
-) -> libc::c_int {
+unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut A: gdImagePtr = 0 as *mut gdImage;
     let mut B: gdImagePtr = 0 as *mut gdImage;
     let mut C: gdImagePtr = 0 as *mut gdImage;
@@ -400,16 +396,14 @@ unsafe fn main_0(
     {
         fprintf(
             stderr,
-            b"Usage: diffimg image1 image2 [outimage]\n\0" as *const u8
-                as *const libc::c_char,
+            b"Usage: diffimg image1 image2 [outimage]\n\0" as *const u8 as *const libc::c_char,
         );
         graphviz_exit(0 as libc::c_int);
     }
     if argc < 3 as libc::c_int {
         fprintf(
             stderr,
-            b"Usage: diffimg image1 image2 [outimage]\n\0" as *const u8
-                as *const libc::c_char,
+            b"Usage: diffimg image1 image2 [outimage]\n\0" as *const u8 as *const libc::c_char,
         );
         graphviz_exit(64 as libc::c_int);
     }
@@ -426,12 +420,7 @@ unsafe fn main_0(
         255 as libc::c_int,
         255 as libc::c_int,
     );
-    black = gdImageColorAllocate(
-        C,
-        0 as libc::c_int,
-        0 as libc::c_int,
-        0 as libc::c_int,
-    );
+    black = gdImageColorAllocate(C, 0 as libc::c_int, 0 as libc::c_int, 0 as libc::c_int);
     if maxSX > minSX && maxSY > minSY {
         gdImageFilledRectangle(
             C,
@@ -443,15 +432,13 @@ unsafe fn main_0(
         );
     }
     rc = imageDiff(A, B, C, minSX, minSY, black, white);
-    if argc > 3 as libc::c_int
-        && {
-            f = fopen(
-                *argv.offset(3 as libc::c_int as isize),
-                b"wb\0" as *const u8 as *const libc::c_char,
-            );
-            !f.is_null()
-        }
-    {
+    if argc > 3 as libc::c_int && {
+        f = fopen(
+            *argv.offset(3 as libc::c_int as isize),
+            b"wb\0" as *const u8 as *const libc::c_char,
+        );
+        !f.is_null()
+    } {
         gdImagePng(C, f);
         fclose(f);
     } else {
@@ -460,12 +447,14 @@ unsafe fn main_0(
     gdImageDestroy(A);
     gdImageDestroy(B);
     gdImageDestroy(C);
-    graphviz_exit(
-        if rc as libc::c_int != 0 { 1 as libc::c_int } else { 0 as libc::c_int },
-    );
+    graphviz_exit(if rc as libc::c_int != 0 {
+        1 as libc::c_int
+    } else {
+        0 as libc::c_int
+    });
 }
 pub fn main() {
-    let mut args: Vec::<*mut libc::c_char> = Vec::new();
+    let mut args: Vec<*mut libc::c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             (::std::ffi::CString::new(arg))
@@ -475,11 +464,9 @@ pub fn main() {
     }
     args.push(::std::ptr::null_mut());
     unsafe {
-        ::std::process::exit(
-            main_0(
-                (args.len() - 1) as libc::c_int,
-                args.as_mut_ptr() as *mut *mut libc::c_char,
-            ) as i32,
-        )
+        ::std::process::exit(main_0(
+            (args.len() - 1) as libc::c_int,
+            args.as_mut_ptr() as *mut *mut libc::c_char,
+        ) as i32)
     }
 }

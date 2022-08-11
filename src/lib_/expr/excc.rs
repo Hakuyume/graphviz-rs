@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -13,23 +21,15 @@ extern "C" {
     ) -> libc::c_int;
     fn sfclose(_: *mut Sfio_t) -> libc::c_int;
     fn sfprintf(_: *mut Sfio_t, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn fmtesq(_: *const libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn extype(_: libc::c_int) -> *mut libc::c_char;
     static mut exversion: *const libc::c_char;
     fn dtwalk(
         _: *mut Dt_t,
-        _: Option::<
-            unsafe extern "C" fn(
-                *mut Dt_t,
-                *mut libc::c_void,
-                *mut libc::c_void,
-            ) -> libc::c_int,
+        _: Option<
+            unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut libc::c_void) -> libc::c_int,
         >,
         _: *mut libc::c_void,
     ) -> libc::c_int;
@@ -145,16 +145,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -170,18 +164,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -189,16 +177,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -346,15 +327,9 @@ pub struct C2RustUnnamed_11 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_12 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -373,7 +348,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -384,7 +359,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -394,7 +369,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -404,27 +379,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -435,7 +397,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -446,7 +408,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -458,7 +420,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -473,9 +435,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -505,7 +465,7 @@ pub struct Expr_s {
     pub loopop: libc::c_int,
     pub nesting: libc::c_int,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -531,7 +491,7 @@ pub struct Exccdisc_s {
     pub text: *mut Sfio_t,
     pub id: *mut libc::c_char,
     pub flags: uint64_t,
-    pub ccf: Option::<
+    pub ccf: Option<
         unsafe extern "C" fn(
             *mut Excc_t,
             *mut Exnode_t,
@@ -543,9 +503,8 @@ pub struct Exccdisc_s {
     >,
 }
 pub type Excc_t = Excc_s;
-static mut quote: [libc::c_char; 2] = unsafe {
-    *::std::mem::transmute::<&[u8; 2], &[libc::c_char; 2]>(b"\"\0")
-};
+static mut quote: [libc::c_char; 2] =
+    unsafe { *::std::mem::transmute::<&[u8; 2], &[libc::c_char; 2]>(b"\"\0") };
 #[no_mangle]
 pub unsafe extern "C" fn exopname(mut op: libc::c_int) -> *mut libc::c_char {
     static mut buf: [libc::c_char; 16] = [0; 16];
@@ -614,16 +573,18 @@ unsafe extern "C" fn print(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 fmtesq((*x).format, quote.as_ptr()),
             );
         }
-        sfprintf((*(*cc).ccdisc).text, b"\"\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b"\"\0" as *const u8 as *const libc::c_char,
+        );
         x = (*expr).data.print.args;
         while !x.is_null() {
             if !((*x).arg).is_null() {
                 let mut i: size_t = 0 as libc::c_int as size_t;
                 while i
                     < (::std::mem::size_of::<[*mut Exnode_s; 3]>() as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong,
-                        ) && !((*x).param[i as usize]).is_null()
+                        .wrapping_div(::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong)
+                    && !((*x).param[i as usize]).is_null()
                 {
                     sfprintf(
                         (*(*cc).ccdisc).text,
@@ -648,7 +609,10 @@ unsafe extern "C" fn print(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             }
             x = (*x).next;
         }
-        sfprintf((*(*cc).ccdisc).text, b");\n\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b");\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
 unsafe extern "C" fn scan(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
@@ -671,16 +635,18 @@ unsafe extern "C" fn scan(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 fmtesq((*x).format, quote.as_ptr()),
             );
         }
-        sfprintf((*(*cc).ccdisc).text, b"\"\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b"\"\0" as *const u8 as *const libc::c_char,
+        );
         x = (*expr).data.print.args;
         while !x.is_null() {
             if !((*x).arg).is_null() {
                 let mut i: size_t = 0 as libc::c_int as size_t;
                 while i
                     < (::std::mem::size_of::<[*mut Exnode_s; 3]>() as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong,
-                        ) && !((*x).param[i as usize]).is_null()
+                        .wrapping_div(::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong)
+                    && !((*x).param[i as usize]).is_null()
                 {
                     sfprintf(
                         (*(*cc).ccdisc).text,
@@ -705,7 +671,10 @@ unsafe extern "C" fn scan(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             }
             x = (*x).next;
         }
-        sfprintf((*(*cc).ccdisc).text, b");\n\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b");\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
 unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
@@ -729,7 +698,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
         if !((*expr).data.call.args).is_null() {
             gen(cc, (*expr).data.call.args);
         }
-        sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b")\0" as *const u8 as *const libc::c_char,
+        );
         return;
     }
     x = (*expr).data.operand.left;
@@ -813,12 +785,18 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
         }
         279 => {
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"(\0" as *const u8 as *const libc::c_char,
+            );
             y = (*expr).data.operand.right;
             if !y.is_null() {
                 gen(cc, y);
             }
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         295 => {
@@ -857,7 +835,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             }) as *mut libc::c_char;
             sfprintf((*(*cc).ccdisc).text, s);
             gen(cc, (*expr).data.string.base);
-            sfprintf((*(*cc).ccdisc).text, b", \0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b", \0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, (*expr).data.string.pat);
             if !((*expr).data.string.repl).is_null() {
                 sfprintf(
@@ -866,7 +847,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 );
                 gen(cc, (*expr).data.string.repl);
             }
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         331 => {
@@ -896,7 +880,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 );
                 gen(cc, (*(*expr).data.operand.right).data.operand.right);
             }
-            sfprintf((*(*cc).ccdisc).text, b"}\n\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"}\n\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         278 => {
@@ -905,7 +892,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b"for (;\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b");\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b");\0" as *const u8 as *const libc::c_char,
+            );
             if !((*expr).data.operand.left).is_null() {
                 sfprintf(
                     (*(*cc).ccdisc).text,
@@ -917,19 +907,23 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                     b")\0" as *const u8 as *const libc::c_char,
                 );
             }
-            sfprintf((*(*cc).ccdisc).text, b") {\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b") {\0" as *const u8 as *const libc::c_char,
+            );
             if !((*expr).data.operand.right).is_null() {
                 gen(cc, (*expr).data.operand.right);
             }
-            sfprintf((*(*cc).ccdisc).text, b"}\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"}\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         283 => {
             if ((*(*cc).ccdisc).ccf).is_some() {
                 (Some(((*(*cc).ccdisc).ccf).expect("non-null function pointer")))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                    .expect("non-null function pointer")(
                     cc,
                     expr,
                     (*expr).data.variable.symbol,
@@ -1052,7 +1046,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 );
                 gen(cc, (*expr).data.split.seps);
             }
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         304 => {
@@ -1067,7 +1064,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 *fresh1,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b";\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b";\0" as *const u8 as *const libc::c_char,
+            );
             x = (*expr).data.operand.right;
             y = (*x).data.select.statement;
             n = 0 as libc::c_int;
@@ -1109,8 +1109,7 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                         if t == 263 as libc::c_int {
                             sfprintf(
                                 (*(*cc).ccdisc).text,
-                                b"strmatch(%stmp_%d, \"%s\")\0" as *const u8
-                                    as *const libc::c_char,
+                                b"strmatch(%stmp_%d, \"%s\")\0" as *const u8 as *const libc::c_char,
                                 (*cc).id,
                                 (*cc).tmp,
                                 fmtesq((*v).string, quote.as_ptr()),
@@ -1169,7 +1168,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                     b"}\0" as *const u8 as *const libc::c_char,
                 );
             }
-            sfprintf((*(*cc).ccdisc).text, b"}\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"}\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         306 => {
@@ -1185,7 +1187,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 );
                 gen(cc, (*expr).data.variable.index);
             }
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         307 => {
@@ -1194,11 +1199,17 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b"while (\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b") {\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b") {\0" as *const u8 as *const libc::c_char,
+            );
             if !((*expr).data.operand.right).is_null() {
                 gen(cc, (*expr).data.operand.right);
             }
-            sfprintf((*(*cc).ccdisc).text, b"}\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"}\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         35 => {
@@ -1221,7 +1232,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 },
             );
             gen(cc, (*expr).data.operand.right);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         59 => {
@@ -1275,7 +1289,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             return;
         }
         44 => {
-            sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"(\0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, x);
             loop {
                 expr = (*expr).data.operand.right;
@@ -1295,11 +1312,17 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 );
                 gen(cc, expr);
             }
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         63 => {
-            sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"(\0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, x);
             sfprintf(
                 (*(*cc).ccdisc).text,
@@ -1311,29 +1334,44 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b") : (\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, (*(*expr).data.operand.right).data.operand.right);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         324 => {
-            sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"(\0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, x);
             sfprintf(
                 (*(*cc).ccdisc).text,
                 b") && (\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, (*expr).data.operand.right);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         323 => {
-            sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b"(\0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, x);
             sfprintf(
                 (*(*cc).ccdisc).text,
                 b") || (\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, (*expr).data.operand.right);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         308 => {
@@ -1343,7 +1381,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 extype(259 as libc::c_int),
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         310 => {
@@ -1353,7 +1394,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 extype(262 as libc::c_int),
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         314 => {
@@ -1374,7 +1418,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b"X2I(\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         321 => {
@@ -1383,7 +1430,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b"X2X(\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         _ => {}
@@ -1446,8 +1496,7 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 43 | 124 | 38 | 94 | 37 | 42 => {
                     sfprintf(
                         (*(*cc).ccdisc).text,
-                        b"** string bits not supported **\0" as *const u8
-                            as *const libc::c_char,
+                        b"** string bits not supported **\0" as *const u8 as *const libc::c_char,
                     );
                     return;
                 }
@@ -1460,9 +1509,15 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 b"strmatch(\0" as *const u8 as *const libc::c_char,
             );
             gen(cc, x);
-            sfprintf((*(*cc).ccdisc).text, b",\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b",\0" as *const u8 as *const libc::c_char,
+            );
             gen(cc, y);
-            sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+            sfprintf(
+                (*(*cc).ccdisc).text,
+                b")\0" as *const u8 as *const libc::c_char,
+            );
             return;
         }
         match (*expr).op {
@@ -1488,9 +1543,16 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             b"strcoll(\0" as *const u8 as *const libc::c_char,
         );
         gen(cc, x);
-        sfprintf((*(*cc).ccdisc).text, b",\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b",\0" as *const u8 as *const libc::c_char,
+        );
         gen(cc, y);
-        sfprintf((*(*cc).ccdisc).text, b")%s\0" as *const u8 as *const libc::c_char, s);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b")%s\0" as *const u8 as *const libc::c_char,
+            s,
+        );
         return;
     } else {
         if y.is_null() {
@@ -1500,7 +1562,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
                 exopname((*expr).op),
             );
         }
-        sfprintf((*(*cc).ccdisc).text, b"(\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b"(\0" as *const u8 as *const libc::c_char,
+        );
         gen(cc, x);
         if !y.is_null() {
             sfprintf(
@@ -1510,7 +1575,10 @@ unsafe extern "C" fn gen(mut cc: *mut Excc_t, mut expr: *mut Exnode_t) {
             );
             gen(cc, y);
         }
-        sfprintf((*(*cc).ccdisc).text, b")\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            (*(*cc).ccdisc).text,
+            b")\0" as *const u8 as *const libc::c_char,
+        );
     };
 }
 unsafe extern "C" fn global(
@@ -1531,10 +1599,7 @@ unsafe extern "C" fn global(
     return 0 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn exccopen(
-    mut expr: *mut Expr_t,
-    mut disc: *mut Exccdisc_t,
-) -> *mut Excc_t {
+pub unsafe extern "C" fn exccopen(mut expr: *mut Expr_t, mut disc: *mut Exccdisc_t) -> *mut Excc_t {
     let mut cc: *mut Excc_t = 0 as *mut Excc_t;
     let mut id: *mut libc::c_char = 0 as *mut libc::c_char;
     id = (*disc).id;
@@ -1546,18 +1611,14 @@ pub unsafe extern "C" fn exccopen(
             0 as *mut libc::c_char as *mut libc::c_void,
             (::std::mem::size_of::<Excc_t>() as libc::c_ulong)
                 .wrapping_mul(1 as libc::c_int as libc::c_ulong)
-                .wrapping_add(
-                    (strlen(id)).wrapping_add(2 as libc::c_int as libc::c_ulong),
-                ),
+                .wrapping_add((strlen(id)).wrapping_add(2 as libc::c_int as libc::c_ulong)),
         ) as *mut Excc_t
     } else {
         calloc(
             1 as libc::c_int as libc::c_ulong,
             (::std::mem::size_of::<Excc_t>() as libc::c_ulong)
                 .wrapping_mul(1 as libc::c_int as libc::c_ulong)
-                .wrapping_add(
-                    (strlen(id)).wrapping_add(2 as libc::c_int as libc::c_ulong),
-                ),
+                .wrapping_add((strlen(id)).wrapping_add(2 as libc::c_int as libc::c_ulong)),
         ) as *mut Excc_t
     };
     if cc.is_null() {
@@ -1651,14 +1712,13 @@ pub unsafe extern "C" fn exdump(
         gen(cc, node);
     } else {
         sym = (Some(((*(*expr).symbols).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )((*expr).symbols, 0 as *mut libc::c_void, 0o200 as libc::c_int)
-            as *mut Exid_t;
+            .expect("non-null function pointer")(
+            (*expr).symbols,
+            0 as *mut libc::c_void,
+            0o200 as libc::c_int,
+        ) as *mut Exid_t;
         while !sym.is_null() {
-            if (*sym).lex == 293 as libc::c_int as libc::c_long
-                && !((*sym).value).is_null()
-            {
+            if (*sym).lex == 293 as libc::c_int as libc::c_long && !((*sym).value).is_null() {
                 sfprintf(
                     sp,
                     b"%s:\n\0" as *const u8 as *const libc::c_char,
@@ -1666,13 +1726,12 @@ pub unsafe extern "C" fn exdump(
                 );
                 gen(cc, (*(*sym).value).data.procedure.body);
             }
-            sym = (Some(
-                ((*(*expr).symbols).searchf).expect("non-null function pointer"),
-            ))
-                .expect(
-                    "non-null function pointer",
-                )((*expr).symbols, sym as *mut libc::c_void, 0o10 as libc::c_int)
-                as *mut Exid_t;
+            sym = (Some(((*(*expr).symbols).searchf).expect("non-null function pointer")))
+                .expect("non-null function pointer")(
+                (*expr).symbols,
+                sym as *mut libc::c_void,
+                0o10 as libc::c_int,
+            ) as *mut Exid_t;
         }
     }
     sfprintf(sp, b"\n\0" as *const u8 as *const libc::c_char);

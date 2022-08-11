@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -114,61 +122,61 @@ unsafe extern "C" fn computeBounds(mut ep: *mut ellipse_t) {
             etaYMin = etaYMax - 3.14159265358979323846f64;
         }
     }
-    etaXMin
-        -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
-            * floor(
-                (etaXMin - (*ep).eta1)
-                    / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
-            );
-    etaYMin
-        -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
-            * floor(
-                (etaYMin - (*ep).eta1)
-                    / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
-            );
-    etaXMax
-        -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
-            * floor(
-                (etaXMax - (*ep).eta1)
-                    / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
-            );
-    etaYMax
-        -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
-            * floor(
-                (etaYMax - (*ep).eta1)
-                    / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
-            );
-    (*ep)
-        .xLeft = if etaXMin <= (*ep).eta2 {
-        (*ep).cx + (*ep).a * cos(etaXMin) * (*ep).cosTheta
-            - (*ep).b * sin(etaXMin) * (*ep).sinTheta
+    etaXMin -= 2 as libc::c_int as libc::c_double
+        * 3.14159265358979323846f64
+        * floor(
+            (etaXMin - (*ep).eta1)
+                / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
+        );
+    etaYMin -= 2 as libc::c_int as libc::c_double
+        * 3.14159265358979323846f64
+        * floor(
+            (etaYMin - (*ep).eta1)
+                / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
+        );
+    etaXMax -= 2 as libc::c_int as libc::c_double
+        * 3.14159265358979323846f64
+        * floor(
+            (etaXMax - (*ep).eta1)
+                / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
+        );
+    etaYMax -= 2 as libc::c_int as libc::c_double
+        * 3.14159265358979323846f64
+        * floor(
+            (etaYMax - (*ep).eta1)
+                / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
+        );
+    (*ep).xLeft = if etaXMin <= (*ep).eta2 {
+        (*ep).cx + (*ep).a * cos(etaXMin) * (*ep).cosTheta - (*ep).b * sin(etaXMin) * (*ep).sinTheta
     } else if (*ep).x1 < (*ep).x2 {
         (*ep).x1
     } else {
         (*ep).x2
     };
-    (*ep)
-        .yUp = if etaYMin <= (*ep).eta2 {
-        (*ep).cy + (*ep).a * cos(etaYMin) * (*ep).sinTheta
-            + (*ep).b * sin(etaYMin) * (*ep).cosTheta
+    (*ep).yUp = if etaYMin <= (*ep).eta2 {
+        (*ep).cy + (*ep).a * cos(etaYMin) * (*ep).sinTheta + (*ep).b * sin(etaYMin) * (*ep).cosTheta
     } else if (*ep).y1 < (*ep).y2 {
         (*ep).y1
     } else {
         (*ep).y2
     };
-    (*ep)
-        .width = (if etaXMax <= (*ep).eta2 {
-        (*ep).cx + (*ep).a * cos(etaXMax) * (*ep).cosTheta
-            - (*ep).b * sin(etaXMax) * (*ep).sinTheta
+    (*ep).width = (if etaXMax <= (*ep).eta2 {
+        (*ep).cx + (*ep).a * cos(etaXMax) * (*ep).cosTheta - (*ep).b * sin(etaXMax) * (*ep).sinTheta
     } else {
-        (if (*ep).x1 > (*ep).x2 { (*ep).x1 } else { (*ep).x2 })
+        (if (*ep).x1 > (*ep).x2 {
+            (*ep).x1
+        } else {
+            (*ep).x2
+        })
     }) - (*ep).xLeft;
-    (*ep)
-        .height = (if etaYMax <= (*ep).eta2 {
-        (*ep).cy + (*ep).a * cos(etaYMax) * (*ep).sinTheta
-            + (*ep).b * sin(etaYMax) * (*ep).cosTheta
+    (*ep).height = (if etaYMax <= (*ep).eta2 {
+        (*ep).cy + (*ep).a * cos(etaYMax) * (*ep).sinTheta + (*ep).b * sin(etaYMax) * (*ep).cosTheta
     } else {
-        (if (*ep).y1 > (*ep).y2 { (*ep).y1 } else { (*ep).y2 })
+        (if (*ep).y1 > (*ep).y2 {
+            (*ep).y1
+        } else {
+            (*ep).y2
+        })
     }) - (*ep).yUp;
 }
 unsafe extern "C" fn initEllipse(
@@ -190,12 +198,12 @@ unsafe extern "C" fn initEllipse(
     (*ep).eta2 = atan2(sin(lambda2) / b, cos(lambda2) / a);
     (*ep).cosTheta = cos(theta);
     (*ep).sinTheta = sin(theta);
-    (*ep).eta2
-        -= 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
-            * floor(
-                ((*ep).eta2 - (*ep).eta1)
-                    / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
-            );
+    (*ep).eta2 -= 2 as libc::c_int as libc::c_double
+        * 3.14159265358979323846f64
+        * floor(
+            ((*ep).eta2 - (*ep).eta1)
+                / (2 as libc::c_int as libc::c_double * 3.14159265358979323846f64),
+        );
     if lambda2 - lambda1 > 3.14159265358979323846f64
         && (*ep).eta2 - (*ep).eta1 < 3.14159265358979323846f64
     {
@@ -279,22 +287,20 @@ unsafe extern "C" fn estimateError(
     if degree < 2 as libc::c_int {
         let mut aCosEtaA: libc::c_double = (*ep).a * cos(etaA);
         let mut bSinEtaA: libc::c_double = (*ep).b * sin(etaA);
-        let mut xA: libc::c_double = (*ep).cx + aCosEtaA * (*ep).cosTheta
-            - bSinEtaA * (*ep).sinTheta;
-        let mut yA: libc::c_double = (*ep).cy + aCosEtaA * (*ep).sinTheta
-            + bSinEtaA * (*ep).cosTheta;
+        let mut xA: libc::c_double =
+            (*ep).cx + aCosEtaA * (*ep).cosTheta - bSinEtaA * (*ep).sinTheta;
+        let mut yA: libc::c_double =
+            (*ep).cy + aCosEtaA * (*ep).sinTheta + bSinEtaA * (*ep).cosTheta;
         let mut aCosEtaB: libc::c_double = (*ep).a * cos(etaB);
         let mut bSinEtaB: libc::c_double = (*ep).b * sin(etaB);
-        let mut xB: libc::c_double = (*ep).cx + aCosEtaB * (*ep).cosTheta
-            - bSinEtaB * (*ep).sinTheta;
-        let mut yB: libc::c_double = (*ep).cy + aCosEtaB * (*ep).sinTheta
-            + bSinEtaB * (*ep).cosTheta;
+        let mut xB: libc::c_double =
+            (*ep).cx + aCosEtaB * (*ep).cosTheta - bSinEtaB * (*ep).sinTheta;
+        let mut yB: libc::c_double =
+            (*ep).cy + aCosEtaB * (*ep).sinTheta + bSinEtaB * (*ep).cosTheta;
         let mut aCosEta: libc::c_double = (*ep).a * cos(eta);
         let mut bSinEta: libc::c_double = (*ep).b * sin(eta);
-        let mut x: libc::c_double = (*ep).cx + aCosEta * (*ep).cosTheta
-            - bSinEta * (*ep).sinTheta;
-        let mut y: libc::c_double = (*ep).cy + aCosEta * (*ep).sinTheta
-            + bSinEta * (*ep).cosTheta;
+        let mut x: libc::c_double = (*ep).cx + aCosEta * (*ep).cosTheta - bSinEta * (*ep).sinTheta;
+        let mut y: libc::c_double = (*ep).cy + aCosEta * (*ep).sinTheta + bSinEta * (*ep).cosTheta;
         let mut dx: libc::c_double = xB - xA;
         let mut dy: libc::c_double = yB - yA;
         return fabs(x * dy - y * dx + xB * yA - xA * yB) / hypot(dx, dy);
@@ -304,8 +310,7 @@ unsafe extern "C" fn estimateError(
         let mut cos2: libc::c_double = cos(2 as libc::c_int as libc::c_double * eta);
         let mut cos4: libc::c_double = cos(4 as libc::c_int as libc::c_double * eta);
         let mut cos6: libc::c_double = cos(6 as libc::c_int as libc::c_double * eta);
-        let mut coeffs: *mut [[libc::c_double; 4]; 4] = 0
-            as *mut [[libc::c_double; 4]; 4];
+        let mut coeffs: *mut [[libc::c_double; 4]; 4] = 0 as *mut [[libc::c_double; 4]; 4];
         let mut safety: *mut libc::c_double = 0 as *mut libc::c_double;
         if degree == 2 as libc::c_int {
             coeffs = if x_0 < 0.25f64 {
@@ -324,167 +329,104 @@ unsafe extern "C" fn estimateError(
         }
         c0 = (x_0
             * (x_0
-                * (*coeffs
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][0 as libc::c_int as usize]
-                + (*coeffs
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][1 as libc::c_int as usize])
-            + (*coeffs
-                .offset(
-                    0 as libc::c_int as isize,
-                ))[0 as libc::c_int as usize][2 as libc::c_int as usize])
+                * (*coeffs.offset(0 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [0 as libc::c_int as usize]
+                + (*coeffs.offset(0 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [1 as libc::c_int as usize])
+            + (*coeffs.offset(0 as libc::c_int as isize))[0 as libc::c_int as usize]
+                [2 as libc::c_int as usize])
             / (x_0
-                + (*coeffs
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][3 as libc::c_int as usize])
+                + (*coeffs.offset(0 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [3 as libc::c_int as usize])
             + cos2
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            0 as libc::c_int as isize,
-                        ))[1 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(0 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(0 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(0 as libc::c_int as isize))[1 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][3 as libc::c_int as usize]))
+                        + (*coeffs.offset(0 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]))
             + cos4
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            0 as libc::c_int as isize,
-                        ))[2 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(0 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(0 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(0 as libc::c_int as isize))[2 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][3 as libc::c_int as usize]))
+                        + (*coeffs.offset(0 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]))
             + cos6
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            0 as libc::c_int as isize,
-                        ))[3 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(0 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(0 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(0 as libc::c_int as isize))[3 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][3 as libc::c_int as usize]));
+                        + (*coeffs.offset(0 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]));
         c1 = (x_0
             * (x_0
-                * (*coeffs
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][0 as libc::c_int as usize]
-                + (*coeffs
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][1 as libc::c_int as usize])
-            + (*coeffs
-                .offset(
-                    1 as libc::c_int as isize,
-                ))[0 as libc::c_int as usize][2 as libc::c_int as usize])
+                * (*coeffs.offset(1 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [0 as libc::c_int as usize]
+                + (*coeffs.offset(1 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [1 as libc::c_int as usize])
+            + (*coeffs.offset(1 as libc::c_int as isize))[0 as libc::c_int as usize]
+                [2 as libc::c_int as usize])
             / (x_0
-                + (*coeffs
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ))[0 as libc::c_int as usize][3 as libc::c_int as usize])
+                + (*coeffs.offset(1 as libc::c_int as isize))[0 as libc::c_int as usize]
+                    [3 as libc::c_int as usize])
             + cos2
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            1 as libc::c_int as isize,
-                        ))[1 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(1 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(1 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(1 as libc::c_int as isize))[1 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[1 as libc::c_int as usize][3 as libc::c_int as usize]))
+                        + (*coeffs.offset(1 as libc::c_int as isize))[1 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]))
             + cos4
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            1 as libc::c_int as isize,
-                        ))[2 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(1 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(1 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(1 as libc::c_int as isize))[2 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[2 as libc::c_int as usize][3 as libc::c_int as usize]))
+                        + (*coeffs.offset(1 as libc::c_int as isize))[2 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]))
             + cos6
                 * ((x_0
                     * (x_0
-                        * (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][0 as libc::c_int as usize]
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][1 as libc::c_int as usize])
-                    + (*coeffs
-                        .offset(
-                            1 as libc::c_int as isize,
-                        ))[3 as libc::c_int as usize][2 as libc::c_int as usize])
+                        * (*coeffs.offset(1 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [0 as libc::c_int as usize]
+                        + (*coeffs.offset(1 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [1 as libc::c_int as usize])
+                    + (*coeffs.offset(1 as libc::c_int as isize))[3 as libc::c_int as usize]
+                        [2 as libc::c_int as usize])
                     / (x_0
-                        + (*coeffs
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ))[3 as libc::c_int as usize][3 as libc::c_int as usize]));
+                        + (*coeffs.offset(1 as libc::c_int as isize))[3 as libc::c_int as usize]
+                            [3 as libc::c_int as usize]));
         return (x_0
             * (x_0 * *safety.offset(0 as libc::c_int as isize)
                 + *safety.offset(1 as libc::c_int as isize))
             + *safety.offset(2 as libc::c_int as isize))
-            / (x_0 + *safety.offset(3 as libc::c_int as isize)) * (*ep).a
+            / (x_0 + *safety.offset(3 as libc::c_int as isize))
+            * (*ep).a
             * exp(c0 + c1 * dEta);
     };
 }
@@ -543,8 +485,7 @@ unsafe extern "C" fn lineTo(
     mut x: libc::c_double,
     mut y: libc::c_double,
 ) {
-    let mut curp: pointf = *((*polypath).ps)
-        .offset(((*polypath).pn - 1 as libc::c_int) as isize);
+    let mut curp: pointf = *((*polypath).ps).offset(((*polypath).pn - 1 as libc::c_int) as isize);
     curveTo(polypath, curp.x, curp.y, x, y, x, y);
 }
 unsafe extern "C" fn endPath(mut polypath: *mut Ppolyline_t) {
@@ -573,17 +514,15 @@ unsafe extern "C" fn genEllipticPath(mut ep: *mut ellipse_t) -> *mut Ppolyline_t
     let mut yBDot: libc::c_double = 0.;
     let mut t: libc::c_double = 0.;
     let mut alpha: libc::c_double = 0.;
-    let mut polypath: *mut Ppolyline_t = zmalloc(
-        ::std::mem::size_of::<Ppolyline_t>() as libc::c_ulong,
-    ) as *mut Ppolyline_t;
+    let mut polypath: *mut Ppolyline_t =
+        zmalloc(::std::mem::size_of::<Ppolyline_t>() as libc::c_ulong) as *mut Ppolyline_t;
     static mut THRESHOLD: libc::c_double = 0.00001f64;
     static mut DEGREE: libc::c_int = 3 as libc::c_int;
     let mut found: bool = 0 as libc::c_int != 0;
     let mut i: libc::c_int = 0;
     let mut n: libc::c_int = 1 as libc::c_int;
     while !found && n < 1024 as libc::c_int {
-        let mut diffEta: libc::c_double = ((*ep).eta2 - (*ep).eta1)
-            / n as libc::c_double;
+        let mut diffEta: libc::c_double = ((*ep).eta2 - (*ep).eta1) / n as libc::c_double;
         if diffEta <= 0.5f64 * 3.14159265358979323846f64 {
             let mut etaOne: libc::c_double = (*ep).eta1;
             found = 1 as libc::c_int != 0;
@@ -613,10 +552,9 @@ unsafe extern "C" fn genEllipticPath(mut ep: *mut ellipse_t) -> *mut Ppolyline_t
     lineTo(polypath, xB, yB);
     t = tan(0.5f64 * dEta);
     alpha = sin(dEta)
-        * (sqrt(
-            4 as libc::c_int as libc::c_double
-                + 3 as libc::c_int as libc::c_double * t * t,
-        ) - 1 as libc::c_int as libc::c_double) / 3 as libc::c_int as libc::c_double;
+        * (sqrt(4 as libc::c_int as libc::c_double + 3 as libc::c_int as libc::c_double * t * t)
+            - 1 as libc::c_int as libc::c_double)
+        / 3 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
         let mut xA: libc::c_double = xB;

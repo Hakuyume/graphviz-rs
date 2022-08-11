@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -10,11 +18,7 @@ extern "C" {
     static mut stderr: *mut FILE;
     fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
     fn exit(_: libc::c_int) -> !;
     static mut optarg: *mut libc::c_char;
     fn getopt(
@@ -33,22 +37,10 @@ extern "C" {
     fn makeStar(_: libc::c_int, _: edgefn);
     fn makeWheel(_: libc::c_int, _: edgefn);
     fn makeTorus(_: libc::c_int, _: libc::c_int, _: edgefn);
-    fn makeTwistedTorus(
-        _: libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: edgefn,
-    );
+    fn makeTwistedTorus(_: libc::c_int, _: libc::c_int, _: libc::c_int, _: libc::c_int, _: edgefn);
     fn makeCylinder(_: libc::c_int, _: libc::c_int, _: edgefn);
     fn makeRandom(_: libc::c_int, _: libc::c_int, _: edgefn);
-    fn makeSquareGrid(
-        _: libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: edgefn,
-    );
+    fn makeSquareGrid(_: libc::c_int, _: libc::c_int, _: libc::c_int, _: libc::c_int, _: edgefn);
     fn makeBinaryTree(_: libc::c_int, _: edgefn);
     fn makeSierpinski(_: libc::c_int, _: edgefn);
     fn makeTetrix(_: libc::c_int, _: edgefn);
@@ -98,7 +90,7 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type edgefn = Option::<unsafe extern "C" fn(libc::c_int, libc::c_int) -> ()>;
+pub type edgefn = Option<unsafe extern "C" fn(libc::c_int, libc::c_int) -> ()>;
 pub type treegen_t = treegen_s;
 pub type GraphType = libc::c_uint;
 pub const trimesh: GraphType = 17;
@@ -146,8 +138,7 @@ unsafe extern "C" fn openFile(mut name: *const libc::c_char) -> *mut FILE {
     if fp.is_null() {
         fprintf(
             stderr,
-            b"%s: could not open file %s for writing\n\0" as *const u8
-                as *const libc::c_char,
+            b"%s: could not open file %s for writing\n\0" as *const u8 as *const libc::c_char,
             cmd,
             name,
         );
@@ -194,10 +185,7 @@ unsafe extern "C" fn readPos(
     }
     return d as libc::c_int;
 }
-unsafe extern "C" fn readOne(
-    mut s: *mut libc::c_char,
-    mut ip: *mut libc::c_int,
-) -> libc::c_int {
+unsafe extern "C" fn readOne(mut s: *mut libc::c_char, mut ip: *mut libc::c_int) -> libc::c_int {
     let mut d: libc::c_int = 0;
     let mut next: *mut libc::c_char = 0 as *mut libc::c_char;
     d = readPos(s, &mut next);
@@ -205,13 +193,10 @@ unsafe extern "C" fn readOne(
         *ip = d;
         return 0 as libc::c_int;
     } else {
-        return d
+        return d;
     };
 }
-unsafe extern "C" fn setOne(
-    mut s: *mut libc::c_char,
-    mut opts_0: *mut opts_t,
-) -> libc::c_int {
+unsafe extern "C" fn setOne(mut s: *mut libc::c_char, mut opts_0: *mut opts_t) -> libc::c_int {
     let mut d: libc::c_int = 0;
     let mut next: *mut libc::c_char = 0 as *mut libc::c_char;
     d = readPos(s, &mut next);
@@ -219,13 +204,10 @@ unsafe extern "C" fn setOne(
         (*opts_0).graphSize1 = d;
         return 0 as libc::c_int;
     } else {
-        return d
+        return d;
     };
 }
-unsafe extern "C" fn setTwo(
-    mut s: *mut libc::c_char,
-    mut opts_0: *mut opts_t,
-) -> libc::c_int {
+unsafe extern "C" fn setTwo(mut s: *mut libc::c_char, mut opts_0: *mut opts_t) -> libc::c_int {
     let mut d: libc::c_int = 0;
     let mut next: *mut libc::c_char = 0 as *mut libc::c_char;
     d = readPos(s, &mut next);
@@ -247,7 +229,7 @@ unsafe extern "C" fn setTwo(
         (*opts_0).graphSize2 = d;
         return 0 as libc::c_int;
     } else {
-        return d
+        return d;
     };
 }
 unsafe extern "C" fn setTwoTwoOpt(
@@ -322,7 +304,7 @@ unsafe extern "C" fn setTwoOpt(
         (*opts_0).graphSize2 = d;
         return 0 as libc::c_int;
     } else {
-        return d
+        return d;
     };
 }
 unsafe extern "C" fn setFold(
@@ -339,7 +321,8 @@ unsafe extern "C" fn setFold(
     return next;
 }
 static mut optList: *mut libc::c_char = b":i:M:m:n:N:c:C:dg:G:h:k:b:B:o:p:r:R:s:S:X:t:T:vw:\0"
-    as *const u8 as *const libc::c_char as *mut libc::c_char;
+    as *const u8 as *const libc::c_char
+    as *mut libc::c_char;
 unsafe extern "C" fn init(
     mut argc: libc::c_int,
     mut argv: *mut *mut libc::c_char,
@@ -553,7 +536,10 @@ unsafe extern "C" fn init(
         *fresh4 = stdout;
     }
     if graphType as libc::c_uint == unknown as libc::c_int as libc::c_uint {
-        fprintf(stderr, b"Graph type not set\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"Graph type not set\n\0" as *const u8 as *const libc::c_char,
+        );
         usage(1 as libc::c_int);
     }
     return graphType;
@@ -612,15 +598,18 @@ unsafe extern "C" fn undirfn(mut t: libc::c_int, mut h: libc::c_int) {
 }
 unsafe extern "C" fn closeOpen() {
     if opts.directed != 0 {
-        fprintf(opts.outfile, b"}\ndigraph {\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            opts.outfile,
+            b"}\ndigraph {\n\0" as *const u8 as *const libc::c_char,
+        );
     } else {
-        fprintf(opts.outfile, b"}\ngraph {\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            opts.outfile,
+            b"}\ngraph {\n\0" as *const u8 as *const libc::c_char,
+        );
     };
 }
-unsafe fn main_0(
-    mut argc: libc::c_int,
-    mut argv: *mut *mut libc::c_char,
-) -> libc::c_int {
+unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut graphType: GraphType = unknown;
     let mut ef: edgefn = None;
     opts.pfx = b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
@@ -675,13 +664,7 @@ unsafe fn main_0(
             if opts.parm1 == 0 as libc::c_int && opts.parm2 == 0 as libc::c_int {
                 makeTorus(opts.graphSize1, opts.graphSize2, ef);
             } else {
-                makeTwistedTorus(
-                    opts.graphSize1,
-                    opts.graphSize2,
-                    opts.parm1,
-                    opts.parm2,
-                    ef,
-                );
+                makeTwistedTorus(opts.graphSize1, opts.graphSize2, opts.parm1, opts.parm2, ef);
             }
         }
         8 => {
@@ -735,7 +718,7 @@ unsafe fn main_0(
     graphviz_exit(0 as libc::c_int);
 }
 pub fn main() {
-    let mut args: Vec::<*mut libc::c_char> = Vec::new();
+    let mut args: Vec<*mut libc::c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             (::std::ffi::CString::new(arg))
@@ -745,11 +728,9 @@ pub fn main() {
     }
     args.push(::std::ptr::null_mut());
     unsafe {
-        ::std::process::exit(
-            main_0(
-                (args.len() - 1) as libc::c_int,
-                args.as_mut_ptr() as *mut *mut libc::c_char,
-            ) as i32,
-        )
+        ::std::process::exit(main_0(
+            (args.len() - 1) as libc::c_int,
+            args.as_mut_ptr() as *mut *mut libc::c_char,
+        ) as i32)
     }
 }

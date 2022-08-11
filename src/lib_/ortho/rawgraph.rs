@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -43,13 +51,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -74,16 +77,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -103,10 +100,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -114,16 +110,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct vertex {
@@ -152,13 +141,14 @@ pub struct stack {
 #[no_mangle]
 pub unsafe extern "C" fn make_graph(mut n: libc::c_int) -> *mut rawgraph {
     let mut i: libc::c_int = 0;
-    let mut g: *mut rawgraph = zmalloc(
-        ::std::mem::size_of::<rawgraph>() as libc::c_ulong,
-    ) as *mut rawgraph;
+    let mut g: *mut rawgraph =
+        zmalloc(::std::mem::size_of::<rawgraph>() as libc::c_ulong) as *mut rawgraph;
     (*g).nvs = n;
     let ref mut fresh0 = (*g).vertices;
-    *fresh0 = gcalloc(n as size_t, ::std::mem::size_of::<vertex>() as libc::c_ulong)
-        as *mut vertex;
+    *fresh0 = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<vertex>() as libc::c_ulong,
+    ) as *mut vertex;
     i = 0 as libc::c_int;
     while i < n {
         let ref mut fresh1 = (*((*g).vertices).offset(i as isize)).adj_list;
@@ -197,9 +187,7 @@ pub unsafe extern "C" fn insert_edge(
         ((*(*((*g).vertices).offset(v1 as isize)).adj_list).searchf)
             .expect("non-null function pointer"),
     ))
-        .expect(
-            "non-null function pointer",
-        )(
+    .expect("non-null function pointer")(
         (*((*g).vertices).offset(v1 as isize)).adj_list,
         &mut obj as *mut intitem as *mut libc::c_void,
         0o1 as libc::c_int,
@@ -223,9 +211,7 @@ pub unsafe extern "C" fn remove_redge(
         ((*(*((*g).vertices).offset(v1 as isize)).adj_list).searchf)
             .expect("non-null function pointer"),
     ))
-        .expect(
-            "non-null function pointer",
-        )(
+    .expect("non-null function pointer")(
         (*((*g).vertices).offset(v1 as isize)).adj_list,
         &mut obj as *mut intitem as *mut libc::c_void,
         0o2 as libc::c_int,
@@ -235,9 +221,7 @@ pub unsafe extern "C" fn remove_redge(
         ((*(*((*g).vertices).offset(v2 as isize)).adj_list).searchf)
             .expect("non-null function pointer"),
     ))
-        .expect(
-            "non-null function pointer",
-        )(
+    .expect("non-null function pointer")(
         (*((*g).vertices).offset(v2 as isize)).adj_list,
         &mut obj as *mut intitem as *mut libc::c_void,
         0o2 as libc::c_int,
@@ -253,21 +237,20 @@ pub unsafe extern "C" fn edge_exists(
         ((*(*((*g).vertices).offset(v1 as isize)).adj_list).searchf)
             .expect("non-null function pointer"),
     ))
-        .expect(
-            "non-null function pointer",
-        )(
+    .expect("non-null function pointer")(
         (*((*g).vertices).offset(v1 as isize)).adj_list,
         &mut v2 as *mut libc::c_int as *mut libc::c_void,
         0o1000 as libc::c_int,
     ))
-        .is_null();
+    .is_null();
 }
 unsafe extern "C" fn mkStack(mut i: libc::c_int) -> *mut stack {
-    let mut sp: *mut stack = zmalloc(::std::mem::size_of::<stack>() as libc::c_ulong)
-        as *mut stack;
+    let mut sp: *mut stack = zmalloc(::std::mem::size_of::<stack>() as libc::c_ulong) as *mut stack;
     let ref mut fresh2 = (*sp).vals;
-    *fresh2 = gcalloc(i as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    *fresh2 = gcalloc(
+        i as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     (*sp).top = -(1 as libc::c_int);
     return sp;
 }
@@ -309,8 +292,7 @@ unsafe extern "C" fn DFS_visit(
         id = (*((if (*(*adj).disc).link < 0 as libc::c_int {
             (*(link as *mut Dthold_t)).obj
         } else {
-            (link as *mut libc::c_char).offset(-((*(*adj).disc).link as isize))
-                as *mut libc::c_void
+            (link as *mut libc::c_char).offset(-((*(*adj).disc).link as isize)) as *mut libc::c_void
         }) as *mut intitem))
             .id;
         if (*((*g).vertices).offset(id as isize)).color == 0 as libc::c_int {

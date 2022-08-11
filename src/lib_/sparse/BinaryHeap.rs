@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -77,23 +85,18 @@ pub struct BinaryHeap_struct {
     pub id_to_pos: *mut size_t,
     pub pos_to_id: *mut libc::c_int,
     pub id_stack: IntStack,
-    pub cmp: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int,
-    >,
+    pub cmp: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int>,
 }
 pub type C2RustUnnamed = libc::c_int;
 pub const BinaryHeap_error_malloc: C2RustUnnamed = -10;
 pub type BinaryHeap = *mut BinaryHeap_struct;
 #[no_mangle]
 pub unsafe extern "C" fn BinaryHeap_new(
-    mut cmp: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int,
-    >,
+    mut cmp: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int>,
 ) -> BinaryHeap {
     let mut h: BinaryHeap = 0 as *mut BinaryHeap_struct;
     let mut max_len: size_t = ((1 as libc::c_int) << 8 as libc::c_int) as size_t;
-    h = gmalloc(::std::mem::size_of::<BinaryHeap_struct>() as libc::c_ulong)
-        as BinaryHeap;
+    h = gmalloc(::std::mem::size_of::<BinaryHeap_struct>() as libc::c_ulong) as BinaryHeap;
     (*h).max_len = max_len;
     (*h).len = 0 as libc::c_int as size_t;
     let ref mut fresh0 = (*h).heap;
@@ -102,16 +105,17 @@ pub unsafe extern "C" fn BinaryHeap_new(
         ::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong,
     ) as *mut *mut libc::c_void;
     let ref mut fresh1 = (*h).id_to_pos;
-    *fresh1 = gcalloc(max_len, ::std::mem::size_of::<size_t>() as libc::c_ulong)
-        as *mut size_t;
+    *fresh1 = gcalloc(max_len, ::std::mem::size_of::<size_t>() as libc::c_ulong) as *mut size_t;
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < max_len {
         *((*h).id_to_pos).offset(i as isize) = 18446744073709551615 as libc::c_ulong;
         i = i.wrapping_add(1);
     }
     let ref mut fresh2 = (*h).pos_to_id;
-    *fresh2 = gcalloc(max_len, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    *fresh2 = gcalloc(
+        max_len,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     let ref mut fresh3 = (*h).id_stack;
     *fresh3 = IntStack_new();
     let ref mut fresh4 = (*h).cmp;
@@ -121,7 +125,7 @@ pub unsafe extern "C" fn BinaryHeap_new(
 #[no_mangle]
 pub unsafe extern "C" fn BinaryHeap_delete(
     mut h: BinaryHeap,
-    mut del: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut del: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     if h.is_null() {
         return;
@@ -143,22 +147,20 @@ unsafe extern "C" fn BinaryHeap_realloc(mut h: BinaryHeap) -> BinaryHeap {
     let mut max_len0: size_t = (*h).max_len;
     let mut max_len: size_t = (*h).max_len;
     let mut i: size_t = 0;
-    max_len = max_len
-        .wrapping_add(
-            (if max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
-                > 10 as libc::c_int as libc::c_ulong
-            {
-                max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
-            } else {
-                10 as libc::c_int as libc::c_ulong
-            }),
-        );
+    max_len = max_len.wrapping_add(
+        (if max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
+            > 10 as libc::c_int as libc::c_ulong
+        {
+            max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
+        } else {
+            10 as libc::c_int as libc::c_ulong
+        }),
+    );
     (*h).max_len = max_len;
     let ref mut fresh5 = (*h).heap;
     *fresh5 = grealloc(
         (*h).heap as *mut libc::c_void,
-        (::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong)
-            .wrapping_mul(max_len),
+        (::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong).wrapping_mul(max_len),
     ) as *mut *mut libc::c_void;
     if ((*h).heap).is_null() {
         return 0 as BinaryHeap;
@@ -186,39 +188,35 @@ unsafe extern "C" fn BinaryHeap_realloc(mut h: BinaryHeap) -> BinaryHeap {
     }
     return h;
 }
-unsafe extern "C" fn swap(
-    mut h: BinaryHeap,
-    mut parentPos: size_t,
-    mut nodePos: size_t,
-) {
+unsafe extern "C" fn swap(mut h: BinaryHeap, mut parentPos: size_t, mut nodePos: size_t) {
     let mut parentID: libc::c_int = 0;
     let mut nodeID: libc::c_int = 0;
     let mut tmp: *mut libc::c_void = 0 as *mut libc::c_void;
     let mut heap: *mut *mut libc::c_void = (*h).heap;
     let mut id_to_pos: *mut size_t = (*h).id_to_pos;
     let mut pos_to_id: *mut libc::c_int = (*h).pos_to_id;
-    if parentPos < (*h).len {} else {
+    if parentPos < (*h).len {
+    } else {
         __assert_fail(
             b"parentPos < h->len\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             75 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"void swap(BinaryHeap, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"void swap(BinaryHeap, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if nodePos < (*h).len {} else {
+    if nodePos < (*h).len {
+    } else {
         __assert_fail(
             b"nodePos < h->len\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             76 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"void swap(BinaryHeap, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"void swap(BinaryHeap, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     parentID = *pos_to_id.offset(parentPos as isize);
@@ -239,11 +237,10 @@ unsafe extern "C" fn siftUp(mut h: BinaryHeap, mut nodePos: size_t) -> size_t {
         let mut parentPos: size_t = nodePos
             .wrapping_sub(1 as libc::c_int as libc::c_ulong)
             .wrapping_div(2 as libc::c_int as libc::c_ulong);
-        if ((*h).cmp)
-            .expect(
-                "non-null function pointer",
-            )(*heap.offset(parentPos as isize), *heap.offset(nodePos as isize))
-            == 1 as libc::c_int
+        if ((*h).cmp).expect("non-null function pointer")(
+            *heap.offset(parentPos as isize),
+            *heap.offset(nodePos as isize),
+        ) == 1 as libc::c_int
         {
             swap(h, parentPos, nodePos);
             nodePos = siftUp(h, parentPos);
@@ -260,16 +257,16 @@ unsafe extern "C" fn siftDown(mut h: BinaryHeap, mut nodePos: size_t) -> size_t 
     let mut childPos2: size_t = (2 as libc::c_int as libc::c_ulong)
         .wrapping_mul(nodePos)
         .wrapping_add(2 as libc::c_int as libc::c_ulong);
-    if (*h).len > 0 as libc::c_int as libc::c_ulong {} else {
+    if (*h).len > 0 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"h->len > 0\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             116 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 36],
-                &[libc::c_char; 36],
-            >(b"size_t siftDown(BinaryHeap, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 36], &[libc::c_char; 36]>(
+                b"size_t siftDown(BinaryHeap, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if childPos1 > ((*h).len).wrapping_sub(1 as libc::c_int as libc::c_ulong) {
@@ -277,21 +274,19 @@ unsafe extern "C" fn siftDown(mut h: BinaryHeap, mut nodePos: size_t) -> size_t 
     }
     if childPos1 == ((*h).len).wrapping_sub(1 as libc::c_int as libc::c_ulong) {
         childPos = childPos1;
-    } else if ((*h).cmp)
-            .expect(
-                "non-null function pointer",
-            )(*heap.offset(childPos1 as isize), *heap.offset(childPos2 as isize))
-            == 1 as libc::c_int
-        {
+    } else if ((*h).cmp).expect("non-null function pointer")(
+        *heap.offset(childPos1 as isize),
+        *heap.offset(childPos2 as isize),
+    ) == 1 as libc::c_int
+    {
         childPos = childPos2;
     } else {
         childPos = childPos1;
     }
-    if ((*h).cmp)
-        .expect(
-            "non-null function pointer",
-        )(*heap.offset(nodePos as isize), *heap.offset(childPos as isize))
-        == 1 as libc::c_int
+    if ((*h).cmp).expect("non-null function pointer")(
+        *heap.offset(nodePos as isize),
+        *heap.offset(childPos as isize),
+    ) == 1 as libc::c_int
     {
         swap(h, nodePos, childPos);
         nodePos = siftDown(h, childPos);
@@ -304,16 +299,16 @@ pub unsafe extern "C" fn BinaryHeap_insert(
     mut item: *mut libc::c_void,
 ) -> libc::c_int {
     let mut len: size_t = (*h).len;
-    if len <= 2147483647 as libc::c_int as size_t {} else {
+    if len <= 2147483647 as libc::c_int as size_t {
+    } else {
         __assert_fail(
             b"len <= (size_t)INT_MAX\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             139 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"int BinaryHeap_insert(BinaryHeap, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"int BinaryHeap_insert(BinaryHeap, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut id: libc::c_int = len as libc::c_int;
@@ -334,28 +329,28 @@ pub unsafe extern "C" fn BinaryHeap_insert(
     let ref mut fresh11 = (*h).len;
     *fresh11 = (*fresh11).wrapping_add(1);
     let mut pos: size_t = siftUp(h, len);
-    if *((*h).id_to_pos).offset(id as isize) == pos {} else {
+    if *((*h).id_to_pos).offset(id as isize) == pos {
+    } else {
         __assert_fail(
             b"h->id_to_pos[id] == pos\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             158 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"int BinaryHeap_insert(BinaryHeap, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"int BinaryHeap_insert(BinaryHeap, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if *((*h).pos_to_id).offset(pos as isize) == id {} else {
+    if *((*h).pos_to_id).offset(pos as isize) == id {
+    } else {
         __assert_fail(
             b"h->pos_to_id[pos] == id\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             159 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"int BinaryHeap_insert(BinaryHeap, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"int BinaryHeap_insert(BinaryHeap, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return id;
@@ -369,10 +364,7 @@ pub unsafe extern "C" fn BinaryHeap_extract_min(mut h: BinaryHeap) -> *mut libc:
     if (*h).len == 0 as libc::c_int as libc::c_ulong {
         return 0 as *mut libc::c_void;
     }
-    return BinaryHeap_extract_item(
-        h,
-        *((*h).pos_to_id).offset(0 as libc::c_int as isize),
-    );
+    return BinaryHeap_extract_item(h, *((*h).pos_to_id).offset(0 as libc::c_int as isize));
 }
 #[no_mangle]
 pub unsafe extern "C" fn BinaryHeap_extract_item(
@@ -388,22 +380,26 @@ pub unsafe extern "C" fn BinaryHeap_extract_item(
     if pos == 18446744073709551615 as libc::c_ulong {
         return 0 as *mut libc::c_void;
     }
-    if pos < (*h).len {} else {
+    if pos < (*h).len {
+    } else {
         __assert_fail(
             b"pos < h->len\0" as *const u8 as *const libc::c_char,
             b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
             188 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"void *BinaryHeap_extract_item(BinaryHeap, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"void *BinaryHeap_extract_item(BinaryHeap, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     item = *((*h).heap).offset(pos as isize);
     IntStack_push((*h).id_stack, id);
     if pos < ((*h).len).wrapping_sub(1 as libc::c_int as libc::c_ulong) {
-        swap(h, pos, ((*h).len).wrapping_sub(1 as libc::c_int as libc::c_ulong));
+        swap(
+            h,
+            pos,
+            ((*h).len).wrapping_sub(1 as libc::c_int as libc::c_ulong),
+        );
         let ref mut fresh12 = (*h).len;
         *fresh12 = (*fresh12).wrapping_sub(1);
         pos = siftUp(h, pos);
@@ -459,49 +455,42 @@ pub unsafe extern "C" fn BinaryHeap_sanity_check(mut h: BinaryHeap) {
         let mut parentPos: size_t = i
             .wrapping_sub(1 as libc::c_int as libc::c_ulong)
             .wrapping_div(2 as libc::c_int as libc::c_ulong);
-        if ((*h).cmp)
-            .expect(
-                "non-null function pointer",
-            )(*heap.offset(i as isize), *heap.offset(parentPos as isize))
-            >= 0 as libc::c_int
-        {} else {
+        if ((*h).cmp).expect("non-null function pointer")(
+            *heap.offset(i as isize),
+            *heap.offset(parentPos as isize),
+        ) >= 0 as libc::c_int
+        {
+        } else {
             __assert_fail(
-                b"(h->cmp)(heap[i], heap[parentPos]) >= 0\0" as *const u8
-                    as *const libc::c_char,
+                b"(h->cmp)(heap[i], heap[parentPos]) >= 0\0" as *const u8 as *const libc::c_char,
                 b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
                 245 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"void BinaryHeap_sanity_check(BinaryHeap)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"void BinaryHeap_sanity_check(BinaryHeap)\0",
+                ))
+                .as_ptr(),
             );
         }
         i = i.wrapping_add(1);
     }
     mask = gcalloc(
         ((*h).len)
-            .wrapping_add(
-                (1 as libc::c_int as libc::c_ulong).wrapping_add((*(*h).id_stack).last),
-            ),
+            .wrapping_add((1 as libc::c_int as libc::c_ulong).wrapping_add((*(*h).id_stack).last)),
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
     let mut i_0: size_t = 0 as libc::c_int as size_t;
     while i_0 <= (*(*h).id_stack).last {
         let mut key_spare: libc::c_int = *((*(*h).id_stack).stack).offset(i_0 as isize);
-        if *((*h).id_to_pos).offset(key_spare as isize)
-            == 18446744073709551615 as libc::c_ulong
-        {} else {
+        if *((*h).id_to_pos).offset(key_spare as isize) == 18446744073709551615 as libc::c_ulong {
+        } else {
             __assert_fail(
-                b"h->id_to_pos[key_spare] == SIZE_MAX\0" as *const u8
-                    as *const libc::c_char,
+                b"h->id_to_pos[key_spare] == SIZE_MAX\0" as *const u8 as *const libc::c_char,
                 b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
                 253 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"void BinaryHeap_sanity_check(BinaryHeap)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"void BinaryHeap_sanity_check(BinaryHeap)\0",
+                ))
+                .as_ptr(),
             );
         }
         *mask.offset(key_spare as isize) = 1 as libc::c_int;
@@ -509,30 +498,29 @@ pub unsafe extern "C" fn BinaryHeap_sanity_check(mut h: BinaryHeap) {
     }
     let mut i_1: size_t = 1 as libc::c_int as size_t;
     while i_1 < (*h).len {
-        if *mask.offset(*pos_to_id.offset(i_1 as isize) as isize) == 0 as libc::c_int
-        {} else {
+        if *mask.offset(*pos_to_id.offset(i_1 as isize) as isize) == 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"mask[pos_to_id[i]] == 0\0" as *const u8 as *const libc::c_char,
                 b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
                 262 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"void BinaryHeap_sanity_check(BinaryHeap)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"void BinaryHeap_sanity_check(BinaryHeap)\0",
+                ))
+                .as_ptr(),
             );
         }
         *mask.offset(*pos_to_id.offset(i_1 as isize) as isize) = 1 as libc::c_int;
-        if *id_to_pos.offset(*pos_to_id.offset(i_1 as isize) as isize) == i_1 {} else {
+        if *id_to_pos.offset(*pos_to_id.offset(i_1 as isize) as isize) == i_1 {
+        } else {
             __assert_fail(
                 b"id_to_pos[pos_to_id[i]] == i\0" as *const u8 as *const libc::c_char,
                 b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
                 264 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"void BinaryHeap_sanity_check(BinaryHeap)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"void BinaryHeap_sanity_check(BinaryHeap)\0",
+                ))
+                .as_ptr(),
             );
         }
         i_1 = i_1.wrapping_add(1);
@@ -540,20 +528,18 @@ pub unsafe extern "C" fn BinaryHeap_sanity_check(mut h: BinaryHeap) {
     let mut i_2: size_t = 0 as libc::c_int as size_t;
     while i_2
         < ((*h).len)
-            .wrapping_add(
-                (1 as libc::c_int as libc::c_ulong).wrapping_add((*(*h).id_stack).last),
-            )
+            .wrapping_add((1 as libc::c_int as libc::c_ulong).wrapping_add((*(*h).id_stack).last))
     {
-        if *mask.offset(i_2 as isize) != 0 as libc::c_int {} else {
+        if *mask.offset(i_2 as isize) != 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"mask[i] != 0\0" as *const u8 as *const libc::c_char,
                 b"BinaryHeap.c\0" as *const u8 as *const libc::c_char,
                 269 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"void BinaryHeap_sanity_check(BinaryHeap)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"void BinaryHeap_sanity_check(BinaryHeap)\0",
+                ))
+                .as_ptr(),
             );
         }
         i_2 = i_2.wrapping_add(1);
@@ -563,7 +549,7 @@ pub unsafe extern "C" fn BinaryHeap_sanity_check(mut h: BinaryHeap) {
 #[no_mangle]
 pub unsafe extern "C" fn BinaryHeap_print(
     mut h: BinaryHeap,
-    mut pnt: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut pnt: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     let mut k: size_t = 2 as libc::c_int as size_t;
     let mut i: size_t = 0 as libc::c_int as size_t;
@@ -576,20 +562,22 @@ pub unsafe extern "C" fn BinaryHeap_print(
         );
         if i == k.wrapping_sub(2 as libc::c_int as libc::c_ulong) {
             fprintf(stderr, b"\n\0" as *const u8 as *const libc::c_char);
-            k = (k as libc::c_ulong).wrapping_mul(2 as libc::c_int as libc::c_ulong)
-                as size_t as size_t;
+            k = (k as libc::c_ulong).wrapping_mul(2 as libc::c_int as libc::c_ulong) as size_t
+                as size_t;
         }
         i = i.wrapping_add(1);
     }
-    fprintf(stderr, b"\nSpare keys =\0" as *const u8 as *const libc::c_char);
+    fprintf(
+        stderr,
+        b"\nSpare keys =\0" as *const u8 as *const libc::c_char,
+    );
     let mut i_0: size_t = 0 as libc::c_int as size_t;
     while i_0 <= (*(*h).id_stack).last {
         fprintf(
             stderr,
             b"%d(%zu) \0" as *const u8 as *const libc::c_char,
             *((*(*h).id_stack).stack).offset(i_0 as isize),
-            *((*h).id_to_pos)
-                .offset(*((*(*h).id_stack).stack).offset(i_0 as isize) as isize),
+            *((*h).id_to_pos).offset(*((*(*h).id_stack).stack).offset(i_0 as isize) as isize),
         );
         i_0 = i_0.wrapping_add(1);
     }

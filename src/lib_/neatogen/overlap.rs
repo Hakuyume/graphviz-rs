@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -10,12 +18,7 @@ extern "C" {
     fn fabs(_: libc::c_double) -> libc::c_double;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn free(_: *mut libc::c_void);
     fn __assert_fail(
         __assertion: *const libc::c_char,
@@ -48,14 +51,8 @@ extern "C" {
         jcn: libc::c_int,
         val: *mut libc::c_void,
     ) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_copy(A: SparseMatrix) -> SparseMatrix;
     fn average_edge_length(
         A: SparseMatrix,
@@ -70,19 +67,15 @@ extern "C" {
         maxit: libc::c_int,
         tol: libc::c_double,
     ) -> libc::c_double;
-    fn call_tri(
-        n: libc::c_int,
-        dim: libc::c_int,
-        x: *mut libc::c_double,
-    ) -> SparseMatrix;
+    fn call_tri(n: libc::c_int, dim: libc::c_int, x: *mut libc::c_double) -> SparseMatrix;
     fn RBTreeCreate(
-        CompFunc: Option::<
+        CompFunc: Option<
             unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         >,
-        DestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-        InfoDestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-        PrintFunc: Option::<unsafe extern "C" fn(*const libc::c_void) -> ()>,
-        PrintInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        DestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        InfoDestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        PrintFunc: Option<unsafe extern "C" fn(*const libc::c_void) -> ()>,
+        PrintInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     ) -> *mut rb_red_blk_tree;
     fn RBTreeInsert(
         _: *mut rb_red_blk_tree,
@@ -91,21 +84,14 @@ extern "C" {
     ) -> *mut rb_red_blk_node;
     fn RBDelete(_: *mut rb_red_blk_tree, _: *mut rb_red_blk_node);
     fn RBTreeDestroy(_: *mut rb_red_blk_tree);
-    fn TreePredecessor(
-        _: *mut rb_red_blk_tree,
-        _: *mut rb_red_blk_node,
-    ) -> *mut rb_red_blk_node;
-    fn RBExactQuery(
-        _: *mut rb_red_blk_tree,
-        _: *mut libc::c_void,
-    ) -> *mut rb_red_blk_node;
+    fn TreePredecessor(_: *mut rb_red_blk_tree, _: *mut rb_red_blk_node) -> *mut rb_red_blk_node;
+    fn RBExactQuery(_: *mut rb_red_blk_tree, _: *mut libc::c_void) -> *mut rb_red_blk_node;
 }
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _IO_FILE {
@@ -181,7 +167,7 @@ pub struct StressMajorizationSmoother_struct {
     pub Lw: SparseMatrix,
     pub Lwd: SparseMatrix,
     pub lambda: *mut libc::c_double,
-    pub data_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub data_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub data: *mut libc::c_void,
     pub scheme: libc::c_int,
     pub scaling: libc::c_double,
@@ -193,13 +179,12 @@ pub type OverlapSmoother = StressMajorizationSmoother;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct rb_red_blk_tree {
-    pub Compare: Option::<
-        unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
-    >,
-    pub DestroyKey: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub DestroyInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub PrintKey: Option::<unsafe extern "C" fn(*const libc::c_void) -> ()>,
-    pub PrintInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub Compare:
+        Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>,
+    pub DestroyKey: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub DestroyInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub PrintKey: Option<unsafe extern "C" fn(*const libc::c_void) -> ()>,
+    pub PrintInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub root: *mut rb_red_blk_node,
     pub nil: *mut rb_red_blk_node,
 }
@@ -267,7 +252,8 @@ unsafe extern "C" fn ideal_distance_avoid_overlap(
     let mut expandmin: libc::c_double = 1 as libc::c_int as libc::c_double;
     *tmax = 0 as libc::c_int as libc::c_double;
     *tmin = 1.0e10f64;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"overlap.c\0" as *const u8 as *const libc::c_char,
@@ -288,15 +274,12 @@ unsafe extern "C" fn ideal_distance_avoid_overlap(
             jj = *ja.offset(j as isize);
             if !(jj == i) {
                 dist = distance(x, dim, i, jj);
-                dx = fabs(
-                    *x.offset((i * dim) as isize) - *x.offset((jj * dim) as isize),
-                );
+                dx = fabs(*x.offset((i * dim) as isize) - *x.offset((jj * dim) as isize));
                 dy = fabs(
                     *x.offset((i * dim + 1 as libc::c_int) as isize)
                         - *x.offset((jj * dim + 1 as libc::c_int) as isize),
                 );
-                wx = *width.offset((i * dim) as isize)
-                    + *width.offset((jj * dim) as isize);
+                wx = *width.offset((i * dim) as isize) + *width.offset((jj * dim) as isize);
                 wy = *width.offset((i * dim + 1 as libc::c_int) as isize)
                     + *width.offset((jj * dim + 1 as libc::c_int) as isize);
                 if dx < 1.0e-16f64 * wx && dy < 1.0e-16f64 * wy {
@@ -336,12 +319,12 @@ unsafe extern "C" fn comp_scan_points(
     let mut pp: *const scan_point = p as *const scan_point;
     let mut qq: *const scan_point = q as *const scan_point;
     if (*pp).x > (*qq).x {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else if (*pp).x < (*qq).x {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
         if (*pp).node > (*qq).node {
-            return 1 as libc::c_int
+            return 1 as libc::c_int;
         } else {
             if (*pp).node < (*qq).node {
                 return -(1 as libc::c_int);
@@ -402,16 +385,14 @@ unsafe extern "C" fn get_overlap_graph(
     i = 0 as libc::c_int;
     while i < n {
         (*scanpointsx.offset((2 as libc::c_int * i) as isize)).node = i;
-        (*scanpointsx.offset((2 as libc::c_int * i) as isize))
-            .x = *x.offset((i * dim) as isize) - *width.offset((i * dim) as isize);
-        (*scanpointsx.offset((2 as libc::c_int * i) as isize))
-            .status = INTV_OPEN as libc::c_int;
-        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize))
-            .node = i + n;
-        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize))
-            .x = *x.offset((i * dim) as isize) + *width.offset((i * dim) as isize);
-        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize))
-            .status = INTV_CLOSE as libc::c_int;
+        (*scanpointsx.offset((2 as libc::c_int * i) as isize)).x =
+            *x.offset((i * dim) as isize) - *width.offset((i * dim) as isize);
+        (*scanpointsx.offset((2 as libc::c_int * i) as isize)).status = INTV_OPEN as libc::c_int;
+        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize)).node = i + n;
+        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize)).x =
+            *x.offset((i * dim) as isize) + *width.offset((i * dim) as isize);
+        (*scanpointsx.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize)).status =
+            INTV_CLOSE as libc::c_int;
         i += 1;
     }
     qsort(
@@ -420,10 +401,7 @@ unsafe extern "C" fn get_overlap_graph(
         ::std::mem::size_of::<scan_point>() as libc::c_ulong,
         Some(
             comp_scan_points
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
     scanpointsy = gcalloc(
@@ -433,13 +411,12 @@ unsafe extern "C" fn get_overlap_graph(
     i = 0 as libc::c_int;
     while i < n {
         (*scanpointsy.offset(i as isize)).node = i;
-        (*scanpointsy.offset(i as isize))
-            .x = *x.offset((i * dim + 1 as libc::c_int) as isize)
+        (*scanpointsy.offset(i as isize)).x = *x.offset((i * dim + 1 as libc::c_int) as isize)
             - *width.offset((i * dim + 1 as libc::c_int) as isize);
         (*scanpointsy.offset(i as isize)).status = INTV_OPEN as libc::c_int;
         (*scanpointsy.offset((i + n) as isize)).node = i;
-        (*scanpointsy.offset((i + n) as isize))
-            .x = *x.offset((i * dim + 1 as libc::c_int) as isize)
+        (*scanpointsy.offset((i + n) as isize)).x = *x
+            .offset((i * dim + 1 as libc::c_int) as isize)
             + *width.offset((i * dim + 1 as libc::c_int) as isize);
         (*scanpointsy.offset((i + n) as isize)).status = INTV_CLOSE as libc::c_int;
         i += 1;
@@ -447,10 +424,7 @@ unsafe extern "C" fn get_overlap_graph(
     treey = RBTreeCreate(
         Some(
             NodeComp
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
         Some(NodeDest as unsafe extern "C" fn(*mut libc::c_void) -> ()),
         Some(InfoDest as unsafe extern "C" fn(*mut libc::c_void) -> ()),
@@ -463,14 +437,12 @@ unsafe extern "C" fn get_overlap_graph(
         if (*scanpointsx.offset(i as isize)).status == INTV_OPEN as libc::c_int {
             RBTreeInsert(
                 treey,
-                &mut *scanpointsy.offset(k as isize) as *mut scan_point
-                    as *mut libc::c_void,
+                &mut *scanpointsy.offset(k as isize) as *mut scan_point as *mut libc::c_void,
                 0 as *mut libc::c_void,
             );
             RBTreeInsert(
                 treey,
-                &mut *scanpointsy.offset((k + n) as isize) as *mut scan_point
-                    as *mut libc::c_void,
+                &mut *scanpointsy.offset((k + n) as isize) as *mut scan_point as *mut libc::c_void,
                 0 as *mut libc::c_void,
             );
         } else {
@@ -479,63 +451,54 @@ unsafe extern "C" fn get_overlap_graph(
             let mut bsto: libc::c_double = 0.;
             let mut bbsto: libc::c_double = 0.;
             let mut ii: libc::c_int = 0;
-            if (*scanpointsx.offset(i as isize)).node >= n {} else {
+            if (*scanpointsx.offset(i as isize)).node >= n {
+            } else {
                 __assert_fail(
                     b"scanpointsx[i].node >= n\0" as *const u8 as *const libc::c_char,
                     b"overlap.c\0" as *const u8 as *const libc::c_char,
                     186 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 66],
-                        &[libc::c_char; 66],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 66], &[libc::c_char; 66]>(
                         b"SparseMatrix get_overlap_graph(int, int, double *, double *, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             newNode0 = RBExactQuery(
                 treey,
-                &mut *scanpointsy.offset((k + n) as isize) as *mut scan_point
-                    as *mut libc::c_void,
+                &mut *scanpointsy.offset((k + n) as isize) as *mut scan_point as *mut libc::c_void,
             );
             newNode = newNode0;
             ii = (*((*newNode).key as *mut scan_point)).node;
-            if ii < n {} else {
+            if ii < n {
+            } else {
                 __assert_fail(
                     b"ii < n\0" as *const u8 as *const libc::c_char,
                     b"overlap.c\0" as *const u8 as *const libc::c_char,
                     190 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 66],
-                        &[libc::c_char; 66],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 66], &[libc::c_char; 66]>(
                         b"SparseMatrix get_overlap_graph(int, int, double *, double *, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             bsta = (*scanpointsy.offset(ii as isize)).x;
             bsto = (*scanpointsy.offset((ii + n) as isize)).x;
-            if (*treey).nil != newNode {} else {
+            if (*treey).nil != newNode {
+            } else {
                 __assert_fail(
                     b"treey->nil != newNode\0" as *const u8 as *const libc::c_char,
                     b"overlap.c\0" as *const u8 as *const libc::c_char,
                     198 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 66],
-                        &[libc::c_char; 66],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 66], &[libc::c_char; 66]>(
                         b"SparseMatrix get_overlap_graph(int, int, double *, double *, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
-            while !newNode.is_null()
-                && {
-                    newNode = TreePredecessor(treey, newNode);
-                    newNode != (*treey).nil
-                }
-            {
+            while !newNode.is_null() && {
+                newNode = TreePredecessor(treey, newNode);
+                newNode != (*treey).nil
+            } {
                 neighbor = (*((*newNode).key as *mut scan_point)).node % n;
                 bbsta = (*scanpointsy.offset(neighbor as isize)).x;
                 bbsto = (*scanpointsy.offset((neighbor + n) as isize)).x;
@@ -586,8 +549,7 @@ unsafe extern "C" fn get_overlap_graph(
     return A;
 }
 unsafe extern "C" fn relative_position_constraints_delete(mut d: *mut libc::c_void) {
-    let mut data: relative_position_constraints = 0
-        as *mut relative_position_constraints_struct;
+    let mut data: relative_position_constraints = 0 as *mut relative_position_constraints_struct;
     if d.is_null() {
         return;
     }
@@ -603,9 +565,9 @@ unsafe extern "C" fn relative_position_constraints_new(
     mut n_constr_nodes: libc::c_int,
     mut constr_nodes: *mut libc::c_int,
 ) -> relative_position_constraints {
-    let mut data: relative_position_constraints = 0
-        as *mut relative_position_constraints_struct;
-    if !A_constr.is_null() {} else {
+    let mut data: relative_position_constraints = 0 as *mut relative_position_constraints_struct;
+    if !A_constr.is_null() {
+    } else {
         __assert_fail(
             b"A_constr\0" as *const u8 as *const libc::c_char,
             b"overlap.c\0" as *const u8 as *const libc::c_char,
@@ -619,9 +581,8 @@ unsafe extern "C" fn relative_position_constraints_new(
                 .as_ptr(),
         );
     }
-    data = gmalloc(
-        ::std::mem::size_of::<relative_position_constraints_struct>() as libc::c_ulong,
-    ) as relative_position_constraints;
+    data = gmalloc(::std::mem::size_of::<relative_position_constraints_struct>() as libc::c_ulong)
+        as relative_position_constraints;
     (*data).constr_penalty = 1 as libc::c_int as libc::c_double;
     (*data).edge_labeling_scheme = edge_labeling_scheme;
     (*data).n_constr_nodes = n_constr_nodes;
@@ -668,7 +629,8 @@ pub unsafe extern "C" fn overlap_scaling(
     let mut overlap: libc::c_int = 0 as libc::c_int;
     let mut two: libc::c_double = 2 as libc::c_int as libc::c_double;
     let mut iter: libc::c_int = 0 as libc::c_int;
-    if epsilon > 0 as libc::c_int as libc::c_double {} else {
+    if epsilon > 0 as libc::c_int as libc::c_double {
+    } else {
         __assert_fail(
             b"epsilon > 0\0" as *const u8 as *const libc::c_char,
             b"overlap.c\0" as *const u8 as *const libc::c_char,
@@ -730,8 +692,8 @@ pub unsafe extern "C" fn overlap_scaling(
         if Verbose != 0 {
             fprintf(
                 stderr,
-                b"in overlap_scaling iter=%d, maxiter=%d, scaling bracket: {%f,%f}\n\0"
-                    as *const u8 as *const libc::c_char,
+                b"in overlap_scaling iter=%d, maxiter=%d, scaling bracket: {%f,%f}\n\0" as *const u8
+                    as *const libc::c_char,
                 iter,
                 maxiter,
                 scale_sta,
@@ -786,7 +748,8 @@ pub unsafe extern "C" fn OverlapSmoother_new(
     let mut diag_d: libc::c_double = 0.;
     let mut diag_w: libc::c_double = 0.;
     let mut dist: libc::c_double = 0.;
-    if A.is_null() || SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if A.is_null() || SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"(!A) || SparseMatrix_is_symmetric(A, false)\0" as *const u8
                 as *const libc::c_char,
@@ -801,11 +764,11 @@ pub unsafe extern "C" fn OverlapSmoother_new(
                 .as_ptr(),
         );
     }
-    sm = gmalloc(
-        ::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong,
-    ) as *mut StressMajorizationSmoother_struct;
+    sm = gmalloc(::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong)
+        as *mut StressMajorizationSmoother_struct;
     (*sm).scheme = SM_SCHEME_NORMAL as libc::c_int;
-    if !constr_nodes.is_null() && n_constr_nodes > 0 as libc::c_int
+    if !constr_nodes.is_null()
+        && n_constr_nodes > 0 as libc::c_int
         && edge_labeling_scheme != ELSCHEME_NONE as libc::c_int
     {
         (*sm).scheme = SM_SCHEME_NORMAL_ELABEL as libc::c_int;
@@ -818,8 +781,7 @@ pub unsafe extern "C" fn OverlapSmoother_new(
         ) as *mut libc::c_void;
         let ref mut fresh7 = (*sm).data_deallocator;
         *fresh7 = Some(
-            relative_position_constraints_delete
-                as unsafe extern "C" fn(*mut libc::c_void) -> (),
+            relative_position_constraints_delete as unsafe extern "C" fn(*mut libc::c_void) -> (),
         );
     } else {
         let ref mut fresh8 = (*sm).data;
@@ -862,7 +824,8 @@ pub unsafe extern "C" fn OverlapSmoother_new(
         OverlapSmoother_delete(sm);
         return 0 as OverlapSmoother;
     }
-    if (*(*sm).Lwd).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*(*sm).Lwd).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"(sm->Lwd)->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"overlap.c\0" as *const u8 as *const libc::c_char,
@@ -886,13 +849,12 @@ pub unsafe extern "C" fn OverlapSmoother_new(
         min_overlap,
     );
     if *max_overlap < 1 as libc::c_int as libc::c_double && shrink != 0 {
-        let mut scale_sta: libc::c_double = if (1 as libc::c_int as libc::c_double)
-            < *max_overlap * 1.0001f64
-        {
-            1 as libc::c_int as libc::c_double
-        } else {
-            *max_overlap * 1.0001f64
-        };
+        let mut scale_sta: libc::c_double =
+            if (1 as libc::c_int as libc::c_double) < *max_overlap * 1.0001f64 {
+                1 as libc::c_int as libc::c_double
+            } else {
+                *max_overlap * 1.0001f64
+            };
         let mut scale_sto: libc::c_double = 1 as libc::c_int as libc::c_double;
         if Verbose != 0 {
             fprintf(
@@ -930,17 +892,13 @@ pub unsafe extern "C" fn OverlapSmoother_new(
                     jdiag = j;
                 } else {
                     if *d.offset(j as isize) > 0 as libc::c_int as libc::c_double {
-                        *w
-                            .offset(
-                                j as isize,
-                            ) = -(100 as libc::c_int) as libc::c_double
-                            / *d.offset(j as isize) / *d.offset(j as isize);
+                        *w.offset(j as isize) = -(100 as libc::c_int) as libc::c_double
+                            / *d.offset(j as isize)
+                            / *d.offset(j as isize);
                     } else {
-                        *w
-                            .offset(
-                                j as isize,
-                            ) = -(1 as libc::c_int) as libc::c_double
-                            / *d.offset(j as isize) / *d.offset(j as isize);
+                        *w.offset(j as isize) = -(1 as libc::c_int) as libc::c_double
+                            / *d.offset(j as isize)
+                            / *d.offset(j as isize);
                         *d.offset(j as isize) = -*d.offset(j as isize);
                     }
                     dist = *d.offset(j as isize);
@@ -951,7 +909,8 @@ pub unsafe extern "C" fn OverlapSmoother_new(
                 j += 1;
             }
             *lambda.offset(i as isize) *= -diag_w;
-            if jdiag >= 0 as libc::c_int {} else {
+            if jdiag >= 0 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"jdiag >= 0\0" as *const u8 as *const libc::c_char,
                     b"overlap.c\0" as *const u8 as *const libc::c_char,
@@ -983,13 +942,7 @@ pub unsafe extern "C" fn OverlapSmoother_smooth(
     mut x: *mut libc::c_double,
 ) -> libc::c_double {
     let mut maxit_sm: libc::c_int = 1 as libc::c_int;
-    let mut res: libc::c_double = StressMajorizationSmoother_smooth(
-        sm,
-        dim,
-        x,
-        maxit_sm,
-        0.001f64,
-    );
+    let mut res: libc::c_double = StressMajorizationSmoother_smooth(sm, dim, x, maxit_sm, 0.001f64);
     return res;
 }
 unsafe extern "C" fn scale_to_edge_length(
@@ -1007,8 +960,7 @@ unsafe extern "C" fn scale_to_edge_length(
     if Verbose != 0 {
         fprintf(
             stderr,
-            b"avg edge len=%f avg_label-size= %f\n\0" as *const u8
-                as *const libc::c_char,
+            b"avg edge len=%f avg_label-size= %f\n\0" as *const u8 as *const libc::c_char,
             dist,
             avg_label_size,
         );
@@ -1048,27 +1000,26 @@ unsafe extern "C" fn print_bounding_box(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            *xmin
-                .offset(
-                    k as isize,
-                ) = if *xmin.offset(k as isize) < *x.offset((i * dim + k) as isize) {
-                *xmin.offset(k as isize)
-            } else {
-                *x.offset((i * dim + k) as isize)
-            };
-            *xmax
-                .offset(
-                    k as isize,
-                ) = if *xmax.offset(k as isize) > *x.offset((i * dim + k) as isize) {
-                *xmax.offset(k as isize)
-            } else {
-                *x.offset((i * dim + k) as isize)
-            };
+            *xmin.offset(k as isize) =
+                if *xmin.offset(k as isize) < *x.offset((i * dim + k) as isize) {
+                    *xmin.offset(k as isize)
+                } else {
+                    *x.offset((i * dim + k) as isize)
+                };
+            *xmax.offset(k as isize) =
+                if *xmax.offset(k as isize) > *x.offset((i * dim + k) as isize) {
+                    *xmax.offset(k as isize)
+                } else {
+                    *x.offset((i * dim + k) as isize)
+                };
             k += 1;
         }
         i += 1;
     }
-    fprintf(stderr, b"bounding box = \n\0" as *const u8 as *const libc::c_char);
+    fprintf(
+        stderr,
+        b"bounding box = \n\0" as *const u8 as *const libc::c_char,
+    );
     i = 0 as libc::c_int;
     while i < dim {
         fprintf(
@@ -1128,9 +1079,8 @@ pub unsafe extern "C" fn remove_overlap(
         avg_label_size = 0 as libc::c_int as libc::c_double;
         i = 0 as libc::c_int;
         while i < (*A).m {
-            avg_label_size
-                += *label_sizes.offset((i * dim) as isize)
-                    + *label_sizes.offset((i * dim + 1 as libc::c_int) as isize);
+            avg_label_size += *label_sizes.offset((i * dim) as isize)
+                + *label_sizes.offset((i * dim + 1 as libc::c_int) as isize);
             i += 1;
         }
         avg_label_size /= (*A).m as libc::c_double;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -7,11 +15,7 @@ extern "C" {
     pub type _IO_marker;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn sfopen(
-        _: *mut Sfio_t,
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-    ) -> *mut Sfio_t;
+    fn sfopen(_: *mut Sfio_t, _: *const libc::c_char, _: *const libc::c_char) -> *mut Sfio_t;
     fn sfclose(_: *mut Sfio_t) -> libc::c_int;
     fn sfungetc(_: *mut Sfio_t, _: libc::c_int) -> libc::c_int;
     fn _sffilbuf(_: *mut Sfio_t, _: libc::c_int) -> libc::c_int;
@@ -19,16 +23,8 @@ extern "C" {
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn _err_msg(_: libc::c_int, _: *const libc::c_char, _: ...);
@@ -214,9 +210,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -242,16 +244,17 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -263,10 +266,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -286,41 +292,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -329,7 +334,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn agxbdisown(mut xb: *mut agxbuf) -> *mut libc::c_char {
@@ -424,54 +433,52 @@ unsafe extern "C" fn readc(mut str: *mut Sfio_t, mut ostr: *mut agxbuf) -> libc:
                 *fresh17 as libc::c_int
             };
             match cc {
-                42 => {
-                    loop {
-                        c = if (*str).next >= (*str).endr {
-                            _sffilbuf(str, 0 as libc::c_int)
-                        } else {
-                            let ref mut fresh18 = (*str).next;
-                            let fresh19 = *fresh18;
-                            *fresh18 = (*fresh18).offset(1);
-                            *fresh19 as libc::c_int
-                        };
-                        match c {
-                            10 => {
-                                lineno += 1;
-                                if !ostr.is_null() {
-                                    agxbputc(ostr, c as libc::c_char);
-                                }
+                42 => loop {
+                    c = if (*str).next >= (*str).endr {
+                        _sffilbuf(str, 0 as libc::c_int)
+                    } else {
+                        let ref mut fresh18 = (*str).next;
+                        let fresh19 = *fresh18;
+                        *fresh18 = (*fresh18).offset(1);
+                        *fresh19 as libc::c_int
+                    };
+                    match c {
+                        10 => {
+                            lineno += 1;
+                            if !ostr.is_null() {
+                                agxbputc(ostr, c as libc::c_char);
                             }
-                            42 => {
-                                cc = if (*str).next >= (*str).endr {
-                                    _sffilbuf(str, 0 as libc::c_int)
-                                } else {
-                                    let ref mut fresh20 = (*str).next;
-                                    let fresh21 = *fresh20;
-                                    *fresh20 = (*fresh20).offset(1);
-                                    *fresh21 as libc::c_int
-                                };
-                                match cc {
-                                    -1 => return cc,
-                                    10 => {
-                                        lineno += 1;
-                                        if !ostr.is_null() {
-                                            agxbputc(ostr, cc as libc::c_char);
-                                        }
-                                    }
-                                    42 => {
-                                        sfungetc(str, cc);
-                                    }
-                                    47 => {
-                                        col0 = 0 as libc::c_int;
-                                        return ' ' as i32;
-                                    }
-                                    _ => {}
-                                }
-                            }
-                            _ => {}
                         }
+                        42 => {
+                            cc = if (*str).next >= (*str).endr {
+                                _sffilbuf(str, 0 as libc::c_int)
+                            } else {
+                                let ref mut fresh20 = (*str).next;
+                                let fresh21 = *fresh20;
+                                *fresh20 = (*fresh20).offset(1);
+                                *fresh21 as libc::c_int
+                            };
+                            match cc {
+                                -1 => return cc,
+                                10 => {
+                                    lineno += 1;
+                                    if !ostr.is_null() {
+                                        agxbputc(ostr, cc as libc::c_char);
+                                    }
+                                }
+                                42 => {
+                                    sfungetc(str, cc);
+                                }
+                                47 => {
+                                    col0 = 0 as libc::c_int;
+                                    return ' ' as i32;
+                                }
+                                _ => {}
+                            }
+                        }
+                        _ => {}
                     }
-                }
+                },
                 47 => {
                     c = eol(str);
                 }
@@ -499,11 +506,12 @@ unsafe extern "C" fn skipWS(mut str: *mut Sfio_t) -> libc::c_int {
     loop {
         c = readc(str, 0 as *mut agxbuf);
         if *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-            & _ISspace as libc::c_int as libc::c_ushort as libc::c_int == 0
+            & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+            == 0
         {
             return c;
         }
-    };
+    }
 }
 unsafe extern "C" fn parseID(
     mut str: *mut Sfio_t,
@@ -513,8 +521,8 @@ unsafe extern "C" fn parseID(
 ) {
     let mut more: bool = 1 as libc::c_int != 0;
     let mut ptr: *mut libc::c_char = buf;
-    let mut eptr: *mut libc::c_char = buf
-        .offset(bsize.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
+    let mut eptr: *mut libc::c_char =
+        buf.offset(bsize.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
     let fresh22 = ptr;
     ptr = ptr.offset(1);
     *fresh22 = c as libc::c_char;
@@ -524,7 +532,8 @@ unsafe extern "C" fn parseID(
             more = 0 as libc::c_int != 0;
         }
         if *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-            & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int != 0
+            & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
             || c == '_' as i32
         {
             if ptr == eptr {
@@ -550,7 +559,8 @@ unsafe extern "C" fn parseKind(mut str: *mut Sfio_t) -> case_t {
         return Eof;
     }
     if *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-        & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int == 0
+        & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+        == 0
     {
         _err_msg(
             2 as libc::c_int,
@@ -563,29 +573,37 @@ unsafe extern "C" fn parseKind(mut str: *mut Sfio_t) -> case_t {
     }
     kwLine = lineno;
     parseID(str, c, buf.as_mut_ptr(), 8 as libc::c_int as size_t);
-    if strcmp(buf.as_mut_ptr(), b"BEGIN\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
+    if strcmp(
+        buf.as_mut_ptr(),
+        b"BEGIN\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
     {
         cs = Begin;
-    } else if strcmp(buf.as_mut_ptr(), b"BEG_G\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcmp(
+        buf.as_mut_ptr(),
+        b"BEG_G\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         cs = BeginG;
     } else if strcmp(buf.as_mut_ptr(), b"E\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+        == 0 as libc::c_int
+    {
         cs = Edge;
-    } else if strcmp(buf.as_mut_ptr(), b"END\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcmp(
+        buf.as_mut_ptr(),
+        b"END\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         cs = End;
-    } else if strcmp(buf.as_mut_ptr(), b"END_G\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcmp(
+        buf.as_mut_ptr(),
+        b"END_G\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         cs = EndG;
     } else if strcmp(buf.as_mut_ptr(), b"N\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+        == 0 as libc::c_int
+    {
         cs = Node;
     }
     if cs as libc::c_uint == Error as libc::c_int as libc::c_uint {
@@ -654,13 +672,13 @@ unsafe extern "C" fn endBracket(
     loop {
         c = readc(ins, outs);
         if c < 0 as libc::c_int || c == ec as libc::c_int {
-            return c
+            return c;
         } else {
             if c == bc as libc::c_int {
                 agxbputc(outs, c as libc::c_char);
                 c = endBracket(ins, outs, bc, ec);
                 if c < 0 as libc::c_int {
-                    return c
+                    return c;
                 } else {
                     agxbputc(outs, c as libc::c_char);
                 }
@@ -673,7 +691,7 @@ unsafe extern "C" fn endBracket(
                 agxbputc(outs, c as libc::c_char);
             }
         }
-    };
+    }
 }
 unsafe extern "C" fn parseBracket(
     mut str: *mut Sfio_t,
@@ -705,19 +723,13 @@ unsafe extern "C" fn parseBracket(
         }
         return 0 as *mut libc::c_char;
     } else {
-        return agxbdisown(buf)
+        return agxbdisown(buf);
     };
 }
-unsafe extern "C" fn parseAction(
-    mut str: *mut Sfio_t,
-    mut buf: *mut agxbuf,
-) -> *mut libc::c_char {
+unsafe extern "C" fn parseAction(mut str: *mut Sfio_t, mut buf: *mut agxbuf) -> *mut libc::c_char {
     return parseBracket(str, buf, '{' as i32, '}' as i32);
 }
-unsafe extern "C" fn parseGuard(
-    mut str: *mut Sfio_t,
-    mut buf: *mut agxbuf,
-) -> *mut libc::c_char {
+unsafe extern "C" fn parseGuard(mut str: *mut Sfio_t, mut buf: *mut agxbuf) -> *mut libc::c_char {
     return parseBracket(str, buf, '[' as i32, ']' as i32);
 }
 unsafe extern "C" fn parseCase(
@@ -734,7 +746,11 @@ unsafe extern "C" fn parseCase(
         eptr: 0 as *mut libc::c_char,
         dyna: 0,
     };
-    agxbinit(&mut buf, 0 as libc::c_int as libc::c_uint, 0 as *mut libc::c_char);
+    agxbinit(
+        &mut buf,
+        0 as libc::c_int as libc::c_uint,
+        0 as *mut libc::c_char,
+    );
     kind = parseKind(str);
     match kind as libc::c_uint {
         0 | 2 | 1 | 3 => {
@@ -861,8 +877,7 @@ unsafe extern "C" fn bindAction(
     if action.is_null() {
         _err_msg(
             1 as libc::c_int,
-            b"%s with no action, line %d - ignored\0" as *const u8
-                as *const libc::c_char,
+            b"%s with no action, line %d - ignored\0" as *const u8 as *const libc::c_char,
             caseStr(cs),
             kwLine,
         );
@@ -948,8 +963,7 @@ pub unsafe extern "C" fn parseProg(
         } else {
             _err_msg(
                 2 as libc::c_int,
-                b"parseProg : unable to create sfio stream\0" as *const u8
-                    as *const libc::c_char,
+                b"parseProg : unable to create sfio stream\0" as *const u8 as *const libc::c_char,
             );
         }
         free(prog as *mut libc::c_void);
@@ -958,9 +972,7 @@ pub unsafe extern "C" fn parseProg(
     begg_stmt = 0 as *mut libc::c_char;
     more = 1 as libc::c_int != 0;
     while more {
-        match parseCase(str, &mut guard, &mut gline, &mut action, &mut line)
-            as libc::c_uint
-        {
+        match parseCase(str, &mut guard, &mut gline, &mut action, &mut line) as libc::c_uint {
             0 => {
                 bindAction(
                     Begin,
@@ -972,17 +984,10 @@ pub unsafe extern "C" fn parseProg(
             }
             2 => {
                 if !action.is_null()
-                    && (!begg_stmt.is_null() || !nodelist.is_null()
-                        || !edgelist.is_null())
+                    && (!begg_stmt.is_null() || !nodelist.is_null() || !edgelist.is_null())
                 {
                     blockl = addBlock(
-                        blockl,
-                        begg_stmt,
-                        l_beging,
-                        n_nstmts,
-                        nodelist,
-                        n_estmts,
-                        edgelist,
+                        blockl, begg_stmt, l_beging, n_nstmts, nodelist, n_estmts, edgelist,
                     );
                     if blocklist.is_null() {
                         blocklist = blockl;
@@ -1033,13 +1038,7 @@ pub unsafe extern "C" fn parseProg(
     }
     if !begg_stmt.is_null() || !nodelist.is_null() || !edgelist.is_null() {
         blockl = addBlock(
-            blockl,
-            begg_stmt,
-            l_beging,
-            n_nstmts,
-            nodelist,
-            n_estmts,
-            edgelist,
+            blockl, begg_stmt, l_beging, n_nstmts, nodelist, n_estmts, edgelist,
         );
         if blocklist.is_null() {
             blocklist = blockl;

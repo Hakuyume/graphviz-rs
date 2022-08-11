@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -6,16 +14,8 @@ extern "C" {
     pub type _IO_codecvt;
     pub type _IO_marker;
     fn strtod(_: *const libc::c_char, _: *mut *mut libc::c_char) -> libc::c_double;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
-    fn strtoul(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_ulong;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
+    fn strtoul(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_ulong;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn snprintf(
@@ -35,16 +35,8 @@ extern "C" {
         __line: libc::c_uint,
         __function: *const libc::c_char,
     ) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strndup(_: *const libc::c_char, _: libc::c_ulong) -> *mut libc::c_char;
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
@@ -225,7 +217,7 @@ pub struct _xdot_op {
     pub u: C2RustUnnamed_1,
     pub drawfunc: drawfunc_t,
 }
-pub type drawfunc_t = Option::<unsafe extern "C" fn(*mut xdot_op, libc::c_int) -> ()>;
+pub type drawfunc_t = Option<unsafe extern "C" fn(*mut xdot_op, libc::c_int) -> ()>;
 pub type xdot_op = _xdot_op;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -242,7 +234,7 @@ pub union C2RustUnnamed_1 {
     pub style: *mut libc::c_char,
     pub fontchar: libc::c_uint,
 }
-pub type freefunc_t = Option::<unsafe extern "C" fn(*mut xdot_op) -> ()>;
+pub type freefunc_t = Option<unsafe extern "C" fn(*mut xdot_op) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct xdot {
@@ -273,10 +265,9 @@ pub struct xdot_stats {
 }
 pub const _ISalnum: C2RustUnnamed_2 = 8;
 pub const _ISspace: C2RustUnnamed_2 = 8192;
-pub type pf = Option::<unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()>;
-pub type print_op = Option::<
-    unsafe extern "C" fn(*mut xdot_op, pf, *mut libc::c_void, libc::c_int) -> (),
->;
+pub type pf = Option<unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()>;
+pub type print_op =
+    Option<unsafe extern "C" fn(*mut xdot_op, pf, *mut libc::c_void, libc::c_int) -> ()>;
 pub type C2RustUnnamed_2 = libc::c_uint;
 pub const _ISpunct: C2RustUnnamed_2 = 4;
 pub const _IScntrl: C2RustUnnamed_2 = 2;
@@ -320,7 +311,11 @@ unsafe extern "C" fn agxbput_n(
     if ((*xb).ptr).offset(ssz as isize) > (*xb).eptr {
         agxbmore(xb, ssz);
     }
-    memcpy((*xb).ptr as *mut libc::c_void, s as *const libc::c_void, ssz);
+    memcpy(
+        (*xb).ptr as *mut libc::c_void,
+        s as *const libc::c_void,
+        ssz,
+    );
     let ref mut fresh3 = (*xb).ptr;
     *fresh3 = (*fresh3).offset(ssz as isize);
     return ssz;
@@ -345,9 +340,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -397,10 +398,11 @@ unsafe extern "C" fn gv_strndup(
 ) -> *mut libc::c_char {
     let mut copy: *mut libc::c_char = 0 as *mut libc::c_char;
     copy = strndup(original, length);
-    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int
-        as libc::c_long != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return copy;
@@ -413,41 +415,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -456,7 +457,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn gv_realloc(
@@ -465,10 +470,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -485,16 +493,17 @@ unsafe extern "C" fn gv_alloc(mut size: size_t) -> *mut libc::c_void {
     return gv_calloc(1 as libc::c_int as size_t, size);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -522,7 +531,11 @@ unsafe extern "C" fn parseInt(
 ) -> *mut libc::c_char {
     let mut endp: *mut libc::c_char = 0 as *mut libc::c_char;
     *ip = strtol(s, &mut endp, 10 as libc::c_int) as libc::c_int;
-    if s == endp { return 0 as *mut libc::c_char } else { return endp };
+    if s == endp {
+        return 0 as *mut libc::c_char;
+    } else {
+        return endp;
+    };
 }
 unsafe extern "C" fn parseUInt(
     mut s: *mut libc::c_char,
@@ -530,7 +543,11 @@ unsafe extern "C" fn parseUInt(
 ) -> *mut libc::c_char {
     let mut endp: *mut libc::c_char = 0 as *mut libc::c_char;
     *ip = strtoul(s, &mut endp, 10 as libc::c_int) as libc::c_uint;
-    if s == endp { return 0 as *mut libc::c_char } else { return endp };
+    if s == endp {
+        return 0 as *mut libc::c_char;
+    } else {
+        return endp;
+    };
 }
 unsafe extern "C" fn parseRect(
     mut s: *mut libc::c_char,
@@ -539,25 +556,25 @@ unsafe extern "C" fn parseRect(
     let mut endp: *mut libc::c_char = 0 as *mut libc::c_char;
     (*rp).x = strtod(s, &mut endp);
     if s == endp {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     } else {
         s = endp;
     }
     (*rp).y = strtod(s, &mut endp);
     if s == endp {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     } else {
         s = endp;
     }
     (*rp).w = strtod(s, &mut endp);
     if s == endp {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     } else {
         s = endp;
     }
     (*rp).h = strtod(s, &mut endp);
     if s == endp {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     } else {
         s = endp;
     }
@@ -575,8 +592,10 @@ unsafe extern "C" fn parsePolyline(
     if s.is_null() {
         return s;
     }
-    ps = gv_calloc(i as size_t, ::std::mem::size_of::<xdot_point>() as libc::c_ulong)
-        as *mut xdot_point;
+    ps = gv_calloc(
+        i as size_t,
+        ::std::mem::size_of::<xdot_point>() as libc::c_ulong,
+    ) as *mut xdot_point;
     pts = ps;
     (*pp).cnt = i;
     i = 0 as libc::c_int;
@@ -618,7 +637,7 @@ unsafe extern "C" fn parseString(
     if *s != 0 {
         s = s.offset(1);
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     }
     let mut c: *mut libc::c_char = gv_strndup(s, i as size_t);
     if strlen(c) != i as libc::c_ulong {
@@ -658,7 +677,8 @@ unsafe extern "C" fn parseOp(
     };
     *error = 0 as libc::c_int;
     while *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
-        & _ISspace as libc::c_int as libc::c_ushort as libc::c_int != 0
+        & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+        != 0
     {
         s = s.offset(1);
     }
@@ -1025,11 +1045,7 @@ unsafe extern "C" fn trim(mut buf: *mut libc::c_char) {
         }
     }
 }
-unsafe extern "C" fn printRect(
-    mut r: *mut xdot_rect,
-    mut print: pf,
-    mut info: *mut libc::c_void,
-) {
+unsafe extern "C" fn printRect(mut r: *mut xdot_rect, mut print: pf, mut info: *mut libc::c_void) {
     let mut buf: [libc::c_char; 128] = [0; 128];
     snprintf(
         buf.as_mut_ptr(),
@@ -1114,11 +1130,7 @@ unsafe extern "C" fn printString(
     print.expect("non-null function pointer")(buf.as_mut_ptr(), info);
     print.expect("non-null function pointer")(p, info);
 }
-unsafe extern "C" fn printInt(
-    mut i: libc::c_int,
-    mut print: pf,
-    mut info: *mut libc::c_void,
-) {
+unsafe extern "C" fn printInt(mut i: libc::c_int, mut print: pf, mut info: *mut libc::c_void) {
     let mut buf: [libc::c_char; 30] = [0; 30];
     snprintf(
         buf.as_mut_ptr(),
@@ -1153,35 +1165,22 @@ unsafe extern "C" fn printFloat(
     trim(buf.as_mut_ptr());
     print.expect("non-null function pointer")(buf.as_mut_ptr(), info);
 }
-unsafe extern "C" fn printAlign(
-    mut a: xdot_align,
-    mut print: pf,
-    mut info: *mut libc::c_void,
-) {
+unsafe extern "C" fn printAlign(mut a: xdot_align, mut print: pf, mut info: *mut libc::c_void) {
     match a as libc::c_uint {
         0 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b" -1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
         }
         2 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b" 1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
         }
         1 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b" 0\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
@@ -1200,37 +1199,25 @@ unsafe extern "C" fn toGradString(mut xb: *mut agxbuf, mut cp: *mut xdot_color) 
         agxbputc(xb, '[' as i32 as libc::c_char);
         printFloat(
             (*cp).u.ling.x0,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             0 as libc::c_int,
         );
         printFloat(
             (*cp).u.ling.y0,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ling.x1,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ling.y1,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
@@ -1240,55 +1227,37 @@ unsafe extern "C" fn toGradString(mut xb: *mut agxbuf, mut cp: *mut xdot_color) 
         agxbputc(xb, '(' as i32 as libc::c_char);
         printFloat(
             (*cp).u.ring.x0,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             0 as libc::c_int,
         );
         printFloat(
             (*cp).u.ring.y0,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ring.r0,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ring.x1,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ring.y1,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printFloat(
             (*cp).u.ring.r1,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
@@ -1297,28 +1266,20 @@ unsafe extern "C" fn toGradString(mut xb: *mut agxbuf, mut cp: *mut xdot_color) 
     }
     printInt(
         n_stops,
-        Some(
-            gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-        ),
+        Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
         xb as *mut libc::c_void,
     );
     i = 0 as libc::c_int;
     while i < n_stops {
         printFloat(
             (*stops.offset(i as isize)).frac as libc::c_double,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
             1 as libc::c_int,
         );
         printString(
             (*stops.offset(i as isize)).color,
-            Some(
-                gradprint
-                    as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-            ),
+            Some(gradprint as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
             xb as *mut libc::c_void,
         );
         i += 1;
@@ -1342,92 +1303,96 @@ unsafe extern "C" fn printXDot_Op(
         dyna: 0,
     };
     let mut buf: [libc::c_char; 8192] = [0; 8192];
-    agxbinit(&mut xb, 8192 as libc::c_int as libc::c_uint, buf.as_mut_ptr());
+    agxbinit(
+        &mut xb,
+        8192 as libc::c_int as libc::c_uint,
+        buf.as_mut_ptr(),
+    );
     match (*op).kind as libc::c_uint {
         0 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"E\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"E\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printRect(&mut (*op).u.ellipse, print, info);
         }
         1 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"e\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"e\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printRect(&mut (*op).u.ellipse, print, info);
         }
         2 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"P\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"P\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printPolyline(&mut (*op).u.polygon, print, info);
         }
         3 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"p\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"p\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printPolyline(&mut (*op).u.polygon, print, info);
         }
         4 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"b\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"b\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printPolyline(&mut (*op).u.bezier, print, info);
         }
         5 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"B\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"B\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printPolyline(&mut (*op).u.bezier, print, info);
         }
         9 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"c\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"c\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printString((*op).u.color, print, info);
         }
         14 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"c\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"c\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             toGradString(&mut xb, &mut (*op).u.grad_color);
             printString(agxbuse(&mut xb), print, info);
         }
         8 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"C\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"C\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printString((*op).u.color, print, info);
         }
         13 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"C\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"C\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             toGradString(&mut xb, &mut (*op).u.grad_color);
             printString(agxbuse(&mut xb), print, info);
         }
         6 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"L\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printPolyline(&mut (*op).u.polyline, print, info);
         }
         7 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"T\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"T\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printInt((*op).u.text.x as libc::c_int, print, info);
             printInt((*op).u.text.y as libc::c_int, print, info);
             printAlign((*op).u.text.align, print, info);
@@ -1435,50 +1400,46 @@ unsafe extern "C" fn printXDot_Op(
             printString((*op).u.text.text, print, info);
         }
         10 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"F\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"F\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printFloat((*op).u.font.size, print, info, 1 as libc::c_int);
             printString((*op).u.font.name, print, info);
         }
         15 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"t\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"t\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printInt((*op).u.fontchar as libc::c_int, print, info);
         }
         11 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"S\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"S\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printString((*op).u.style, print, info);
         }
         12 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"I\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"I\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printRect(&mut (*op).u.image.pos, print, info);
             printString((*op).u.image.name, print, info);
         }
         _ => {}
     }
     if more != 0 {
-        print
-            .expect(
-                "non-null function pointer",
-            )(b" \0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+        print.expect("non-null function pointer")(
+            b" \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            info,
+        );
     }
     agxbfree(&mut xb);
 }
-unsafe extern "C" fn jsonRect(
-    mut r: *mut xdot_rect,
-    mut print: pf,
-    mut info: *mut libc::c_void,
-) {
+unsafe extern "C" fn jsonRect(mut r: *mut xdot_rect, mut print: pf, mut info: *mut libc::c_void) {
     let mut buf: [libc::c_char; 128] = [0; 128];
     snprintf(
         buf.as_mut_ptr(),
@@ -1498,10 +1459,10 @@ unsafe extern "C" fn jsonPolyline(
 ) {
     let mut i: libc::c_int = 0;
     let mut buf: [libc::c_char; 128] = [0; 128];
-    print
-        .expect(
-            "non-null function pointer",
-        )(b"[\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+    print.expect("non-null function pointer")(
+        b"[\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        info,
+    );
     i = 0 as libc::c_int;
     while i < (*p).cnt {
         snprintf(
@@ -1513,17 +1474,17 @@ unsafe extern "C" fn jsonPolyline(
         );
         print.expect("non-null function pointer")(buf.as_mut_ptr(), info);
         if i < (*p).cnt - 1 as libc::c_int {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
         }
         i += 1;
     }
-    print
-        .expect(
-            "non-null function pointer",
-        )(b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+    print.expect("non-null function pointer")(
+        b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        info,
+    );
 }
 unsafe extern "C" fn jsonString(
     mut p: *mut libc::c_char,
@@ -1531,10 +1492,10 @@ unsafe extern "C" fn jsonString(
     mut info: *mut libc::c_void,
 ) {
     let mut c: libc::c_char = 0;
-    print
-        .expect(
-            "non-null function pointer",
-        )(b"\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+    print.expect("non-null function pointer")(
+        b"\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        info,
+    );
     loop {
         let fresh34 = p;
         p = p.offset(1);
@@ -1543,18 +1504,12 @@ unsafe extern "C" fn jsonString(
             break;
         }
         if c as libc::c_int == '"' as i32 {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"\\\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
         } else if c as libc::c_int == '\\' as i32 {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"\\\\\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
@@ -1563,10 +1518,10 @@ unsafe extern "C" fn jsonString(
             print.expect("non-null function pointer")(buf.as_mut_ptr(), info);
         }
     }
-    print
-        .expect(
-            "non-null function pointer",
-        )(b"\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+    print.expect("non-null function pointer")(
+        b"\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        info,
+    );
 }
 unsafe extern "C" fn jsonXDot_Op(
     mut op: *mut xdot_op,
@@ -1581,83 +1536,63 @@ unsafe extern "C" fn jsonXDot_Op(
         dyna: 0,
     };
     let mut buf: [libc::c_char; 8192] = [0; 8192];
-    agxbinit(&mut xb, 8192 as libc::c_int as libc::c_uint, buf.as_mut_ptr());
+    agxbinit(
+        &mut xb,
+        8192 as libc::c_int as libc::c_uint,
+        buf.as_mut_ptr(),
+    );
     match (*op).kind as libc::c_uint {
         0 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"E\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonRect(&mut (*op).u.ellipse, print, info);
         }
         1 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"e\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonRect(&mut (*op).u.ellipse, print, info);
         }
         2 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"P\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonPolyline(&mut (*op).u.polygon, print, info);
         }
         3 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"p\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonPolyline(&mut (*op).u.polygon, print, info);
         }
         4 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"b\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonPolyline(&mut (*op).u.bezier, print, info);
         }
         5 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"B\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonPolyline(&mut (*op).u.bezier, print, info);
         }
         9 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"c\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonString((*op).u.color, print, info);
         }
         14 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"c\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
@@ -1665,20 +1600,14 @@ unsafe extern "C" fn jsonXDot_Op(
             jsonString(agxbuse(&mut xb), print, info);
         }
         8 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"C\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonString((*op).u.color, print, info);
         }
         13 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"C\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
@@ -1686,120 +1615,102 @@ unsafe extern "C" fn jsonXDot_Op(
             jsonString(agxbuse(&mut xb), print, info);
         }
         6 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"L\" :\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonPolyline(&mut (*op).u.polyline, print, info);
         }
         7 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"T\" : [\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             printInt((*op).u.text.x as libc::c_int, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printInt((*op).u.text.y as libc::c_int, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printAlign((*op).u.text.align, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             printInt((*op).u.text.width as libc::c_int, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             jsonString((*op).u.text.text, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
         }
         10 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"F\" : [\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             (*op).kind = xd_font;
             printFloat((*op).u.font.size, print, info, 1 as libc::c_int);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             jsonString((*op).u.font.name, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
         }
         15 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"t\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             printInt((*op).u.fontchar as libc::c_int, print, info);
         }
         11 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"S\" : \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonString((*op).u.style, print, info);
         }
         12 => {
-            print
-                .expect(
-                    "non-null function pointer",
-                )(
+            print.expect("non-null function pointer")(
                 b"{\"I\" : [\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 info,
             );
             jsonRect(&mut (*op).u.image.pos, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b",\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
             jsonString((*op).u.image.name, print, info);
-            print
-                .expect(
-                    "non-null function pointer",
-                )(b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+            print.expect("non-null function pointer")(
+                b"]\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                info,
+            );
         }
         _ => {}
     }
     if more != 0 {
-        print
-            .expect(
-                "non-null function pointer",
-            )(b"},\n\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+        print.expect("non-null function pointer")(
+            b"},\n\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            info,
+        );
     } else {
-        print
-            .expect(
-                "non-null function pointer",
-            )(b"}\n\0" as *const u8 as *const libc::c_char as *mut libc::c_char, info);
+        print.expect("non-null function pointer")(
+            b"}\n\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            info,
+        );
     }
     agxbfree(&mut xb);
 }
@@ -1815,10 +1726,12 @@ unsafe extern "C" fn _printXDot(
     i = 0 as libc::c_int;
     while i < (*x).cnt {
         op = base.offset((i * (*x).sz) as isize) as *mut xdot_op;
-        ofn
-            .expect(
-                "non-null function pointer",
-            )(op, print, info, (i < (*x).cnt - 1 as libc::c_int) as libc::c_int);
+        ofn.expect("non-null function pointer")(
+            op,
+            print,
+            info,
+            (i < (*x).cnt - 1 as libc::c_int) as libc::c_int,
+        );
         i += 1;
     }
 }
@@ -1835,21 +1748,18 @@ pub unsafe extern "C" fn sprintXDot(mut x: *mut xdot) -> *mut libc::c_char {
         eptr: 0 as *mut libc::c_char,
         dyna: 0,
     };
-    agxbinit(&mut xb, 8192 as libc::c_int as libc::c_uint, buf.as_mut_ptr());
+    agxbinit(
+        &mut xb,
+        8192 as libc::c_int as libc::c_uint,
+        buf.as_mut_ptr(),
+    );
     _printXDot(
         x,
-        Some(
-            agxbput_ as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> (),
-        ),
+        Some(agxbput_ as unsafe extern "C" fn(*mut libc::c_char, *mut libc::c_void) -> ()),
         &mut xb as *mut agxbuf as *mut libc::c_void,
         Some(
             printXDot_Op
-                as unsafe extern "C" fn(
-                    *mut xdot_op,
-                    pf,
-                    *mut libc::c_void,
-                    libc::c_int,
-                ) -> (),
+                as unsafe extern "C" fn(*mut xdot_op, pf, *mut libc::c_void, libc::c_int) -> (),
         ),
     );
     s = strdup(agxbuse(&mut xb));
@@ -1861,28 +1771,15 @@ pub unsafe extern "C" fn fprintXDot(mut fp: *mut FILE, mut x: *mut xdot) {
     _printXDot(
         x,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int,
-            >,
+            Option<unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int>,
             pf,
-        >(
-            Some(
-                fputs
-                    as unsafe extern "C" fn(
-                        *const libc::c_char,
-                        *mut FILE,
-                    ) -> libc::c_int,
-            ),
-        ),
+        >(Some(
+            fputs as unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int,
+        )),
         fp as *mut libc::c_void,
         Some(
             printXDot_Op
-                as unsafe extern "C" fn(
-                    *mut xdot_op,
-                    pf,
-                    *mut libc::c_void,
-                    libc::c_int,
-                ) -> (),
+                as unsafe extern "C" fn(*mut xdot_op, pf, *mut libc::c_void, libc::c_int) -> (),
         ),
     );
 }
@@ -1892,28 +1789,15 @@ pub unsafe extern "C" fn jsonXDot(mut fp: *mut FILE, mut x: *mut xdot) {
     _printXDot(
         x,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int,
-            >,
+            Option<unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int>,
             pf,
-        >(
-            Some(
-                fputs
-                    as unsafe extern "C" fn(
-                        *const libc::c_char,
-                        *mut FILE,
-                    ) -> libc::c_int,
-            ),
-        ),
+        >(Some(
+            fputs as unsafe extern "C" fn(*const libc::c_char, *mut FILE) -> libc::c_int,
+        )),
         fp as *mut libc::c_void,
         Some(
             jsonXDot_Op
-                as unsafe extern "C" fn(
-                    *mut xdot_op,
-                    pf,
-                    *mut libc::c_void,
-                    libc::c_int,
-                ) -> (),
+                as unsafe extern "C" fn(*mut xdot_op, pf, *mut libc::c_void, libc::c_int) -> (),
         ),
     );
     fputs(b"]\n\0" as *const u8 as *const libc::c_char, fp);
@@ -1973,10 +1857,7 @@ pub unsafe extern "C" fn freeXDot(mut x: *mut xdot) {
     free(x as *mut libc::c_void);
 }
 #[no_mangle]
-pub unsafe extern "C" fn statXDot(
-    mut x: *mut xdot,
-    mut sp: *mut xdot_stats,
-) -> libc::c_int {
+pub unsafe extern "C" fn statXDot(mut x: *mut xdot, mut sp: *mut xdot_stats) -> libc::c_int {
     let mut i: libc::c_int = 0;
     let mut op: *mut xdot_op = 0 as *mut xdot_op;
     let mut base: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -2188,14 +2069,15 @@ pub unsafe extern "C" fn parseXDotColor(
         }
         _ => {
             if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-                & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
             {
                 (*clr).type_0 = xd_none;
                 let ref mut fresh49 = (*clr).u.clr;
                 *fresh49 = cp;
                 return cp;
             } else {
-                return 0 as *mut libc::c_char
+                return 0 as *mut libc::c_char;
             }
         }
     };

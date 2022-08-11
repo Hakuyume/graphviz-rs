@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -28,16 +36,8 @@ extern "C" {
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn agisdirected(g: *mut Agraph_t) -> libc::c_int;
@@ -47,12 +47,7 @@ extern "C" {
     fn agobjkind(_: *mut libc::c_void) -> libc::c_int;
     fn agerr(level: agerrlevel_t, fmt: *const libc::c_char, _: ...) -> libc::c_int;
     fn zmalloc(_: size_t) -> *mut libc::c_void;
-    fn zrealloc(
-        _: *mut libc::c_void,
-        _: size_t,
-        _: size_t,
-        _: size_t,
-    ) -> *mut libc::c_void;
+    fn zrealloc(_: *mut libc::c_void, _: size_t, _: size_t, _: size_t) -> *mut libc::c_void;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn latin1ToUTF8(_: *mut libc::c_char) -> *mut libc::c_char;
     fn htmlEntityUTF8(_: *mut libc::c_char, g: *mut graph_t) -> *mut libc::c_char;
@@ -231,9 +226,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -247,25 +240,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -367,7 +353,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -528,16 +515,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -553,18 +534,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -572,16 +547,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -623,9 +591,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -654,13 +621,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -693,26 +655,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -721,29 +675,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -751,8 +697,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -786,7 +732,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -812,9 +758,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -948,7 +892,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1152,13 +1096,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1167,7 +1110,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1258,7 +1201,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1418,16 +1361,17 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -1439,10 +1383,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -1462,41 +1409,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -1505,7 +1451,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn agxbinit(
@@ -1560,9 +1510,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh7 = (*xb).buf;
@@ -1595,8 +1551,7 @@ unsafe extern "C" fn agxbprint(
         return rc;
     }
     size = (rc as size_t).wrapping_add(1 as libc::c_int as libc::c_ulong);
-    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long
-        as size_t;
+    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long as size_t;
     if unused_space < size {
         let mut extra: size_t = size.wrapping_sub(unused_space);
         agxbmore(xb, extra);
@@ -1604,17 +1559,16 @@ unsafe extern "C" fn agxbprint(
     result = vsnprintf((*xb).ptr, size, fmt, ap.as_va_list());
     if result == size.wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int
         || result < 0 as libc::c_int
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"result == (int)(size - 1) || result < 0\0" as *const u8
-                as *const libc::c_char,
+            b"result == (int)(size - 1) || result < 0\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/agxbuf.h\0" as *const u8 as *const libc::c_char,
             138 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 43],
-                &[libc::c_char; 43],
-            >(b"int agxbprint(agxbuf *, const char *, ...)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 43], &[libc::c_char; 43]>(
+                b"int agxbprint(agxbuf *, const char *, ...)\0",
+            ))
+            .as_ptr(),
         );
     }
     if result > 0 as libc::c_int {
@@ -1632,7 +1586,11 @@ unsafe extern "C" fn agxbput_n(
     if ((*xb).ptr).offset(ssz as isize) > (*xb).eptr {
         agxbmore(xb, ssz);
     }
-    memcpy((*xb).ptr as *mut libc::c_void, s as *const libc::c_void, ssz);
+    memcpy(
+        (*xb).ptr as *mut libc::c_void,
+        s as *const libc::c_void,
+        ssz,
+    );
     let ref mut fresh11 = (*xb).ptr;
     *fresh11 = (*fresh11).offset(ssz as isize);
     return ssz;
@@ -1684,8 +1642,7 @@ unsafe extern "C" fn storeline(
                 .wrapping_mul(::std::mem::size_of::<textspan_t>() as libc::c_ulong),
         ) as *mut textspan_t
     };
-    span = &mut *((*lp).u.txt.span).offset((*lp).u.txt.nspans as isize)
-        as *mut textspan_t;
+    span = &mut *((*lp).u.txt.span).offset((*lp).u.txt.nspans as isize) as *mut textspan_t;
     let ref mut fresh15 = (*span).str_0;
     *fresh15 = line;
     (*span).just = terminator;
@@ -1693,12 +1650,8 @@ unsafe extern "C" fn storeline(
         tf.name = (*lp).fontname;
         tf.size = (*lp).fontsize;
         let ref mut fresh16 = (*span).font;
-        *fresh16 = (Some(
-            ((*(*gvc).textfont_dt).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )(
+        *fresh16 = (Some(((*(*gvc).textfont_dt).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
             (*gvc).textfont_dt,
             &mut tf as *mut textfont_t as *mut libc::c_void,
             0o1 as libc::c_int,
@@ -1711,14 +1664,15 @@ unsafe extern "C" fn storeline(
     }
     let ref mut fresh17 = (*lp).u.txt.nspans;
     *fresh17 += 1;
-    (*lp).dimen.x = if (*lp).dimen.x > size.x { (*lp).dimen.x } else { size.x };
+    (*lp).dimen.x = if (*lp).dimen.x > size.x {
+        (*lp).dimen.x
+    } else {
+        size.x
+    };
     (*lp).dimen.y += size.y;
 }
 #[no_mangle]
-pub unsafe extern "C" fn make_simple_label(
-    mut gvc: *mut GVC_t,
-    mut lp: *mut textlabel_t,
-) {
+pub unsafe extern "C" fn make_simple_label(mut gvc: *mut GVC_t, mut lp: *mut textlabel_t) {
     let mut c: libc::c_char = 0;
     let mut p: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut line: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -1811,9 +1765,8 @@ pub unsafe extern "C" fn make_label(
     mut fontname: *mut libc::c_char,
     mut fontcolor: *mut libc::c_char,
 ) -> *mut textlabel_t {
-    let mut rv: *mut textlabel_t = zmalloc(
-        ::std::mem::size_of::<textlabel_t>() as libc::c_ulong,
-    ) as *mut textlabel_t;
+    let mut rv: *mut textlabel_t =
+        zmalloc(::std::mem::size_of::<textlabel_t>() as libc::c_ulong) as *mut textlabel_t;
     let mut g: *mut graph_t = 0 as *mut graph_t;
     let mut sg: *mut graph_t = 0 as *mut graph_t;
     let mut n: *mut node_t = 0 as *mut node_t;
@@ -1830,18 +1783,14 @@ pub unsafe extern "C" fn make_label(
         }
         2 => {
             e = obj as *mut edge_t;
-            g = agroot(
-                agraphof(
-                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
-                    {
-                        e
-                    } else {
-                        e.offset(-(1 as libc::c_int as isize))
-                    })
-                        .node as *mut libc::c_void,
-                ) as *mut libc::c_void,
-            );
+            g = agroot(agraphof(
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
+                    e
+                } else {
+                    e.offset(-(1 as libc::c_int as isize))
+                })
+                .node as *mut libc::c_void,
+            ) as *mut libc::c_void);
         }
         _ => {}
     }
@@ -1850,9 +1799,7 @@ pub unsafe extern "C" fn make_label(
     let ref mut fresh29 = (*rv).fontcolor;
     *fresh29 = fontcolor;
     (*rv).fontsize = fontsize;
-    (*rv)
-        .charset = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).charset
-        as libc::c_int;
+    (*rv).charset = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).charset as libc::c_int;
     if kind & (2 as libc::c_int) << 1 as libc::c_int != 0 {
         let ref mut fresh30 = (*rv).text;
         *fresh30 = strdup(str);
@@ -1882,8 +1829,7 @@ pub unsafe extern "C" fn make_label(
                 2 => {
                     agerr(
                         AGPREV,
-                        b"in label of edge %s %s %s\n\0" as *const u8
-                            as *const libc::c_char,
+                        b"in label of edge %s %s %s\n\0" as *const u8 as *const libc::c_char,
                         agnameof(
                             (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                                 == 3 as libc::c_int
@@ -1892,7 +1838,7 @@ pub unsafe extern "C" fn make_label(
                             } else {
                                 e.offset(1 as libc::c_int as isize)
                             })
-                                .node as *mut libc::c_void,
+                            .node as *mut libc::c_void,
                         ),
                         if agisdirected(g) != 0 {
                             b"->\0" as *const u8 as *const libc::c_char
@@ -1907,7 +1853,7 @@ pub unsafe extern "C" fn make_label(
                             } else {
                                 e.offset(-(1 as libc::c_int as isize))
                             })
-                                .node as *mut libc::c_void,
+                            .node as *mut libc::c_void,
                         ),
                     );
                 }
@@ -1915,18 +1861,16 @@ pub unsafe extern "C" fn make_label(
             }
         }
     } else {
-        if kind == (0 as libc::c_int) << 1 as libc::c_int {} else {
+        if kind == (0 as libc::c_int) << 1 as libc::c_int {
+        } else {
             __assert_fail(
                 b"kind == LT_NONE\0" as *const u8 as *const libc::c_char,
                 b"labels.c\0" as *const u8 as *const libc::c_char,
                 164 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"textlabel_t *make_label(void *, char *, int, double, char *, char *)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         let ref mut fresh32 = (*rv).text;
@@ -1942,7 +1886,10 @@ pub unsafe extern "C" fn make_label(
         free((*rv).text as *mut libc::c_void);
         let ref mut fresh33 = (*rv).text;
         *fresh33 = s;
-        make_simple_label((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gvc, rv);
+        make_simple_label(
+            (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gvc,
+            rv,
+        );
     }
     return rv;
 }
@@ -2044,22 +1991,22 @@ unsafe extern "C" fn strdup_and_subst_obj0(
     let mut c: libc::c_char = 0;
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut newstr: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut tp_str: *mut libc::c_char = b"\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut hp_str: *mut libc::c_char = b"\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut g_str: *mut libc::c_char = b"\\G\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut n_str: *mut libc::c_char = b"\\N\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut e_str: *mut libc::c_char = b"\\E\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut h_str: *mut libc::c_char = b"\\H\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut t_str: *mut libc::c_char = b"\\T\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
-    let mut l_str: *mut libc::c_char = b"\\L\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
+    let mut tp_str: *mut libc::c_char =
+        b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut hp_str: *mut libc::c_char =
+        b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut g_str: *mut libc::c_char =
+        b"\\G\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut n_str: *mut libc::c_char =
+        b"\\N\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut e_str: *mut libc::c_char =
+        b"\\E\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut h_str: *mut libc::c_char =
+        b"\\H\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut t_str: *mut libc::c_char =
+        b"\\T\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    let mut l_str: *mut libc::c_char =
+        b"\\L\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     let mut has_hp: bool = 0 as libc::c_int != 0;
     let mut has_tp: bool = 0 as libc::c_int != 0;
     let mut isEdge: libc::c_int = 0 as libc::c_int;
@@ -2085,8 +2032,7 @@ unsafe extern "C" fn strdup_and_subst_obj0(
     match agobjkind(obj) {
         0 => {
             g_str = agnameof(obj);
-            tl = (*((*(obj as *mut graph_t as *mut Agobj_t)).data as *mut Agraphinfo_t))
-                .label;
+            tl = (*((*(obj as *mut graph_t as *mut Agobj_t)).data as *mut Agraphinfo_t)).label;
             if !tl.is_null() {
                 l_str = (*tl).text;
             }
@@ -2094,79 +2040,68 @@ unsafe extern "C" fn strdup_and_subst_obj0(
         1 => {
             g_str = agnameof(agraphof(obj) as *mut libc::c_void);
             n_str = agnameof(obj);
-            tl = (*((*(obj as *mut node_t as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .label;
+            tl = (*((*(obj as *mut node_t as *mut Agobj_t)).data as *mut Agnodeinfo_t)).label;
             if !tl.is_null() {
                 l_str = (*tl).text;
             }
         }
         2 => {
             isEdge = 1 as libc::c_int;
-            g_str = agnameof(
-                agroot(
-                    agraphof(
-                        (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 3 as libc::c_int
-                        {
-                            obj as *mut edge_t
-                        } else {
-                            (obj as *mut edge_t).offset(1 as libc::c_int as isize)
-                        })
-                            .node as *mut libc::c_void,
-                    ) as *mut libc::c_void,
-                ) as *mut libc::c_void,
-            );
-            t_str = agnameof(
-                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype()
-                    as libc::c_int == 3 as libc::c_int
+            g_str = agnameof(agroot(agraphof(
+                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 3 as libc::c_int
                 {
                     obj as *mut edge_t
                 } else {
                     (obj as *mut edge_t).offset(1 as libc::c_int as isize)
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
+            ) as *mut libc::c_void) as *mut libc::c_void);
+            t_str = agnameof(
+                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 3 as libc::c_int
+                {
+                    obj as *mut edge_t
+                } else {
+                    (obj as *mut edge_t).offset(1 as libc::c_int as isize)
+                })
+                .node as *mut libc::c_void,
             );
-            pt = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .tail_port;
+            pt = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t)).tail_port;
             tp_str = pt.name;
             if !tp_str.is_null() {
                 has_tp = *tp_str as libc::c_int != '\0' as i32;
             }
             h_str = agnameof(
-                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype()
-                    as libc::c_int == 2 as libc::c_int
+                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 2 as libc::c_int
                 {
                     obj as *mut edge_t
                 } else {
                     (obj as *mut edge_t).offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             );
-            pt = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .head_port;
+            pt = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t)).head_port;
             hp_str = pt.name;
             if !hp_str.is_null() {
                 has_hp = *hp_str as libc::c_int != '\0' as i32;
             }
-            tl = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .label;
+            tl = (*((*(obj as *mut edge_t as *mut Agobj_t)).data as *mut Agedgeinfo_t)).label;
             if !tl.is_null() {
                 l_str = (*tl).text;
             }
-            if agisdirected(
-                agroot(
-                    agraphof(
-                        (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 3 as libc::c_int
-                        {
-                            obj as *mut edge_t
-                        } else {
-                            (obj as *mut edge_t).offset(1 as libc::c_int as isize)
-                        })
-                            .node as *mut libc::c_void,
-                    ) as *mut libc::c_void,
-                ),
-            ) != 0
+            if agisdirected(agroot(agraphof(
+                (*if ((*(obj as *mut edge_t as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 3 as libc::c_int
+                {
+                    obj as *mut edge_t
+                } else {
+                    (obj as *mut edge_t).offset(1 as libc::c_int as isize)
+                })
+                .node as *mut libc::c_void,
+            ) as *mut libc::c_void))
+                != 0
             {
                 e_str = b"->\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             } else {
@@ -2175,7 +2110,11 @@ unsafe extern "C" fn strdup_and_subst_obj0(
         }
         _ => {}
     }
-    agxbinit(&mut buf, 0 as libc::c_int as libc::c_uint, 0 as *mut libc::c_char);
+    agxbinit(
+        &mut buf,
+        0 as libc::c_int as libc::c_uint,
+        0 as *mut libc::c_char,
+    );
     s = str;
     loop {
         let fresh34 = s;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -28,16 +36,8 @@ extern "C" {
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strcat(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
@@ -48,9 +48,7 @@ extern "C" {
     fn xml_escape(
         s: *const libc::c_char,
         flags: xml_flags_t,
-        cb: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-        >,
+        cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
         state: *mut libc::c_void,
     ) -> libc::c_int;
     fn g_free(mem: gpointer);
@@ -58,12 +56,8 @@ extern "C" {
     fn g_object_unref(object: gpointer);
     fn pango_font_description_free(desc: *mut PangoFontDescription);
     fn pango_font_description_set_size(desc: *mut PangoFontDescription, size: gint);
-    fn pango_font_description_from_string(
-        str: *const libc::c_char,
-    ) -> *mut PangoFontDescription;
-    fn pango_font_description_to_string(
-        desc: *const PangoFontDescription,
-    ) -> *mut libc::c_char;
+    fn pango_font_description_from_string(str: *const libc::c_char) -> *mut PangoFontDescription;
+    fn pango_font_description_to_string(desc: *const PangoFontDescription) -> *mut libc::c_char;
     fn pango_font_describe(font: *mut PangoFont) -> *mut PangoFontDescription;
     fn pango_font_map_create_context(fontmap: *mut PangoFontMap) -> *mut PangoContext;
     fn pango_font_map_load_font(
@@ -120,10 +114,7 @@ extern "C" {
         context: *mut PangoContext,
         options: *const cairo_font_options_t,
     );
-    fn pango_cairo_context_set_resolution(
-        context: *mut PangoContext,
-        dpi: libc::c_double,
-    );
+    fn pango_cairo_context_set_resolution(context: *mut PangoContext, dpi: libc::c_double);
     fn g_type_check_instance_cast(
         instance: *mut GTypeInstance,
         iface_type: GType,
@@ -184,7 +175,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -229,9 +220,7 @@ pub struct gvplugin_installed_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvtextlayout_engine_s {
-    pub textlayout: Option::<
-        unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool,
-    >,
+    pub textlayout: Option<unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool>,
 }
 pub type gvtextlayout_engine_t = gvtextlayout_engine_s;
 #[derive(Copy, Clone)]
@@ -358,22 +347,18 @@ pub type GObject = _GObject;
 pub struct _GObjectClass {
     pub g_type_class: GTypeClass,
     pub construct_properties: *mut GSList,
-    pub constructor: Option::<
-        unsafe extern "C" fn(GType, guint, *mut GObjectConstructParam) -> *mut GObject,
-    >,
-    pub set_property: Option::<
-        unsafe extern "C" fn(*mut GObject, guint, *const GValue, *mut GParamSpec) -> (),
-    >,
-    pub get_property: Option::<
-        unsafe extern "C" fn(*mut GObject, guint, *mut GValue, *mut GParamSpec) -> (),
-    >,
-    pub dispose: Option::<unsafe extern "C" fn(*mut GObject) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GObject) -> ()>,
-    pub dispatch_properties_changed: Option::<
-        unsafe extern "C" fn(*mut GObject, guint, *mut *mut GParamSpec) -> (),
-    >,
-    pub notify: Option::<unsafe extern "C" fn(*mut GObject, *mut GParamSpec) -> ()>,
-    pub constructed: Option::<unsafe extern "C" fn(*mut GObject) -> ()>,
+    pub constructor:
+        Option<unsafe extern "C" fn(GType, guint, *mut GObjectConstructParam) -> *mut GObject>,
+    pub set_property:
+        Option<unsafe extern "C" fn(*mut GObject, guint, *const GValue, *mut GParamSpec) -> ()>,
+    pub get_property:
+        Option<unsafe extern "C" fn(*mut GObject, guint, *mut GValue, *mut GParamSpec) -> ()>,
+    pub dispose: Option<unsafe extern "C" fn(*mut GObject) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GObject) -> ()>,
+    pub dispatch_properties_changed:
+        Option<unsafe extern "C" fn(*mut GObject, guint, *mut *mut GParamSpec) -> ()>,
+    pub notify: Option<unsafe extern "C" fn(*mut GObject, *mut GParamSpec) -> ()>,
+    pub constructed: Option<unsafe extern "C" fn(*mut GObject) -> ()>,
     pub flags: gsize,
     pub pdummy: [gpointer; 6],
 }
@@ -464,7 +449,7 @@ pub struct FT_MemoryRec_ {
     pub free: FT_Free_Func,
     pub realloc: FT_Realloc_Func,
 }
-pub type FT_Realloc_Func = Option::<
+pub type FT_Realloc_Func = Option<
     unsafe extern "C" fn(
         FT_Memory,
         libc::c_long,
@@ -473,12 +458,8 @@ pub type FT_Realloc_Func = Option::<
     ) -> *mut libc::c_void,
 >;
 pub type FT_Memory = *mut FT_MemoryRec_;
-pub type FT_Free_Func = Option::<
-    unsafe extern "C" fn(FT_Memory, *mut libc::c_void) -> (),
->;
-pub type FT_Alloc_Func = Option::<
-    unsafe extern "C" fn(FT_Memory, libc::c_long) -> *mut libc::c_void,
->;
+pub type FT_Free_Func = Option<unsafe extern "C" fn(FT_Memory, *mut libc::c_void) -> ()>;
+pub type FT_Alloc_Func = Option<unsafe extern "C" fn(FT_Memory, libc::c_long) -> *mut libc::c_void>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct FT_StreamRec_ {
@@ -493,9 +474,9 @@ pub struct FT_StreamRec_ {
     pub cursor: *mut libc::c_uchar,
     pub limit: *mut libc::c_uchar,
 }
-pub type FT_Stream_CloseFunc = Option::<unsafe extern "C" fn(FT_Stream) -> ()>;
+pub type FT_Stream_CloseFunc = Option<unsafe extern "C" fn(FT_Stream) -> ()>;
 pub type FT_Stream = *mut FT_StreamRec_;
-pub type FT_Stream_IoFunc = Option::<
+pub type FT_Stream_IoFunc = Option<
     unsafe extern "C" fn(
         FT_Stream,
         libc::c_ulong,
@@ -566,7 +547,7 @@ pub type FT_Int = libc::c_int;
 pub type FT_UInt = libc::c_uint;
 pub type FT_Long = libc::c_long;
 pub type FT_Fixed = libc::c_long;
-pub type FT_Generic_Finalizer = Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>;
+pub type FT_Generic_Finalizer = Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct FT_Generic_ {
@@ -805,9 +786,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -826,7 +813,11 @@ unsafe extern "C" fn agxbput_n(
     if ((*xb).ptr).offset(ssz as isize) > (*xb).eptr {
         agxbmore(xb, ssz);
     }
-    memcpy((*xb).ptr as *mut libc::c_void, s as *const libc::c_void, ssz);
+    memcpy(
+        (*xb).ptr as *mut libc::c_void,
+        s as *const libc::c_void,
+        ssz,
+    );
     let ref mut fresh7 = (*xb).ptr;
     *fresh7 = (*fresh7).offset(ssz as isize);
     return ssz;
@@ -854,10 +845,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -877,41 +871,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -920,30 +913,36 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn gv_strdup(mut original: *const libc::c_char) -> *mut libc::c_char {
     let mut copy: *mut libc::c_char = strdup(original);
-    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int
-        as libc::c_long != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return copy;
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -962,9 +961,7 @@ unsafe extern "C" fn agxbuse(mut xb: *mut agxbuf) -> *mut libc::c_char {
 unsafe extern "C" fn pango_free_layout(mut layout: *mut libc::c_void) {
     g_object_unref(layout);
 }
-unsafe extern "C" fn pango_psfontResolve(
-    mut pa: *mut PostscriptAlias,
-) -> *mut libc::c_char {
+unsafe extern "C" fn pango_psfontResolve(mut pa: *mut PostscriptAlias) -> *mut libc::c_char {
     static mut buf: [libc::c_char; 1024] = [0; 1024];
     strcpy(buf.as_mut_ptr(), (*pa).family);
     strcat(buf.as_mut_ptr(), b",\0" as *const u8 as *const libc::c_char);
@@ -987,16 +984,16 @@ unsafe extern "C" fn agxbput_int(
     mut s: *const libc::c_char,
 ) -> libc::c_int {
     let mut len: size_t = agxbput(buffer as *mut agxbuf, s);
-    if len <= 2147483647 as libc::c_int as libc::c_ulong {} else {
+    if len <= 2147483647 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"len <= INT_MAX\0" as *const u8 as *const libc::c_char,
             b"gvtextlayout_pango.c\0" as *const u8 as *const libc::c_char,
             66 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"int agxbput_int(void *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"int agxbput_int(void *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return len as libc::c_int;
@@ -1006,14 +1003,11 @@ unsafe extern "C" fn pango_textlayout(
     mut fontpath: *mut *mut libc::c_char,
 ) -> bool {
     static mut buf: [libc::c_char; 1024] = [0; 1024];
-    static mut fontmap: *mut PangoFontMap = 0 as *const PangoFontMap
-        as *mut PangoFontMap;
-    static mut context: *mut PangoContext = 0 as *const PangoContext
-        as *mut PangoContext;
-    static mut desc: *mut PangoFontDescription = 0 as *const PangoFontDescription
-        as *mut PangoFontDescription;
-    static mut fontname: *mut libc::c_char = 0 as *const libc::c_char
-        as *mut libc::c_char;
+    static mut fontmap: *mut PangoFontMap = 0 as *const PangoFontMap as *mut PangoFontMap;
+    static mut context: *mut PangoContext = 0 as *const PangoContext as *mut PangoContext;
+    static mut desc: *mut PangoFontDescription =
+        0 as *const PangoFontDescription as *mut PangoFontDescription;
+    static mut fontname: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
     static mut fontsize: libc::c_double = 0.;
     static mut gv_fmap: *mut gv_font_map = 0 as *const gv_font_map as *mut gv_font_map;
     let mut fnt: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -1047,7 +1041,8 @@ unsafe extern "C" fn pango_textlayout(
         cairo_font_options_destroy(options);
         g_object_unref(fontmap as gpointer);
     }
-    if fontname.is_null() || strcmp(fontname, (*(*span).font).name) != 0 as libc::c_int
+    if fontname.is_null()
+        || strcmp(fontname, (*(*span).font).name) != 0 as libc::c_int
         || fontsize != (*(*span).font).size
     {
         if ((2147483647 as libc::c_int / 1024 as libc::c_int) as libc::c_double)
@@ -1075,12 +1070,10 @@ unsafe extern "C" fn pango_textlayout(
             desc,
             (fontsize * 1024 as libc::c_int as libc::c_double) as gint,
         );
-        if !fontpath.is_null()
-            && {
-                font = pango_font_map_load_font(fontmap, context, desc);
-                !font.is_null()
-            }
-        {
+        if !fontpath.is_null() && {
+            font = pango_font_map_load_font(fontmap, context, desc);
+            !font.is_null()
+        } {
             let mut fontclass: *const libc::c_char = 0 as *const libc::c_char;
             fontclass = g_type_name(
                 (*((*(font as *mut GTypeInstance)).g_class as *mut GObjectClass
@@ -1094,11 +1087,17 @@ unsafe extern "C" fn pango_textlayout(
                     b"(ps:pango  \0" as *const u8 as *const libc::c_char,
                 );
                 strcat(buf.as_mut_ptr(), psfnt);
-                strcat(buf.as_mut_ptr(), b") \0" as *const u8 as *const libc::c_char);
+                strcat(
+                    buf.as_mut_ptr(),
+                    b") \0" as *const u8 as *const libc::c_char,
+                );
             }
             strcat(buf.as_mut_ptr(), b"(\0" as *const u8 as *const libc::c_char);
             strcat(buf.as_mut_ptr(), fontclass);
-            strcat(buf.as_mut_ptr(), b") \0" as *const u8 as *const libc::c_char);
+            strcat(
+                buf.as_mut_ptr(),
+                b") \0" as *const u8 as *const libc::c_char,
+            );
             if strcmp(
                 fontclass,
                 b"PangoCairoFcFont\0" as *const u8 as *const libc::c_char,
@@ -1132,46 +1131,44 @@ unsafe extern "C" fn pango_textlayout(
                     if !stream.is_null() {
                         streamdesc = (*stream).pathname;
                         if !(streamdesc.pointer).is_null() {
-                            strcat(
-                                buf.as_mut_ptr(),
-                                streamdesc.pointer as *mut libc::c_char,
-                            );
+                            strcat(buf.as_mut_ptr(), streamdesc.pointer as *mut libc::c_char);
                         } else {
                             strcat(
                                 buf.as_mut_ptr(),
-                                b"*no pathname available*\0" as *const u8
-                                    as *const libc::c_char,
+                                b"*no pathname available*\0" as *const u8 as *const libc::c_char,
                             );
                         }
                     } else {
                         strcat(
                             buf.as_mut_ptr(),
-                            b"*no stream available*\0" as *const u8
-                                as *const libc::c_char,
+                            b"*no stream available*\0" as *const u8 as *const libc::c_char,
                         );
                     }
                 }
                 pango_fc_font_unlock_face(fcfont);
             } else {
-                let mut tdesc: *mut PangoFontDescription = 0
-                    as *mut PangoFontDescription;
+                let mut tdesc: *mut PangoFontDescription = 0 as *mut PangoFontDescription;
                 let mut tfont: *mut libc::c_char = 0 as *mut libc::c_char;
                 tdesc = pango_font_describe(font);
                 tfont = pango_font_description_to_string(tdesc);
-                strcat(buf.as_mut_ptr(), b"\"\0" as *const u8 as *const libc::c_char);
+                strcat(
+                    buf.as_mut_ptr(),
+                    b"\"\0" as *const u8 as *const libc::c_char,
+                );
                 strcat(buf.as_mut_ptr(), tfont);
-                strcat(buf.as_mut_ptr(), b"\" \0" as *const u8 as *const libc::c_char);
+                strcat(
+                    buf.as_mut_ptr(),
+                    b"\" \0" as *const u8 as *const libc::c_char,
+                );
                 g_free(tfont as gpointer);
             }
             *fontpath = buf.as_mut_ptr();
         }
     }
-    if !((*span).font).is_null()
-        && {
-            flags = (*(*span).font).flags() as libc::c_int;
-            flags != 0
-        }
-    {
+    if !((*span).font).is_null() && {
+        flags = (*(*span).font).flags() as libc::c_int;
+        flags != 0
+    } {
         let mut buf_0: [libc::c_char; 8192] = [0; 8192];
         let mut xb: agxbuf = agxbuf {
             buf: 0 as *mut libc::c_char,
@@ -1179,13 +1176,23 @@ unsafe extern "C" fn pango_textlayout(
             eptr: 0 as *mut libc::c_char,
             dyna: 0,
         };
-        agxbinit(&mut xb, 8192 as libc::c_int as libc::c_uint, buf_0.as_mut_ptr());
+        agxbinit(
+            &mut xb,
+            8192 as libc::c_int as libc::c_uint,
+            buf_0.as_mut_ptr(),
+        );
         agxbput(&mut xb, b"<span\0" as *const u8 as *const libc::c_char);
         if flags & (1 as libc::c_int) << 0 as libc::c_int != 0 {
-            agxbput(&mut xb, b" weight=\"bold\"\0" as *const u8 as *const libc::c_char);
+            agxbput(
+                &mut xb,
+                b" weight=\"bold\"\0" as *const u8 as *const libc::c_char,
+            );
         }
         if flags & (1 as libc::c_int) << 1 as libc::c_int != 0 {
-            agxbput(&mut xb, b" style=\"italic\"\0" as *const u8 as *const libc::c_char);
+            agxbput(
+                &mut xb,
+                b" style=\"italic\"\0" as *const u8 as *const libc::c_char,
+            );
         }
         if flags & (1 as libc::c_int) << 2 as libc::c_int != 0 {
             agxbput(
@@ -1222,10 +1229,7 @@ unsafe extern "C" fn pango_textlayout(
             xml_flags,
             Some(
                 agxbput_int
-                    as unsafe extern "C" fn(
-                        *mut libc::c_void,
-                        *const libc::c_char,
-                    ) -> libc::c_int,
+                    as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
             ),
             &mut xb as *mut agxbuf as *mut libc::c_void,
         );
@@ -1248,8 +1252,7 @@ unsafe extern "C" fn pango_textlayout(
         {
             fprintf(
                 stderr,
-                b"Error - pango_parse_markup: %s\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Error - pango_parse_markup: %s\n\0" as *const u8 as *const libc::c_char,
                 (*error).message,
             );
             text = (*span).str_0;
@@ -1274,22 +1277,14 @@ unsafe extern "C" fn pango_textlayout(
     if logical_rect.width == 0 as libc::c_int {
         logical_rect.height = 0 as libc::c_int;
     }
-    textlayout_scale = 72 as libc::c_int as libc::c_double
-        / (96.0f64 * 1024 as libc::c_int as libc::c_double);
-    (*span)
-        .size
-        .x = (logical_rect.width as libc::c_double * textlayout_scale
+    textlayout_scale =
+        72 as libc::c_int as libc::c_double / (96.0f64 * 1024 as libc::c_int as libc::c_double);
+    (*span).size.x = (logical_rect.width as libc::c_double * textlayout_scale
         + 1 as libc::c_int as libc::c_double) as libc::c_int as libc::c_double;
-    (*span)
-        .size
-        .y = (logical_rect.height as libc::c_double * textlayout_scale
+    (*span).size.y = (logical_rect.height as libc::c_double * textlayout_scale
         + 1 as libc::c_int as libc::c_double) as libc::c_int as libc::c_double;
-    (*span)
-        .size
-        .y = ((*(*span).font).size * 1.1f64 + 0.5f64) as libc::c_int as libc::c_double;
-    (*span)
-        .yoffset_layout = pango_layout_get_baseline(layout) as libc::c_double
-        * textlayout_scale;
+    (*span).size.y = ((*(*span).font).size * 1.1f64 + 0.5f64) as libc::c_int as libc::c_double;
+    (*span).yoffset_layout = pango_layout_get_baseline(layout) as libc::c_double * textlayout_scale;
     (*span).yoffset_centerline = 0.2f64 * (*(*span).font).size;
     return logical_rect.width != 0 as libc::c_int
         || strcmp(text, b"\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int;
@@ -1299,10 +1294,7 @@ static mut pango_textlayout_engine: gvtextlayout_engine_t = unsafe {
         let mut init = gvtextlayout_engine_s {
             textlayout: Some(
                 pango_textlayout
-                    as unsafe extern "C" fn(
-                        *mut textspan_t,
-                        *mut *mut libc::c_char,
-                    ) -> bool,
+                    as unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool,
             ),
         };
         init

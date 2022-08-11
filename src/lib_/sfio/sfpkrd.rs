@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -71,8 +79,7 @@ pub unsafe extern "C" fn sfpkrd(
     let mut t: libc::c_int = 0;
     let mut buf: *mut libc::c_char = argbuf as *mut libc::c_char;
     let mut endbuf: *mut libc::c_char = 0 as *mut libc::c_char;
-    if rc < 0 as libc::c_int && tm < 0 as libc::c_int as libc::c_long
-        && action <= 0 as libc::c_int
+    if rc < 0 as libc::c_int && tm < 0 as libc::c_int as libc::c_long && action <= 0 as libc::c_int
     {
         return read(fd, buf as *mut libc::c_void, n);
     }
@@ -88,44 +95,45 @@ pub unsafe extern "C" fn sfpkrd(
         if ntry == 1 as libc::c_int {
             break;
         }
-        while tm >= 0 as libc::c_int as libc::c_long || action > 0 as libc::c_int
+        while tm >= 0 as libc::c_int as libc::c_long
+            || action > 0 as libc::c_int
             || t & 0o1 as libc::c_int != 0 && rc >= 0 as libc::c_int
             || t & 0o2 as libc::c_int != 0
         {
             r = -(2 as libc::c_int) as ssize_t;
             if r == -(2 as libc::c_int) as libc::c_long {
-                let mut rd: fd_set = fd_set { __fds_bits: [0; 16] };
-                let mut tmb: timeval = timeval { tv_sec: 0, tv_usec: 0 };
+                let mut rd: fd_set = fd_set {
+                    __fds_bits: [0; 16],
+                };
+                let mut tmb: timeval = timeval {
+                    tv_sec: 0,
+                    tv_usec: 0,
+                };
                 let mut tmp: *mut timeval = 0 as *mut timeval;
                 let mut __i: libc::c_uint = 0;
                 let mut __arr: *mut fd_set = &mut rd;
                 __i = 0 as libc::c_int as libc::c_uint;
                 while (__i as libc::c_ulong)
                     < (::std::mem::size_of::<fd_set>() as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<__fd_mask>() as libc::c_ulong,
-                        )
+                        .wrapping_div(::std::mem::size_of::<__fd_mask>() as libc::c_ulong)
                 {
                     (*__arr).__fds_bits[__i as usize] = 0 as libc::c_int as __fd_mask;
                     __i = __i.wrapping_add(1);
                 }
-                rd
-                    .__fds_bits[(fd
+                rd.__fds_bits[(fd
                     / (8 as libc::c_int
-                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                            as libc::c_int)) as usize]
-                    |= ((1 as libc::c_ulong)
-                        << fd
-                            % (8 as libc::c_int
-                                * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                    as libc::c_int)) as __fd_mask;
+                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as usize] |= ((1 as libc::c_ulong)
+                    << fd
+                        % (8 as libc::c_int
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as __fd_mask;
                 if tm < 0 as libc::c_int as libc::c_long {
                     tmp = 0 as *mut timeval;
                 } else {
                     tmp = &mut tmb;
                     tmb.tv_sec = tm / 1000 as libc::c_int as libc::c_long;
-                    tmb
-                        .tv_usec = tm % 1000 as libc::c_int as libc::c_long
+                    tmb.tv_usec = tm % 1000 as libc::c_int as libc::c_long
                         * 1000 as libc::c_int as libc::c_long;
                 }
                 r = select(
@@ -137,7 +145,7 @@ pub unsafe extern "C" fn sfpkrd(
                 ) as ssize_t;
                 if r < 0 as libc::c_int as libc::c_long {
                     if *__errno_location() == 4 as libc::c_int {
-                        return -(1 as libc::c_int) as ssize_t
+                        return -(1 as libc::c_int) as ssize_t;
                     } else if *__errno_location() == 11 as libc::c_int {
                         *__errno_location() = 0 as libc::c_int;
                         continue;
@@ -145,11 +153,10 @@ pub unsafe extern "C" fn sfpkrd(
                         r = -(2 as libc::c_int) as ssize_t;
                     }
                 } else {
-                    r = (if rd
-                        .__fds_bits[(fd
+                    r = (if rd.__fds_bits[(fd
                         / (8 as libc::c_int
-                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                as libc::c_int)) as usize]
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                        as usize]
                         & ((1 as libc::c_ulong)
                             << fd
                                 % (8 as libc::c_int
@@ -166,12 +173,12 @@ pub unsafe extern "C" fn sfpkrd(
             r == -(2 as libc::c_int) as libc::c_long;
             if r > 0 as libc::c_int as libc::c_long {
                 if action <= 0 as libc::c_int && rc < 0 as libc::c_int {
-                    return read(fd, buf as *mut libc::c_void, n)
+                    return read(fd, buf as *mut libc::c_void, n);
                 } else {
                     r = -(1 as libc::c_int) as ssize_t;
                 }
             } else if tm >= 0 as libc::c_int as libc::c_long {
-                return -(1 as libc::c_int) as ssize_t
+                return -(1 as libc::c_int) as ssize_t;
             } else {
                 r = -(1 as libc::c_int) as ssize_t;
             }
@@ -184,7 +191,7 @@ pub unsafe extern "C" fn sfpkrd(
                     break;
                 }
                 if *__errno_location() == 4 as libc::c_int {
-                    return -(1 as libc::c_int) as ssize_t
+                    return -(1 as libc::c_int) as ssize_t;
                 } else if *__errno_location() == 11 as libc::c_int {
                     *__errno_location() = 0 as libc::c_int;
                 } else {
@@ -207,9 +214,13 @@ pub unsafe extern "C" fn sfpkrd(
     }
     if r < 0 as libc::c_int as libc::c_long {
         if tm >= 0 as libc::c_int as libc::c_long || action > 0 as libc::c_int {
-            return -(1 as libc::c_int) as ssize_t
+            return -(1 as libc::c_int) as ssize_t;
         } else {
-            action = (if action != 0 { -action } else { 1 as libc::c_int });
+            action = (if action != 0 {
+                -action
+            } else {
+                1 as libc::c_int
+            });
             if action > n as libc::c_int {
                 action = n as libc::c_int;
             }

@@ -1,12 +1,16 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, register_tool)]
 extern "C" {
-    fn sfvscanf(
-        _: *mut Sfio_t,
-        _: *const libc::c_char,
-        _: ::std::ffi::VaList,
-    ) -> libc::c_int;
+    fn sfvscanf(_: *mut Sfio_t, _: *const libc::c_char, _: ::std::ffi::VaList) -> libc::c_int;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
 }
 pub type __builtin_va_list = [__va_list_tag; 1];
@@ -88,15 +92,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -104,22 +103,11 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[no_mangle]
 pub unsafe extern "C" fn sfscanf(
     mut f: *mut Sfio_t,

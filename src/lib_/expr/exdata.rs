@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 pub type __uint64_t = libc::c_ulong;
@@ -78,16 +86,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -103,18 +105,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -122,16 +118,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -279,21 +268,14 @@ pub struct C2RustUnnamed_11 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_12 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 static mut id: [libc::c_char; 49] = unsafe {
-    *::std::mem::transmute::<
-        &[u8; 49],
-        &[libc::c_char; 49],
-    >(b"\n@(#)$Id: libexpr (AT&T Research) 2011-06-30 $\0\n\0")
+    *::std::mem::transmute::<&[u8; 49], &[libc::c_char; 49]>(
+        b"\n@(#)$Id: libexpr (AT&T Research) 2011-06-30 $\0\n\0",
+    )
 };
 #[no_mangle]
 pub static mut exversion: *const libc::c_char = 0 as *const libc::c_char;
@@ -323,10 +305,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"string\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"string\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -353,10 +334,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"break\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"break\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -383,10 +363,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"case\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"case\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -413,10 +392,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"char\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"char\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -443,10 +421,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"continue\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"continue\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -473,10 +450,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"default\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"default\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -503,10 +479,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"double\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"double\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -533,10 +508,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"else\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"else\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -563,10 +537,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"exit\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"exit\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -593,10 +566,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"for\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"for\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -623,10 +595,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"forr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"forr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -653,10 +624,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"float\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"float\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -683,10 +653,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"gsub\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"gsub\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -713,10 +682,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"if\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"if\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -743,10 +711,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"in\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"in\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -773,10 +740,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"int\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"int\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -803,10 +769,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"long\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"long\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -833,10 +798,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"print\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"print\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -863,10 +827,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"printf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"printf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -893,10 +856,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"query\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"query\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -923,10 +885,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"rand\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"rand\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -953,10 +914,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"return\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"return\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -983,10 +943,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"scanf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"scanf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1013,10 +972,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"sscanf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"sscanf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1043,10 +1001,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"split\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"split\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1073,10 +1030,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"sprintf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"sprintf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1103,10 +1059,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"srand\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"srand\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1133,10 +1088,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"static\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"static\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1163,10 +1117,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"sub\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"sub\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1193,10 +1146,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"substr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"substr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1223,10 +1175,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"switch\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"switch\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1253,10 +1204,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"tokens\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"tokens\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1283,10 +1233,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"unset\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"unset\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1313,10 +1262,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"unsigned\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"unsigned\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1343,10 +1291,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"void\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"void\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1373,10 +1320,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"while\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"while\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1403,10 +1349,9 @@ pub static mut exbuiltin: [Exid_t; 38] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"while\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"while\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },

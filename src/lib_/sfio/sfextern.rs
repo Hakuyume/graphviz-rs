@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 pub type __ssize_t = libc::c_long;
@@ -70,15 +78,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -86,39 +89,22 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _sfextern_s {
     pub sf_page: ssize_t,
     pub sf_pool: _sfpool_s,
-    pub sf_pmove: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int,
-    >,
-    pub sf_stack: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t,
-    >,
-    pub sf_notify: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> (),
-    >,
-    pub sf_stdsync: Option::<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
+    pub sf_pmove: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int>,
+    pub sf_stack: Option<unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t>,
+    pub sf_notify: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> ()>,
+    pub sf_stdsync: Option<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
     pub sf_udisc: _sfdisc_s,
-    pub sf_cleanup: Option::<unsafe extern "C" fn() -> ()>,
+    pub sf_cleanup: Option<unsafe extern "C" fn() -> ()>,
     pub sf_exiting: libc::c_int,
     pub sf_done: libc::c_int,
 }
@@ -248,14 +234,8 @@ pub static mut _Sfstderr: Sfio_t = {
     init
 };
 #[no_mangle]
-pub static mut sfstdin: *mut Sfio_t = unsafe {
-    &_Sfstdin as *const Sfio_t as *mut Sfio_t
-};
+pub static mut sfstdin: *mut Sfio_t = unsafe { &_Sfstdin as *const Sfio_t as *mut Sfio_t };
 #[no_mangle]
-pub static mut sfstdout: *mut Sfio_t = unsafe {
-    &_Sfstdout as *const Sfio_t as *mut Sfio_t
-};
+pub static mut sfstdout: *mut Sfio_t = unsafe { &_Sfstdout as *const Sfio_t as *mut Sfio_t };
 #[no_mangle]
-pub static mut sfstderr: *mut Sfio_t = unsafe {
-    &_Sfstderr as *const Sfio_t as *mut Sfio_t
-};
+pub static mut sfstderr: *mut Sfio_t = unsafe { &_Sfstderr as *const Sfio_t as *mut Sfio_t };

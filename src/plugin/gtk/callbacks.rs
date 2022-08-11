@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -40,11 +48,7 @@ extern "C" {
     fn gtk_window_get_type() -> GType;
     fn gtk_dialog_get_type() -> GType;
     fn gtk_dialog_run(dialog: *mut GtkDialog) -> gint;
-    fn gtk_show_about_dialog(
-        parent: *mut GtkWindow,
-        first_property_name: *const gchar,
-        _: ...
-    );
+    fn gtk_show_about_dialog(parent: *mut GtkWindow, first_property_name: *const gchar, _: ...);
     fn gtk_list_store_get_type() -> GType;
     fn gtk_list_store_clear(list_store: *mut GtkListStore);
     fn gtk_file_chooser_get_type() -> GType;
@@ -80,7 +84,7 @@ pub type gushort = libc::c_ushort;
 pub type guint = libc::c_uint;
 pub type gdouble = libc::c_double;
 pub type gpointer = *mut libc::c_void;
-pub type GDestroyNotify = Option::<unsafe extern "C" fn(gpointer) -> ()>;
+pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _GArray {
@@ -860,7 +864,8 @@ pub struct _GtkWindow {
     #[bitfield(name = "gravity", ty = "guint", bits = "24..=28")]
     #[bitfield(name = "is_active", ty = "guint", bits = "29..=29")]
     #[bitfield(name = "has_toplevel_focus", ty = "guint", bits = "30..=30")]
-    pub allow_shrink_allow_grow_configure_notify_received_need_default_position_need_default_size_position_type_0_has_user_ref_count_has_focus_modal_destroy_with_parent_has_frame_iconify_initially_stick_initially_maximize_initially_decorated_type_hint_gravity_is_active_has_toplevel_focus: [u8; 4],
+    pub allow_shrink_allow_grow_configure_notify_received_need_default_position_need_default_size_position_type_0_has_user_ref_count_has_focus_modal_destroy_with_parent_has_frame_iconify_initially_stick_initially_maximize_initially_decorated_type_hint_gravity_is_active_has_toplevel_focus:
+        [u8; 4],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub frame_left: guint,
@@ -933,13 +938,8 @@ pub struct _GtkTreeIter {
 }
 pub type GtkTreeIter = _GtkTreeIter;
 pub type GtkTreeModel = _GtkTreeModel;
-pub type GtkTreeIterCompareFunc = Option::<
-    unsafe extern "C" fn(
-        *mut GtkTreeModel,
-        *mut GtkTreeIter,
-        *mut GtkTreeIter,
-        gpointer,
-    ) -> gint,
+pub type GtkTreeIterCompareFunc = Option<
+    unsafe extern "C" fn(*mut GtkTreeModel, *mut GtkTreeIter, *mut GtkTreeIter, gpointer) -> gint,
 >;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -962,7 +962,8 @@ pub struct _GtkMenuItem {
     #[bitfield(name = "right_justify", ty = "guint", bits = "3..=3")]
     #[bitfield(name = "timer_from_keypress", ty = "guint", bits = "4..=4")]
     #[bitfield(name = "from_menubar", ty = "guint", bits = "5..=5")]
-    pub show_submenu_indicator_submenu_placement_submenu_direction_right_justify_timer_from_keypress_from_menubar: [u8; 1],
+    pub show_submenu_indicator_submenu_placement_submenu_direction_right_justify_timer_from_keypress_from_menubar:
+        [u8; 1],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 3],
     pub timer: guint,
@@ -1104,9 +1105,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -1120,25 +1119,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1169,9 +1161,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -1247,7 +1239,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -1408,16 +1401,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -1433,18 +1420,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -1452,16 +1433,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1503,9 +1477,8 @@ pub struct C2RustUnnamed_5 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1534,13 +1507,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -1573,26 +1541,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -1601,29 +1561,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -1631,8 +1583,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -1666,7 +1618,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -1681,16 +1633,11 @@ pub struct lt_symlist_t {
 }
 pub type GVC_t = GVC_s;
 #[no_mangle]
-pub unsafe extern "C" fn on_new1_activate(
-    mut menuitem: *mut GtkMenuItem,
-    mut user_data: gpointer,
-) {
+pub unsafe extern "C" fn on_new1_activate(mut menuitem: *mut GtkMenuItem, mut user_data: gpointer) {
     let mut window1: *mut GtkWindow = 0 as *mut GtkWindow;
     let mut job: *mut GVJ_t = 0 as *mut GVJ_t;
-    window1 = g_type_check_instance_cast(
-        menuitem as *mut GTypeInstance,
-        gtk_window_get_type(),
-    ) as *mut libc::c_void as *mut GtkWindow;
+    window1 = g_type_check_instance_cast(menuitem as *mut GTypeInstance, gtk_window_get_type())
+        as *mut libc::c_void as *mut GtkWindow;
     job = g_object_get_data(
         g_type_check_instance_cast(
             window1 as *mut GTypeInstance,
@@ -1698,15 +1645,13 @@ pub unsafe extern "C" fn on_new1_activate(
         ) as *mut libc::c_void as *mut GObject,
         b"job\0" as *const u8 as *const libc::c_char,
     ) as *mut GVJ_t;
-    ((*(*job).callbacks).read)
-        .expect(
-            "non-null function pointer",
-        )(job, 0 as *const libc::c_char, b"dot\0" as *const u8 as *const libc::c_char);
+    ((*(*job).callbacks).read).expect("non-null function pointer")(
+        job,
+        0 as *const libc::c_char,
+        b"dot\0" as *const u8 as *const libc::c_char,
+    );
 }
-unsafe extern "C" fn ui_open_graph(
-    mut window1: *mut GtkWindow,
-    mut filename: *mut gchar,
-) {
+unsafe extern "C" fn ui_open_graph(mut window1: *mut GtkWindow, mut filename: *mut gchar) {
     let mut job: *mut GVJ_t = 0 as *mut GVJ_t;
     let mut dialog: *mut GtkWidget = 0 as *mut GtkWidget;
     job = g_object_get_data(
@@ -1728,31 +1673,30 @@ unsafe extern "C" fn ui_open_graph(
     );
     if !filename.is_null() {
         gtk_file_chooser_set_filename(
-            g_type_check_instance_cast(
-                dialog as *mut GTypeInstance,
-                gtk_file_chooser_get_type(),
-            ) as *mut libc::c_void as *mut GtkFileChooser,
+            g_type_check_instance_cast(dialog as *mut GTypeInstance, gtk_file_chooser_get_type())
+                as *mut libc::c_void as *mut GtkFileChooser,
             filename,
         );
     }
-    if gtk_dialog_run(
-        g_type_check_instance_cast(dialog as *mut GTypeInstance, gtk_dialog_get_type())
-            as *mut libc::c_void as *mut GtkDialog,
-    ) == GTK_RESPONSE_ACCEPT as libc::c_int
+    if gtk_dialog_run(g_type_check_instance_cast(
+        dialog as *mut GTypeInstance,
+        gtk_dialog_get_type(),
+    ) as *mut libc::c_void as *mut GtkDialog)
+        == GTK_RESPONSE_ACCEPT as libc::c_int
     {
-        filename = gtk_file_chooser_get_filename(
-            g_type_check_instance_cast(
-                dialog as *mut GTypeInstance,
-                gtk_file_chooser_get_type(),
-            ) as *mut libc::c_void as *mut GtkFileChooser,
-        );
+        filename = gtk_file_chooser_get_filename(g_type_check_instance_cast(
+            dialog as *mut GTypeInstance,
+            gtk_file_chooser_get_type(),
+        ) as *mut libc::c_void
+            as *mut GtkFileChooser);
     }
     gtk_widget_destroy(dialog);
     if !filename.is_null() {
-        ((*(*job).callbacks).read)
-            .expect(
-                "non-null function pointer",
-            )(job, filename, b"dot\0" as *const u8 as *const libc::c_char);
+        ((*(*job).callbacks).read).expect("non-null function pointer")(
+            job,
+            filename,
+            b"dot\0" as *const u8 as *const libc::c_char,
+        );
         g_object_set_data_full(
             g_type_check_instance_cast(
                 window1 as *mut GTypeInstance,
@@ -1760,10 +1704,9 @@ unsafe extern "C" fn ui_open_graph(
             ) as *mut libc::c_void as *mut GObject,
             b"activefilename\0" as *const u8 as *const libc::c_char,
             filename as gpointer,
-            ::std::mem::transmute::<
-                Option::<unsafe extern "C" fn(gpointer) -> ()>,
-                GDestroyNotify,
-            >(Some(g_free as unsafe extern "C" fn(gpointer) -> ())),
+            ::std::mem::transmute::<Option<unsafe extern "C" fn(gpointer) -> ()>, GDestroyNotify>(
+                Some(g_free as unsafe extern "C" fn(gpointer) -> ()),
+            ),
         );
     }
 }
@@ -1774,10 +1717,8 @@ pub unsafe extern "C" fn on_open1_activate(
 ) {
     let mut window1: *mut GtkWindow = 0 as *mut GtkWindow;
     let mut filename: *mut gchar = 0 as *mut gchar;
-    window1 = g_type_check_instance_cast(
-        menuitem as *mut GTypeInstance,
-        gtk_window_get_type(),
-    ) as *mut libc::c_void as *mut GtkWindow;
+    window1 = g_type_check_instance_cast(menuitem as *mut GTypeInstance, gtk_window_get_type())
+        as *mut libc::c_void as *mut GtkWindow;
     filename = g_object_get_data(
         g_type_check_instance_cast(
             window1 as *mut GTypeInstance,
@@ -1787,10 +1728,7 @@ pub unsafe extern "C" fn on_open1_activate(
     ) as *mut gchar;
     ui_open_graph(window1, filename);
 }
-unsafe extern "C" fn ui_save_graph(
-    mut window1: *mut GtkWindow,
-    mut filename: *mut gchar,
-) {
+unsafe extern "C" fn ui_save_graph(mut window1: *mut GtkWindow, mut filename: *mut gchar) {
     let mut job: *mut GVJ_t = 0 as *mut GVJ_t;
     let mut dialog: *mut GtkWidget = 0 as *mut GtkWidget;
     job = g_object_get_data(
@@ -1819,31 +1757,30 @@ unsafe extern "C" fn ui_save_graph(
     ) as *mut gchar;
     if !filename.is_null() {
         gtk_file_chooser_set_filename(
-            g_type_check_instance_cast(
-                dialog as *mut GTypeInstance,
-                gtk_file_chooser_get_type(),
-            ) as *mut libc::c_void as *mut GtkFileChooser,
+            g_type_check_instance_cast(dialog as *mut GTypeInstance, gtk_file_chooser_get_type())
+                as *mut libc::c_void as *mut GtkFileChooser,
             filename,
         );
     }
-    if gtk_dialog_run(
-        g_type_check_instance_cast(dialog as *mut GTypeInstance, gtk_dialog_get_type())
-            as *mut libc::c_void as *mut GtkDialog,
-    ) == GTK_RESPONSE_ACCEPT as libc::c_int
+    if gtk_dialog_run(g_type_check_instance_cast(
+        dialog as *mut GTypeInstance,
+        gtk_dialog_get_type(),
+    ) as *mut libc::c_void as *mut GtkDialog)
+        == GTK_RESPONSE_ACCEPT as libc::c_int
     {
-        filename = gtk_file_chooser_get_filename(
-            g_type_check_instance_cast(
-                dialog as *mut GTypeInstance,
-                gtk_file_chooser_get_type(),
-            ) as *mut libc::c_void as *mut GtkFileChooser,
-        );
+        filename = gtk_file_chooser_get_filename(g_type_check_instance_cast(
+            dialog as *mut GTypeInstance,
+            gtk_file_chooser_get_type(),
+        ) as *mut libc::c_void
+            as *mut GtkFileChooser);
     }
     gtk_widget_destroy(dialog);
     if !filename.is_null() {
-        ((*(*job).callbacks).render)
-            .expect(
-                "non-null function pointer",
-            )(job, b"dot\0" as *const u8 as *const libc::c_char, filename);
+        ((*(*job).callbacks).render).expect("non-null function pointer")(
+            job,
+            b"dot\0" as *const u8 as *const libc::c_char,
+            filename,
+        );
         g_object_set_data_full(
             g_type_check_instance_cast(
                 window1 as *mut GTypeInstance,
@@ -1851,10 +1788,9 @@ unsafe extern "C" fn ui_save_graph(
             ) as *mut libc::c_void as *mut GObject,
             b"activefilename\0" as *const u8 as *const libc::c_char,
             filename as gpointer,
-            ::std::mem::transmute::<
-                Option::<unsafe extern "C" fn(gpointer) -> ()>,
-                GDestroyNotify,
-            >(Some(g_free as unsafe extern "C" fn(gpointer) -> ())),
+            ::std::mem::transmute::<Option<unsafe extern "C" fn(gpointer) -> ()>, GDestroyNotify>(
+                Some(g_free as unsafe extern "C" fn(gpointer) -> ()),
+            ),
         );
     }
 }
@@ -1865,10 +1801,8 @@ pub unsafe extern "C" fn on_save1_activate(
 ) {
     let mut window1: *mut GtkWindow = 0 as *mut GtkWindow;
     let mut filename: *mut gchar = 0 as *mut gchar;
-    window1 = g_type_check_instance_cast(
-        menuitem as *mut GTypeInstance,
-        gtk_window_get_type(),
-    ) as *mut libc::c_void as *mut GtkWindow;
+    window1 = g_type_check_instance_cast(menuitem as *mut GTypeInstance, gtk_window_get_type())
+        as *mut libc::c_void as *mut GtkWindow;
     filename = g_object_get_data(
         g_type_check_instance_cast(
             window1 as *mut GTypeInstance,
@@ -1884,10 +1818,8 @@ pub unsafe extern "C" fn on_save_as1_activate(
     mut user_data: gpointer,
 ) {
     let mut window1: *mut GtkWindow = 0 as *mut GtkWindow;
-    window1 = g_type_check_instance_cast(
-        menuitem as *mut GTypeInstance,
-        gtk_window_get_type(),
-    ) as *mut libc::c_void as *mut GtkWindow;
+    window1 = g_type_check_instance_cast(menuitem as *mut GTypeInstance, gtk_window_get_type())
+        as *mut libc::c_void as *mut GtkWindow;
     ui_save_graph(window1, 0 as *mut gchar);
 }
 #[no_mangle]
@@ -1895,39 +1827,36 @@ pub unsafe extern "C" fn on_quit1_activate(
     mut menuitem: *mut GtkMenuItem,
     mut user_data: gpointer,
 ) {
-    gtk_widget_destroy(
-        g_type_check_instance_cast(
-            gtk_widget_get_toplevel(
-                g_type_check_instance_cast(
-                    menuitem as *mut GTypeInstance,
-                    gtk_widget_get_type(),
-                ) as *mut libc::c_void as *mut GtkWidget,
-            ) as *mut GTypeInstance,
+    gtk_widget_destroy(g_type_check_instance_cast(
+        gtk_widget_get_toplevel(g_type_check_instance_cast(
+            menuitem as *mut GTypeInstance,
             gtk_widget_get_type(),
-        ) as *mut libc::c_void as *mut GtkWidget,
-    );
+        ) as *mut libc::c_void as *mut GtkWidget) as *mut GTypeInstance,
+        gtk_widget_get_type(),
+    ) as *mut libc::c_void as *mut GtkWidget);
     gtk_main_quit();
 }
 #[no_mangle]
-pub unsafe extern "C" fn on_cut1_activate(
-    mut menuitem: *mut GtkMenuItem,
-    mut user_data: gpointer,
-) {}
+pub unsafe extern "C" fn on_cut1_activate(mut menuitem: *mut GtkMenuItem, mut user_data: gpointer) {
+}
 #[no_mangle]
 pub unsafe extern "C" fn on_copy1_activate(
     mut menuitem: *mut GtkMenuItem,
     mut user_data: gpointer,
-) {}
+) {
+}
 #[no_mangle]
 pub unsafe extern "C" fn on_paste1_activate(
     mut menuitem: *mut GtkMenuItem,
     mut user_data: gpointer,
-) {}
+) {
+}
 #[no_mangle]
 pub unsafe extern "C" fn on_delete1_activate(
     mut menuitem: *mut GtkMenuItem,
     mut user_data: gpointer,
-) {}
+) {
+}
 #[no_mangle]
 pub unsafe extern "C" fn on_about1_activate(
     mut menuitem: *mut GtkMenuItem,
@@ -1937,17 +1866,14 @@ pub unsafe extern "C" fn on_about1_activate(
         b"John Ellson\0" as *const u8 as *const libc::c_char as *mut gchar,
         b"Emden Gansner\0" as *const u8 as *const libc::c_char as *mut gchar,
         b"Stephen North\0" as *const u8 as *const libc::c_char as *mut gchar,
-        b"special thanks to Michael Lawrence\0" as *const u8 as *const libc::c_char
-            as *mut gchar,
+        b"special thanks to Michael Lawrence\0" as *const u8 as *const libc::c_char as *mut gchar,
         0 as *const gchar as *mut gchar,
     ];
     let mut window: *mut GtkWindow = g_type_check_instance_cast(
-        gtk_widget_get_toplevel(
-            g_type_check_instance_cast(
-                menuitem as *mut GTypeInstance,
-                gtk_widget_get_type(),
-            ) as *mut libc::c_void as *mut GtkWidget,
-        ) as *mut GTypeInstance,
+        gtk_widget_get_toplevel(g_type_check_instance_cast(
+            menuitem as *mut GTypeInstance,
+            gtk_widget_get_type(),
+        ) as *mut libc::c_void as *mut GtkWidget) as *mut GTypeInstance,
         gtk_window_get_type(),
     ) as *mut libc::c_void as *mut GtkWindow;
     gtk_show_about_dialog(
@@ -1965,17 +1891,13 @@ pub unsafe extern "C" fn on_about1_activate(
         b"website\0" as *const u8 as *const libc::c_char,
         b"https://graphviz.org\0" as *const u8 as *const libc::c_char,
         b"comments\0" as *const u8 as *const libc::c_char,
-        b"Visualize and edit graphs of nodes and edges\0" as *const u8
-            as *const libc::c_char,
+        b"Visualize and edit graphs of nodes and edges\0" as *const u8 as *const libc::c_char,
         b"authors\0" as *const u8 as *const libc::c_char,
         authors.as_mut_ptr(),
         0 as *mut libc::c_void,
     );
 }
-unsafe extern "C" fn load_store_with_attrs(
-    mut model: *mut GtkListStore,
-    mut job: *mut GVJ_t,
-) {
+unsafe extern "C" fn load_store_with_attrs(mut model: *mut GtkListStore, mut job: *mut GVJ_t) {
     gtk_list_store_clear(model);
 }
 #[no_mangle]
@@ -1994,8 +1916,7 @@ pub unsafe extern "C" fn on_drawingarea1_expose_event(
         b"job\0" as *const u8 as *const libc::c_char,
     ) as *mut GVJ_t;
     cr = gdk_cairo_create((*widget).window);
-    ((*(*job).callbacks).motion)
-        .expect("non-null function pointer")(job, (*job).pointer);
+    ((*(*job).callbacks).motion).expect("non-null function pointer")(job, (*job).pointer);
     let ref mut fresh0 = (*job).context;
     *fresh0 = cr as *mut libc::c_void;
     (*job).external_context = 1 as libc::c_int != 0;
@@ -2066,19 +1987,18 @@ pub unsafe extern "C" fn on_drawingarea2_expose_event(
         b"job\0" as *const u8 as *const libc::c_char,
     ) as *mut GVJ_t;
     cr = gdk_cairo_create((*widget).window);
-    ((*(*job).callbacks).motion)
-        .expect("non-null function pointer")(job, (*job).pointer);
+    ((*(*job).callbacks).motion).expect("non-null function pointer")(job, (*job).pointer);
     let ref mut fresh1 = (*job).context;
     *fresh1 = cr as *mut libc::c_void;
     (*job).external_context = 1 as libc::c_int != 0;
     (*job).width = (*widget).allocation.width as libc::c_uint;
     (*job).height = (*widget).allocation.height as libc::c_uint;
     tmp = (*job).zoom;
-    (*job)
-        .zoom = if ((*job).width).wrapping_mul(72 as libc::c_int as libc::c_uint)
-        as libc::c_double / ((*job).bb.UR.x * (*job).dpi.x)
-        < ((*job).height).wrapping_mul(72 as libc::c_int as libc::c_uint)
-            as libc::c_double / ((*job).bb.UR.y * (*job).dpi.y)
+    (*job).zoom = if ((*job).width).wrapping_mul(72 as libc::c_int as libc::c_uint)
+        as libc::c_double
+        / ((*job).bb.UR.x * (*job).dpi.x)
+        < ((*job).height).wrapping_mul(72 as libc::c_int as libc::c_uint) as libc::c_double
+            / ((*job).bb.UR.y * (*job).dpi.y)
     {
         ((*job).width).wrapping_mul(72 as libc::c_int as libc::c_uint) as libc::c_double
             / ((*job).bb.UR.x * (*job).dpi.x)
@@ -2116,8 +2036,7 @@ pub unsafe extern "C" fn on_drawingarea1_configure_event(
         b"job\0" as *const u8 as *const libc::c_char,
     ) as *mut GVJ_t;
     if !(*job).has_been_rendered {
-        zoom_to_fit = if ((*event).width as libc::c_double
-            / (*job).width as libc::c_double)
+        zoom_to_fit = if ((*event).width as libc::c_double / (*job).width as libc::c_double)
             < (*event).height as libc::c_double / (*job).height as libc::c_double
         {
             (*event).width as libc::c_double / (*job).width as libc::c_double
@@ -2128,8 +2047,7 @@ pub unsafe extern "C" fn on_drawingarea1_configure_event(
             (*job).zoom *= zoom_to_fit;
         }
     } else if (*job).fit_mode {
-        zoom_to_fit = if ((*event).width as libc::c_double
-            / (*job).width as libc::c_double)
+        zoom_to_fit = if ((*event).width as libc::c_double / (*job).width as libc::c_double)
             < (*event).height as libc::c_double / (*job).height as libc::c_double
         {
             (*event).width as libc::c_double / (*job).width as libc::c_double
@@ -2165,10 +2083,11 @@ pub unsafe extern "C" fn on_drawingarea1_button_press_event(
     ) as *mut GVJ_t;
     pointer.x = (*event).x;
     pointer.y = (*event).y;
-    ((*(*job).callbacks).button_press)
-        .expect(
-            "non-null function pointer",
-        )(job, (*event).button as libc::c_int, pointer);
+    ((*(*job).callbacks).button_press).expect("non-null function pointer")(
+        job,
+        (*event).button as libc::c_int,
+        pointer,
+    );
     load_store_with_attrs(
         g_type_check_instance_cast(
             g_object_get_data(
@@ -2201,10 +2120,11 @@ pub unsafe extern "C" fn on_drawingarea1_button_release_event(
     ) as *mut GVJ_t;
     pointer.x = (*event).x;
     pointer.y = (*event).y;
-    ((*(*job).callbacks).button_release)
-        .expect(
-            "non-null function pointer",
-        )(job, (*event).button as libc::c_int, pointer);
+    ((*(*job).callbacks).button_release).expect("non-null function pointer")(
+        job,
+        (*event).button as libc::c_int,
+        pointer,
+    );
     return 0 as libc::c_int;
 }
 #[no_mangle]
@@ -2226,12 +2146,18 @@ pub unsafe extern "C" fn on_drawingarea1_scroll_event(
     pointer.y = (*(event as *mut GdkEventScroll)).y;
     match (*(event as *mut GdkEventScroll)).direction as libc::c_uint {
         0 => {
-            ((*(*job).callbacks).button_press)
-                .expect("non-null function pointer")(job, 4 as libc::c_int, pointer);
+            ((*(*job).callbacks).button_press).expect("non-null function pointer")(
+                job,
+                4 as libc::c_int,
+                pointer,
+            );
         }
         1 => {
-            ((*(*job).callbacks).button_press)
-                .expect("non-null function pointer")(job, 5 as libc::c_int, pointer);
+            ((*(*job).callbacks).button_press).expect("non-null function pointer")(
+                job,
+                5 as libc::c_int,
+                pointer,
+            );
         }
         2 | 3 | _ => {}
     }

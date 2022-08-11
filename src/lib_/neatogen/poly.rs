@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -15,24 +23,14 @@ extern "C" {
     fn sin(_: libc::c_double) -> libc::c_double;
     fn free(_: *mut libc::c_void);
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
     fn sqrt(_: libc::c_double) -> libc::c_double;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn shapeOf(_: *mut node_t) -> shape_kind;
     fn agget(obj: *mut libc::c_void, name: *mut libc::c_char) -> *mut libc::c_char;
     fn agerr(level: agerrlevel_t, fmt: *const libc::c_char, _: ...) -> libc::c_int;
     static mut origin: Point;
-    fn intersection(
-        a: Point,
-        b: Point,
-        c: Point,
-        d: Point,
-        p: *mut Point,
-    ) -> libc::c_int;
+    fn intersection(a: Point, b: Point, c: Point, d: Point, p: *mut Point) -> libc::c_int;
     fn subpt(a: *mut Point, b: Point, c: Point);
     fn addpt(a: *mut Point, b: Point, c: Point);
     fn area_2(a: Point, b: Point, c: Point) -> libc::c_double;
@@ -186,9 +184,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -202,25 +198,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -322,7 +311,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -483,16 +473,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -508,18 +492,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -527,16 +505,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -578,9 +549,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -609,13 +579,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -648,26 +613,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -676,29 +633,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -706,8 +655,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -741,7 +690,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -767,9 +716,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -895,7 +842,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -981,13 +928,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -996,7 +942,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 pub type shape_kind = libc::c_uint;
 pub const SH_EPSF: shape_kind = 4;
@@ -1183,15 +1129,14 @@ unsafe extern "C" fn isBox(mut verts: *mut Point, mut cnt: libc::c_int) -> libc:
     if cnt != 4 as libc::c_int {
         return 0 as libc::c_int;
     }
-    if (*verts.offset(0 as libc::c_int as isize)).y
-        == (*verts.offset(1 as libc::c_int as isize)).y
+    if (*verts.offset(0 as libc::c_int as isize)).y == (*verts.offset(1 as libc::c_int as isize)).y
     {
         return ((*verts.offset(2 as libc::c_int as isize)).y
             == (*verts.offset(3 as libc::c_int as isize)).y
             && (*verts.offset(0 as libc::c_int as isize)).x
                 == (*verts.offset(3 as libc::c_int as isize)).x
             && (*verts.offset(1 as libc::c_int as isize)).x
-                == (*verts.offset(2 as libc::c_int as isize)).x) as libc::c_int
+                == (*verts.offset(2 as libc::c_int as isize)).x) as libc::c_int;
     } else {
         return ((*verts.offset(0 as libc::c_int as isize)).x
             == (*verts.offset(1 as libc::c_int as isize)).x
@@ -1200,7 +1145,7 @@ unsafe extern "C" fn isBox(mut verts: *mut Point, mut cnt: libc::c_int) -> libc:
             && (*verts.offset(0 as libc::c_int as isize)).y
                 == (*verts.offset(3 as libc::c_int as isize)).y
             && (*verts.offset(1 as libc::c_int as isize)).y
-                == (*verts.offset(2 as libc::c_int as isize)).y) as libc::c_int
+                == (*verts.offset(2 as libc::c_int as isize)).y) as libc::c_int;
     };
 }
 unsafe extern "C" fn makeScaledTransPoint(
@@ -1210,18 +1155,11 @@ unsafe extern "C" fn makeScaledTransPoint(
     mut dy: libc::c_float,
 ) -> Point {
     let mut rv: Point = Point { x: 0., y: 0. };
-    rv
-        .x = x as libc::c_double / 72 as libc::c_int as libc::c_double
-        + dx as libc::c_double;
-    rv
-        .y = y as libc::c_double / 72 as libc::c_int as libc::c_double
-        + dy as libc::c_double;
+    rv.x = x as libc::c_double / 72 as libc::c_int as libc::c_double + dx as libc::c_double;
+    rv.y = y as libc::c_double / 72 as libc::c_int as libc::c_double + dy as libc::c_double;
     return rv;
 }
-unsafe extern "C" fn makeScaledPoint(
-    mut x: libc::c_double,
-    mut y: libc::c_double,
-) -> Point {
+unsafe extern "C" fn makeScaledPoint(mut x: libc::c_double, mut y: libc::c_double) -> Point {
     let mut rv: Point = Point { x: 0., y: 0. };
     rv.x = x / 72 as libc::c_int as libc::c_double;
     rv.y = y / 72 as libc::c_int as libc::c_double;
@@ -1246,24 +1184,24 @@ unsafe extern "C" fn genRound(
     if sides < 3 as libc::c_int {
         sides = 20 as libc::c_int;
     }
-    verts = gcalloc(sides as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-        as *mut Point;
+    verts = gcalloc(
+        sides as size_t,
+        ::std::mem::size_of::<Point>() as libc::c_ulong,
+    ) as *mut Point;
     i = 0 as libc::c_int;
     while i < sides {
-        (*verts.offset(i as isize))
-            .x = ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width / 2.0f64
-            + xm as libc::c_double)
-            * cos(
-                i as libc::c_double / sides as libc::c_double * 3.14159265358979323846f64
-                    * 2.0f64,
-            );
-        (*verts.offset(i as isize))
-            .y = ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height / 2.0f64
-            + ym as libc::c_double)
-            * sin(
-                i as libc::c_double / sides as libc::c_double * 3.14159265358979323846f64
-                    * 2.0f64,
-            );
+        (*verts.offset(i as isize)).x =
+            ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width / 2.0f64
+                + xm as libc::c_double)
+                * cos(i as libc::c_double / sides as libc::c_double
+                    * 3.14159265358979323846f64
+                    * 2.0f64);
+        (*verts.offset(i as isize)).y =
+            ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height / 2.0f64
+                + ym as libc::c_double)
+                * sin(i as libc::c_double / sides as libc::c_double
+                    * 3.14159265358979323846f64
+                    * 2.0f64);
         i += 1;
     }
     *sidep = sides;
@@ -1287,15 +1225,15 @@ pub unsafe extern "C" fn makeAddPoly(
     if !((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust).is_null() {
         let mut b_0: Point = Point { x: 0., y: 0. };
         sides = 4 as libc::c_int;
-        b_0
-            .x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width / 2.0f64
+        b_0.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width / 2.0f64
             + xmargin as libc::c_double;
-        b_0
-            .y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height / 2.0f64
+        b_0.y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height / 2.0f64
             + ymargin as libc::c_double;
         (*pp).kind = 1 as libc::c_int;
-        verts = gcalloc(sides as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-            as *mut Point;
+        verts = gcalloc(
+            sides as size_t,
+            ::std::mem::size_of::<Point>() as libc::c_ulong,
+        ) as *mut Point;
         (*verts.offset(0 as libc::c_int as isize)).x = b_0.x;
         (*verts.offset(0 as libc::c_int as isize)).y = b_0.y;
         (*verts.offset(1 as libc::c_int as isize)).x = -b_0.x;
@@ -1317,11 +1255,11 @@ pub unsafe extern "C" fn makeAddPoly(
                 {
                     (*pp).kind = 1 as libc::c_int;
                 } else if strcmp(
-                        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape)
-                            .name,
-                        b"polygon\0" as *const u8 as *const libc::c_char,
-                    ) == 0 && isBox((*poly).vertices, sides) != 0
-                    {
+                    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).name,
+                    b"polygon\0" as *const u8 as *const libc::c_char,
+                ) == 0
+                    && isBox((*poly).vertices, sides) != 0
+                {
                     (*pp).kind = 1 as libc::c_int;
                 } else if (*poly).sides < 3 as libc::c_int && (*poly).regular != 0 {
                     (*pp).kind = 2 as libc::c_int;
@@ -1334,38 +1272,38 @@ pub unsafe extern "C" fn makeAddPoly(
                         ::std::mem::size_of::<Point>() as libc::c_ulong,
                     ) as *mut Point;
                     if (*pp).kind == 1 as libc::c_int {
-                        (*verts.offset(0 as libc::c_int as isize))
-                            .x = (*((*poly).vertices).offset(0 as libc::c_int as isize))
-                            .x / 72 as libc::c_int as libc::c_double
-                            + xmargin as libc::c_double;
-                        (*verts.offset(0 as libc::c_int as isize))
-                            .y = (*((*poly).vertices).offset(0 as libc::c_int as isize))
-                            .y / 72 as libc::c_int as libc::c_double
-                            + ymargin as libc::c_double;
-                        (*verts.offset(1 as libc::c_int as isize))
-                            .x = (*((*poly).vertices).offset(1 as libc::c_int as isize))
-                            .x / 72 as libc::c_int as libc::c_double
-                            - xmargin as libc::c_double;
-                        (*verts.offset(1 as libc::c_int as isize))
-                            .y = (*((*poly).vertices).offset(1 as libc::c_int as isize))
-                            .y / 72 as libc::c_int as libc::c_double
-                            + ymargin as libc::c_double;
-                        (*verts.offset(2 as libc::c_int as isize))
-                            .x = (*((*poly).vertices).offset(2 as libc::c_int as isize))
-                            .x / 72 as libc::c_int as libc::c_double
-                            - xmargin as libc::c_double;
-                        (*verts.offset(2 as libc::c_int as isize))
-                            .y = (*((*poly).vertices).offset(2 as libc::c_int as isize))
-                            .y / 72 as libc::c_int as libc::c_double
-                            - ymargin as libc::c_double;
-                        (*verts.offset(3 as libc::c_int as isize))
-                            .x = (*((*poly).vertices).offset(3 as libc::c_int as isize))
-                            .x / 72 as libc::c_int as libc::c_double
-                            + xmargin as libc::c_double;
-                        (*verts.offset(3 as libc::c_int as isize))
-                            .y = (*((*poly).vertices).offset(3 as libc::c_int as isize))
-                            .y / 72 as libc::c_int as libc::c_double
-                            - ymargin as libc::c_double;
+                        (*verts.offset(0 as libc::c_int as isize)).x =
+                            (*((*poly).vertices).offset(0 as libc::c_int as isize)).x
+                                / 72 as libc::c_int as libc::c_double
+                                + xmargin as libc::c_double;
+                        (*verts.offset(0 as libc::c_int as isize)).y =
+                            (*((*poly).vertices).offset(0 as libc::c_int as isize)).y
+                                / 72 as libc::c_int as libc::c_double
+                                + ymargin as libc::c_double;
+                        (*verts.offset(1 as libc::c_int as isize)).x =
+                            (*((*poly).vertices).offset(1 as libc::c_int as isize)).x
+                                / 72 as libc::c_int as libc::c_double
+                                - xmargin as libc::c_double;
+                        (*verts.offset(1 as libc::c_int as isize)).y =
+                            (*((*poly).vertices).offset(1 as libc::c_int as isize)).y
+                                / 72 as libc::c_int as libc::c_double
+                                + ymargin as libc::c_double;
+                        (*verts.offset(2 as libc::c_int as isize)).x =
+                            (*((*poly).vertices).offset(2 as libc::c_int as isize)).x
+                                / 72 as libc::c_int as libc::c_double
+                                - xmargin as libc::c_double;
+                        (*verts.offset(2 as libc::c_int as isize)).y =
+                            (*((*poly).vertices).offset(2 as libc::c_int as isize)).y
+                                / 72 as libc::c_int as libc::c_double
+                                - ymargin as libc::c_double;
+                        (*verts.offset(3 as libc::c_int as isize)).x =
+                            (*((*poly).vertices).offset(3 as libc::c_int as isize)).x
+                                / 72 as libc::c_int as libc::c_double
+                                + xmargin as libc::c_double;
+                        (*verts.offset(3 as libc::c_int as isize)).y =
+                            (*((*poly).vertices).offset(3 as libc::c_int as isize)).y
+                                / 72 as libc::c_int as libc::c_double
+                                - ymargin as libc::c_double;
                     } else {
                         i = 0 as libc::c_int;
                         while i < sides {
@@ -1375,18 +1313,16 @@ pub unsafe extern "C" fn makeAddPoly(
                                     + (*((*poly).vertices).offset(i as isize)).y
                                         * (*((*poly).vertices).offset(i as isize)).y,
                             );
-                            (*verts.offset(i as isize))
-                                .x = (*((*poly).vertices).offset(i as isize)).x
-                                * (1.0f64 + xmargin as libc::c_double / h);
-                            (*verts.offset(i as isize))
-                                .y = (*((*poly).vertices).offset(i as isize)).y
-                                * (1.0f64 + ymargin as libc::c_double / h);
-                            (*verts.offset(i as isize))
-                                .x = (*verts.offset(i as isize)).x
-                                / 72 as libc::c_int as libc::c_double;
-                            (*verts.offset(i as isize))
-                                .y = (*verts.offset(i as isize)).y
-                                / 72 as libc::c_int as libc::c_double;
+                            (*verts.offset(i as isize)).x =
+                                (*((*poly).vertices).offset(i as isize)).x
+                                    * (1.0f64 + xmargin as libc::c_double / h);
+                            (*verts.offset(i as isize)).y =
+                                (*((*poly).vertices).offset(i as isize)).y
+                                    * (1.0f64 + ymargin as libc::c_double / h);
+                            (*verts.offset(i as isize)).x =
+                                (*verts.offset(i as isize)).x / 72 as libc::c_int as libc::c_double;
+                            (*verts.offset(i as isize)).y =
+                                (*verts.offset(i as isize)).y / 72 as libc::c_int as libc::c_double;
                             i += 1;
                         }
                     }
@@ -1403,37 +1339,25 @@ pub unsafe extern "C" fn makeAddPoly(
                 b = (*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
                     as *mut field_t))
                     .b;
-                *verts
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ) = makeScaledTransPoint(
+                *verts.offset(0 as libc::c_int as isize) = makeScaledTransPoint(
                     b.LL.x as libc::c_int,
                     b.LL.y as libc::c_int,
                     -xmargin,
                     -ymargin,
                 );
-                *verts
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ) = makeScaledTransPoint(
+                *verts.offset(1 as libc::c_int as isize) = makeScaledTransPoint(
                     b.UR.x as libc::c_int,
                     b.LL.y as libc::c_int,
                     xmargin,
                     -ymargin,
                 );
-                *verts
-                    .offset(
-                        2 as libc::c_int as isize,
-                    ) = makeScaledTransPoint(
+                *verts.offset(2 as libc::c_int as isize) = makeScaledTransPoint(
                     b.UR.x as libc::c_int,
                     b.UR.y as libc::c_int,
                     xmargin,
                     ymargin,
                 );
-                *verts
-                    .offset(
-                        3 as libc::c_int as isize,
-                    ) = makeScaledTransPoint(
+                *verts.offset(3 as libc::c_int as isize) = makeScaledTransPoint(
                     b.LL.x as libc::c_int,
                     b.UR.y as libc::c_int,
                     -xmargin,
@@ -1448,8 +1372,7 @@ pub unsafe extern "C" fn makeAddPoly(
             _ => {
                 agerr(
                     AGERR,
-                    b"makeAddPoly: unknown shape type %s\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"makeAddPoly: unknown shape type %s\n\0" as *const u8 as *const libc::c_char,
                     (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).name,
                 );
                 return 1 as libc::c_int;
@@ -1486,8 +1409,10 @@ pub unsafe extern "C" fn makePoly(
         b_0.x = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width / 2.0f64;
         b_0.y = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height / 2.0f64;
         (*pp).kind = 1 as libc::c_int;
-        verts = gcalloc(sides as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-            as *mut Point;
+        verts = gcalloc(
+            sides as size_t,
+            ::std::mem::size_of::<Point>() as libc::c_ulong,
+        ) as *mut Point;
         (*verts.offset(0 as libc::c_int as isize)).x = b_0.x;
         (*verts.offset(0 as libc::c_int as isize)).y = b_0.y;
         (*verts.offset(1 as libc::c_int as isize)).x = -b_0.x;
@@ -1509,11 +1434,9 @@ pub unsafe extern "C" fn makePoly(
                     ) as *mut Point;
                     i = 0 as libc::c_int;
                     while i < sides {
-                        (*verts.offset(i as isize))
-                            .x = (*((*poly).vertices).offset(i as isize)).x
+                        (*verts.offset(i as isize)).x = (*((*poly).vertices).offset(i as isize)).x
                             / 72 as libc::c_int as libc::c_double;
-                        (*verts.offset(i as isize))
-                            .y = (*((*poly).vertices).offset(i as isize)).y
+                        (*verts.offset(i as isize)).y = (*((*poly).vertices).offset(i as isize)).y
                             / 72 as libc::c_int as libc::c_double;
                         i += 1;
                     }
@@ -1532,11 +1455,11 @@ pub unsafe extern "C" fn makePoly(
                 {
                     (*pp).kind = 1 as libc::c_int;
                 } else if strcmp(
-                        (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape)
-                            .name,
-                        b"polygon\0" as *const u8 as *const libc::c_char,
-                    ) == 0 && isBox(verts, sides) != 0
-                    {
+                    (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).name,
+                    b"polygon\0" as *const u8 as *const libc::c_char,
+                ) == 0
+                    && isBox(verts, sides) != 0
+                {
                     (*pp).kind = 1 as libc::c_int;
                 } else if (*poly).sides < 3 as libc::c_int && (*poly).regular != 0 {
                     (*pp).kind = 2 as libc::c_int;
@@ -1553,14 +1476,10 @@ pub unsafe extern "C" fn makePoly(
                 b = (*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape_info
                     as *mut field_t))
                     .b;
-                *verts
-                    .offset(0 as libc::c_int as isize) = makeScaledPoint(b.LL.x, b.LL.y);
-                *verts
-                    .offset(1 as libc::c_int as isize) = makeScaledPoint(b.UR.x, b.LL.y);
-                *verts
-                    .offset(2 as libc::c_int as isize) = makeScaledPoint(b.UR.x, b.UR.y);
-                *verts
-                    .offset(3 as libc::c_int as isize) = makeScaledPoint(b.LL.x, b.UR.y);
+                *verts.offset(0 as libc::c_int as isize) = makeScaledPoint(b.LL.x, b.LL.y);
+                *verts.offset(1 as libc::c_int as isize) = makeScaledPoint(b.UR.x, b.LL.y);
+                *verts.offset(2 as libc::c_int as isize) = makeScaledPoint(b.UR.x, b.UR.y);
+                *verts.offset(3 as libc::c_int as isize) = makeScaledPoint(b.LL.x, b.UR.y);
                 (*pp).kind = 1 as libc::c_int;
             }
             3 => {
@@ -1575,8 +1494,7 @@ pub unsafe extern "C" fn makePoly(
             _ => {
                 agerr(
                     AGERR,
-                    b"makePoly: unknown shape type %s\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"makePoly: unknown shape type %s\n\0" as *const u8 as *const libc::c_char,
                     (*(*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).shape).name,
                 );
                 return 1 as libc::c_int;
@@ -1601,7 +1519,9 @@ unsafe extern "C" fn pintersect(
     mut originq: Point,
     mut cornerq: Point,
 ) -> libc::c_int {
-    return (originp.x <= cornerq.x && originq.x <= cornerp.x && originp.y <= cornerq.y
+    return (originp.x <= cornerq.x
+        && originq.x <= cornerp.x
+        && originp.y <= cornerq.y
         && originq.y <= cornerp.y) as libc::c_int;
 }
 unsafe extern "C" fn edgesIntersect(
@@ -1672,9 +1592,7 @@ unsafe extern "C" fn edgesIntersect(
             aa += 1;
             a = (a + 1 as libc::c_int) % n;
         }
-        if !((aa < n || ba < m) && aa < 2 as libc::c_int * n
-            && ba < 2 as libc::c_int * m)
-        {
+        if !((aa < n || ba < m) && aa < 2 as libc::c_int * n && ba < 2 as libc::c_int * m) {
             break;
         }
     }
@@ -1690,8 +1608,10 @@ unsafe extern "C" fn inPoly(
     let mut x: libc::c_double = 0.;
     let mut crossings: libc::c_double = 0 as libc::c_int as libc::c_double;
     if tp3.is_null() {
-        tp3 = gcalloc(maxcnt as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-            as *mut Point;
+        tp3 = gcalloc(
+            maxcnt as size_t,
+            ::std::mem::size_of::<Point>() as libc::c_ulong,
+        ) as *mut Point;
     }
     i = 0 as libc::c_int;
     while i < n {
@@ -1711,10 +1631,10 @@ unsafe extern "C" fn inPoly(
                 return 1 as libc::c_int;
             }
         } else if (*tp3.offset(i as isize)).y >= 0 as libc::c_int as libc::c_double
-                && (*tp3.offset(i1 as isize)).y <= 0 as libc::c_int as libc::c_double
-                || (*tp3.offset(i1 as isize)).y >= 0 as libc::c_int as libc::c_double
-                    && (*tp3.offset(i as isize)).y <= 0 as libc::c_int as libc::c_double
-            {
+            && (*tp3.offset(i1 as isize)).y <= 0 as libc::c_int as libc::c_double
+            || (*tp3.offset(i1 as isize)).y >= 0 as libc::c_int as libc::c_double
+                && (*tp3.offset(i as isize)).y <= 0 as libc::c_int as libc::c_double
+        {
             x = ((*tp3.offset(i as isize)).x * (*tp3.offset(i1 as isize)).y
                 - (*tp3.offset(i1 as isize)).x * (*tp3.offset(i as isize)).y)
                 / ((*tp3.offset(i1 as isize)).y - (*tp3.offset(i as isize)).y);
@@ -1734,16 +1654,12 @@ unsafe extern "C" fn inPoly(
         i += 1;
     }
     if crossings as libc::c_int % 2 as libc::c_int == 1 as libc::c_int {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
-unsafe extern "C" fn inBox(
-    mut p: Point,
-    mut origin_0: Point,
-    mut corner: Point,
-) -> libc::c_int {
+unsafe extern "C" fn inBox(mut p: Point, mut origin_0: Point, mut corner: Point) -> libc::c_int {
     return (p.x <= corner.x && p.x >= origin_0.x && p.y <= corner.y && p.y >= origin_0.y)
         as libc::c_int;
 }
@@ -1785,21 +1701,25 @@ pub unsafe extern "C" fn polyOverlap(
         return 1 as libc::c_int;
     }
     if (*pp).kind & 2 as libc::c_int != 0 && (*qp).kind & 2 as libc::c_int != 0 {
-        let mut d: libc::c_double = (*pp).corner.x - (*pp).origin.x + (*qp).corner.x
-            - (*qp).origin.x;
+        let mut d: libc::c_double =
+            (*pp).corner.x - (*pp).origin.x + (*qp).corner.x - (*qp).origin.x;
         let mut dx: libc::c_double = p.x - q.x;
         let mut dy: libc::c_double = p.y - q.y;
         if dx * dx + dy * dy > d * d / 4.0f64 {
-            return 0 as libc::c_int
+            return 0 as libc::c_int;
         } else {
-            return 1 as libc::c_int
+            return 1 as libc::c_int;
         }
     }
     if tp1.is_null() {
-        tp1 = gcalloc(maxcnt as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-            as *mut Point;
-        tp2 = gcalloc(maxcnt as size_t, ::std::mem::size_of::<Point>() as libc::c_ulong)
-            as *mut Point;
+        tp1 = gcalloc(
+            maxcnt as size_t,
+            ::std::mem::size_of::<Point>() as libc::c_ulong,
+        ) as *mut Point;
+        tp2 = gcalloc(
+            maxcnt as size_t,
+            ::std::mem::size_of::<Point>() as libc::c_ulong,
+        ) as *mut Point;
     }
     transCopy((*pp).verts, (*pp).nverts, p, tp1);
     transCopy((*qp).verts, (*qp).nverts, q, tp2);

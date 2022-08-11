@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -41,10 +49,7 @@ pub unsafe extern "C" fn geominit() {
     sqrt_nsites = sqrt(sn) as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn dist_2(
-    mut pp: *mut Point,
-    mut qp: *mut Point,
-) -> libc::c_double {
+pub unsafe extern "C" fn dist_2(mut pp: *mut Point, mut qp: *mut Point) -> libc::c_double {
     let mut dx: libc::c_double = (*pp).x - (*qp).x;
     let mut dy: libc::c_double = (*pp).y - (*qp).y;
     return dx * dx + dy * dy;
@@ -60,19 +65,11 @@ pub unsafe extern "C" fn addpt(mut c: *mut Point, mut a: Point, mut b: Point) {
     (*c).y = a.y + b.y;
 }
 #[no_mangle]
-pub unsafe extern "C" fn area_2(
-    mut a: Point,
-    mut b: Point,
-    mut c: Point,
-) -> libc::c_double {
+pub unsafe extern "C" fn area_2(mut a: Point, mut b: Point, mut c: Point) -> libc::c_double {
     return (a.y - b.y) * (c.x - b.x) - (c.y - b.y) * (a.x - b.x);
 }
 #[no_mangle]
-pub unsafe extern "C" fn leftOf(
-    mut a: Point,
-    mut b: Point,
-    mut c: Point,
-) -> libc::c_int {
+pub unsafe extern "C" fn leftOf(mut a: Point, mut b: Point, mut c: Point) -> libc::c_int {
     return (area_2(a, b, c) > 0 as libc::c_int as libc::c_double) as libc::c_int;
 }
 #[no_mangle]
@@ -86,8 +83,7 @@ pub unsafe extern "C" fn intersection(
     let mut s: libc::c_double = 0.;
     let mut t: libc::c_double = 0.;
     let mut denom: libc::c_double = 0.;
-    denom = a.x * (d.y - c.y) + b.x * (c.y - d.y) + d.x * (b.y - a.y)
-        + c.x * (a.y - b.y);
+    denom = a.x * (d.y - c.y) + b.x * (c.y - d.y) + d.x * (b.y - a.y) + c.x * (a.y - b.y);
     if denom == 0.0f64 {
         return 0 as libc::c_int;
     }
@@ -96,8 +92,8 @@ pub unsafe extern "C" fn intersection(
     (*p).x = a.x + s * (b.x - a.x);
     (*p).y = a.y + s * (b.y - a.y);
     if 0.0f64 <= s && s <= 1.0f64 && 0.0f64 <= t && t <= 1.0f64 {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }

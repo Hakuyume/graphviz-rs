@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -14,12 +22,7 @@ extern "C" {
     fn fabs(_: libc::c_double) -> libc::c_double;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn compute_apsp(_: *mut vtx_data, _: libc::c_int) -> *mut *mut DistType;
-    fn cpvec(
-        _: *mut libc::c_double,
-        _: libc::c_int,
-        _: libc::c_int,
-        _: *mut libc::c_double,
-    );
+    fn cpvec(_: *mut libc::c_double, _: libc::c_int, _: libc::c_int, _: *mut libc::c_double);
     fn dot(
         _: *mut libc::c_double,
         _: libc::c_int,
@@ -62,10 +65,7 @@ pub struct vtx_data {
     pub edists: *mut libc::c_float,
 }
 pub type DistType = libc::c_int;
-unsafe extern "C" fn standardize(
-    mut orthog: *mut libc::c_double,
-    mut nvtxs: libc::c_int,
-) {
+unsafe extern "C" fn standardize(mut orthog: *mut libc::c_double, mut nvtxs: libc::c_int) {
     let mut len: libc::c_double = 0.;
     let mut avg: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut i: libc::c_int = 0;
@@ -81,7 +81,13 @@ unsafe extern "C" fn standardize(
         i += 1;
     }
     len = norm(orthog, 0 as libc::c_int, nvtxs - 1 as libc::c_int);
-    vecscale(orthog, 0 as libc::c_int, nvtxs - 1 as libc::c_int, 1.0f64 / len, orthog);
+    vecscale(
+        orthog,
+        0 as libc::c_int,
+        nvtxs - 1 as libc::c_int,
+        1.0f64 / len,
+        orthog,
+    );
 }
 unsafe extern "C" fn mat_mult_vec_orthog(
     mut mat: *mut *mut libc::c_float,
@@ -99,22 +105,23 @@ unsafe extern "C" fn mat_mult_vec_orthog(
         sum = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < dim2 {
-            sum
-                += *(*mat.offset(i as isize)).offset(j as isize) as libc::c_double
-                    * *vec.offset(j as isize);
+            sum += *(*mat.offset(i as isize)).offset(j as isize) as libc::c_double
+                * *vec.offset(j as isize);
             j += 1;
         }
         *result.offset(i as isize) = sum;
         i += 1;
     }
     if !orthog.is_null() {
-        let mut alpha: libc::c_double = -dot(
+        let mut alpha: libc::c_double =
+            -dot(result, 0 as libc::c_int, dim1 - 1 as libc::c_int, orthog);
+        scadd(
             result,
             0 as libc::c_int,
             dim1 - 1 as libc::c_int,
+            alpha,
             orthog,
         );
-        scadd(result, 0 as libc::c_int, dim1 - 1 as libc::c_int, alpha, orthog);
     }
 }
 unsafe extern "C" fn power_iteration_orthog(
@@ -143,8 +150,7 @@ unsafe extern "C" fn power_iteration_orthog(
     let mut iteration: libc::c_int = 0;
     let mut largest_index: libc::c_int = 0;
     let mut largest_eval: libc::c_double = 0.;
-    let mut tol: libc::c_double = 1 as libc::c_int as libc::c_double
-        - p_iteration_threshold;
+    let mut tol: libc::c_double = 1 as libc::c_int as libc::c_double - p_iteration_threshold;
     if neigs >= n {
         neigs = n;
     }
@@ -154,19 +160,11 @@ unsafe extern "C" fn power_iteration_orthog(
         loop {
             j = 0 as libc::c_int;
             while j < n {
-                *curr_vector
-                    .offset(
-                        j as isize,
-                    ) = (rand() % 100 as libc::c_int) as libc::c_double;
+                *curr_vector.offset(j as isize) = (rand() % 100 as libc::c_int) as libc::c_double;
                 j += 1;
             }
             if !orthog.is_null() {
-                alpha = -dot(
-                    orthog,
-                    0 as libc::c_int,
-                    n - 1 as libc::c_int,
-                    curr_vector,
-                );
+                alpha = -dot(orthog, 0 as libc::c_int, n - 1 as libc::c_int, curr_vector);
                 scadd(
                     curr_vector,
                     0 as libc::c_int,
@@ -207,7 +205,12 @@ unsafe extern "C" fn power_iteration_orthog(
         iteration = 0 as libc::c_int;
         loop {
             iteration += 1;
-            cpvec(last_vec, 0 as libc::c_int, n - 1 as libc::c_int, curr_vector);
+            cpvec(
+                last_vec,
+                0 as libc::c_int,
+                n - 1 as libc::c_int,
+                curr_vector,
+            );
             mat_mult_vec_orthog(square_mat, n, n, curr_vector, tmp_vec, orthog);
             cpvec(curr_vector, 0 as libc::c_int, n - 1 as libc::c_int, tmp_vec);
             j = 0 as libc::c_int;
@@ -238,7 +241,12 @@ unsafe extern "C" fn power_iteration_orthog(
                 1.0f64 / len,
                 curr_vector,
             );
-            angle = dot(curr_vector, 0 as libc::c_int, n - 1 as libc::c_int, last_vec);
+            angle = dot(
+                curr_vector,
+                0 as libc::c_int,
+                n - 1 as libc::c_int,
+                last_vec,
+            );
             if !(fabs(angle) < tol) {
                 break;
             }
@@ -250,8 +258,7 @@ unsafe extern "C" fn power_iteration_orthog(
         curr_vector = *eigs.offset(i as isize);
         j = 0 as libc::c_int;
         while j < n {
-            *curr_vector
-                .offset(j as isize) = (rand() % 100 as libc::c_int) as libc::c_double;
+            *curr_vector.offset(j as isize) = (rand() % 100 as libc::c_int) as libc::c_double;
             j += 1;
         }
         j = 0 as libc::c_int;
@@ -339,12 +346,10 @@ unsafe extern "C" fn compute_avgs(
         sum_row = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < n {
-            sum
-                += *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
-                    * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double;
-            sum_row
-                += *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
-                    * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double;
+            sum += *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
+                * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double;
+            sum_row += *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
+                * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double;
             j += 1;
         }
         *row_avg.offset(i as isize) = sum_row as libc::c_float / n as libc::c_float;
@@ -380,14 +385,14 @@ unsafe extern "C" fn compute_Bij(
     while i < n {
         j = 0 as libc::c_int;
         while j <= i {
-            *(*Bij.offset(i as isize))
-                .offset(
-                    j as isize,
-                ) = -(*(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float)
-                * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float
-                + *row_avg.offset(i as isize) + *row_avg.offset(j as isize) - all_avg;
-            *(*Bij.offset(j as isize))
-                .offset(i as isize) = *(*Bij.offset(i as isize)).offset(j as isize);
+            *(*Bij.offset(i as isize)).offset(j as isize) =
+                -(*(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float)
+                    * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float
+                    + *row_avg.offset(i as isize)
+                    + *row_avg.offset(j as isize)
+                    - all_avg;
+            *(*Bij.offset(j as isize)).offset(i as isize) =
+                *(*Bij.offset(i as isize)).offset(j as isize);
             j += 1;
         }
         i += 1;
@@ -429,8 +434,7 @@ unsafe extern "C" fn CMDS_orthog(
     while i < dim {
         j = 0 as libc::c_int;
         while j < n {
-            *(*eigs.offset(i as isize)).offset(j as isize)
-                *= sqrt(fabs(*evals.offset(i as isize)));
+            *(*eigs.offset(i as isize)).offset(j as isize) *= sqrt(fabs(*evals.offset(i as isize)));
             j += 1;
         }
         i += 1;
@@ -482,16 +486,16 @@ pub unsafe extern "C" fn IMDS_given_dim(
         }
         i += 1;
     }
-    if !x.is_null() {} else {
+    if !x.is_null() {
+    } else {
         __assert_fail(
             b"x!=NULL\0" as *const u8 as *const libc::c_char,
             b"smart_ini_x.c\0" as *const u8 as *const libc::c_char,
             277 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 64],
-                &[libc::c_char; 64],
-            >(b"int IMDS_given_dim(vtx_data *, int, double *, double *, double)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 64], &[libc::c_char; 64]>(
+                b"int IMDS_given_dim(vtx_data *, int, double *, double *, double)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut sum1: libc::c_double = 0.;
@@ -512,17 +516,14 @@ pub unsafe extern "C" fn IMDS_given_dim(
     while i < n {
         j = 0 as libc::c_int;
         while j < i {
-            sum1
-                += 1.0f64
-                    / *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
-                    * fabs(*x.offset(i as isize) - *x.offset(j as isize));
-            sum2
-                += 1.0f64
-                    / (*(*Dij.offset(i as isize)).offset(j as isize)
-                        * *(*Dij.offset(i as isize)).offset(j as isize))
-                        as libc::c_double
-                    * fabs(*x.offset(i as isize) - *x.offset(j as isize))
-                    * fabs(*x.offset(i as isize) - *x.offset(j as isize));
+            sum1 += 1.0f64 / *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_double
+                * fabs(*x.offset(i as isize) - *x.offset(j as isize));
+            sum2 += 1.0f64
+                / (*(*Dij.offset(i as isize)).offset(j as isize)
+                    * *(*Dij.offset(i as isize)).offset(j as isize))
+                    as libc::c_double
+                * fabs(*x.offset(i as isize) - *x.offset(j as isize))
+                * fabs(*x.offset(i as isize) - *x.offset(j as isize));
             j += 1;
         }
         i += 1;
@@ -549,8 +550,7 @@ pub unsafe extern "C" fn IMDS_given_dim(
                 let ref mut fresh3 = *(*lap.offset(i as isize)).offset(j as isize);
                 *fresh3 = -1.0f32
                     / (*(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float
-                        * *(*Dij.offset(i as isize)).offset(j as isize)
-                            as libc::c_float);
+                        * *(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float);
                 degree -= *fresh3;
             }
             j += 1;
@@ -586,17 +586,15 @@ pub unsafe extern "C" fn IMDS_given_dim(
         while j < n {
             if !(j == i) {
                 if pos_i >= *y.offset(j as isize) {
-                    *balance.offset(i as isize)
-                        += (*(*Dij.offset(i as isize)).offset(j as isize)
-                            as libc::c_float
-                            * -*(*lap.offset(i as isize)).offset(j as isize))
-                            as libc::c_double;
+                    *balance.offset(i as isize) += (*(*Dij.offset(i as isize)).offset(j as isize)
+                        as libc::c_float
+                        * -*(*lap.offset(i as isize)).offset(j as isize))
+                        as libc::c_double;
                 } else {
-                    *balance.offset(i as isize)
-                        -= (*(*Dij.offset(i as isize)).offset(j as isize)
-                            as libc::c_float
-                            * -*(*lap.offset(i as isize)).offset(j as isize))
-                            as libc::c_double;
+                    *balance.offset(i as isize) -= (*(*Dij.offset(i as isize)).offset(j as isize)
+                        as libc::c_float
+                        * -*(*lap.offset(i as isize)).offset(j as isize))
+                        as libc::c_double;
                 }
             }
             j += 1;
@@ -626,26 +624,20 @@ pub unsafe extern "C" fn IMDS_given_dim(
                 while j < n {
                     if !(j == i) {
                         if pos_i >= *y.offset(j as isize) {
-                            b
-                                += (*(*Dij.offset(i as isize)).offset(j as isize)
-                                    as libc::c_float
-                                    * -*(*lap.offset(i as isize)).offset(j as isize))
-                                    as libc::c_double;
+                            b += (*(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float
+                                * -*(*lap.offset(i as isize)).offset(j as isize))
+                                as libc::c_double;
                         } else {
-                            b
-                                -= (*(*Dij.offset(i as isize)).offset(j as isize)
-                                    as libc::c_float
-                                    * -*(*lap.offset(i as isize)).offset(j as isize))
-                                    as libc::c_double;
+                            b -= (*(*Dij.offset(i as isize)).offset(j as isize) as libc::c_float
+                                * -*(*lap.offset(i as isize)).offset(j as isize))
+                                as libc::c_double;
                         }
                     }
                     j += 1;
                 }
                 if b != *balance.offset(i as isize)
-                    && fabs(
-                        1 as libc::c_int as libc::c_double
-                            - b / *balance.offset(i as isize),
-                    ) > 1e-5f64
+                    && fabs(1 as libc::c_int as libc::c_double - b / *balance.offset(i as isize))
+                        > 1e-5f64
                 {
                     converged = 0 as libc::c_int != 0;
                     *balance.offset(i as isize) = b;

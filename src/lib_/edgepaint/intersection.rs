@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -26,9 +34,8 @@ unsafe extern "C" fn dist(
     let mut d: libc::c_double = 0 as libc::c_int as libc::c_double;
     k = 0 as libc::c_int;
     while k < dim_1 {
-        d
-            += (*x.offset(k as isize) - *y.offset(k as isize))
-                * (*x.offset(k as isize) - *y.offset(k as isize));
+        d += (*x.offset(k as isize) - *y.offset(k as isize))
+            * (*x.offset(k as isize) - *y.offset(k as isize));
         k += 1;
     }
     return sqrt(d);
@@ -44,26 +51,22 @@ unsafe extern "C" fn point_line_distance(
     let mut tmp: libc::c_double = 0.;
     i = 0 as libc::c_int;
     while i < dim as libc::c_int {
-        t
-            += (*p.offset(i as isize) - *q.offset(i as isize))
-                * (*r.offset(i as isize) - *q.offset(i as isize));
-        b
-            += (*r.offset(i as isize) - *q.offset(i as isize))
-                * (*r.offset(i as isize) - *q.offset(i as isize));
+        t += (*p.offset(i as isize) - *q.offset(i as isize))
+            * (*r.offset(i as isize) - *q.offset(i as isize));
+        b += (*r.offset(i as isize) - *q.offset(i as isize))
+            * (*r.offset(i as isize) - *q.offset(i as isize));
         i += 1;
     }
     if b <= 1.0e-16f64 {
         return dist(dim as libc::c_int, p, q);
     }
     t = t / b;
-    if t >= 0 as libc::c_int as libc::c_double && t <= 1 as libc::c_int as libc::c_double
-    {
+    if t >= 0 as libc::c_int as libc::c_double && t <= 1 as libc::c_int as libc::c_double {
         b = 0 as libc::c_int as libc::c_double;
         i = 0 as libc::c_int;
         while i < dim as libc::c_int {
             tmp = *p.offset(i as isize)
-                - (*q.offset(i as isize)
-                    + t * (*r.offset(i as isize) - *q.offset(i as isize)));
+                - (*q.offset(i as isize) + t * (*r.offset(i as isize) - *q.offset(i as isize)));
             b += tmp * tmp;
             i += 1;
         }
@@ -127,7 +130,8 @@ pub unsafe extern "C" fn intersection_angle(
     snorm = sqrt(snorm);
     b = cross(r.as_mut_ptr(), s.as_mut_ptr());
     line_dist_close = (line_segments_distance(p1, p2, q1, q2)
-        <= close * (if rnorm > snorm { rnorm } else { snorm })) as libc::c_int;
+        <= close * (if rnorm > snorm { rnorm } else { snorm }))
+        as libc::c_int;
     if fabs(b) <= epsilon * snorm * rnorm {
         if line_dist_close != 0 {
             return 1 as libc::c_int as libc::c_double;
@@ -141,9 +145,11 @@ pub unsafe extern "C" fn intersection_angle(
     }
     t = cross(qp.as_mut_ptr(), s.as_mut_ptr()) / b;
     u = cross(qp.as_mut_ptr(), r.as_mut_ptr()) / b;
-    if t >= 0 as libc::c_int as libc::c_double && t <= 1 as libc::c_int as libc::c_double
+    if t >= 0 as libc::c_int as libc::c_double
+        && t <= 1 as libc::c_int as libc::c_double
         && u >= 0 as libc::c_int as libc::c_double
-        && u <= 1 as libc::c_int as libc::c_double || line_dist_close != 0
+        && u <= 1 as libc::c_int as libc::c_double
+        || line_dist_close != 0
     {
         let mut rs: libc::c_double = 0 as libc::c_int as libc::c_double;
         if rnorm * snorm < 1.0e-16f64 {
@@ -156,24 +162,20 @@ pub unsafe extern "C" fn intersection_angle(
         }
         res = rs / (rnorm * snorm);
         if *p1.offset(0 as libc::c_int as isize) == *q1.offset(0 as libc::c_int as isize)
-            && *p1.offset(1 as libc::c_int as isize)
-                == *q1.offset(1 as libc::c_int as isize)
+            && *p1.offset(1 as libc::c_int as isize) == *q1.offset(1 as libc::c_int as isize)
         {
-            return res
+            return res;
         } else {
-            if *p1.offset(0 as libc::c_int as isize)
-                == *q2.offset(0 as libc::c_int as isize)
-                && *p1.offset(1 as libc::c_int as isize)
-                    == *q2.offset(1 as libc::c_int as isize)
+            if *p1.offset(0 as libc::c_int as isize) == *q2.offset(0 as libc::c_int as isize)
+                && *p1.offset(1 as libc::c_int as isize) == *q2.offset(1 as libc::c_int as isize)
             {
-                return -res
+                return -res;
             } else {
-                if *p2.offset(0 as libc::c_int as isize)
-                    == *q1.offset(0 as libc::c_int as isize)
+                if *p2.offset(0 as libc::c_int as isize) == *q1.offset(0 as libc::c_int as isize)
                     && *p2.offset(1 as libc::c_int as isize)
                         == *q1.offset(1 as libc::c_int as isize)
                 {
-                    return -res
+                    return -res;
                 } else {
                     if *p2.offset(0 as libc::c_int as isize)
                         == *q2.offset(0 as libc::c_int as isize)

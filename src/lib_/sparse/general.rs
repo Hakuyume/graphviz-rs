@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -14,32 +22,24 @@ extern "C" {
     ) -> !;
     fn rand() -> libc::c_int;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
 }
 pub type size_t = libc::c_ulong;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[no_mangle]
 pub unsafe extern "C" fn drand() -> libc::c_double {
     return rand() as libc::c_double / 2147483647 as libc::c_int as libc::c_double;
 }
 #[no_mangle]
 pub unsafe extern "C" fn irand(mut n: libc::c_int) -> libc::c_int {
-    if n > 1 as libc::c_int {} else {
+    if n > 1 as libc::c_int {
+    } else {
         __assert_fail(
             b"n > 1\0" as *const u8 as *const libc::c_char,
             b"general.c\0" as *const u8 as *const libc::c_char,
             26 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 15],
-                &[libc::c_char; 15],
-            >(b"int irand(int)\0"))
+            (*::std::mem::transmute::<&[u8; 15], &[libc::c_char; 15]>(b"int irand(int)\0"))
                 .as_ptr(),
         );
     }
@@ -56,8 +56,7 @@ pub unsafe extern "C" fn random_permutation(mut n: libc::c_int) -> *mut libc::c_
         return 0 as *mut libc::c_int;
     }
     p = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
@@ -146,7 +145,10 @@ pub unsafe extern "C" fn vector_print(
         if i > 0 as libc::c_int {
             printf(b",\0" as *const u8 as *const libc::c_char);
         }
-        printf(b"%f\0" as *const u8 as *const libc::c_char, *x.offset(i as isize));
+        printf(
+            b"%f\0" as *const u8 as *const libc::c_char,
+            *x.offset(i as isize),
+        );
         i += 1;
     }
     printf(b"}\n\0" as *const u8 as *const libc::c_char);
@@ -168,17 +170,16 @@ pub unsafe extern "C" fn vector_float_take(
     }
     i = 0 as libc::c_int;
     while i < m {
-        if *p.offset(i as isize) < n && *p.offset(i as isize) >= 0 as libc::c_int
-        {} else {
+        if *p.offset(i as isize) < n && *p.offset(i as isize) >= 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"p[i] < n && p[i] >= 0\0" as *const u8 as *const libc::c_char,
                 b"general.c\0" as *const u8 as *const libc::c_char,
                 94 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 59],
-                    &[libc::c_char; 59],
-                >(b"void vector_float_take(int, float *, int, int *, float **)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 59], &[libc::c_char; 59]>(
+                    b"void vector_float_take(int, float *, int, int *, float **)\0",
+                ))
+                .as_ptr(),
             );
         }
         *(*u).offset(i as isize) = *v.offset(*p.offset(i as isize) as isize);
@@ -192,11 +193,9 @@ unsafe extern "C" fn comp_ascend(
     let mut ss1: *const libc::c_double = s1 as *const libc::c_double;
     let mut ss2: *const libc::c_double = s2 as *const libc::c_double;
     if *ss1.offset(0 as libc::c_int as isize) > *ss2.offset(0 as libc::c_int as isize) {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        if *ss1.offset(0 as libc::c_int as isize)
-            < *ss2.offset(0 as libc::c_int as isize)
-        {
+        if *ss1.offset(0 as libc::c_int as isize) < *ss2.offset(0 as libc::c_int as isize) {
             return -(1 as libc::c_int);
         }
     }
@@ -209,11 +208,9 @@ unsafe extern "C" fn comp_ascend_int(
     let mut ss1: *const libc::c_int = s1 as *const libc::c_int;
     let mut ss2: *const libc::c_int = s2 as *const libc::c_int;
     if *ss1.offset(0 as libc::c_int as isize) > *ss2.offset(0 as libc::c_int as isize) {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        if *ss1.offset(0 as libc::c_int as isize)
-            < *ss2.offset(0 as libc::c_int as isize)
-        {
+        if *ss1.offset(0 as libc::c_int as isize) < *ss2.offset(0 as libc::c_int as isize) {
             return -(1 as libc::c_int);
         }
     }
@@ -240,10 +237,7 @@ pub unsafe extern "C" fn vector_ordering(
     ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
-        *u
-            .offset(
-                (2 as libc::c_int * i + 1 as libc::c_int) as isize,
-            ) = i as libc::c_double;
+        *u.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize) = i as libc::c_double;
         *u.offset((2 as libc::c_int * i) as isize) = *v.offset(i as isize);
         i += 1;
     }
@@ -254,19 +248,13 @@ pub unsafe extern "C" fn vector_ordering(
             .wrapping_mul(2 as libc::c_int as libc::c_ulong),
         Some(
             comp_ascend
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
     i = 0 as libc::c_int;
     while i < n {
-        *(*p)
-            .offset(
-                i as isize,
-            ) = *u.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize)
-            as libc::c_int;
+        *(*p).offset(i as isize) =
+            *u.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize) as libc::c_int;
         i += 1;
     }
     free(u as *mut libc::c_void);
@@ -279,10 +267,7 @@ pub unsafe extern "C" fn vector_sort_int(mut n: libc::c_int, mut v: *mut libc::c
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         Some(
             comp_ascend_int
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
 }
@@ -297,10 +282,8 @@ pub unsafe extern "C" fn distance_cropped(
     let mut dist: libc::c_double = 0.0f64;
     k = 0 as libc::c_int;
     while k < dim {
-        dist
-            += (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize))
-                * (*x.offset((i * dim + k) as isize)
-                    - *x.offset((j * dim + k) as isize));
+        dist += (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize))
+            * (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize));
         k += 1;
     }
     dist = sqrt(dist);
@@ -317,10 +300,8 @@ pub unsafe extern "C" fn distance(
     let mut dist: libc::c_double = 0.0f64;
     k = 0 as libc::c_int;
     while k < dim {
-        dist
-            += (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize))
-                * (*x.offset((i * dim + k) as isize)
-                    - *x.offset((j * dim + k) as isize));
+        dist += (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize))
+            * (*x.offset((i * dim + k) as isize) - *x.offset((j * dim + k) as isize));
         k += 1;
     }
     dist = sqrt(dist);
@@ -337,9 +318,8 @@ pub unsafe extern "C" fn point_distance(
     dist = 0 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < dim {
-        dist
-            += (*p1.offset(i as isize) - *p2.offset(i as isize))
-                * (*p1.offset(i as isize) - *p2.offset(i as isize));
+        dist += (*p1.offset(i as isize) - *p2.offset(i as isize))
+            * (*p1.offset(i as isize) - *p2.offset(i as isize));
         i += 1;
     }
     return sqrt(dist);
@@ -352,15 +332,12 @@ pub unsafe extern "C" fn strip_dir(mut s: *mut libc::c_char) -> *mut libc::c_cha
     }
     let mut i: size_t = strlen(s);
     loop {
-        if first as libc::c_int != 0
-            && *s.offset(i as isize) as libc::c_int == '.' as i32
-        {
+        if first as libc::c_int != 0 && *s.offset(i as isize) as libc::c_int == '.' as i32 {
             *s.offset(i as isize) = '\0' as i32 as libc::c_char;
             first = 0 as libc::c_int != 0;
         }
         if *s.offset(i as isize) as libc::c_int == '/' as i32 {
-            return &mut *s
-                .offset(i.wrapping_add(1 as libc::c_int as libc::c_ulong) as isize)
+            return &mut *s.offset(i.wrapping_add(1 as libc::c_int as libc::c_ulong) as isize)
                 as *mut libc::c_char;
         }
         if i == 0 as libc::c_int as libc::c_ulong {
@@ -396,14 +373,12 @@ pub unsafe extern "C" fn scale_to_box(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            min[k
-                as usize] = if *x.offset((i * dim + k) as isize) < min[k as usize] {
+            min[k as usize] = if *x.offset((i * dim + k) as isize) < min[k as usize] {
                 *x.offset((i * dim + k) as isize)
             } else {
                 min[k as usize]
             };
-            max[k
-                as usize] = if *x.offset((i * dim + k) as isize) > max[k as usize] {
+            max[k as usize] = if *x.offset((i * dim + k) as isize) > max[k as usize] {
                 *x.offset((i * dim + k) as isize)
             } else {
                 max[k as usize]
@@ -415,20 +390,17 @@ pub unsafe extern "C" fn scale_to_box(
     if max[0 as libc::c_int as usize] - min[0 as libc::c_int as usize]
         != 0 as libc::c_int as libc::c_double
     {
-        ratio = (xmax - xmin)
-            / (max[0 as libc::c_int as usize] - min[0 as libc::c_int as usize]);
+        ratio = (xmax - xmin) / (max[0 as libc::c_int as usize] - min[0 as libc::c_int as usize]);
     }
     if max[1 as libc::c_int as usize] - min[1 as libc::c_int as usize]
         != 0 as libc::c_int as libc::c_double
     {
         ratio = if ratio
-            < (ymax - ymin)
-                / (max[1 as libc::c_int as usize] - min[1 as libc::c_int as usize])
+            < (ymax - ymin) / (max[1 as libc::c_int as usize] - min[1 as libc::c_int as usize])
         {
             ratio
         } else {
-            (ymax - ymin)
-                / (max[1 as libc::c_int as usize] - min[1 as libc::c_int as usize])
+            (ymax - ymin) / (max[1 as libc::c_int as usize] - min[1 as libc::c_int as usize])
         };
     }
     min0[0 as libc::c_int as usize] = xmin;
@@ -438,11 +410,8 @@ pub unsafe extern "C" fn scale_to_box(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            *x
-                .offset(
-                    (i * dim + k) as isize,
-                ) = min0[k as usize]
-                + (*x.offset((i * dim + k) as isize) - min[k as usize]) * ratio;
+            *x.offset((i * dim + k) as isize) =
+                min0[k as usize] + (*x.offset((i * dim + k) as isize) - min[k as usize]) * ratio;
             k += 1;
         }
         i += 1;

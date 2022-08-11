@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -21,11 +29,7 @@ extern "C" {
         __function: *const libc::c_char,
     ) -> !;
     fn ftell(__stream: *mut FILE) -> libc::c_long;
-    fn fseek(
-        __stream: *mut FILE,
-        __off: libc::c_long,
-        __whence: libc::c_int,
-    ) -> libc::c_int;
+    fn fseek(__stream: *mut FILE, __off: libc::c_long, __whence: libc::c_int) -> libc::c_int;
     fn fread(
         _: *mut libc::c_void,
         _: libc::c_ulong,
@@ -228,9 +232,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -244,25 +246,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -275,9 +270,7 @@ pub type gvloadimage_engine_t = gvloadimage_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvloadimage_engine_s {
-    pub loadimage: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
-    >,
+    pub loadimage: Option<unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> ()>,
 }
 pub type usershape_t = usershape_s;
 #[derive(Copy, Clone)]
@@ -298,7 +291,7 @@ pub struct usershape_s {
     pub dpi: libc::c_int,
     pub data: *mut libc::c_void,
     pub datasize: size_t,
-    pub datafree: Option::<unsafe extern "C" fn(*mut usershape_t) -> ()>,
+    pub datafree: Option<unsafe extern "C" fn(*mut usershape_t) -> ()>,
 }
 pub type imagetype_t = libc::c_uint;
 pub const FT_TIFF: imagetype_t = 13;
@@ -420,7 +413,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -568,16 +562,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -593,18 +581,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -612,16 +594,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -663,9 +638,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -695,13 +669,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -734,26 +703,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -762,29 +723,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -792,8 +745,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -827,7 +780,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -853,7 +806,7 @@ pub struct gvplugin_installed_t {
 pub type cairo_t = _cairo;
 pub type cairo_surface_t = _cairo_surface;
 pub type cairo_pattern_t = _cairo_pattern;
-pub type cairo_destroy_func_t = Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>;
+pub type cairo_destroy_func_t = Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>;
 pub type _cairo_status = libc::c_uint;
 pub const CAIRO_STATUS_LAST_STATUS: _cairo_status = 44;
 pub const CAIRO_STATUS_DWRITE_ERROR: _cairo_status = 43;
@@ -936,8 +889,8 @@ unsafe extern "C" fn gdk_set_mimedata_from_file(
     let mut fp: *mut FILE = 0 as *mut FILE;
     let mut data: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
     let mut len: libc::c_long = 0;
-    let mut id_prefix: *const libc::c_char = b"gvloadimage_gdk-\0" as *const u8
-        as *const libc::c_char;
+    let mut id_prefix: *const libc::c_char =
+        b"gvloadimage_gdk-\0" as *const u8 as *const libc::c_char;
     let mut unique_id: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut unique_id_len: size_t = 0;
     fp = fopen(file, b"rb\0" as *const u8 as *const libc::c_char);
@@ -993,10 +946,7 @@ unsafe extern "C" fn gdk_set_mimedata_from_file(
         );
     }
 }
-unsafe extern "C" fn gdk_set_mimedata(
-    mut image: *mut cairo_surface_t,
-    mut us: *mut usershape_t,
-) {
+unsafe extern "C" fn gdk_set_mimedata(mut image: *mut cairo_surface_t, mut us: *mut usershape_t) {
     match (*us).type_0 as libc::c_uint {
         3 => {
             gdk_set_mimedata_from_file(
@@ -1026,46 +976,44 @@ unsafe extern "C" fn gdk_loadimage(
     let mut image: *mut GdkPixbuf = 0 as *mut GdkPixbuf;
     let mut cairo_image: *mut cairo_surface_t = 0 as *mut cairo_surface_t;
     let mut pattern: *mut cairo_pattern_t = 0 as *mut cairo_pattern_t;
-    if !job.is_null() {} else {
+    if !job.is_null() {
+    } else {
         __assert_fail(
             b"job\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_gdk.c\0" as *const u8 as *const libc::c_char,
             115 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_gdk.c\0" as *const u8 as *const libc::c_char,
             116 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvloadimage_gdk.c\0" as *const u8 as *const libc::c_char,
             117 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if !((*us).data).is_null() {
-        if (*us).datafree
-            == Some(gdk_freeimage as unsafe extern "C" fn(*mut usershape_t) -> ())
-        {
+        if (*us).datafree == Some(gdk_freeimage as unsafe extern "C" fn(*mut usershape_t) -> ()) {
             cairo_image = cairo_surface_reference((*us).data as *mut cairo_surface_t);
         } else {
             ((*us).datafree).expect("non-null function pointer")(us);
@@ -1098,17 +1046,17 @@ unsafe extern "C" fn gdk_loadimage(
             pattern = cairo_get_source(cr);
             if cairo_pattern_get_type(pattern) as libc::c_uint
                 == CAIRO_PATTERN_TYPE_SURFACE as libc::c_int as libc::c_uint
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"cairo_pattern_get_type (pattern) == CAIRO_PATTERN_TYPE_SURFACE\0"
-                        as *const u8 as *const libc::c_char,
+                    b"cairo_pattern_get_type (pattern) == CAIRO_PATTERN_TYPE_SURFACE\0" as *const u8
+                        as *const libc::c_char,
                     b"gvloadimage_gdk.c\0" as *const u8 as *const libc::c_char,
                     168 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 55],
-                        &[libc::c_char; 55],
-                    >(b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                        b"cairo_surface_t *gdk_loadimage(GVJ_t *, usershape_t *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             cairo_pattern_get_surface(pattern, &mut cairo_image);
@@ -1118,9 +1066,7 @@ unsafe extern "C" fn gdk_loadimage(
             let ref mut fresh2 = (*us).data;
             *fresh2 = cairo_surface_reference(cairo_image) as *mut libc::c_void;
             let ref mut fresh3 = (*us).datafree;
-            *fresh3 = Some(
-                gdk_freeimage as unsafe extern "C" fn(*mut usershape_t) -> (),
-            );
+            *fresh3 = Some(gdk_freeimage as unsafe extern "C" fn(*mut usershape_t) -> ());
         }
         gvusershape_file_release(us);
     }
@@ -1159,12 +1105,7 @@ static mut engine_gdk: gvloadimage_engine_t = unsafe {
         let mut init = gvloadimage_engine_s {
             loadimage: Some(
                 gdk_loadimage_cairo
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *mut usershape_t,
-                        boxf,
-                        bool,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
             ),
         };
         init
@@ -1178,8 +1119,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_BMP_CAIRO as libc::c_int,
                 type_0: b"bmp:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1189,8 +1130,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_JPEG_CAIRO as libc::c_int,
                 type_0: b"jpe:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 2 as libc::c_int,
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1200,8 +1141,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_JPEG_CAIRO as libc::c_int,
                 type_0: b"jpg:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 2 as libc::c_int,
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1211,8 +1152,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_JPEG_CAIRO as libc::c_int,
                 type_0: b"jpeg:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 2 as libc::c_int,
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1222,8 +1163,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_PNG_CAIRO as libc::c_int,
                 type_0: b"png:cairo\0" as *const u8 as *const libc::c_char,
                 quality: -(1 as libc::c_int),
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init
@@ -1233,8 +1174,8 @@ pub static mut gvloadimage_gdk_types: [gvplugin_installed_t; 7] = unsafe {
                 id: FORMAT_ICO_CAIRO as libc::c_int,
                 type_0: b"ico:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &engine_gdk as *const gvloadimage_engine_t
-                    as *mut gvloadimage_engine_t as *mut libc::c_void,
+                engine: &engine_gdk as *const gvloadimage_engine_t as *mut gvloadimage_engine_t
+                    as *mut libc::c_void,
                 features: 0 as *const libc::c_void as *mut libc::c_void,
             };
             init

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -7,11 +15,7 @@ extern "C" {
     pub type _IO_marker;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn fabs(_: libc::c_double) -> libc::c_double;
     fn __assert_fail(
         __assertion: *const libc::c_char,
@@ -24,22 +28,13 @@ extern "C" {
     fn gmalloc(_: size_t) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn BinaryHeap_new(
-        cmp_0: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int,
-        >,
+        cmp_0: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int>,
     ) -> BinaryHeap;
-    fn BinaryHeap_delete(
-        h: BinaryHeap,
-        del: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    );
+    fn BinaryHeap_delete(h: BinaryHeap, del: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>);
     fn BinaryHeap_insert(h: BinaryHeap, item: *mut libc::c_void) -> libc::c_int;
     fn BinaryHeap_extract_min(h: BinaryHeap) -> *mut libc::c_void;
     fn BinaryHeap_get_item(h: BinaryHeap, id: libc::c_int) -> *mut libc::c_void;
-    fn BinaryHeap_reset(
-        h: BinaryHeap,
-        id: libc::c_int,
-        item: *mut libc::c_void,
-    ) -> size_t;
+    fn BinaryHeap_reset(h: BinaryHeap, id: libc::c_int, item: *mut libc::c_void) -> size_t;
 }
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -132,9 +127,7 @@ pub struct BinaryHeap_struct {
     pub id_to_pos: *mut size_t,
     pub pos_to_id: *mut libc::c_int,
     pub id_stack: IntStack,
-    pub cmp: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int,
-    >,
+    pub cmp: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int>,
 }
 pub type IntStack = *mut IntStack_struct;
 #[derive(Copy, Clone)]
@@ -189,9 +182,7 @@ pub unsafe extern "C" fn SparseMatrix_sort(mut A: SparseMatrix) -> SparseMatrix 
     return A;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_make_undirected(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_make_undirected(mut A: SparseMatrix) -> SparseMatrix {
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     B = SparseMatrix_symmetrize(A, 0 as libc::c_int != 0);
     (*B).property = (*B).property | MATRIX_UNDIRECTED as libc::c_int;
@@ -214,16 +205,16 @@ pub unsafe extern "C" fn SparseMatrix_transpose(mut A: SparseMatrix) -> SparseMa
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
-    if (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             72 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"SparseMatrix SparseMatrix_transpose(SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"SparseMatrix SparseMatrix_transpose(SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
     B = SparseMatrix_new(n, m, nz, type_0, format);
@@ -239,8 +230,7 @@ pub unsafe extern "C" fn SparseMatrix_transpose(mut A: SparseMatrix) -> SparseMa
     while i < m {
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-            let ref mut fresh0 = *ib
-                .offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize);
+            let ref mut fresh0 = *ib.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize);
             *fresh0 += 1;
             j += 1;
         }
@@ -277,18 +267,13 @@ pub unsafe extern "C" fn SparseMatrix_transpose(mut A: SparseMatrix) -> SparseMa
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     *jb.offset(*ib.offset(*ja.offset(j as isize) as isize) as isize) = i;
-                    *b_0
-                        .offset(
-                            (2 as libc::c_int
-                                * *ib.offset(*ja.offset(j as isize) as isize)) as isize,
-                        ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                    *b_0
-                        .offset(
-                            (2 as libc::c_int
-                                * *ib.offset(*ja.offset(j as isize) as isize)
-                                + 1 as libc::c_int) as isize,
-                        ) = *a_0
-                        .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                    *b_0.offset(
+                        (2 as libc::c_int * *ib.offset(*ja.offset(j as isize) as isize)) as isize,
+                    ) = *a_0.offset((2 as libc::c_int * j) as isize);
+                    *b_0.offset(
+                        (2 as libc::c_int * *ib.offset(*ja.offset(j as isize) as isize)
+                            + 1 as libc::c_int) as isize,
+                    ) = *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                     let ref mut fresh3 = *ib.offset(*ja.offset(j as isize) as isize);
                     *fresh3 += 1;
                     j += 1;
@@ -364,9 +349,7 @@ pub unsafe extern "C" fn SparseMatrix_symmetrize(
     return A;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_symmetrize_nodiag(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_symmetrize_nodiag(mut A: SparseMatrix) -> SparseMatrix {
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
         B = SparseMatrix_copy(A);
@@ -402,16 +385,16 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
     let mut res: libc::c_int = 0 as libc::c_int;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
-    if (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             184 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 51],
-                &[libc::c_char; 51],
-            >(b"int SparseMatrix_is_symmetric(SparseMatrix, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 51], &[libc::c_char; 51]>(
+                b"int SparseMatrix_is_symmetric(SparseMatrix, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*A).property & MATRIX_SYMMETRIC as libc::c_int != 0 {
@@ -434,9 +417,9 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
     ib = (*B).ia;
     jb = (*B).ja;
     m = (*A).m;
-    mask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t),
-    ) as *mut libc::c_int;
+    mask =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t))
+            as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *mask.offset(i as isize) = -(1 as libc::c_int);
@@ -490,10 +473,9 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
                         while j < *ib.offset((i + 1 as libc::c_int) as isize) {
                             if fabs(
                                 *b.offset(j as isize)
-                                    - *a
-                                        .offset(
-                                            *mask.offset(*jb.offset(j as isize) as isize) as isize,
-                                        ),
+                                    - *a.offset(
+                                        *mask.offset(*jb.offset(j as isize) as isize) as isize
+                                    ),
                             ) > 0.0000001f64
                             {
                                 current_block = 16769872213879885304;
@@ -556,25 +538,24 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
                         while j < *ib.offset((i + 1 as libc::c_int) as isize) {
                             if fabs(
                                 *b_0.offset((2 as libc::c_int * j) as isize)
-                                    - *a_0
-                                        .offset(
-                                            (2 as libc::c_int
-                                                * *mask.offset(*jb.offset(j as isize) as isize)) as isize,
-                                        ),
+                                    - *a_0.offset(
+                                        (2 as libc::c_int
+                                            * *mask.offset(*jb.offset(j as isize) as isize))
+                                            as isize,
+                                    ),
                             ) > 0.0000001f64
                             {
                                 current_block = 16769872213879885304;
                                 break 's_252;
                             }
                             if fabs(
-                                *b_0
-                                    .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                                    - *a_0
-                                        .offset(
-                                            (2 as libc::c_int
-                                                * *mask.offset(*jb.offset(j as isize) as isize)
-                                                + 1 as libc::c_int) as isize,
-                                        ),
+                                *b_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
+                                    - *a_0.offset(
+                                        (2 as libc::c_int
+                                            * *mask.offset(*jb.offset(j as isize) as isize)
+                                            + 1 as libc::c_int)
+                                            as isize,
+                                    ),
                             ) > 0.0000001f64
                             {
                                 current_block = 16769872213879885304;
@@ -610,9 +591,7 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
                 }
                 j = *ib.offset(i as isize);
                 while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*jb.offset(j as isize) as isize)
-                        < *ia.offset(i as isize)
-                    {
+                    if *mask.offset(*jb.offset(j as isize) as isize) < *ia.offset(i as isize) {
                         current_block = 16769872213879885304;
                         break 's_348;
                     }
@@ -621,10 +600,7 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
                 j = *ib.offset(i as isize);
                 while j < *ib.offset((i + 1 as libc::c_int) as isize) {
                     if *bi.offset(j as isize)
-                        != *ai
-                            .offset(
-                                *mask.offset(*jb.offset(j as isize) as isize) as isize,
-                            )
+                        != *ai.offset(*mask.offset(*jb.offset(j as isize) as isize) as isize)
                     {
                         current_block = 16769872213879885304;
                         break 's_348;
@@ -655,9 +631,7 @@ pub unsafe extern "C" fn SparseMatrix_is_symmetric(
                 }
                 j = *ib.offset(i as isize);
                 while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*jb.offset(j as isize) as isize)
-                        < *ia.offset(i as isize)
-                    {
+                    if *mask.offset(*jb.offset(j as isize) as isize) < *ia.offset(i as isize) {
                         current_block = 16769872213879885304;
                         break 's_430;
                     }
@@ -700,8 +674,7 @@ unsafe extern "C" fn SparseMatrix_init(
     mut format: libc::c_int,
 ) -> SparseMatrix {
     let mut A: SparseMatrix = 0 as *mut SparseMatrix_struct;
-    A = gmalloc(::std::mem::size_of::<SparseMatrix_struct>() as libc::c_ulong)
-        as SparseMatrix;
+    A = gmalloc(::std::mem::size_of::<SparseMatrix_struct>() as libc::c_ulong) as SparseMatrix;
     (*A).m = m;
     (*A).n = n;
     (*A).nz = 0 as libc::c_int;
@@ -733,10 +706,7 @@ unsafe extern "C" fn SparseMatrix_init(
     (*A).property &= !(MATRIX_HERMITIAN as libc::c_int);
     return A;
 }
-unsafe extern "C" fn SparseMatrix_alloc(
-    mut A: SparseMatrix,
-    mut nz: libc::c_int,
-) -> SparseMatrix {
+unsafe extern "C" fn SparseMatrix_alloc(mut A: SparseMatrix, mut nz: libc::c_int) -> SparseMatrix {
     let mut format: libc::c_int = (*A).format;
     let mut nz_t: size_t = nz as size_t;
     let ref mut fresh12 = (*A).a;
@@ -744,24 +714,21 @@ unsafe extern "C" fn SparseMatrix_alloc(
     match format {
         2 => {
             let ref mut fresh13 = (*A).ia;
-            *fresh13 = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
-            ) as *mut libc::c_int;
+            *fresh13 =
+                gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t))
+                    as *mut libc::c_int;
             let ref mut fresh14 = (*A).ja;
-            *fresh14 = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
-            ) as *mut libc::c_int;
+            *fresh14 =
+                gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t))
+                    as *mut libc::c_int;
             let ref mut fresh15 = (*A).a;
             *fresh15 = gmalloc(((*A).size as libc::c_ulong).wrapping_mul(nz_t));
         }
         1 | 0 | _ => {
             let ref mut fresh16 = (*A).ja;
-            *fresh16 = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
-            ) as *mut libc::c_int;
+            *fresh16 =
+                gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t))
+                    as *mut libc::c_int;
             if (*A).size > 0 as libc::c_int && nz_t > 0 as libc::c_int as libc::c_ulong {
                 let ref mut fresh17 = (*A).a;
                 *fresh17 = gmalloc(((*A).size as libc::c_ulong).wrapping_mul(nz_t));
@@ -782,22 +749,17 @@ unsafe extern "C" fn SparseMatrix_realloc(
             let ref mut fresh18 = (*A).ia;
             *fresh18 = grealloc(
                 (*A).ia as *mut libc::c_void,
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t),
             ) as *mut libc::c_int;
             let ref mut fresh19 = (*A).ja;
             *fresh19 = grealloc(
                 (*A).ja as *mut libc::c_void,
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t),
             ) as *mut libc::c_int;
             if (*A).size > 0 as libc::c_int {
                 if !((*A).a).is_null() {
                     let ref mut fresh20 = (*A).a;
-                    *fresh20 = grealloc(
-                        (*A).a,
-                        ((*A).size as libc::c_ulong).wrapping_mul(nz_t),
-                    );
+                    *fresh20 = grealloc((*A).a, ((*A).size as libc::c_ulong).wrapping_mul(nz_t));
                 } else {
                     let ref mut fresh21 = (*A).a;
                     *fresh21 = gmalloc(((*A).size as libc::c_ulong).wrapping_mul(nz_t));
@@ -808,16 +770,12 @@ unsafe extern "C" fn SparseMatrix_realloc(
             let ref mut fresh22 = (*A).ja;
             *fresh22 = grealloc(
                 (*A).ja as *mut libc::c_void,
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz_t),
             ) as *mut libc::c_int;
             if (*A).size > 0 as libc::c_int {
                 if !((*A).a).is_null() {
                     let ref mut fresh23 = (*A).a;
-                    *fresh23 = grealloc(
-                        (*A).a,
-                        ((*A).size as libc::c_ulong).wrapping_mul(nz_t),
-                    );
+                    *fresh23 = grealloc((*A).a, ((*A).size as libc::c_ulong).wrapping_mul(nz_t));
                 } else {
                     let ref mut fresh24 = (*A).a;
                     *fresh24 = gmalloc(((*A).size as libc::c_ulong).wrapping_mul(nz_t));
@@ -871,10 +829,7 @@ pub unsafe extern "C" fn SparseMatrix_delete(mut A: SparseMatrix) {
     free((*A).a);
     free(A as *mut libc::c_void);
 }
-unsafe extern "C" fn SparseMatrix_print_csr(
-    mut c: *mut libc::c_char,
-    mut A: SparseMatrix,
-) {
+unsafe extern "C" fn SparseMatrix_print_csr(mut c: *mut libc::c_char, mut A: SparseMatrix) {
     let mut ia: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut ja: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut a: *mut libc::c_double = 0 as *mut libc::c_double;
@@ -882,19 +837,22 @@ unsafe extern "C" fn SparseMatrix_print_csr(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut m: libc::c_int = (*A).m;
-    if (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             421 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void SparseMatrix_print_csr(char *, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void SparseMatrix_print_csr(char *, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
-    printf(b"%s\n SparseArray[{\0" as *const u8 as *const libc::c_char, c);
+    printf(
+        b"%s\n SparseArray[{\0" as *const u8 as *const libc::c_char,
+        c,
+    );
     ia = (*A).ia;
     ja = (*A).ja;
     a = (*A).a as *mut libc::c_double;
@@ -984,31 +942,35 @@ unsafe extern "C" fn SparseMatrix_print_csr(
         16 => return,
         _ => return,
     }
-    printf(b"},{%d, %d}]\n\0" as *const u8 as *const libc::c_char, m, (*A).n);
+    printf(
+        b"},{%d, %d}]\n\0" as *const u8 as *const libc::c_char,
+        m,
+        (*A).n,
+    );
 }
-unsafe extern "C" fn SparseMatrix_print_coord(
-    mut c: *mut libc::c_char,
-    mut A: SparseMatrix,
-) {
+unsafe extern "C" fn SparseMatrix_print_coord(mut c: *mut libc::c_char, mut A: SparseMatrix) {
     let mut ia: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut ja: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut a: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut ai: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut i: libc::c_int = 0;
     let mut m: libc::c_int = (*A).m;
-    if (*A).format == FORMAT_COORD as libc::c_int {} else {
+    if (*A).format == FORMAT_COORD as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_COORD\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             482 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"void SparseMatrix_print_coord(char *, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"void SparseMatrix_print_coord(char *, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
-    printf(b"%s\n SparseArray[{\0" as *const u8 as *const libc::c_char, c);
+    printf(
+        b"%s\n SparseArray[{\0" as *const u8 as *const libc::c_char,
+        c,
+    );
     ia = (*A).ia;
     ja = (*A).ja;
     a = (*A).a as *mut libc::c_double;
@@ -1083,13 +1045,14 @@ unsafe extern "C" fn SparseMatrix_print_coord(
         16 => return,
         _ => return,
     }
-    printf(b"},{%d, %d}]\n\0" as *const u8 as *const libc::c_char, m, (*A).n);
+    printf(
+        b"},{%d, %d}]\n\0" as *const u8 as *const libc::c_char,
+        m,
+        (*A).n,
+    );
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_print(
-    mut c: *mut libc::c_char,
-    mut A: SparseMatrix,
-) {
+pub unsafe extern "C" fn SparseMatrix_print(mut c: *mut libc::c_char, mut A: SparseMatrix) {
     match (*A).format {
         1 => {
             SparseMatrix_print_csr(c, A);
@@ -1099,11 +1062,10 @@ pub unsafe extern "C" fn SparseMatrix_print(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 537 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 46],
-                    &[libc::c_char; 46],
-                >(b"void SparseMatrix_print(char *, SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                    b"void SparseMatrix_print(char *, SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
         2 => {
@@ -1114,11 +1076,10 @@ pub unsafe extern "C" fn SparseMatrix_print(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 544 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 46],
-                    &[libc::c_char; 46],
-                >(b"void SparseMatrix_print(char *, SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                    b"void SparseMatrix_print(char *, SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
     };
@@ -1368,11 +1329,10 @@ pub unsafe extern "C" fn SparseMatrix_export(mut f: *mut FILE, mut A: SparseMatr
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 690 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 47],
-                    &[libc::c_char; 47],
-                >(b"void SparseMatrix_export(FILE *, SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                    b"void SparseMatrix_export(FILE *, SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
         2 => {
@@ -1383,32 +1343,29 @@ pub unsafe extern "C" fn SparseMatrix_export(mut f: *mut FILE, mut A: SparseMatr
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 697 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 47],
-                    &[libc::c_char; 47],
-                >(b"void SparseMatrix_export(FILE *, SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                    b"void SparseMatrix_export(FILE *, SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
     };
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_from_coordinate_format(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_from_coordinate_format(mut A: SparseMatrix) -> SparseMatrix {
     let mut irn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut jcn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut a: *mut libc::c_void = (*A).a;
-    if (*A).format == FORMAT_COORD as libc::c_int {} else {
+    if (*A).format == FORMAT_COORD as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_COORD\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             708 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"SparseMatrix SparseMatrix_from_coordinate_format(SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"SparseMatrix SparseMatrix_from_coordinate_format(SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*A).format != FORMAT_COORD as libc::c_int {
@@ -1434,18 +1391,16 @@ pub unsafe extern "C" fn SparseMatrix_from_coordinate_format_not_compacted(
     let mut irn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut jcn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut a: *mut libc::c_void = (*A).a;
-    if (*A).format == FORMAT_COORD as libc::c_int {} else {
+    if (*A).format == FORMAT_COORD as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_COORD\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             723 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 77],
-                &[libc::c_char; 77],
-            >(
+            (*::std::mem::transmute::<&[u8; 77], &[libc::c_char; 77]>(
                 b"SparseMatrix SparseMatrix_from_coordinate_format_not_compacted(SparseMatrix)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     if (*A).format != FORMAT_COORD as libc::c_int {
@@ -1483,7 +1438,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
     let mut ai: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut vali: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut i: libc::c_int = 0;
-    if m > 0 as libc::c_int && n > 0 as libc::c_int && nz >= 0 as libc::c_int {} else {
+    if m > 0 as libc::c_int && n > 0 as libc::c_int && nz >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"m > 0 && n > 0 && nz >= 0\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -1501,7 +1457,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
         return 0 as SparseMatrix;
     }
     A = SparseMatrix_general_new(m, n, nz, type_0, sz, FORMAT_CSR as libc::c_int);
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -1550,8 +1507,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
                     );
                     return 0 as SparseMatrix;
                 }
-                let ref mut fresh25 = *ia
-                    .offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
+                let ref mut fresh25 =
+                    *ia.offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
                 *fresh25 += 1;
                 i += 1;
             }
@@ -1562,10 +1519,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
             }
             i = 0 as libc::c_int;
             while i < nz {
-                *a
-                    .offset(
-                        *ia.offset(*irn.offset(i as isize) as isize) as isize,
-                    ) = *val.offset(i as isize);
+                *a.offset(*ia.offset(*irn.offset(i as isize) as isize) as isize) =
+                    *val.offset(i as isize);
                 let ref mut fresh26 = *ia.offset(*irn.offset(i as isize) as isize);
                 let fresh27 = *fresh26;
                 *fresh26 = *fresh26 + 1;
@@ -1603,8 +1558,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
                     );
                     return 0 as SparseMatrix;
                 }
-                let ref mut fresh28 = *ia
-                    .offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
+                let ref mut fresh28 =
+                    *ia.offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
                 *fresh28 += 1;
                 i += 1;
             }
@@ -1617,18 +1572,15 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
             while i < nz {
                 let fresh29 = val;
                 val = val.offset(1);
-                *a
-                    .offset(
-                        (2 as libc::c_int * *ia.offset(*irn.offset(i as isize) as isize))
-                            as isize,
-                    ) = *fresh29;
+                *a.offset(
+                    (2 as libc::c_int * *ia.offset(*irn.offset(i as isize) as isize)) as isize,
+                ) = *fresh29;
                 let fresh30 = val;
                 val = val.offset(1);
-                *a
-                    .offset(
-                        (2 as libc::c_int * *ia.offset(*irn.offset(i as isize) as isize)
-                            + 1 as libc::c_int) as isize,
-                    ) = *fresh30;
+                *a.offset(
+                    (2 as libc::c_int * *ia.offset(*irn.offset(i as isize) as isize)
+                        + 1 as libc::c_int) as isize,
+                ) = *fresh30;
                 let ref mut fresh31 = *ia.offset(*irn.offset(i as isize) as isize);
                 let fresh32 = *fresh31;
                 *fresh31 = *fresh31 + 1;
@@ -1666,8 +1618,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
                     );
                     return 0 as SparseMatrix;
                 }
-                let ref mut fresh33 = *ia
-                    .offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
+                let ref mut fresh33 =
+                    *ia.offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
                 *fresh33 += 1;
                 i += 1;
             }
@@ -1678,10 +1630,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
             }
             i = 0 as libc::c_int;
             while i < nz {
-                *ai
-                    .offset(
-                        *ia.offset(*irn.offset(i as isize) as isize) as isize,
-                    ) = *vali.offset(i as isize);
+                *ai.offset(*ia.offset(*irn.offset(i as isize) as isize) as isize) =
+                    *vali.offset(i as isize);
                 let ref mut fresh34 = *ia.offset(*irn.offset(i as isize) as isize);
                 let fresh35 = *fresh34;
                 *fresh34 = *fresh34 + 1;
@@ -1717,8 +1667,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
                     );
                     return 0 as SparseMatrix;
                 }
-                let ref mut fresh36 = *ia
-                    .offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
+                let ref mut fresh36 =
+                    *ia.offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
                 *fresh36 += 1;
                 i += 1;
             }
@@ -1764,8 +1714,8 @@ unsafe extern "C" fn SparseMatrix_from_coordinate_arrays_internal(
                     );
                     return 0 as SparseMatrix;
                 }
-                let ref mut fresh39 = *ia
-                    .offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
+                let ref mut fresh39 =
+                    *ia.offset((*irn.offset(i as isize) + 1 as libc::c_int) as isize);
                 *fresh39 += 1;
                 i += 1;
             }
@@ -1881,41 +1831,41 @@ pub unsafe extern "C" fn SparseMatrix_add(
     let mut j: libc::c_int = 0;
     let mut nz: libc::c_int = 0;
     let mut nzmax: libc::c_int = 0;
-    if !A.is_null() && !B.is_null() {} else {
+    if !A.is_null() && !B.is_null() {
+    } else {
         __assert_fail(
             b"A && B\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             877 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == B->format && A->format == FORMAT_CSR\0" as *const u8
                 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             878 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*A).type_0 == (*B).type_0 {} else {
+    if (*A).type_0 == (*B).type_0 {
+    } else {
         __assert_fail(
             b"A->type == B->type\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             879 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"SparseMatrix SparseMatrix_add(SparseMatrix, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
     m = (*A).m;
@@ -1929,8 +1879,7 @@ pub unsafe extern "C" fn SparseMatrix_add(
         ic = (*C).ia;
         jc = (*C).ja;
         mask = gmalloc(
-            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_mul(n as size_t),
+            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
         ) as *mut libc::c_int;
         i = 0 as libc::c_int;
         while i < n {
@@ -1956,18 +1905,14 @@ pub unsafe extern "C" fn SparseMatrix_add(
                     }
                     j = *ib.offset(i as isize);
                     while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*jb.offset(j as isize) as isize)
-                            < *ic.offset(i as isize)
-                        {
+                        if *mask.offset(*jb.offset(j as isize) as isize) < *ic.offset(i as isize) {
                             *jc.offset(nz as isize) = *jb.offset(j as isize);
                             let fresh42 = nz;
                             nz = nz + 1;
                             *c.offset(fresh42 as isize) = *b.offset(j as isize);
                         } else {
-                            *c
-                                .offset(
-                                    *mask.offset(*jb.offset(j as isize) as isize) as isize,
-                                ) += *b.offset(j as isize);
+                            *c.offset(*mask.offset(*jb.offset(j as isize) as isize) as isize) +=
+                                *b.offset(j as isize);
                         }
                         j += 1;
                     }
@@ -1985,48 +1930,31 @@ pub unsafe extern "C" fn SparseMatrix_add(
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                         *mask.offset(*ja.offset(j as isize) as isize) = nz;
                         *jc.offset(nz as isize) = *ja.offset(j as isize);
-                        *c_0
-                            .offset(
-                                (2 as libc::c_int * nz) as isize,
-                            ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                        *c_0
-                            .offset(
-                                (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                            ) = *a_0
-                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                        *c_0.offset((2 as libc::c_int * nz) as isize) =
+                            *a_0.offset((2 as libc::c_int * j) as isize);
+                        *c_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                            *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                         nz += 1;
                         j += 1;
                     }
                     j = *ib.offset(i as isize);
                     while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*jb.offset(j as isize) as isize)
-                            < *ic.offset(i as isize)
-                        {
+                        if *mask.offset(*jb.offset(j as isize) as isize) < *ic.offset(i as isize) {
                             *jc.offset(nz as isize) = *jb.offset(j as isize);
-                            *c_0
-                                .offset(
-                                    (2 as libc::c_int * nz) as isize,
-                                ) = *b_0.offset((2 as libc::c_int * j) as isize);
-                            *c_0
-                                .offset(
-                                    (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                                ) = *b_0
-                                .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                            *c_0.offset((2 as libc::c_int * nz) as isize) =
+                                *b_0.offset((2 as libc::c_int * j) as isize);
+                            *c_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                                *b_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                             nz += 1;
                         } else {
-                            *c_0
-                                .offset(
-                                    (2 as libc::c_int
-                                        * *mask.offset(*jb.offset(j as isize) as isize)) as isize,
-                                ) += *b_0.offset((2 as libc::c_int * j) as isize);
-                            *c_0
-                                .offset(
-                                    (2 as libc::c_int
-                                        * *mask.offset(*jb.offset(j as isize) as isize)
-                                        + 1 as libc::c_int) as isize,
-                                )
-                                += *b_0
-                                    .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                            *c_0.offset(
+                                (2 as libc::c_int * *mask.offset(*jb.offset(j as isize) as isize))
+                                    as isize,
+                            ) += *b_0.offset((2 as libc::c_int * j) as isize);
+                            *c_0.offset(
+                                (2 as libc::c_int * *mask.offset(*jb.offset(j as isize) as isize)
+                                    + 1 as libc::c_int) as isize,
+                            ) += *b_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                         }
                         j += 1;
                     }
@@ -2050,17 +1978,13 @@ pub unsafe extern "C" fn SparseMatrix_add(
                     }
                     j = *ib.offset(i as isize);
                     while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*jb.offset(j as isize) as isize)
-                            < *ic.offset(i as isize)
-                        {
+                        if *mask.offset(*jb.offset(j as isize) as isize) < *ic.offset(i as isize) {
                             *jc.offset(nz as isize) = *jb.offset(j as isize);
                             *c_1.offset(nz as isize) = *b_1.offset(j as isize);
                             nz += 1;
                         } else {
-                            *c_1
-                                .offset(
-                                    *mask.offset(*jb.offset(j as isize) as isize) as isize,
-                                ) += *b_1.offset(j as isize);
+                            *c_1.offset(*mask.offset(*jb.offset(j as isize) as isize) as isize) +=
+                                *b_1.offset(j as isize);
                         }
                         j += 1;
                     }
@@ -2080,9 +2004,7 @@ pub unsafe extern "C" fn SparseMatrix_add(
                     }
                     j = *ib.offset(i as isize);
                     while j < *ib.offset((i + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*jb.offset(j as isize) as isize)
-                            < *ic.offset(i as isize)
-                        {
+                        if *mask.offset(*jb.offset(j as isize) as isize) < *ic.offset(i as isize) {
                             *jc.offset(nz as isize) = *jb.offset(j as isize);
                             nz += 1;
                         }
@@ -2113,32 +2035,28 @@ unsafe extern "C" fn SparseMatrix_multiply_dense1(
     let mut m: libc::c_int = 0;
     let mut a: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut u: *mut libc::c_double = 0 as *mut libc::c_double;
-    if (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1007 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 74],
-                &[libc::c_char; 74],
-            >(
+            (*::std::mem::transmute::<&[u8; 74], &[libc::c_char; 74]>(
                 b"void SparseMatrix_multiply_dense1(SparseMatrix, double *, double **, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1008 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 74],
-                &[libc::c_char; 74],
-            >(
+            (*::std::mem::transmute::<&[u8; 74], &[libc::c_char; 74]>(
                 b"void SparseMatrix_multiply_dense1(SparseMatrix, double *, double **, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     a = (*A).a as *mut libc::c_double;
@@ -2164,9 +2082,8 @@ unsafe extern "C" fn SparseMatrix_multiply_dense1(
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             k = 0 as libc::c_int;
             while k < dim {
-                *u.offset((i * dim + k) as isize)
-                    += *a.offset(j as isize)
-                        * *v.offset((*ja.offset(j as isize) * dim + k) as isize);
+                *u.offset((i * dim + k) as isize) +=
+                    *a.offset(j as isize) * *v.offset((*ja.offset(j as isize) * dim + k) as isize);
                 k += 1;
             }
             j += 1;
@@ -2198,31 +2115,31 @@ pub unsafe extern "C" fn SparseMatrix_multiply_vector(
     let mut a: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut u: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut ai: *mut libc::c_int = 0 as *mut libc::c_int;
-    if (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1039 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 69],
-                &[libc::c_char; 69],
-            >(b"void SparseMatrix_multiply_vector(SparseMatrix, double *, double **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
+                b"void SparseMatrix_multiply_vector(SparseMatrix, double *, double **)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int
         || (*A).type_0 == MATRIX_TYPE_INTEGER as libc::c_int
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"A->type == MATRIX_TYPE_REAL || A->type == MATRIX_TYPE_INTEGER\0"
-                as *const u8 as *const libc::c_char,
+            b"A->type == MATRIX_TYPE_REAL || A->type == MATRIX_TYPE_INTEGER\0" as *const u8
+                as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1040 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 69],
-                &[libc::c_char; 69],
-            >(b"void SparseMatrix_multiply_vector(SparseMatrix, double *, double **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
+                b"void SparseMatrix_multiply_vector(SparseMatrix, double *, double **)\0",
+            ))
+            .as_ptr(),
         );
     }
     ia = (*A).ia;
@@ -2244,9 +2161,8 @@ pub unsafe extern "C" fn SparseMatrix_multiply_vector(
                     *u.offset(i as isize) = 0.0f64;
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        *u.offset(i as isize)
-                            += *a.offset(j as isize)
-                                * *v.offset(*ja.offset(j as isize) as isize);
+                        *u.offset(i as isize) +=
+                            *a.offset(j as isize) * *v.offset(*ja.offset(j as isize) as isize);
                         j += 1;
                     }
                     i += 1;
@@ -2284,9 +2200,8 @@ pub unsafe extern "C" fn SparseMatrix_multiply_vector(
                     *u.offset(i as isize) = 0.0f64;
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        *u.offset(i as isize)
-                            += *ai.offset(j as isize) as libc::c_double
-                                * *v.offset(*ja.offset(j as isize) as isize);
+                        *u.offset(i as isize) += *ai.offset(j as isize) as libc::c_double
+                            * *v.offset(*ja.offset(j as isize) as isize);
                         j += 1;
                     }
                     i += 1;
@@ -2303,8 +2218,7 @@ pub unsafe extern "C" fn SparseMatrix_multiply_vector(
                     *u.offset(i as isize) = 0.0f64;
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        *u.offset(i as isize)
-                            += *ai.offset(j as isize) as libc::c_double;
+                        *u.offset(i as isize) += *ai.offset(j as isize) as libc::c_double;
                         j += 1;
                     }
                     i += 1;
@@ -2316,13 +2230,10 @@ pub unsafe extern "C" fn SparseMatrix_multiply_vector(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 1091 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"void SparseMatrix_multiply_vector(SparseMatrix, double *, double **)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
             u = 0 as *mut libc::c_double;
         }
@@ -2350,17 +2261,17 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
     let mut jj: libc::c_int = 0;
     let mut type_0: libc::c_int = 0;
     let mut nz: libc::c_int = 0;
-    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == B->format && A->format == FORMAT_CSR\0" as *const u8
                 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1105 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"SparseMatrix SparseMatrix_multiply(SparseMatrix, SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"SparseMatrix SparseMatrix_multiply(SparseMatrix, SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
     m = (*A).m;
@@ -2372,8 +2283,7 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
     }
     type_0 = (*A).type_0;
     mask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul((*B).n as size_t),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul((*B).n as size_t),
     ) as *mut libc::c_int;
     if mask.is_null() {
         return 0 as SparseMatrix;
@@ -2391,14 +2301,12 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
             jj = *ja.offset(j as isize);
             k = *ib.offset(jj as isize);
             while k < *ib.offset((jj + 1 as libc::c_int) as isize) {
-                if *mask.offset(*jb.offset(k as isize) as isize) != -i - 2 as libc::c_int
-                {
+                if *mask.offset(*jb.offset(k as isize) as isize) != -i - 2 as libc::c_int {
                     if nz + 1 as libc::c_int <= nz {
                         return 0 as SparseMatrix;
                     }
                     nz += 1;
-                    *mask
-                        .offset(*jb.offset(k as isize) as isize) = -i - 2 as libc::c_int;
+                    *mask.offset(*jb.offset(k as isize) as isize) = -i - 2 as libc::c_int;
                 }
                 k += 1;
             }
@@ -2429,17 +2337,15 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                             {
                                 *mask.offset(*jb.offset(k as isize) as isize) = nz;
                                 *jc.offset(nz as isize) = *jb.offset(k as isize);
-                                *c
-                                    .offset(
-                                        nz as isize,
-                                    ) = *a.offset(j as isize) * *b.offset(k as isize);
+                                *c.offset(nz as isize) =
+                                    *a.offset(j as isize) * *b.offset(k as isize);
                                 nz += 1;
                             } else {
                                 if *jc
-                                    .offset(
-                                        *mask.offset(*jb.offset(k as isize) as isize) as isize,
-                                    ) == *jb.offset(k as isize)
-                                {} else {
+                                    .offset(*mask.offset(*jb.offset(k as isize) as isize) as isize)
+                                    == *jb.offset(k as isize)
+                                {
+                                } else {
                                     __assert_fail(
                                         b"jc[mask[jb[k]]] == jb[k]\0" as *const u8
                                             as *const libc::c_char,
@@ -2488,31 +2394,29 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                             {
                                 *mask.offset(*jb.offset(k as isize) as isize) = nz;
                                 *jc.offset(nz as isize) = *jb.offset(k as isize);
-                                *c_0
-                                    .offset(
-                                        (2 as libc::c_int * nz) as isize,
-                                    ) = *a_0.offset((2 as libc::c_int * j) as isize)
+                                *c_0.offset((2 as libc::c_int * nz) as isize) = *a_0
+                                    .offset((2 as libc::c_int * j) as isize)
                                     * *b_0.offset((2 as libc::c_int * k) as isize)
                                     - *a_0
                                         .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                                        * *b_0
-                                            .offset((2 as libc::c_int * k + 1 as libc::c_int) as isize);
-                                *c_0
-                                    .offset(
-                                        (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                                    ) = *a_0.offset((2 as libc::c_int * j) as isize)
-                                    * *b_0
-                                        .offset((2 as libc::c_int * k + 1 as libc::c_int) as isize)
-                                    + *a_0
-                                        .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                                        * *b_0.offset((2 as libc::c_int * k) as isize);
+                                        * *b_0.offset(
+                                            (2 as libc::c_int * k + 1 as libc::c_int) as isize,
+                                        );
+                                *c_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                                    *a_0.offset((2 as libc::c_int * j) as isize)
+                                        * *b_0.offset(
+                                            (2 as libc::c_int * k + 1 as libc::c_int) as isize,
+                                        )
+                                        + *a_0.offset(
+                                            (2 as libc::c_int * j + 1 as libc::c_int) as isize,
+                                        ) * *b_0.offset((2 as libc::c_int * k) as isize);
                                 nz += 1;
                             } else {
                                 if *jc
-                                    .offset(
-                                        *mask.offset(*jb.offset(k as isize) as isize) as isize,
-                                    ) == *jb.offset(k as isize)
-                                {} else {
+                                    .offset(*mask.offset(*jb.offset(k as isize) as isize) as isize)
+                                    == *jb.offset(k as isize)
+                                {
+                                } else {
                                     __assert_fail(
                                         b"jc[mask[jb[k]]] == jb[k]\0" as *const u8
                                             as *const libc::c_char,
@@ -2527,29 +2431,28 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                                             .as_ptr(),
                                     );
                                 }
-                                *c_0
-                                    .offset(
-                                        (2 as libc::c_int
-                                            * *mask.offset(*jb.offset(k as isize) as isize)) as isize,
-                                    )
-                                    += *a_0.offset((2 as libc::c_int * j) as isize)
-                                        * *b_0.offset((2 as libc::c_int * k) as isize)
-                                        - *a_0
-                                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                                            * *b_0
-                                                .offset((2 as libc::c_int * k + 1 as libc::c_int) as isize);
-                                *c_0
-                                    .offset(
-                                        (2 as libc::c_int
-                                            * *mask.offset(*jb.offset(k as isize) as isize)
-                                            + 1 as libc::c_int) as isize,
-                                    )
-                                    += *a_0.offset((2 as libc::c_int * j) as isize)
-                                        * *b_0
-                                            .offset((2 as libc::c_int * k + 1 as libc::c_int) as isize)
-                                        + *a_0
-                                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                                            * *b_0.offset((2 as libc::c_int * k) as isize);
+                                *c_0.offset(
+                                    (2 as libc::c_int
+                                        * *mask.offset(*jb.offset(k as isize) as isize))
+                                        as isize,
+                                ) += *a_0.offset((2 as libc::c_int * j) as isize)
+                                    * *b_0.offset((2 as libc::c_int * k) as isize)
+                                    - *a_0
+                                        .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
+                                        * *b_0.offset(
+                                            (2 as libc::c_int * k + 1 as libc::c_int) as isize,
+                                        );
+                                *c_0.offset(
+                                    (2 as libc::c_int
+                                        * *mask.offset(*jb.offset(k as isize) as isize)
+                                        + 1 as libc::c_int)
+                                        as isize,
+                                ) += *a_0.offset((2 as libc::c_int * j) as isize)
+                                    * *b_0
+                                        .offset((2 as libc::c_int * k + 1 as libc::c_int) as isize)
+                                    + *a_0
+                                        .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
+                                        * *b_0.offset((2 as libc::c_int * k) as isize);
                             }
                             k += 1;
                         }
@@ -2577,17 +2480,15 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                             {
                                 *mask.offset(*jb.offset(k as isize) as isize) = nz;
                                 *jc.offset(nz as isize) = *jb.offset(k as isize);
-                                *c_1
-                                    .offset(
-                                        nz as isize,
-                                    ) = *a_1.offset(j as isize) * *b_1.offset(k as isize);
+                                *c_1.offset(nz as isize) =
+                                    *a_1.offset(j as isize) * *b_1.offset(k as isize);
                                 nz += 1;
                             } else {
                                 if *jc
-                                    .offset(
-                                        *mask.offset(*jb.offset(k as isize) as isize) as isize,
-                                    ) == *jb.offset(k as isize)
-                                {} else {
+                                    .offset(*mask.offset(*jb.offset(k as isize) as isize) as isize)
+                                    == *jb.offset(k as isize)
+                                {
+                                } else {
                                     __assert_fail(
                                         b"jc[mask[jb[k]]] == jb[k]\0" as *const u8
                                             as *const libc::c_char,
@@ -2602,10 +2503,9 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                                             .as_ptr(),
                                     );
                                 }
-                                *c_1
-                                    .offset(
-                                        *mask.offset(*jb.offset(k as isize) as isize) as isize,
-                                    ) += *a_1.offset(j as isize) * *b_1.offset(k as isize);
+                                *c_1.offset(
+                                    *mask.offset(*jb.offset(k as isize) as isize) as isize
+                                ) += *a_1.offset(j as isize) * *b_1.offset(k as isize);
                             }
                             k += 1;
                         }
@@ -2632,10 +2532,10 @@ pub unsafe extern "C" fn SparseMatrix_multiply(
                                 *jc.offset(nz as isize) = *jb.offset(k as isize);
                                 nz += 1;
                             } else if *jc
-                                    .offset(
-                                        *mask.offset(*jb.offset(k as isize) as isize) as isize,
-                                    ) == *jb.offset(k as isize)
-                                {} else {
+                                .offset(*mask.offset(*jb.offset(k as isize) as isize) as isize)
+                                == *jb.offset(k as isize)
+                            {
+                            } else {
                                 __assert_fail(
                                     b"jc[mask[jb[k]]] == jb[k]\0" as *const u8
                                         as *const libc::c_char,
@@ -2704,19 +2604,17 @@ pub unsafe extern "C" fn SparseMatrix_multiply3(
     let mut jj: libc::c_int = 0;
     let mut type_0: libc::c_int = 0;
     let mut nz: libc::c_int = 0;
-    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {} else {
+    if (*A).format == (*B).format && (*A).format == FORMAT_CSR as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == B->format && A->format == FORMAT_CSR\0" as *const u8
                 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1270 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 78],
-                &[libc::c_char; 78],
-            >(
+            (*::std::mem::transmute::<&[u8; 78], &[libc::c_char; 78]>(
                 b"SparseMatrix SparseMatrix_multiply3(SparseMatrix, SparseMatrix, SparseMatrix)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     m = (*A).m;
@@ -2730,23 +2628,20 @@ pub unsafe extern "C" fn SparseMatrix_multiply3(
         return 0 as SparseMatrix;
     }
     type_0 = (*A).type_0;
-    if type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             1284 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 78],
-                &[libc::c_char; 78],
-            >(
+            (*::std::mem::transmute::<&[u8; 78], &[libc::c_char; 78]>(
                 b"SparseMatrix SparseMatrix_multiply3(SparseMatrix, SparseMatrix, SparseMatrix)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     mask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul((*C).n as size_t),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul((*C).n as size_t),
     ) as *mut libc::c_int;
     if mask.is_null() {
         return 0 as SparseMatrix;
@@ -2767,17 +2662,12 @@ pub unsafe extern "C" fn SparseMatrix_multiply3(
                 ll = *jb.offset(l as isize);
                 k = *ic.offset(ll as isize);
                 while k < *ic.offset((ll + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*jc.offset(k as isize) as isize)
-                        != -i - 2 as libc::c_int
-                    {
+                    if *mask.offset(*jc.offset(k as isize) as isize) != -i - 2 as libc::c_int {
                         if nz + 1 as libc::c_int <= nz {
                             return 0 as SparseMatrix;
                         }
                         nz += 1;
-                        *mask
-                            .offset(
-                                *jc.offset(k as isize) as isize,
-                            ) = -i - 2 as libc::c_int;
+                        *mask.offset(*jc.offset(k as isize) as isize) = -i - 2 as libc::c_int;
                     }
                     k += 1;
                 }
@@ -2807,23 +2697,18 @@ pub unsafe extern "C" fn SparseMatrix_multiply3(
                     ll = *jb.offset(l as isize);
                     k = *ic.offset(ll as isize);
                     while k < *ic.offset((ll + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*jc.offset(k as isize) as isize)
-                            < *id.offset(i as isize)
-                        {
+                        if *mask.offset(*jc.offset(k as isize) as isize) < *id.offset(i as isize) {
                             *mask.offset(*jc.offset(k as isize) as isize) = nz;
                             *jd.offset(nz as isize) = *jc.offset(k as isize);
-                            *d
-                                .offset(
-                                    nz as isize,
-                                ) = *a.offset(j as isize) * *b.offset(l as isize)
+                            *d.offset(nz as isize) = *a.offset(j as isize)
+                                * *b.offset(l as isize)
                                 * *c.offset(k as isize);
                             nz += 1;
                         } else {
-                            if *jd
-                                .offset(
-                                    *mask.offset(*jc.offset(k as isize) as isize) as isize,
-                                ) == *jc.offset(k as isize)
-                            {} else {
+                            if *jd.offset(*mask.offset(*jc.offset(k as isize) as isize) as isize)
+                                == *jc.offset(k as isize)
+                            {
+                            } else {
                                 __assert_fail(
                                     b"jd[mask[jc[k]]] == jc[k]\0" as *const u8
                                         as *const libc::c_char,
@@ -2838,12 +2723,10 @@ pub unsafe extern "C" fn SparseMatrix_multiply3(
                                         .as_ptr(),
                                 );
                             }
-                            *d
-                                .offset(
-                                    *mask.offset(*jc.offset(k as isize) as isize) as isize,
-                                )
-                                += *a.offset(j as isize) * *b.offset(l as isize)
-                                    * *c.offset(k as isize);
+                            *d.offset(*mask.offset(*jc.offset(k as isize) as isize) as isize) += *a
+                                .offset(j as isize)
+                                * *b.offset(l as isize)
+                                * *c.offset(k as isize);
                         }
                         k += 1;
                     }
@@ -2876,9 +2759,9 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
     if what_to_sum == SUM_REPEATED_NONE as libc::c_int {
         return A;
     }
-    mask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
-    ) as *mut libc::c_int;
+    mask =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t))
+            as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
         *mask.offset(i as isize) = -(1 as libc::c_int);
@@ -2893,20 +2776,17 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
             while i < (*A).m {
                 j = sta;
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*ja.offset(j as isize) as isize)
-                        < *ia.offset(i as isize)
-                    {
+                    if *mask.offset(*ja.offset(j as isize) as isize) < *ia.offset(i as isize) {
                         *ja.offset(nz as isize) = *ja.offset(j as isize);
                         *a.offset(nz as isize) = *a.offset(j as isize);
                         let fresh43 = nz;
                         nz = nz + 1;
                         *mask.offset(*ja.offset(j as isize) as isize) = fresh43;
                     } else {
-                        if *ja
-                            .offset(
-                                *mask.offset(*ja.offset(j as isize) as isize) as isize,
-                            ) == *ja.offset(j as isize)
-                        {} else {
+                        if *ja.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize)
+                            == *ja.offset(j as isize)
+                        {
+                        } else {
                             __assert_fail(
                                 b"ja[mask[ja[j]]] == ja[j]\0" as *const u8
                                     as *const libc::c_char,
@@ -2921,8 +2801,8 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
                                     .as_ptr(),
                             );
                         }
-                        *a.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize)
-                            += *a.offset(j as isize);
+                        *a.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize) +=
+                            *a.offset(j as isize);
                     }
                     j += 1;
                 }
@@ -2940,28 +2820,20 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
                 while i < (*A).m {
                     j = sta;
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        if *mask.offset(*ja.offset(j as isize) as isize)
-                            < *ia.offset(i as isize)
-                        {
+                        if *mask.offset(*ja.offset(j as isize) as isize) < *ia.offset(i as isize) {
                             *ja.offset(nz as isize) = *ja.offset(j as isize);
-                            *a_0
-                                .offset(
-                                    (2 as libc::c_int * nz) as isize,
-                                ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                            *a_0
-                                .offset(
-                                    (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                                ) = *a_0
-                                .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                            *a_0.offset((2 as libc::c_int * nz) as isize) =
+                                *a_0.offset((2 as libc::c_int * j) as isize);
+                            *a_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                                *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                             let fresh44 = nz;
                             nz = nz + 1;
                             *mask.offset(*ja.offset(j as isize) as isize) = fresh44;
                         } else {
-                            if *ja
-                                .offset(
-                                    *mask.offset(*ja.offset(j as isize) as isize) as isize,
-                                ) == *ja.offset(j as isize)
-                            {} else {
+                            if *ja.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize)
+                                == *ja.offset(j as isize)
+                            {
+                            } else {
                                 __assert_fail(
                                     b"ja[mask[ja[j]]] == ja[j]\0" as *const u8
                                         as *const libc::c_char,
@@ -2976,19 +2848,14 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
                                         .as_ptr(),
                                 );
                             }
-                            *a_0
-                                .offset(
-                                    (2 as libc::c_int
-                                        * *mask.offset(*ja.offset(j as isize) as isize)) as isize,
-                                ) += *a_0.offset((2 as libc::c_int * j) as isize);
-                            *a_0
-                                .offset(
-                                    (2 as libc::c_int
-                                        * *mask.offset(*ja.offset(j as isize) as isize)
-                                        + 1 as libc::c_int) as isize,
-                                )
-                                += *a_0
-                                    .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                            *a_0.offset(
+                                (2 as libc::c_int * *mask.offset(*ja.offset(j as isize) as isize))
+                                    as isize,
+                            ) += *a_0.offset((2 as libc::c_int * j) as isize);
+                            *a_0.offset(
+                                (2 as libc::c_int * *mask.offset(*ja.offset(j as isize) as isize)
+                                    + 1 as libc::c_int) as isize,
+                            ) += *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                         }
                         j += 1;
                     }
@@ -3006,20 +2873,17 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
             while i < (*A).m {
                 j = sta;
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*ja.offset(j as isize) as isize)
-                        < *ia.offset(i as isize)
-                    {
+                    if *mask.offset(*ja.offset(j as isize) as isize) < *ia.offset(i as isize) {
                         *ja.offset(nz as isize) = *ja.offset(j as isize);
                         *a_1.offset(nz as isize) = *a_1.offset(j as isize);
                         let fresh45 = nz;
                         nz = nz + 1;
                         *mask.offset(*ja.offset(j as isize) as isize) = fresh45;
                     } else {
-                        if *ja
-                            .offset(
-                                *mask.offset(*ja.offset(j as isize) as isize) as isize,
-                            ) == *ja.offset(j as isize)
-                        {} else {
+                        if *ja.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize)
+                            == *ja.offset(j as isize)
+                        {
+                        } else {
                             __assert_fail(
                                 b"ja[mask[ja[j]]] == ja[j]\0" as *const u8
                                     as *const libc::c_char,
@@ -3034,10 +2898,8 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
                                     .as_ptr(),
                             );
                         }
-                        *a_1
-                            .offset(
-                                *mask.offset(*ja.offset(j as isize) as isize) as isize,
-                            ) += *a_1.offset(j as isize);
+                        *a_1.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize) +=
+                            *a_1.offset(j as isize);
                     }
                     j += 1;
                 }
@@ -3053,18 +2915,15 @@ pub unsafe extern "C" fn SparseMatrix_sum_repeat_entries(
             while i < (*A).m {
                 j = sta;
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*ja.offset(j as isize) as isize)
-                        < *ia.offset(i as isize)
-                    {
+                    if *mask.offset(*ja.offset(j as isize) as isize) < *ia.offset(i as isize) {
                         *ja.offset(nz as isize) = *ja.offset(j as isize);
                         let fresh46 = nz;
                         nz = nz + 1;
                         *mask.offset(*ja.offset(j as isize) as isize) = fresh46;
-                    } else if *ja
-                            .offset(
-                                *mask.offset(*ja.offset(j as isize) as isize) as isize,
-                            ) == *ja.offset(j as isize)
-                        {} else {
+                    } else if *ja.offset(*mask.offset(*ja.offset(j as isize) as isize) as isize)
+                        == *ja.offset(j as isize)
+                    {
+                    } else {
                         __assert_fail(
                             b"ja[mask[ja[j]]] == ja[j]\0" as *const u8
                                 as *const libc::c_char,
@@ -3103,7 +2962,8 @@ pub unsafe extern "C" fn SparseMatrix_coordinate_form_add_entry(
     let mut nz: libc::c_int = 0;
     let mut nzmax: libc::c_int = 0;
     static mut nentries: libc::c_int = 1 as libc::c_int;
-    if (*A).format == FORMAT_COORD as libc::c_int {} else {
+    if (*A).format == FORMAT_COORD as libc::c_int {
+    } else {
         __assert_fail(
             b"A->format == FORMAT_COORD\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3131,14 +2991,12 @@ pub unsafe extern "C" fn SparseMatrix_coordinate_form_add_entry(
     *((*A).ja).offset(nz as isize) = jcn;
     if (*A).size != 0 {
         memcpy(
-            ((*A).a as *mut libc::c_char)
-                .offset(
-                    (nz as size_t)
-                        .wrapping_mul((*A).size as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-                        ) as isize,
-                ) as *mut libc::c_void,
+            ((*A).a as *mut libc::c_char).offset(
+                (nz as size_t)
+                    .wrapping_mul((*A).size as libc::c_ulong)
+                    .wrapping_div(::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
+                    as isize,
+            ) as *mut libc::c_void,
             val,
             ((*A).size as libc::c_ulong).wrapping_mul(nentries as size_t),
         );
@@ -3153,9 +3011,7 @@ pub unsafe extern "C" fn SparseMatrix_coordinate_form_add_entry(
     return A;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_remove_diagonal(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_remove_diagonal(mut A: SparseMatrix) -> SparseMatrix {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut ia: *mut libc::c_int = 0 as *mut libc::c_int;
@@ -3198,15 +3054,10 @@ pub unsafe extern "C" fn SparseMatrix_remove_diagonal(
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if *ja.offset(j as isize) != i {
                         *ja.offset(nz as isize) = *ja.offset(j as isize);
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * nz) as isize,
-                            ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                            ) = *a_0
-                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                        *a_0.offset((2 as libc::c_int * nz) as isize) =
+                            *a_0.offset((2 as libc::c_int * j) as isize);
+                        *a_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                            *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                         nz += 1;
                     }
                     j += 1;
@@ -3304,15 +3155,10 @@ pub unsafe extern "C" fn SparseMatrix_remove_upper(mut A: SparseMatrix) -> Spars
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if *ja.offset(j as isize) < i {
                         *ja.offset(nz as isize) = *ja.offset(j as isize);
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * nz) as isize,
-                            ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                            ) = *a_0
-                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                        *a_0.offset((2 as libc::c_int * nz) as isize) =
+                            *a_0.offset((2 as libc::c_int * j) as isize);
+                        *a_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                            *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                         nz += 1;
                     }
                     j += 1;
@@ -3371,9 +3217,7 @@ pub unsafe extern "C" fn SparseMatrix_remove_upper(mut A: SparseMatrix) -> Spars
     return A;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_divide_row_by_degree(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_divide_row_by_degree(mut A: SparseMatrix) -> SparseMatrix {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut ia: *mut libc::c_int = 0 as *mut libc::c_int;
@@ -3389,8 +3233,8 @@ pub unsafe extern "C" fn SparseMatrix_divide_row_by_degree(
             let mut a: *mut libc::c_double = (*A).a as *mut libc::c_double;
             i = 0 as libc::c_int;
             while i < (*A).m {
-                deg = (*ia.offset((i + 1 as libc::c_int) as isize)
-                    - *ia.offset(i as isize)) as libc::c_double;
+                deg = (*ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize))
+                    as libc::c_double;
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     *a.offset(j as isize) = *a.offset(j as isize) / deg;
@@ -3403,21 +3247,15 @@ pub unsafe extern "C" fn SparseMatrix_divide_row_by_degree(
             let mut a_0: *mut libc::c_double = (*A).a as *mut libc::c_double;
             i = 0 as libc::c_int;
             while i < (*A).m {
-                deg = (*ia.offset((i + 1 as libc::c_int) as isize)
-                    - *ia.offset(i as isize)) as libc::c_double;
+                deg = (*ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize))
+                    as libc::c_double;
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if *ja.offset(j as isize) != i {
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * j) as isize,
-                            ) = *a_0.offset((2 as libc::c_int * j) as isize) / deg;
-                        *a_0
-                            .offset(
-                                (2 as libc::c_int * j + 1 as libc::c_int) as isize,
-                            ) = *a_0
-                            .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize)
-                            / deg;
+                        *a_0.offset((2 as libc::c_int * j) as isize) =
+                            *a_0.offset((2 as libc::c_int * j) as isize) / deg;
+                        *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize) =
+                            *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize) / deg;
                     }
                     j += 1;
                 }
@@ -3429,11 +3267,10 @@ pub unsafe extern "C" fn SparseMatrix_divide_row_by_degree(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 1684 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 61],
-                    &[libc::c_char; 61],
-                >(b"SparseMatrix SparseMatrix_divide_row_by_degree(SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                    b"SparseMatrix SparseMatrix_divide_row_by_degree(SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
         8 => {}
@@ -3481,8 +3318,7 @@ pub unsafe extern "C" fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
     memcpy(
         (*B).ja as *mut libc::c_void,
         ja as *const libc::c_void,
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul(nz as size_t),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
     );
     (*B).nz = (*A).nz;
     A = SparseMatrix_symmetrize(B, 1 as libc::c_int != 0);
@@ -3490,8 +3326,7 @@ pub unsafe extern "C" fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
     A = SparseMatrix_remove_diagonal(A);
     let ref mut fresh53 = (*A).a;
     *fresh53 = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul((*A).nz as size_t),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul((*A).nz as size_t),
     );
     a = (*A).a as *mut libc::c_double;
     i = 0 as libc::c_int;
@@ -3506,7 +3341,7 @@ pub unsafe extern "C" fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
 #[no_mangle]
 pub unsafe extern "C" fn SparseMatrix_apply_fun(
     mut A: SparseMatrix,
-    mut fun: Option::<unsafe extern "C" fn(libc::c_double) -> libc::c_double>,
+    mut fun: Option<unsafe extern "C" fn(libc::c_double) -> libc::c_double>,
 ) -> SparseMatrix {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
@@ -3514,9 +3349,7 @@ pub unsafe extern "C" fn SparseMatrix_apply_fun(
     if A.is_null() {
         return A;
     }
-    if (*A).format != FORMAT_CSR as libc::c_int
-        && (*A).type_0 != MATRIX_TYPE_REAL as libc::c_int
-    {
+    if (*A).format != FORMAT_CSR as libc::c_int && (*A).type_0 != MATRIX_TYPE_REAL as libc::c_int {
         return A;
     }
     a = (*A).a as *mut libc::c_double;
@@ -3524,10 +3357,7 @@ pub unsafe extern "C" fn SparseMatrix_apply_fun(
     while i < (*A).m {
         j = *((*A).ia).offset(i as isize);
         while j < *((*A).ia).offset((i + 1 as libc::c_int) as isize) {
-            *a
-                .offset(
-                    j as isize,
-                ) = fun.expect("non-null function pointer")(*a.offset(j as isize));
+            *a.offset(j as isize) = fun.expect("non-null function pointer")(*a.offset(j as isize));
             j += 1;
         }
         i += 1;
@@ -3620,14 +3450,12 @@ unsafe extern "C" fn SparseMatrix_level_sets_internal(
     }
     if (*levelset).is_null() {
         *levelset = gmalloc(
-            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_mul(m as size_t),
+            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t),
         ) as *mut libc::c_int;
     }
     if (*mask).is_null() {
         *mask = malloc(
-            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_mul(m as size_t),
+            (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t),
         ) as *mut libc::c_int;
         i = 0 as libc::c_int;
         while i < m {
@@ -3636,7 +3464,8 @@ unsafe extern "C" fn SparseMatrix_level_sets_internal(
         }
     }
     *nlevel = 0 as libc::c_int;
-    if root >= 0 as libc::c_int && root < m {} else {
+    if root >= 0 as libc::c_int && root < m {
+    } else {
         __assert_fail(
             b"root >= 0 && root < m\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3665,16 +3494,12 @@ unsafe extern "C" fn SparseMatrix_level_sets_internal(
             j = *ia.offset(ii as isize);
             while j < *ia.offset((ii + 1 as libc::c_int) as isize) {
                 if !(ii == *ja.offset(j as isize)) {
-                    if *(*mask).offset(*ja.offset(j as isize) as isize)
-                        < 0 as libc::c_int
-                    {
+                    if *(*mask).offset(*ja.offset(j as isize) as isize) < 0 as libc::c_int {
                         let fresh54 = nz;
                         nz = nz + 1;
                         *(*levelset).offset(fresh54 as isize) = *ja.offset(j as isize);
-                        *(*mask)
-                            .offset(
-                                *ja.offset(j as isize) as isize,
-                            ) = *nlevel + 1 as libc::c_int;
+                        *(*mask).offset(*ja.offset(j as isize) as isize) =
+                            *nlevel + 1 as libc::c_int;
                     }
                 }
                 j += 1;
@@ -3692,10 +3517,7 @@ unsafe extern "C" fn SparseMatrix_level_sets_internal(
     if reinitialize_mask != 0 {
         i = 0 as libc::c_int;
         while i < *(*levelset_ptr).offset(*nlevel as isize) {
-            *(*mask)
-                .offset(
-                    *(*levelset).offset(i as isize) as isize,
-                ) = UNMASKED as libc::c_int;
+            *(*mask).offset(*(*levelset).offset(i as isize) as isize) = UNMASKED as libc::c_int;
             i += 1;
         }
     }
@@ -3787,10 +3609,8 @@ pub unsafe extern "C" fn SparseMatrix_weakly_connected_components(
             }
             nn = *levelset_ptr.offset(nlevel as isize);
             levelset = levelset.offset(nn as isize);
-            *(*comps_ptr)
-                .offset(
-                    (*ncomp + 1 as libc::c_int) as isize,
-                ) = *(*comps_ptr).offset(*ncomp as isize) + nn;
+            *(*comps_ptr).offset((*ncomp + 1 as libc::c_int) as isize) =
+                *(*comps_ptr).offset(*ncomp as isize) + nn;
             *ncomp += 1;
         }
         i += 1;
@@ -3801,10 +3621,7 @@ pub unsafe extern "C" fn SparseMatrix_weakly_connected_components(
     free(levelset_ptr as *mut libc::c_void);
     free(mask as *mut libc::c_void);
 }
-unsafe extern "C" fn cmp(
-    mut i: *mut libc::c_void,
-    mut j: *mut libc::c_void,
-) -> libc::c_int {
+unsafe extern "C" fn cmp(mut i: *mut libc::c_void, mut j: *mut libc::c_void) -> libc::c_int {
     let mut d1: nodedata = 0 as *mut nodedata_struct;
     let mut d2: nodedata = 0 as *mut nodedata_struct;
     d1 = i as nodedata;
@@ -3841,7 +3658,8 @@ unsafe extern "C" fn Dijkstra_internal(
     let mut ndata_min: nodedata = 0 as *mut nodedata_struct;
     let mut heap_ids: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut found: libc::c_int = 0 as libc::c_int;
-    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, true)\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3855,7 +3673,8 @@ unsafe extern "C" fn Dijkstra_internal(
                 .as_ptr(),
         );
     }
-    if m == (*A).n {} else {
+    if m == (*A).n {
+    } else {
         __assert_fail(
             b"m == A->n\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3923,25 +3742,20 @@ unsafe extern "C" fn Dijkstra_internal(
             );
         }
     }
-    heap_ids = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t),
-    ) as *mut libc::c_int;
+    heap_ids =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t))
+            as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *dist.offset(i as isize) = -(1 as libc::c_int) as libc::c_double;
         *heap_ids.offset(i as isize) = UNVISITED as libc::c_int;
         i += 1;
     }
-    h = BinaryHeap_new(
-        Some(
-            cmp
-                as unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *mut libc::c_void,
-                ) -> libc::c_int,
-        ),
-    );
-    if !h.is_null() {} else {
+    h = BinaryHeap_new(Some(
+        cmp as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> libc::c_int,
+    ));
+    if !h.is_null() {
+    } else {
         __assert_fail(
             b"h\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3955,12 +3769,12 @@ unsafe extern "C" fn Dijkstra_internal(
                 .as_ptr(),
         );
     }
-    ndata = gmalloc(::std::mem::size_of::<nodedata_struct>() as libc::c_ulong)
-        as nodedata;
+    ndata = gmalloc(::std::mem::size_of::<nodedata_struct>() as libc::c_ulong) as nodedata;
     (*ndata).dist = 0 as libc::c_int as libc::c_double;
     (*ndata).id = root;
     *heap_ids.offset(root as isize) = BinaryHeap_insert(h, ndata as *mut libc::c_void);
-    if *heap_ids.offset(root as isize) >= 0 as libc::c_int {} else {
+    if *heap_ids.offset(root as isize) >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"heap_ids[root] >= 0\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -3989,30 +3803,27 @@ unsafe extern "C" fn Dijkstra_internal(
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             jj = *ja.offset(j as isize);
             heap_id = *heap_ids.offset(jj as isize);
-            if !(jj == i || heap_id == FINISHED as libc::c_int
+            if !(jj == i
+                || heap_id == FINISHED as libc::c_int
                 || !mask.is_null() && *mask.offset(jj as isize) < 0 as libc::c_int)
             {
                 if heap_id == UNVISITED as libc::c_int {
-                    ndata = gmalloc(
-                        ::std::mem::size_of::<nodedata_struct>() as libc::c_ulong,
-                    ) as nodedata;
+                    ndata = gmalloc(::std::mem::size_of::<nodedata_struct>() as libc::c_ulong)
+                        as nodedata;
                     (*ndata).dist = fabs(*a.offset(j as isize)) + (*ndata_min).dist;
                     (*ndata).id = jj;
-                    *heap_ids
-                        .offset(
-                            jj as isize,
-                        ) = BinaryHeap_insert(h, ndata as *mut libc::c_void);
+                    *heap_ids.offset(jj as isize) =
+                        BinaryHeap_insert(h, ndata as *mut libc::c_void);
                 } else {
                     ndata = BinaryHeap_get_item(h, heap_id) as nodedata;
-                    (*ndata)
-                        .dist = if (*ndata).dist
-                        < fabs(*a.offset(j as isize)) + (*ndata_min).dist
-                    {
-                        (*ndata).dist
+                    (*ndata).dist =
+                        if (*ndata).dist < fabs(*a.offset(j as isize)) + (*ndata_min).dist {
+                            (*ndata).dist
+                        } else {
+                            fabs(*a.offset(j as isize)) + (*ndata_min).dist
+                        };
+                    if (*ndata).id == jj {
                     } else {
-                        fabs(*a.offset(j as isize)) + (*ndata_min).dist
-                    };
-                    if (*ndata).id == jj {} else {
                         __assert_fail(
                             b"ndata->id == jj\0" as *const u8 as *const libc::c_char,
                             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -4035,15 +3846,18 @@ unsafe extern "C" fn Dijkstra_internal(
     }
     *nlist = found;
     *dist_max = *dist.offset(i as isize);
-    BinaryHeap_delete(h, Some(free as unsafe extern "C" fn(*mut libc::c_void) -> ()));
+    BinaryHeap_delete(
+        h,
+        Some(free as unsafe extern "C" fn(*mut libc::c_void) -> ()),
+    );
     free(heap_ids as *mut libc::c_void);
     if !a.is_null() && a != (*A).a as *mut libc::c_double {
         free(a as *mut libc::c_void);
     }
     if found == m || !mask.is_null() {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     } else {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     };
 }
 unsafe extern "C" fn Dijkstra(
@@ -4054,15 +3868,7 @@ unsafe extern "C" fn Dijkstra(
     mut list: *mut libc::c_int,
     mut dist_max: *mut libc::c_double,
 ) -> libc::c_int {
-    return Dijkstra_internal(
-        A,
-        root,
-        dist,
-        nlist,
-        list,
-        dist_max,
-        0 as *mut libc::c_int,
-    );
+    return Dijkstra_internal(A, root, dist, nlist, list, dist_max, 0 as *mut libc::c_int);
 }
 unsafe extern "C" fn Dijkstra_masked(
     mut A: SparseMatrix,
@@ -4094,19 +3900,19 @@ pub unsafe extern "C" fn SparseMatrix_decompose_to_supervariables(
     let mut isup: libc::c_int = 0;
     let mut newmap: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut isuper: libc::c_int = 0;
-    super_0 = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
-    ) as *mut libc::c_int;
+    super_0 =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t))
+            as *mut libc::c_int;
     nsuper = gmalloc(
         (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
             .wrapping_mul((n + 1 as libc::c_int) as size_t),
     ) as *mut libc::c_int;
-    mask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
-    ) as *mut libc::c_int;
-    newmap = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
-    ) as *mut libc::c_int;
+    mask =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t))
+            as *mut libc::c_int;
+    newmap =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t))
+            as *mut libc::c_int;
     nsuper = nsuper.offset(1);
     isup = 0 as libc::c_int;
     i = 0 as libc::c_int;
@@ -4146,12 +3952,8 @@ pub unsafe extern "C" fn SparseMatrix_decompose_to_supervariables(
                     *super_0.offset(*ja.offset(j as isize) as isize) = fresh57;
                 }
             } else {
-                *super_0
-                    .offset(
-                        *ja.offset(j as isize) as isize,
-                    ) = *newmap.offset(isuper as isize);
-                let ref mut fresh58 = *nsuper
-                    .offset(*newmap.offset(isuper as isize) as isize);
+                *super_0.offset(*ja.offset(j as isize) as isize) = *newmap.offset(isuper as isize);
+                let ref mut fresh58 = *nsuper.offset(*newmap.offset(isuper as isize) as isize);
                 *fresh58 += 1;
             }
             j += 1;
@@ -4187,9 +3989,7 @@ pub unsafe extern "C" fn SparseMatrix_decompose_to_supervariables(
     free(super_0 as *mut libc::c_void);
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_get_augmented(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_get_augmented(mut A: SparseMatrix) -> SparseMatrix {
     let mut irn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut jcn: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut val: *mut libc::c_void = 0 as *mut libc::c_void;
@@ -4216,22 +4016,24 @@ pub unsafe extern "C" fn SparseMatrix_get_augmented(
         ) as *mut libc::c_int;
     }
     if !((*A).a).is_null() {
-        if (*A).size != 0 as libc::c_int && nz > 0 as libc::c_int {} else {
+        if (*A).size != 0 as libc::c_int && nz > 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->size != 0 && nz > 0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 2131 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 54],
-                    &[libc::c_char; 54],
-                >(b"SparseMatrix SparseMatrix_get_augmented(SparseMatrix)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                    b"SparseMatrix SparseMatrix_get_augmented(SparseMatrix)\0",
+                ))
+                .as_ptr(),
             );
         }
-        val = gmalloc(
-            (((*A).size * 2 as libc::c_int) as libc::c_ulong).wrapping_mul(nz as size_t),
+        val = gmalloc((((*A).size * 2 as libc::c_int) as libc::c_ulong).wrapping_mul(nz as size_t));
+        memcpy(
+            val,
+            (*A).a,
+            ((*A).size as libc::c_ulong).wrapping_mul(nz as size_t),
         );
-        memcpy(val, (*A).a, ((*A).size as libc::c_ulong).wrapping_mul(nz as size_t));
         memcpy(
             (val as *mut libc::c_char)
                 .offset((nz as size_t).wrapping_mul((*A).size as libc::c_ulong) as isize)
@@ -4295,16 +4097,12 @@ pub unsafe extern "C" fn SparseMatrix_to_square_matrix(
             }
         }
         1 => {
-            if (*A).m == (*A).n
-                && SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0
-            {
+            if (*A).m == (*A).n && SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {
                 return A;
             }
         }
         2 => {
-            if (*A).m == (*A).n
-                && SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0
-            {
+            if (*A).m == (*A).n && SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
                 return A;
             }
         }
@@ -4314,11 +4112,10 @@ pub unsafe extern "C" fn SparseMatrix_to_square_matrix(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                 2175 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 62],
-                    &[libc::c_char; 62],
-                >(b"SparseMatrix SparseMatrix_to_square_matrix(SparseMatrix, int)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                    b"SparseMatrix SparseMatrix_to_square_matrix(SparseMatrix, int)\0",
+                ))
+                .as_ptr(),
             );
         }
     }
@@ -4352,12 +4149,12 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
     if nrow <= 0 as libc::c_int || ncol <= 0 as libc::c_int {
         return 0 as SparseMatrix;
     }
-    rmask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t),
-    ) as *mut libc::c_int;
-    cmask = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t),
-    ) as *mut libc::c_int;
+    rmask =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(m as size_t))
+            as *mut libc::c_int;
+    cmask =
+        gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as size_t))
+            as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *rmask.offset(i as isize) = -(1 as libc::c_int);
@@ -4371,8 +4168,7 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
     if !rindices.is_null() {
         i = 0 as libc::c_int;
         while i < nrow {
-            if *rindices.offset(i as isize) >= 0 as libc::c_int
-                && *rindices.offset(i as isize) < m
+            if *rindices.offset(i as isize) >= 0 as libc::c_int && *rindices.offset(i as isize) < m
             {
                 let fresh63 = irow;
                 irow = irow + 1;
@@ -4392,8 +4188,7 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
     if !cindices.is_null() {
         i = 0 as libc::c_int;
         while i < ncol {
-            if *cindices.offset(i as isize) >= 0 as libc::c_int
-                && *cindices.offset(i as isize) < n
+            if *cindices.offset(i as isize) >= 0 as libc::c_int && *cindices.offset(i as isize) < n
             {
                 let fresh65 = icol;
                 icol = icol + 1;
@@ -4428,12 +4223,10 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
             let mut a: *mut libc::c_double = (*A).a as *mut libc::c_double;
             let mut val: *mut libc::c_double = 0 as *mut libc::c_double;
             irn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             jcn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             val = gmalloc(
                 (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
@@ -4445,14 +4238,10 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
                 if !(*rmask.offset(i as isize) < 0 as libc::c_int) {
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        if !(*cmask.offset(*ja.offset(j as isize) as isize)
-                            < 0 as libc::c_int)
-                        {
+                        if !(*cmask.offset(*ja.offset(j as isize) as isize) < 0 as libc::c_int) {
                             *irn.offset(nz as isize) = *rmask.offset(i as isize);
-                            *jcn
-                                .offset(
-                                    nz as isize,
-                                ) = *cmask.offset(*ja.offset(j as isize) as isize);
+                            *jcn.offset(nz as isize) =
+                                *cmask.offset(*ja.offset(j as isize) as isize);
                             let fresh67 = nz;
                             nz = nz + 1;
                             *val.offset(fresh67 as isize) = *a.offset(j as isize);
@@ -4468,12 +4257,10 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
             let mut a_0: *mut libc::c_double = (*A).a as *mut libc::c_double;
             let mut val_0: *mut libc::c_double = 0 as *mut libc::c_double;
             irn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             jcn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             val_0 = gmalloc(
                 (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
@@ -4486,23 +4273,14 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
                 if !(*rmask.offset(i as isize) < 0 as libc::c_int) {
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        if !(*cmask.offset(*ja.offset(j as isize) as isize)
-                            < 0 as libc::c_int)
-                        {
+                        if !(*cmask.offset(*ja.offset(j as isize) as isize) < 0 as libc::c_int) {
                             *irn.offset(nz as isize) = *rmask.offset(i as isize);
-                            *jcn
-                                .offset(
-                                    nz as isize,
-                                ) = *cmask.offset(*ja.offset(j as isize) as isize);
-                            *val_0
-                                .offset(
-                                    (2 as libc::c_int * nz) as isize,
-                                ) = *a_0.offset((2 as libc::c_int * j) as isize);
-                            *val_0
-                                .offset(
-                                    (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                                ) = *a_0
-                                .offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
+                            *jcn.offset(nz as isize) =
+                                *cmask.offset(*ja.offset(j as isize) as isize);
+                            *val_0.offset((2 as libc::c_int * nz) as isize) =
+                                *a_0.offset((2 as libc::c_int * j) as isize);
+                            *val_0.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                                *a_0.offset((2 as libc::c_int * j + 1 as libc::c_int) as isize);
                             nz += 1;
                         }
                         j += 1;
@@ -4516,16 +4294,13 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
             let mut a_1: *mut libc::c_int = (*A).a as *mut libc::c_int;
             let mut val_1: *mut libc::c_int = 0 as *mut libc::c_int;
             irn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             jcn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             val_1 = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             nz = 0 as libc::c_int;
             i = 0 as libc::c_int;
@@ -4533,14 +4308,10 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
                 if !(*rmask.offset(i as isize) < 0 as libc::c_int) {
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        if !(*cmask.offset(*ja.offset(j as isize) as isize)
-                            < 0 as libc::c_int)
-                        {
+                        if !(*cmask.offset(*ja.offset(j as isize) as isize) < 0 as libc::c_int) {
                             *irn.offset(nz as isize) = *rmask.offset(i as isize);
-                            *jcn
-                                .offset(
-                                    nz as isize,
-                                ) = *cmask.offset(*ja.offset(j as isize) as isize);
+                            *jcn.offset(nz as isize) =
+                                *cmask.offset(*ja.offset(j as isize) as isize);
                             *val_1.offset(nz as isize) = *a_1.offset(j as isize);
                             nz += 1;
                         }
@@ -4553,12 +4324,10 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
         }
         8 => {
             irn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             jcn = gmalloc(
-                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_mul(nz as size_t),
+                (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(nz as size_t),
             ) as *mut libc::c_int;
             nz = 0 as libc::c_int;
             i = 0 as libc::c_int;
@@ -4566,16 +4335,12 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
                 if !(*rmask.offset(i as isize) < 0 as libc::c_int) {
                     j = *ia.offset(i as isize);
                     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-                        if !(*cmask.offset(*ja.offset(j as isize) as isize)
-                            < 0 as libc::c_int)
-                        {
+                        if !(*cmask.offset(*ja.offset(j as isize) as isize) < 0 as libc::c_int) {
                             *irn.offset(nz as isize) = *rmask.offset(i as isize);
                             let fresh68 = nz;
                             nz = nz + 1;
-                            *jcn
-                                .offset(
-                                    fresh68 as isize,
-                                ) = *cmask.offset(*ja.offset(j as isize) as isize);
+                            *jcn.offset(fresh68 as isize) =
+                                *cmask.offset(*ja.offset(j as isize) as isize);
                         }
                         j += 1;
                     }
@@ -4614,16 +4379,13 @@ pub unsafe extern "C" fn SparseMatrix_get_submatrix(
     return B;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_set_entries_to_real_one(
-    mut A: SparseMatrix,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_set_entries_to_real_one(mut A: SparseMatrix) -> SparseMatrix {
     let mut a: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut i: libc::c_int = 0;
     free((*A).a);
     let ref mut fresh69 = (*A).a;
     *fresh69 = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul((*A).nz as size_t),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul((*A).nz as size_t),
     );
     a = (*A).a as *mut libc::c_double;
     i = 0 as libc::c_int;
@@ -4655,8 +4417,7 @@ pub unsafe extern "C" fn SparseMatrix_from_dense(
     *((*A).ia).offset(0 as libc::c_int as isize) = 0 as libc::c_int;
     i = 1 as libc::c_int;
     while i <= m {
-        *((*A).ia)
-            .offset(i as isize) = *((*A).ia).offset((i - 1 as libc::c_int) as isize) + n;
+        *((*A).ia).offset(i as isize) = *((*A).ia).offset((i - 1 as libc::c_int) as isize) + n;
         i += 1;
     }
     ja = (*A).ja;
@@ -4700,16 +4461,16 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix(
     if SparseMatrix_is_symmetric(D, 0 as libc::c_int != 0) == 0 {
         D = SparseMatrix_symmetrize(D, 0 as libc::c_int != 0);
     }
-    if m == n {} else {
+    if m == n {
+    } else {
         __assert_fail(
             b"m == n\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             2396 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 63],
-                &[libc::c_char; 63],
-            >(b"int SparseMatrix_distance_matrix(SparseMatrix, int, double **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
+                b"int SparseMatrix_distance_matrix(SparseMatrix, int, double **)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*dist0).is_null() {
@@ -4736,28 +4497,24 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix(
                 &mut mask,
                 (0 as libc::c_int == 0) as libc::c_int,
             );
-            if *levelset_ptr.offset(nlevel as isize) == n {} else {
+            if *levelset_ptr.offset(nlevel as isize) == n {
+            } else {
                 __assert_fail(
                     b"levelset_ptr[nlevel] == n\0" as *const u8 as *const libc::c_char,
                     b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
                     2404 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 63],
-                        &[libc::c_char; 63],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 63], &[libc::c_char; 63]>(
                         b"int SparseMatrix_distance_matrix(SparseMatrix, int, double **)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             i = 0 as libc::c_int;
             while i < nlevel {
                 j = *levelset_ptr.offset(i as isize);
                 while j < *levelset_ptr.offset((i + 1 as libc::c_int) as isize) {
-                    *(*dist0)
-                        .offset(
-                            (k * n + *levelset.offset(j as isize)) as isize,
-                        ) = i as libc::c_double;
+                    *(*dist0).offset((k * n + *levelset.offset(j as isize)) as isize) =
+                        i as libc::c_double;
                     j += 1;
                 }
                 i += 1;
@@ -4813,18 +4570,16 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix_khops(
     if SparseMatrix_is_symmetric(D, 0 as libc::c_int != 0) == 0 {
         D = SparseMatrix_symmetrize(D, 0 as libc::c_int != 0);
     }
-    if m == n {} else {
+    if m == n {
+    } else {
         __assert_fail(
             b"m == n\0" as *const u8 as *const libc::c_char,
             b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
             2450 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 72],
-                &[libc::c_char; 72],
-            >(
+            (*::std::mem::transmute::<&[u8; 72], &[libc::c_char; 72]>(
                 b"SparseMatrix SparseMatrix_distance_matrix_khops(int, SparseMatrix, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     B = SparseMatrix_new(
@@ -4888,7 +4643,8 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix_khops(
                 &mut mask,
                 0 as libc::c_int,
             );
-            if nlevel - 1 as libc::c_int <= khops {} else {
+            if nlevel - 1 as libc::c_int <= khops {
+            } else {
                 __assert_fail(
                     b"nlevel-1 <= khops\0" as *const u8 as *const libc::c_char,
                     b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -4903,7 +4659,8 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix_khops(
                 );
             }
             flag = Dijkstra_masked(D, k, dist, &mut nlist, list, &mut dmax, mask);
-            if flag == 0 {} else {
+            if flag == 0 {
+            } else {
                 __assert_fail(
                     b"!flag\0" as *const u8 as *const libc::c_char,
                     b"SparseMatrix.c\0" as *const u8 as *const libc::c_char,
@@ -4921,9 +4678,8 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix_khops(
             while i < nlevel {
                 j = *levelset_ptr.offset(i as isize);
                 while j < *levelset_ptr.offset((i + 1 as libc::c_int) as isize) {
-                    if *mask.offset(*levelset.offset(j as isize) as isize)
-                        == i + 1 as libc::c_int
-                    {} else {
+                    if *mask.offset(*levelset.offset(j as isize) as isize) == i + 1 as libc::c_int {
+                    } else {
                         __assert_fail(
                             b"mask[levelset[j]] == i+1\0" as *const u8
                                 as *const libc::c_char,
@@ -4938,10 +4694,7 @@ pub unsafe extern "C" fn SparseMatrix_distance_matrix_khops(
                                 .as_ptr(),
                         );
                     }
-                    *mask
-                        .offset(
-                            *levelset.offset(j as isize) as isize,
-                        ) = -(1 as libc::c_int);
+                    *mask.offset(*levelset.offset(j as isize) as isize) = -(1 as libc::c_int);
                     j += 1;
                 }
                 i += 1;

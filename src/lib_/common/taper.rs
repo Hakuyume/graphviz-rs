@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -63,19 +71,10 @@ pub struct vararr_t {
     pub cnt: libc::c_int,
     pub sz: libc::c_int,
 }
-pub type radfunc_t = Option::<
-    unsafe extern "C" fn(
-        libc::c_double,
-        libc::c_double,
-        libc::c_double,
-    ) -> libc::c_double,
->;
+pub type radfunc_t =
+    Option<unsafe extern "C" fn(libc::c_double, libc::c_double, libc::c_double) -> libc::c_double>;
 static mut currentmiterlimit: libc::c_double = 10.0f64;
-unsafe extern "C" fn addto(
-    mut p: *mut stroke_t,
-    mut x: libc::c_double,
-    mut y: libc::c_double,
-) {
+unsafe extern "C" fn addto(mut p: *mut stroke_t, mut x: libc::c_double, mut y: libc::c_double) {
     let mut pt: pointf = pointf { x: 0., y: 0. };
     if (*p).nvertices >= (*p).flags {
         (*p).flags = 2000 as libc::c_int;
@@ -125,20 +124,16 @@ unsafe extern "C" fn arcn(
         i += 1;
     }
 }
-unsafe extern "C" fn myatan(
-    mut y: libc::c_double,
-    mut x: libc::c_double,
-) -> libc::c_double {
+unsafe extern "C" fn myatan(mut y: libc::c_double, mut x: libc::c_double) -> libc::c_double {
     let mut v: libc::c_double = 0.;
-    if x == 0 as libc::c_int as libc::c_double && y == 0 as libc::c_int as libc::c_double
-    {
-        return 0 as libc::c_int as libc::c_double
+    if x == 0 as libc::c_int as libc::c_double && y == 0 as libc::c_int as libc::c_double {
+        return 0 as libc::c_int as libc::c_double;
     } else {
         v = atan2(y, x);
         if v >= 0 as libc::c_int as libc::c_double {
-            return v
+            return v;
         } else {
-            return v + 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
+            return v + 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
         }
     };
 }
@@ -154,9 +149,8 @@ unsafe extern "C" fn mymod(
     return original;
 }
 unsafe extern "C" fn newArr() -> *mut vararr_t {
-    let mut arr: *mut vararr_t = zmalloc(
-        ::std::mem::size_of::<vararr_t>() as libc::c_ulong,
-    ) as *mut vararr_t;
+    let mut arr: *mut vararr_t =
+        zmalloc(::std::mem::size_of::<vararr_t>() as libc::c_ulong) as *mut vararr_t;
     (*arr).cnt = 0 as libc::c_int;
     (*arr).sz = 2000 as libc::c_int;
     let ref mut fresh3 = (*arr).pts;
@@ -166,11 +160,7 @@ unsafe extern "C" fn newArr() -> *mut vararr_t {
     ) as *mut pathpoint;
     return arr;
 }
-unsafe extern "C" fn insertArr(
-    mut arr: *mut vararr_t,
-    mut p: pointf,
-    mut l: libc::c_double,
-) {
+unsafe extern "C" fn insertArr(mut arr: *mut vararr_t, mut p: pointf, mut l: libc::c_double) {
     if (*arr).cnt >= (*arr).sz {
         (*arr).sz *= 2 as libc::c_int;
         let ref mut fresh4 = (*arr).pts;
@@ -276,13 +266,9 @@ unsafe extern "C" fn drawbevel(
     if linejoin == 1 as libc::c_int {
         a = a1 - a2;
         if a <= 3.14159265358979323846f64 * 0.1f64 / 180.0f64 {
-            a
-                += 3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double
-                    / 180.0f64;
+            a += 3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double / 180.0f64;
         }
-        if a
-            < 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64
-        {
+        if a < 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64 {
             a1 = a + a2;
             arcn(p, x, y, lineout, a1, a2);
         } else {
@@ -359,10 +345,14 @@ pub unsafe extern "C" fn taper(
     linelen = (*pathpoints.offset((pathcount - 1 as libc::c_int) as isize)).lengthsofar;
     i = 0 as libc::c_int;
     while i < pathcount {
-        l = mymod((i - 1 as libc::c_int) as libc::c_double, pathcount as libc::c_double)
-            as libc::c_int;
-        n = mymod((i + 1 as libc::c_int) as libc::c_double, pathcount as libc::c_double)
-            as libc::c_int;
+        l = mymod(
+            (i - 1 as libc::c_int) as libc::c_double,
+            pathcount as libc::c_double,
+        ) as libc::c_int;
+        n = mymod(
+            (i + 1 as libc::c_int) as libc::c_double,
+            pathcount as libc::c_double,
+        ) as libc::c_int;
         cur_point = *pathpoints.offset(i as isize);
         x = cur_point.x;
         y = cur_point.y;
@@ -382,16 +372,14 @@ pub unsafe extern "C" fn taper(
             lineout = linerad;
             if i == 0 as libc::c_int {
                 direction = ndir
-                    + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                        / 180.0f64;
+                    + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double / 180.0f64;
                 if linecap == 2 as libc::c_int {
                     x -= cos(ndir) * lineout;
                     y -= sin(ndir) * lineout;
                 }
             } else {
                 direction = ldir
-                    - 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                        / 180.0f64;
+                    - 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double / 180.0f64;
                 if linecap == 2 as libc::c_int {
                     x -= cos(ldir) * lineout;
                     y -= sin(ldir) * lineout;
@@ -401,36 +389,31 @@ pub unsafe extern "C" fn taper(
         } else {
             theta = ndir - ldir;
             if theta < 0 as libc::c_int as libc::c_double {
-                theta
-                    += 3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double
-                        / 180.0f64;
+                theta +=
+                    3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double / 180.0f64;
             }
-            phi = 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                / 180.0f64 - theta / 2 as libc::c_int as libc::c_double;
+            phi = 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double / 180.0f64
+                - theta / 2 as libc::c_int as libc::c_double;
             if cos(phi) == 0 as libc::c_int as libc::c_double {
                 lineout = 0 as libc::c_int as libc::c_double;
             } else {
                 lineout = linerad / cos(phi);
             }
             direction = ndir
-                + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                    / 180.0f64 + phi;
+                + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double / 180.0f64
+                + phi;
             if 0 as libc::c_int != linejoin || lineout > currentmiterlimit * linerad {
                 bevel = (0 as libc::c_int == 0) as libc::c_int;
                 lineout = linerad;
                 direction = mymod(
-                    ldir
-                        - 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                            / 180.0f64,
-                    3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double
+                    ldir - 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
                         / 180.0f64,
+                    3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double / 180.0f64,
                 );
                 direction_2 = mymod(
-                    ndir
-                        + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
-                            / 180.0f64,
-                    3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double
+                    ndir + 3.14159265358979323846f64 * 90 as libc::c_int as libc::c_double
                         / 180.0f64,
+                    3.14159265358979323846f64 * 360 as libc::c_int as libc::c_double / 180.0f64,
                 );
                 if i == pathcount - 1 as libc::c_int {
                     bevel = 0 as libc::c_int;
@@ -460,9 +443,17 @@ pub unsafe extern "C" fn taper(
         bevel = cur_point.bevel;
         direction_2 = cur_point.dir2;
         if i == 0 as libc::c_int {
-            addto(p, x + cos(direction) * lineout, y + sin(direction) * lineout);
+            addto(
+                p,
+                x + cos(direction) * lineout,
+                y + sin(direction) * lineout,
+            );
         } else {
-            addto(p, x + cos(direction) * lineout, y + sin(direction) * lineout);
+            addto(
+                p,
+                x + cos(direction) * lineout,
+                y + sin(direction) * lineout,
+            );
         }
         if bevel != 0 {
             drawbevel(
@@ -485,15 +476,15 @@ pub unsafe extern "C" fn taper(
             y,
             lineout,
             direction,
-            direction
-                + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double
-                    / 180.0f64,
+            direction + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64,
         );
     } else {
-        direction
-            += 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double
-                / 180.0f64;
-        addto(p, x + cos(direction) * lineout, y + sin(direction) * lineout);
+        direction += 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64;
+        addto(
+            p,
+            x + cos(direction) * lineout,
+            y + sin(direction) * lineout,
+        );
     }
     i = pathcount - 2 as libc::c_int;
     while i >= 0 as libc::c_int {
@@ -501,14 +492,16 @@ pub unsafe extern "C" fn taper(
         x = cur_point.x;
         y = cur_point.y;
         direction = cur_point.dir
-            + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double
-                / 180.0f64;
+            + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64;
         lineout = cur_point.lout;
         bevel = cur_point.bevel;
         direction_2 = cur_point.dir2
-            + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double
-                / 180.0f64;
-        addto(p, x + cos(direction_2) * lineout, y + sin(direction_2) * lineout);
+            + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64;
+        addto(
+            p,
+            x + cos(direction_2) * lineout,
+            y + sin(direction_2) * lineout,
+        );
         if bevel != 0 {
             drawbevel(
                 x,
@@ -530,9 +523,7 @@ pub unsafe extern "C" fn taper(
             y,
             lineout,
             direction,
-            direction
-                + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double
-                    / 180.0f64,
+            direction + 3.14159265358979323846f64 * 180 as libc::c_int as libc::c_double / 180.0f64,
         );
     }
     freeArr(arr);

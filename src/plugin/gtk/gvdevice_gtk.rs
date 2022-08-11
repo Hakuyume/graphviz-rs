@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -65,10 +73,7 @@ extern "C" {
     fn XOpenDisplay(_: *const libc::c_char) -> *mut Display;
     fn XDisplayName(_: *const libc::c_char) -> *mut libc::c_char;
     fn create_window1() -> *mut GtkWidget;
-    fn lookup_widget(
-        widget: *mut GtkWidget,
-        widget_name: *const gchar,
-    ) -> *mut GtkWidget;
+    fn lookup_widget(widget: *mut GtkWidget, widget_name: *const gchar) -> *mut GtkWidget;
 }
 pub type __uint64_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -218,9 +223,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -234,25 +237,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -283,9 +279,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -361,7 +357,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -522,16 +519,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -547,18 +538,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -566,16 +551,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -617,9 +595,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -648,13 +625,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -687,26 +659,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -715,29 +679,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -745,8 +701,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -780,7 +736,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -818,7 +774,7 @@ pub type guint = libc::c_uint;
 pub type gfloat = libc::c_float;
 pub type gdouble = libc::c_double;
 pub type gpointer = *mut libc::c_void;
-pub type GDestroyNotify = Option::<unsafe extern "C" fn(gpointer) -> ()>;
+pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _GArray {
@@ -888,10 +844,11 @@ pub struct _GClosure {
     #[bitfield(name = "derivative_flag", ty = "guint", bits = "29..=29")]
     #[bitfield(name = "in_marshal", ty = "guint", bits = "30..=30")]
     #[bitfield(name = "is_invalid", ty = "guint", bits = "31..=31")]
-    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid: [u8; 4],
+    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid:
+        [u8; 4],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 4],
-    pub marshal: Option::<
+    pub marshal: Option<
         unsafe extern "C" fn(
             *mut GClosure,
             *mut GValue,
@@ -911,9 +868,9 @@ pub struct _GClosureNotifyData {
     pub data: gpointer,
     pub notify: GClosureNotify,
 }
-pub type GClosureNotify = Option::<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
+pub type GClosureNotify = Option<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
 pub type GClosure = _GClosure;
-pub type GCallback = Option::<unsafe extern "C" fn() -> ()>;
+pub type GCallback = Option<unsafe extern "C" fn() -> ()>;
 pub type GConnectFlags = libc::c_uint;
 pub const G_CONNECT_SWAPPED: GConnectFlags = 2;
 pub const G_CONNECT_AFTER: GConnectFlags = 1;
@@ -1184,13 +1141,8 @@ pub struct _GtkTreeIter {
 pub type GtkTreeIter = _GtkTreeIter;
 pub type GtkTreePath = _GtkTreePath;
 pub type GtkTreeModel = _GtkTreeModel;
-pub type GtkTreeIterCompareFunc = Option::<
-    unsafe extern "C" fn(
-        *mut GtkTreeModel,
-        *mut GtkTreeIter,
-        *mut GtkTreeIter,
-        gpointer,
-    ) -> gint,
+pub type GtkTreeIterCompareFunc = Option<
+    unsafe extern "C" fn(*mut GtkTreeModel, *mut GtkTreeIter, *mut GtkTreeIter, gpointer) -> gint,
 >;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
 #[repr(C)]
@@ -1215,7 +1167,8 @@ pub struct _GtkCellRendererText {
     #[bitfield(name = "strikethrough_set", ty = "guint", bits = "7..=7")]
     #[bitfield(name = "editable_set", ty = "guint", bits = "8..=8")]
     #[bitfield(name = "calc_fixed_height", ty = "guint", bits = "9..=9")]
-    pub strikethrough_editable_scale_set_foreground_set_background_set_underline_set_rise_set_strikethrough_set_editable_set_calc_fixed_height: [u8; 2],
+    pub strikethrough_editable_scale_set_foreground_set_background_set_underline_set_rise_set_strikethrough_set_editable_set_calc_fixed_height:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
 }
@@ -1260,7 +1213,7 @@ pub type XPointer = *mut libc::c_char;
 pub struct _XExtData {
     pub number: libc::c_int,
     pub next: *mut _XExtData,
-    pub free_private: Option::<unsafe extern "C" fn(*mut _XExtData) -> libc::c_int>,
+    pub free_private: Option<unsafe extern "C" fn(*mut _XExtData) -> libc::c_int>,
     pub private_data: XPointer,
 }
 pub type XExtData = _XExtData;
@@ -1331,7 +1284,7 @@ pub struct C2RustUnnamed_6 {
     pub private4: XID,
     pub private5: XID,
     pub private6: libc::c_int,
-    pub resource_alloc: Option::<unsafe extern "C" fn(*mut _XDisplay) -> XID>,
+    pub resource_alloc: Option<unsafe extern "C" fn(*mut _XDisplay) -> XID>,
     pub byte_order: libc::c_int,
     pub bitmap_unit: libc::c_int,
     pub bitmap_pad: libc::c_int,
@@ -1351,7 +1304,7 @@ pub struct C2RustUnnamed_6 {
     pub private14: XPointer,
     pub max_request_size: libc::c_uint,
     pub db: *mut _XrmHashBucketRec,
-    pub private15: Option::<unsafe extern "C" fn(*mut _XDisplay) -> libc::c_int>,
+    pub private15: Option<unsafe extern "C" fn(*mut _XDisplay) -> libc::c_int>,
     pub display_name: *mut libc::c_char,
     pub default_screen: libc::c_int,
     pub nscreens: libc::c_int,
@@ -1372,10 +1325,9 @@ unsafe extern "C" fn attr_value_edited_cb(
     mut newText: *mut gchar,
     mut data: gpointer,
 ) {
-    let mut model: *mut GtkTreeModel = g_type_check_instance_cast(
-        data as *mut GTypeInstance,
-        gtk_tree_model_get_type(),
-    ) as *mut libc::c_void as *mut GtkTreeModel;
+    let mut model: *mut GtkTreeModel =
+        g_type_check_instance_cast(data as *mut GTypeInstance, gtk_tree_model_get_type())
+            as *mut libc::c_void as *mut GtkTreeModel;
     let mut path: *mut GtkTreePath = 0 as *mut GtkTreePath;
     let mut iter: GtkTreeIter = GtkTreeIter {
         stamp: 0,
@@ -1395,10 +1347,8 @@ unsafe extern "C" fn attr_value_edited_cb(
     );
     g_free(old_attr as gpointer);
     gtk_list_store_set(
-        g_type_check_instance_cast(
-            model as *mut GTypeInstance,
-            gtk_list_store_get_type(),
-        ) as *mut libc::c_void as *mut GtkListStore,
+        g_type_check_instance_cast(model as *mut GTypeInstance, gtk_list_store_get_type())
+            as *mut libc::c_void as *mut GtkListStore,
         &mut iter as *mut GtkTreeIter,
         1 as libc::c_int,
         g_strdup(newText),
@@ -1422,18 +1372,14 @@ unsafe extern "C" fn gtk_initialize(mut firstjob: *mut GVJ_t) {
         return;
     }
     scr = (*(dpy as _XPrivDisplay)).default_screen;
-    (*firstjob)
-        .device_dpi
-        .x = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).width
-        as libc::c_double * 25.4f64
-        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mwidth
-            as libc::c_double;
-    (*firstjob)
-        .device_dpi
-        .y = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).height
-        as libc::c_double * 25.4f64
-        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mheight
-            as libc::c_double;
+    (*firstjob).device_dpi.x = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).width
+        as libc::c_double
+        * 25.4f64
+        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mwidth as libc::c_double;
+    (*firstjob).device_dpi.y = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).height
+        as libc::c_double
+        * 25.4f64
+        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mheight as libc::c_double;
     (*firstjob).device_sets_dpi = 1 as libc::c_int != 0;
 }
 unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
@@ -1479,10 +1425,7 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
             b"job\0" as *const u8 as *const libc::c_char,
             job as gpointer,
         );
-        treeview2 = lookup_widget(
-            window1,
-            b"treeview2\0" as *const u8 as *const libc::c_char,
-        );
+        treeview2 = lookup_widget(window1, b"treeview2\0" as *const u8 as *const libc::c_char);
         g_object_set_data(
             g_type_check_instance_cast(
                 treeview2 as *mut GTypeInstance,
@@ -1497,10 +1440,8 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
             ((16 as libc::c_int) << 2 as libc::c_int) as GType,
         );
         gtk_tree_view_insert_column_with_attributes(
-            g_type_check_instance_cast(
-                treeview2 as *mut GTypeInstance,
-                gtk_tree_view_get_type(),
-            ) as *mut libc::c_void as *mut GtkTreeView,
+            g_type_check_instance_cast(treeview2 as *mut GTypeInstance, gtk_tree_view_get_type())
+                as *mut libc::c_void as *mut GtkTreeView,
             -(1 as libc::c_int),
             b"Name\0" as *const u8 as *const libc::c_char,
             gtk_cell_renderer_text_new(),
@@ -1516,7 +1457,7 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
             ) as *mut libc::c_void as *mut GObject as gpointer,
             b"edited\0" as *const u8 as *const libc::c_char,
             ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut GtkCellRendererText,
                         *mut gchar,
@@ -1525,17 +1466,15 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
                     ) -> (),
                 >,
                 GCallback,
-            >(
-                Some(
-                    attr_value_edited_cb
-                        as unsafe extern "C" fn(
-                            *mut GtkCellRendererText,
-                            *mut gchar,
-                            *mut gchar,
-                            gpointer,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                attr_value_edited_cb
+                    as unsafe extern "C" fn(
+                        *mut GtkCellRendererText,
+                        *mut gchar,
+                        *mut gchar,
+                        gpointer,
+                    ) -> (),
+            )),
             attr_store as gpointer,
             None,
             0 as GConnectFlags,
@@ -1554,10 +1493,8 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
             0 as *mut libc::c_void,
         );
         gtk_tree_view_insert_column_with_attributes(
-            g_type_check_instance_cast(
-                treeview2 as *mut GTypeInstance,
-                gtk_tree_view_get_type(),
-            ) as *mut libc::c_void as *mut GtkTreeView,
+            g_type_check_instance_cast(treeview2 as *mut GTypeInstance, gtk_tree_view_get_type())
+                as *mut libc::c_void as *mut GtkTreeView,
             -(1 as libc::c_int),
             b"Value\0" as *const u8 as *const libc::c_char,
             value_renderer,
@@ -1566,14 +1503,10 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
             0 as *mut libc::c_void,
         );
         gtk_tree_view_set_model(
-            g_type_check_instance_cast(
-                treeview2 as *mut GTypeInstance,
-                gtk_tree_view_get_type(),
-            ) as *mut libc::c_void as *mut GtkTreeView,
-            g_type_check_instance_cast(
-                attr_store as *mut GTypeInstance,
-                gtk_tree_model_get_type(),
-            ) as *mut libc::c_void as *mut GtkTreeModel,
+            g_type_check_instance_cast(treeview2 as *mut GTypeInstance, gtk_tree_view_get_type())
+                as *mut libc::c_void as *mut GtkTreeView,
+            g_type_check_instance_cast(attr_store as *mut GTypeInstance, gtk_tree_model_get_type())
+                as *mut libc::c_void as *mut GtkTreeModel,
         );
         g_object_set_data(
             g_type_check_instance_cast(
@@ -1590,18 +1523,26 @@ unsafe extern "C" fn gtk_finalize(mut firstjob: *mut GVJ_t) {
 }
 static mut device_features_gtk: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
-        flags: (1 as libc::c_int) << 8 as libc::c_int
-            | (1 as libc::c_int) << 7 as libc::c_int,
+        flags: (1 as libc::c_int) << 8 as libc::c_int | (1 as libc::c_int) << 7 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_pagesize: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 96.0f64, y: 96.0f64 };
+            let mut init = pointf_s {
+                x: 96.0f64,
+                y: 96.0f64,
+            };
             init
         },
     };
@@ -1625,8 +1566,8 @@ pub static mut gvdevice_types_gtk: [gvplugin_installed_t; 2] = unsafe {
                 id: 0 as libc::c_int,
                 type_0: b"gtk:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &device_engine_gtk as *const gvdevice_engine_t
-                    as *mut gvdevice_engine_t as *mut libc::c_void,
+                engine: &device_engine_gtk as *const gvdevice_engine_t as *mut gvdevice_engine_t
+                    as *mut libc::c_void,
                 features: &device_features_gtk as *const gvdevice_features_t
                     as *mut gvdevice_features_t as *mut libc::c_void,
             };

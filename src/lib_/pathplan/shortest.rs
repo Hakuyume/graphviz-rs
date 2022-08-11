@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -91,8 +99,7 @@ pub struct deque_t {
     pub apex: libc::c_int,
 }
 static mut pnls: *mut pointnlink_t = 0 as *const pointnlink_t as *mut pointnlink_t;
-static mut pnlps: *mut *mut pointnlink_t = 0 as *const *mut pointnlink_t
-    as *mut *mut pointnlink_t;
+static mut pnlps: *mut *mut pointnlink_t = 0 as *const *mut pointnlink_t as *mut *mut pointnlink_t;
 static mut pnln: libc::c_int = 0;
 static mut pnll: libc::c_int = 0;
 static mut tris: *mut triangle_t = 0 as *const triangle_t as *mut triangle_t;
@@ -154,22 +161,20 @@ pub unsafe extern "C" fn Pshortestpath(
         pi += 1;
     }
     p2 = *((*polyp).ps).offset(minpi as isize);
-    p1 = *((*polyp).ps)
-        .offset(
-            (if minpi == 0 as libc::c_int {
-                (*polyp).pn - 1 as libc::c_int
-            } else {
-                minpi - 1 as libc::c_int
-            }) as isize,
-        );
-    p3 = *((*polyp).ps)
-        .offset(
-            (if minpi == (*polyp).pn - 1 as libc::c_int {
-                0 as libc::c_int
-            } else {
-                minpi + 1 as libc::c_int
-            }) as isize,
-        );
+    p1 = *((*polyp).ps).offset(
+        (if minpi == 0 as libc::c_int {
+            (*polyp).pn - 1 as libc::c_int
+        } else {
+            minpi - 1 as libc::c_int
+        }) as isize,
+    );
+    p3 = *((*polyp).ps).offset(
+        (if minpi == (*polyp).pn - 1 as libc::c_int {
+            0 as libc::c_int
+        } else {
+            minpi + 1 as libc::c_int
+        }) as isize,
+    );
     if p1.x == p2.x && p2.x == p3.x && p3.y > p2.y
         || ccw(&mut p1, &mut p2, &mut p3) != 1 as libc::c_int
     {
@@ -184,8 +189,7 @@ pub unsafe extern "C" fn Pshortestpath(
                 let ref mut fresh0 = (*pnls.offset(pnll as isize)).pp;
                 *fresh0 = &mut *((*polyp).ps).offset(pi as isize) as *mut Ppoint_t;
                 let ref mut fresh1 = (*pnls.offset(pnll as isize)).link;
-                *fresh1 = &mut *pnls.offset((pnll % (*polyp).pn) as isize)
-                    as *mut pointnlink_t;
+                *fresh1 = &mut *pnls.offset((pnll % (*polyp).pn) as isize) as *mut pointnlink_t;
                 let ref mut fresh2 = *pnlps.offset(pnll as isize);
                 *fresh2 = &mut *pnls.offset(pnll as isize) as *mut pointnlink_t;
                 pnll += 1;
@@ -204,8 +208,7 @@ pub unsafe extern "C" fn Pshortestpath(
                 let ref mut fresh3 = (*pnls.offset(pnll as isize)).pp;
                 *fresh3 = &mut *((*polyp).ps).offset(pi as isize) as *mut Ppoint_t;
                 let ref mut fresh4 = (*pnls.offset(pnll as isize)).link;
-                *fresh4 = &mut *pnls.offset((pnll % (*polyp).pn) as isize)
-                    as *mut pointnlink_t;
+                *fresh4 = &mut *pnls.offset((pnll % (*polyp).pn) as isize) as *mut pointnlink_t;
                 let ref mut fresh5 = *pnlps.offset(pnll as isize);
                 *fresh5 = &mut *pnls.offset(pnll as isize) as *mut pointnlink_t;
                 pnll += 1;
@@ -256,8 +259,7 @@ pub unsafe extern "C" fn Pshortestpath(
             b"libpath/%s:%d: %s\n\0" as *const u8 as *const libc::c_char,
             b"shortest.c\0" as *const u8 as *const libc::c_char,
             184 as libc::c_int,
-            b"destination point not in any triangle\0" as *const u8
-                as *const libc::c_char,
+            b"destination point not in any triangle\0" as *const u8 as *const libc::c_char,
         );
         return -(1 as libc::c_int);
     }
@@ -291,13 +293,16 @@ pub unsafe extern "C" fn Pshortestpath(
         *fresh7 = ops;
         return 0 as libc::c_int;
     }
-    epnls[0 as libc::c_int as usize]
-        .pp = &mut *eps.offset(0 as libc::c_int as isize) as *mut Ppoint_t;
+    epnls[0 as libc::c_int as usize].pp =
+        &mut *eps.offset(0 as libc::c_int as isize) as *mut Ppoint_t;
     epnls[0 as libc::c_int as usize].link = 0 as *mut pointnlink_t;
-    epnls[1 as libc::c_int as usize]
-        .pp = &mut *eps.offset(1 as libc::c_int as isize) as *mut Ppoint_t;
+    epnls[1 as libc::c_int as usize].pp =
+        &mut *eps.offset(1 as libc::c_int as isize) as *mut Ppoint_t;
     epnls[1 as libc::c_int as usize].link = 0 as *mut pointnlink_t;
-    add2dq(1 as libc::c_int, &mut *epnls.as_mut_ptr().offset(0 as libc::c_int as isize));
+    add2dq(
+        1 as libc::c_int,
+        &mut *epnls.as_mut_ptr().offset(0 as libc::c_int as isize),
+    );
     dq.apex = dq.fpnlpi;
     trii = ftrii;
     while trii != -(1 as libc::c_int) {
@@ -320,17 +325,15 @@ pub unsafe extern "C" fn Pshortestpath(
             ) == 1 as libc::c_int
             {
                 lpnlp = *(dq.pnlps).offset(dq.lpnlpi as isize);
-                rpnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize)
-                    as *mut pointnlink_t;
+                rpnlp =
+                    &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize) as *mut pointnlink_t;
             } else {
-                lpnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize)
-                    as *mut pointnlink_t;
+                lpnlp =
+                    &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize) as *mut pointnlink_t;
                 rpnlp = *(dq.pnlps).offset(dq.lpnlpi as isize);
             }
         } else {
-            pnlp = (*trip)
-                .e[((ei + 1 as libc::c_int) % 3 as libc::c_int) as usize]
-                .pnl1p;
+            pnlp = (*trip).e[((ei + 1 as libc::c_int) % 3 as libc::c_int) as usize].pnl1p;
             if ccw(
                 (*(*trip).e[ei as usize].pnl0p).pp,
                 (*pnlp).pp,
@@ -348,8 +351,8 @@ pub unsafe extern "C" fn Pshortestpath(
             add2dq(2 as libc::c_int, lpnlp);
             add2dq(1 as libc::c_int, rpnlp);
         } else if *(dq.pnlps).offset(dq.fpnlpi as isize) != rpnlp
-                && *(dq.pnlps).offset(dq.lpnlpi as isize) != rpnlp
-            {
+            && *(dq.pnlps).offset(dq.lpnlpi as isize) != rpnlp
+        {
             splitindex = finddqsplit(rpnlp);
             splitdq(2 as libc::c_int, splitindex);
             add2dq(1 as libc::c_int, rpnlp);
@@ -370,8 +373,8 @@ pub unsafe extern "C" fn Pshortestpath(
             if !((*trip).e[ei as usize].rtp).is_null()
                 && (*(*trip).e[ei as usize].rtp).mark == 1 as libc::c_int
             {
-                trii = ((*trip).e[ei as usize].rtp).offset_from(tris) as libc::c_long
-                    as libc::c_int;
+                trii =
+                    ((*trip).e[ei as usize].rtp).offset_from(tris) as libc::c_long as libc::c_int;
                 break;
             } else {
                 ei += 1;
@@ -379,8 +382,7 @@ pub unsafe extern "C" fn Pshortestpath(
         }
     }
     pi = 0 as libc::c_int;
-    pnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize)
-        as *mut pointnlink_t;
+    pnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize) as *mut pointnlink_t;
     while !pnlp.is_null() {
         pi += 1;
         pnlp = (*pnlp).link;
@@ -390,8 +392,7 @@ pub unsafe extern "C" fn Pshortestpath(
     }
     (*output).pn = pi;
     pi = pi - 1 as libc::c_int;
-    pnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize)
-        as *mut pointnlink_t;
+    pnlp = &mut *epnls.as_mut_ptr().offset(1 as libc::c_int as isize) as *mut pointnlink_t;
     while !pnlp.is_null() {
         *ops.offset(pi as isize) = *(*pnlp).pp;
         pi -= 1;
@@ -440,12 +441,12 @@ unsafe extern "C" fn triangulate(
             b"triangulation failed\0" as *const u8 as *const libc::c_char,
         );
     } else if loadtriangle(
-            *pnlps_0.offset(0 as libc::c_int as isize),
-            *pnlps_0.offset(1 as libc::c_int as isize),
-            *pnlps_0.offset(2 as libc::c_int as isize),
-        ) != 0 as libc::c_int
-        {
-        return -(1 as libc::c_int)
+        *pnlps_0.offset(0 as libc::c_int as isize),
+        *pnlps_0.offset(1 as libc::c_int as isize),
+        *pnlps_0.offset(2 as libc::c_int as isize),
+    ) != 0 as libc::c_int
+    {
+        return -(1 as libc::c_int);
     }
     return 0 as libc::c_int;
 }
@@ -559,12 +560,9 @@ unsafe extern "C" fn connecttris(mut tri1: libc::c_int, mut tri2: libc::c_int) {
             tri1p = &mut *tris.offset(tri1 as isize) as *mut triangle_t;
             tri2p = &mut *tris.offset(tri2 as isize) as *mut triangle_t;
             if (*(*tri1p).e[ei as usize].pnl0p).pp == (*(*tri2p).e[ej as usize].pnl0p).pp
-                && (*(*tri1p).e[ei as usize].pnl1p).pp
-                    == (*(*tri2p).e[ej as usize].pnl1p).pp
-                || (*(*tri1p).e[ei as usize].pnl0p).pp
-                    == (*(*tri2p).e[ej as usize].pnl1p).pp
-                    && (*(*tri1p).e[ei as usize].pnl1p).pp
-                        == (*(*tri2p).e[ej as usize].pnl0p).pp
+                && (*(*tri1p).e[ei as usize].pnl1p).pp == (*(*tri2p).e[ej as usize].pnl1p).pp
+                || (*(*tri1p).e[ei as usize].pnl0p).pp == (*(*tri2p).e[ej as usize].pnl1p).pp
+                    && (*(*tri1p).e[ei as usize].pnl1p).pp == (*(*tri2p).e[ej as usize].pnl0p).pp
             {
                 let ref mut fresh21 = (*tri1p).e[ei as usize].rtp;
                 *fresh21 = tri2p;
@@ -589,10 +587,11 @@ unsafe extern "C" fn marktripath(mut trii: libc::c_int, mut trij: libc::c_int) -
     while ei < 3 as libc::c_int {
         if !((*tris.offset(trii as isize)).e[ei as usize].rtp).is_null()
             && marktripath(
-                ((*tris.offset(trii as isize)).e[ei as usize].rtp).offset_from(tris)
-                    as libc::c_long as libc::c_int,
+                ((*tris.offset(trii as isize)).e[ei as usize].rtp).offset_from(tris) as libc::c_long
+                    as libc::c_int,
                 trij,
-            ) as libc::c_int != 0
+            ) as libc::c_int
+                != 0
         {
             return 1 as libc::c_int != 0;
         }
@@ -681,7 +680,8 @@ unsafe extern "C" fn intersects(
     let mut ccw2: libc::c_int = 0;
     let mut ccw3: libc::c_int = 0;
     let mut ccw4: libc::c_int = 0;
-    if ccw(pap, pbp, pcp) == 3 as libc::c_int || ccw(pap, pbp, pdp) == 3 as libc::c_int
+    if ccw(pap, pbp, pcp) == 3 as libc::c_int
+        || ccw(pap, pbp, pdp) == 3 as libc::c_int
         || ccw(pcp, pdp, pap) == 3 as libc::c_int
         || ccw(pcp, pdp, pbp) == 3 as libc::c_int
     {
@@ -734,10 +734,7 @@ unsafe extern "C" fn between(
     return p2.x * p1.x + p2.y * p1.y >= 0 as libc::c_int as libc::c_double
         && p2.x * p2.x + p2.y * p2.y <= p1.x * p1.x + p1.y * p1.y;
 }
-unsafe extern "C" fn pointintri(
-    mut trii: libc::c_int,
-    mut pp: *mut Ppoint_t,
-) -> libc::c_int {
+unsafe extern "C" fn pointintri(mut trii: libc::c_int, mut pp: *mut Ppoint_t) -> libc::c_int {
     let mut ei: libc::c_int = 0;
     let mut sum: libc::c_int = 0;
     ei = 0 as libc::c_int;
@@ -818,8 +815,7 @@ unsafe extern "C" fn growdq(mut newdqn: libc::c_int) -> libc::c_int {
     if newdqn <= dq.pnlpn {
         return 0 as libc::c_int;
     }
-    dq
-        .pnlps = realloc(
+    dq.pnlps = realloc(
         dq.pnlps as *mut libc::c_void,
         (::std::mem::size_of::<*mut pointnlink_t>() as libc::c_ulong)
             .wrapping_mul(newdqn as libc::c_ulong),
@@ -843,8 +839,7 @@ unsafe extern "C" fn growops(mut newopn: libc::c_int) -> libc::c_int {
     }
     ops = realloc(
         ops as *mut libc::c_void,
-        (::std::mem::size_of::<Ppoint_t>() as libc::c_ulong)
-            .wrapping_mul(newopn as libc::c_ulong),
+        (::std::mem::size_of::<Ppoint_t>() as libc::c_ulong).wrapping_mul(newopn as libc::c_ulong),
     ) as *mut Ppoint_t;
     if ops.is_null() {
         fprintf(

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -77,8 +85,7 @@ static mut apis: [gvplugin_api_t; 5] = unsafe {
 pub static mut gvplugin_pango_LTX_library: gvplugin_library_t = unsafe {
     {
         let mut init = gvplugin_library_t {
-            packagename: b"cairo\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            packagename: b"cairo\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             apis: apis.as_ptr() as *mut _,
         };
         init

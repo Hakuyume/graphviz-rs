@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -34,13 +42,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -65,16 +68,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -94,10 +91,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -105,16 +101,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct intitem {
@@ -126,16 +115,12 @@ unsafe extern "C" fn mkIntItem(
     mut obj: *mut intitem,
     mut disc: *mut Dtdisc_t,
 ) -> *mut libc::c_void {
-    let mut np: *mut intitem = zmalloc(::std::mem::size_of::<intitem>() as libc::c_ulong)
-        as *mut intitem;
+    let mut np: *mut intitem =
+        zmalloc(::std::mem::size_of::<intitem>() as libc::c_ulong) as *mut intitem;
     (*np).id = (*obj).id;
     return np as *mut libc::c_void;
 }
-unsafe extern "C" fn freeIntItem(
-    mut d: *mut Dt_t,
-    mut obj: *mut intitem,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn freeIntItem(mut d: *mut Dt_t, mut obj: *mut intitem, mut disc: *mut Dtdisc_t) {
     free(obj as *mut libc::c_void);
 }
 unsafe extern "C" fn cmpid(
@@ -145,11 +130,11 @@ unsafe extern "C" fn cmpid(
     mut disc: *mut Dtdisc_t,
 ) -> libc::c_int {
     if *key1 > *key2 {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else if *key1 < *key2 {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 static mut intSetDisc: Dtdisc_t = unsafe {
@@ -159,7 +144,7 @@ static mut intSetDisc: Dtdisc_t = unsafe {
             size: ::std::mem::size_of::<libc::c_int>() as libc::c_ulong as libc::c_int,
             link: 8 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut intitem,
@@ -167,33 +152,22 @@ static mut intSetDisc: Dtdisc_t = unsafe {
                     ) -> *mut libc::c_void,
                 >,
                 Dtmake_f,
-            >(
-                Some(
-                    mkIntItem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut intitem,
-                            *mut Dtdisc_t,
-                        ) -> *mut libc::c_void,
-                ),
-            ),
+            >(Some(
+                mkIntItem
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut intitem,
+                        *mut Dtdisc_t,
+                    ) -> *mut libc::c_void,
+            )),
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut intitem, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut intitem, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    freeIntItem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut intitem,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                freeIntItem as unsafe extern "C" fn(*mut Dt_t, *mut intitem, *mut Dtdisc_t) -> (),
+            )),
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut libc::c_int,
@@ -202,17 +176,15 @@ static mut intSetDisc: Dtdisc_t = unsafe {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    cmpid
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut libc::c_int,
-                            *mut libc::c_int,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                cmpid
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut libc::c_int,
+                        *mut libc::c_int,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,
@@ -234,16 +206,18 @@ pub unsafe extern "C" fn addIntSet(mut is: *mut Dt_t, mut v: libc::c_int) {
         },
     };
     obj.id = v;
-    (Some(((*is).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(is, &mut obj as *mut intitem as *mut libc::c_void, 0o1 as libc::c_int);
+    (Some(((*is).searchf).expect("non-null function pointer"))).expect("non-null function pointer")(
+        is,
+        &mut obj as *mut intitem as *mut libc::c_void,
+        0o1 as libc::c_int,
+    );
 }
 #[no_mangle]
 pub unsafe extern "C" fn inIntSet(mut is: *mut Dt_t, mut v: libc::c_int) -> libc::c_int {
     return ((Some(((*is).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(is, &mut v as *mut libc::c_int as *mut libc::c_void, 0o1000 as libc::c_int)
-        != 0 as *mut libc::c_void) as libc::c_int;
+        .expect("non-null function pointer")(
+        is,
+        &mut v as *mut libc::c_int as *mut libc::c_void,
+        0o1000 as libc::c_int,
+    ) != 0 as *mut libc::c_void) as libc::c_int;
 }

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 use num_traits::ToPrimitive;
@@ -17,21 +25,13 @@ extern "C" {
     fn fabs(_: libc::c_double) -> libc::c_double;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn drand48() -> libc::c_double;
     fn rand() -> libc::c_int;
     fn fmaxf(_: libc::c_float, _: libc::c_float) -> libc::c_float;
     fn free_array(rv: *mut *mut libc::c_double);
-    fn new_array(
-        i: libc::c_int,
-        j: libc::c_int,
-        val: libc::c_double,
-    ) -> *mut *mut libc::c_double;
+    fn new_array(i: libc::c_int, j: libc::c_int, val: libc::c_double) -> *mut *mut libc::c_double;
     fn solveCircuit(
         nG: libc::c_int,
         Gm: *mut *mut libc::c_double,
@@ -44,12 +44,7 @@ extern "C" {
     fn elapsed_sec() -> libc::c_double;
     fn agerr(level: agerrlevel_t, fmt: *const libc::c_char, _: ...) -> libc::c_int;
     fn dijkstra(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType);
-    fn dijkstra_f(
-        _: libc::c_int,
-        _: *mut vtx_data,
-        _: libc::c_int,
-        _: *mut libc::c_float,
-    );
+    fn dijkstra_f(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut libc::c_float);
     fn dijkstra_bounded(
         _: libc::c_int,
         _: *mut vtx_data,
@@ -60,13 +55,7 @@ extern "C" {
     ) -> libc::c_int;
     fn mkQueue(_: *mut Queue, _: libc::c_int);
     fn freeQueue(_: *mut Queue);
-    fn bfs(
-        _: libc::c_int,
-        _: *mut vtx_data,
-        _: libc::c_int,
-        _: *mut DistType,
-        _: *mut Queue,
-    );
+    fn bfs(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType, _: *mut Queue);
     fn bfs_bounded(
         _: libc::c_int,
         _: *mut vtx_data,
@@ -125,11 +114,7 @@ extern "C" {
         _: *mut libc::c_float,
         _: *mut libc::c_float,
     );
-    fn copy_vectorf(
-        n: libc::c_int,
-        source: *mut libc::c_float,
-        dest: *mut libc::c_float,
-    );
+    fn copy_vectorf(n: libc::c_int, source: *mut libc::c_float, dest: *mut libc::c_float);
     fn vectors_inner_productf(
         n: libc::c_int,
         vector1: *mut libc::c_float,
@@ -165,22 +150,14 @@ extern "C" {
         _: libc::c_int,
     );
     fn center_coordinate(_: *mut *mut DistType, _: libc::c_int, _: libc::c_int);
-    fn fill_neighbors_vec_unweighted(
-        _: *mut vtx_data,
-        vtx: libc::c_int,
-        vtx_vec: *mut libc::c_int,
-    );
+    fn fill_neighbors_vec_unweighted(_: *mut vtx_data, vtx: libc::c_int, vtx_vec: *mut libc::c_int);
     fn common_neighbors(
         _: *mut vtx_data,
         v: libc::c_int,
         u: libc::c_int,
         _: *mut libc::c_int,
     ) -> libc::c_int;
-    fn empty_neighbors_vec(
-        graph: *mut vtx_data,
-        vtx: libc::c_int,
-        vtx_vec: *mut libc::c_int,
-    );
+    fn empty_neighbors_vec(graph: *mut vtx_data, vtx: libc::c_int, vtx_vec: *mut libc::c_int);
     fn distance_kD(
         _: *mut *mut libc::c_double,
         _: libc::c_int,
@@ -188,11 +165,7 @@ extern "C" {
         _: libc::c_int,
     ) -> libc::c_double;
     fn compute_new_weights(graph: *mut vtx_data, n: libc::c_int);
-    fn restore_old_weights(
-        graph: *mut vtx_data,
-        n: libc::c_int,
-        old_weights: *mut libc::c_float,
-    );
+    fn restore_old_weights(graph: *mut vtx_data, n: libc::c_int, old_weights: *mut libc::c_float);
 }
 pub type __uint64_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -342,9 +315,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -358,25 +329,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -478,7 +442,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -639,16 +604,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -664,18 +623,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -683,16 +636,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -734,9 +680,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -765,13 +710,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -804,26 +744,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -832,29 +764,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -862,8 +786,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -897,7 +821,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -923,9 +847,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -1051,7 +973,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1137,13 +1059,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1152,7 +1073,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1279,25 +1200,20 @@ unsafe extern "C" fn compute_stressf(
             neighbor = i + j;
             l = 0 as libc::c_int;
             while l < dim {
-                dist
-                    += ((*(*coords.offset(l as isize)).offset(i as isize)
-                        - *(*coords.offset(l as isize)).offset(neighbor as isize))
-                        * (*(*coords.offset(l as isize)).offset(i as isize)
-                            - *(*coords.offset(l as isize)).offset(neighbor as isize)))
-                        as libc::c_double;
+                dist += ((*(*coords.offset(l as isize)).offset(i as isize)
+                    - *(*coords.offset(l as isize)).offset(neighbor as isize))
+                    * (*(*coords.offset(l as isize)).offset(i as isize)
+                        - *(*coords.offset(l as isize)).offset(neighbor as isize)))
+                    as libc::c_double;
                 l += 1;
             }
             dist = sqrt(dist);
             if exp == 2 as libc::c_int {
                 Dij = 1.0f64 / sqrt(*lap.offset(count as isize) as libc::c_double);
-                sum
-                    += (Dij - dist) * (Dij - dist)
-                        * *lap.offset(count as isize) as libc::c_double;
+                sum += (Dij - dist) * (Dij - dist) * *lap.offset(count as isize) as libc::c_double;
             } else {
                 Dij = 1.0f64 / *lap.offset(count as isize) as libc::c_double;
-                sum
-                    += (Dij - dist) * (Dij - dist)
-                        * *lap.offset(count as isize) as libc::c_double;
+                sum += (Dij - dist) * (Dij - dist) * *lap.offset(count as isize) as libc::c_double;
             }
             j += 1;
             count += 1;
@@ -1331,11 +1247,10 @@ unsafe extern "C" fn compute_stress1(
                     dist = 0 as libc::c_int as libc::c_double;
                     l = 0 as libc::c_int;
                     while l < dim {
-                        dist
-                            += (*(*coords.offset(l as isize)).offset(i as isize)
-                                - *(*coords.offset(l as isize)).offset(node as isize))
-                                * (*(*coords.offset(l as isize)).offset(i as isize)
-                                    - *(*coords.offset(l as isize)).offset(node as isize));
+                        dist += (*(*coords.offset(l as isize)).offset(i as isize)
+                            - *(*coords.offset(l as isize)).offset(node as isize))
+                            * (*(*coords.offset(l as isize)).offset(i as isize)
+                                - *(*coords.offset(l as isize)).offset(node as isize));
                         l += 1;
                     }
                     dist = sqrt(dist);
@@ -1357,11 +1272,10 @@ unsafe extern "C" fn compute_stress1(
                     dist = 0 as libc::c_int as libc::c_double;
                     l = 0 as libc::c_int;
                     while l < dim {
-                        dist
-                            += (*(*coords.offset(l as isize)).offset(i as isize)
-                                - *(*coords.offset(l as isize)).offset(node as isize))
-                                * (*(*coords.offset(l as isize)).offset(i as isize)
-                                    - *(*coords.offset(l as isize)).offset(node as isize));
+                        dist += (*(*coords.offset(l as isize)).offset(i as isize)
+                            - *(*coords.offset(l as isize)).offset(node as isize))
+                            * (*(*coords.offset(l as isize)).offset(i as isize)
+                                - *(*coords.offset(l as isize)).offset(node as isize));
                         l += 1;
                     }
                     dist = sqrt(dist);
@@ -1419,8 +1333,8 @@ pub unsafe extern "C" fn initLayout(
                     d += 1;
                 }
             }
-            if (*((*(np as *mut Agobj_t)).data as *mut Agnodeinfo_t)).pinned
-                as libc::c_int > 1 as libc::c_int
+            if (*((*(np as *mut Agobj_t)).data as *mut Agnodeinfo_t)).pinned as libc::c_int
+                > 1 as libc::c_int
             {
                 pinned = 1 as libc::c_int;
             }
@@ -1474,8 +1388,7 @@ pub unsafe extern "C" fn circuitModel(
                 j = *((*graph.offset(i as isize)).edges).offset(e as isize);
                 let ref mut fresh7 = *(*Gm.offset(j as isize)).offset(i as isize);
                 *fresh7 = -1.0f64
-                    / *((*graph.offset(i as isize)).ewgts).offset(e as isize)
-                        as libc::c_double;
+                    / *((*graph.offset(i as isize)).ewgts).offset(e as isize) as libc::c_double;
                 *(*Gm.offset(i as isize)).offset(j as isize) = *fresh7;
                 e += 1;
             }
@@ -1607,8 +1520,7 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             2 as libc::c_int * subspace_dim
         } else {
             50 as libc::c_int
-        })
-    {
+        }) {
         n
     } else if 2 as libc::c_int * subspace_dim > 50 as libc::c_int {
         2 as libc::c_int * subspace_dim
@@ -1616,7 +1528,13 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         50 as libc::c_int
     };
     full_coords = 0 as *mut *mut DistType;
-    embed_graph(graph, n, num_centers_local, &mut full_coords, reweight_graph);
+    embed_graph(
+        graph,
+        n,
+        num_centers_local,
+        &mut full_coords,
+        reweight_graph,
+    );
     center_coordinate(full_coords, n, num_centers_local);
     PCA_alloc(full_coords, num_centers_local, n, subspace, subspace_dim);
     free(*full_coords.offset(0 as libc::c_int as isize) as *mut libc::c_void);
@@ -1637,8 +1555,10 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         compute_new_weights(graph, n);
     }
     Dij = 0 as *mut *mut DistType;
-    dist = gcalloc(n as size_t, ::std::mem::size_of::<DistType>() as libc::c_ulong)
-        as *mut DistType;
+    dist = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<DistType>() as libc::c_ulong,
+    ) as *mut DistType;
     if !(num_centers == 0 as libc::c_int) {
         invCenterIndex = gcalloc(
             num_centers as size_t,
@@ -1664,15 +1584,18 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         if reweight_graph != 0 {
             dijkstra(node, graph, n, *Dij.offset(0 as libc::c_int as isize));
         } else {
-            bfs(node, graph, n, *Dij.offset(0 as libc::c_int as isize), &mut Q);
+            bfs(
+                node,
+                graph,
+                n,
+                *Dij.offset(0 as libc::c_int as isize),
+                &mut Q,
+            );
         }
         max_dist = 0 as libc::c_int;
         i = 0 as libc::c_int;
         while i < n {
-            *dist
-                .offset(
-                    i as isize,
-                ) = *(*Dij.offset(0 as libc::c_int as isize)).offset(i as isize);
+            *dist.offset(i as isize) = *(*Dij.offset(0 as libc::c_int as isize)).offset(i as isize);
             if *dist.offset(i as isize) > max_dist {
                 node = i;
                 max_dist = *dist.offset(i as isize);
@@ -1691,16 +1614,12 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             max_dist = 0 as libc::c_int;
             j = 0 as libc::c_int;
             while j < n {
-                *dist
-                    .offset(
-                        j as isize,
-                    ) = if *dist.offset(j as isize)
-                    < *(*Dij.offset(i as isize)).offset(j as isize)
-                {
-                    *dist.offset(j as isize)
-                } else {
-                    *(*Dij.offset(i as isize)).offset(j as isize)
-                };
+                *dist.offset(j as isize) =
+                    if *dist.offset(j as isize) < *(*Dij.offset(i as isize)).offset(j as isize) {
+                        *dist.offset(j as isize)
+                    } else {
+                        *(*Dij.offset(i as isize)).offset(j as isize)
+                    };
                 if *dist.offset(j as isize) > max_dist
                     || *dist.offset(j as isize) == max_dist
                         && rand() % (j + 1 as libc::c_int) == 0 as libc::c_int
@@ -1722,8 +1641,10 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         n as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
-    distances = gcalloc(n as size_t, ::std::mem::size_of::<dist_data>() as libc::c_ulong)
-        as *mut dist_data;
+    distances = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<dist_data>() as libc::c_ulong,
+    ) as *mut dist_data;
     available_space = 0 as libc::c_int;
     nedges = 0 as libc::c_int;
     i = 0 as libc::c_int;
@@ -1746,60 +1667,40 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             j = 0 as libc::c_int;
             while j < i {
                 *((*distances.offset(i as isize)).edges).offset(j as isize) = j;
-                *((*distances.offset(i as isize)).edist)
-                    .offset(
-                        j as isize,
-                    ) = *(*Dij.offset(index as isize)).offset(j as isize);
+                *((*distances.offset(i as isize)).edist).offset(j as isize) =
+                    *(*Dij.offset(index as isize)).offset(j as isize);
                 j += 1;
             }
             j = i + 1 as libc::c_int;
             while j < n {
-                *((*distances.offset(i as isize)).edges)
-                    .offset((j - 1 as libc::c_int) as isize) = j;
-                *((*distances.offset(i as isize)).edist)
-                    .offset(
-                        (j - 1 as libc::c_int) as isize,
-                    ) = *(*Dij.offset(index as isize)).offset(j as isize);
+                *((*distances.offset(i as isize)).edges).offset((j - 1 as libc::c_int) as isize) =
+                    j;
+                *((*distances.offset(i as isize)).edist).offset((j - 1 as libc::c_int) as isize) =
+                    *(*Dij.offset(index as isize)).offset(j as isize);
                 j += 1;
             }
         } else {
             if dist_bound > 0 as libc::c_int {
                 if reweight_graph != 0 {
-                    num_visited_nodes = dijkstra_bounded(
-                        i,
-                        graph,
-                        n,
-                        dist,
-                        dist_bound,
-                        visited_nodes,
-                    );
+                    num_visited_nodes =
+                        dijkstra_bounded(i, graph, n, dist, dist_bound, visited_nodes);
                 } else {
-                    num_visited_nodes = bfs_bounded(
-                        i,
-                        graph,
-                        n,
-                        dist,
-                        &mut Q,
-                        dist_bound,
-                        visited_nodes,
-                    );
+                    num_visited_nodes =
+                        bfs_bounded(i, graph, n, dist, &mut Q, dist_bound, visited_nodes);
                 }
                 j = 0 as libc::c_int;
                 while j < num_visited_nodes {
                     if *CenterIndex.offset(*visited_nodes.offset(j as isize) as isize)
-                        < 0 as libc::c_int && *visited_nodes.offset(j as isize) != i
+                        < 0 as libc::c_int
+                        && *visited_nodes.offset(j as isize) != i
                     {
                         j += 1;
                     } else {
-                        *dist
-                            .offset(
-                                *visited_nodes.offset(j as isize) as isize,
-                            ) = -(1 as libc::c_int);
+                        *dist.offset(*visited_nodes.offset(j as isize) as isize) =
+                            -(1 as libc::c_int);
                         num_visited_nodes -= 1;
-                        *visited_nodes
-                            .offset(
-                                j as isize,
-                            ) = *visited_nodes.offset(num_visited_nodes as isize);
+                        *visited_nodes.offset(j as isize) =
+                            *visited_nodes.offset(num_visited_nodes as isize);
                     }
                 }
             } else {
@@ -1829,24 +1730,16 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             j = 0 as libc::c_int;
             while j < num_visited_nodes {
                 *storage1.offset(j as isize) = *visited_nodes.offset(j as isize);
-                *storage2
-                    .offset(
-                        j as isize,
-                    ) = *dist.offset(*visited_nodes.offset(j as isize) as isize);
-                *dist
-                    .offset(
-                        *visited_nodes.offset(j as isize) as isize,
-                    ) = -(1 as libc::c_int);
+                *storage2.offset(j as isize) =
+                    *dist.offset(*visited_nodes.offset(j as isize) as isize);
+                *dist.offset(*visited_nodes.offset(j as isize) as isize) = -(1 as libc::c_int);
                 j += 1;
             }
             j = num_visited_nodes;
             while j < num_neighbors {
                 index = j - num_visited_nodes;
                 *storage1.offset(j as isize) = *invCenterIndex.offset(index as isize);
-                *storage2
-                    .offset(
-                        j as isize,
-                    ) = *(*Dij.offset(index as isize)).offset(i as isize);
+                *storage2.offset(j as isize) = *(*Dij.offset(index as isize)).offset(i as isize);
                 j += 1;
             }
             storage1 = storage1.offset(num_neighbors as isize);
@@ -1861,8 +1754,10 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         free(*Dij.offset(0 as libc::c_int as isize) as *mut libc::c_void);
         free(Dij as *mut libc::c_void);
     }
-    lap = gcalloc(n as size_t, ::std::mem::size_of::<vtx_data>() as libc::c_ulong)
-        as *mut vtx_data;
+    lap = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<vtx_data>() as libc::c_ulong,
+    ) as *mut vtx_data;
     edges = gcalloc(
         (nedges + n) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
@@ -1877,23 +1772,16 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         *fresh16 = edges;
         let ref mut fresh17 = (*lap.offset(i as isize)).ewgts;
         *fresh17 = ewgts;
-        (*lap.offset(i as isize))
-            .nedges = (*distances.offset(i as isize)).nedges + 1 as libc::c_int;
-        dist_list = ((*distances.offset(i as isize)).edist)
-            .offset(-(1 as libc::c_int as isize));
+        (*lap.offset(i as isize)).nedges =
+            (*distances.offset(i as isize)).nedges + 1 as libc::c_int;
+        dist_list = ((*distances.offset(i as isize)).edist).offset(-(1 as libc::c_int as isize));
         degree = 0 as libc::c_int as libc::c_double;
         if exp == 2 as libc::c_int {
             j = 1 as libc::c_int;
             while j < (*lap.offset(i as isize)).nedges {
-                *edges
-                    .offset(
-                        j as isize,
-                    ) = *((*distances.offset(i as isize)).edges)
+                *edges.offset(j as isize) = *((*distances.offset(i as isize)).edges)
                     .offset((j - 1 as libc::c_int) as isize);
-                *ewgts
-                    .offset(
-                        j as isize,
-                    ) = -1.0f64 as libc::c_float
+                *ewgts.offset(j as isize) = -1.0f64 as libc::c_float
                     / (*dist_list.offset(j as isize) as libc::c_float
                         * *dist_list.offset(j as isize) as libc::c_float);
                 degree -= *ewgts.offset(j as isize) as libc::c_double;
@@ -1902,15 +1790,10 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         } else {
             j = 1 as libc::c_int;
             while j < (*lap.offset(i as isize)).nedges {
-                *edges
-                    .offset(
-                        j as isize,
-                    ) = *((*distances.offset(i as isize)).edges)
+                *edges.offset(j as isize) = *((*distances.offset(i as isize)).edges)
                     .offset((j - 1 as libc::c_int) as isize);
-                *ewgts
-                    .offset(
-                        j as isize,
-                    ) = -1.0f32 / *dist_list.offset(j as isize) as libc::c_float;
+                *ewgts.offset(j as isize) =
+                    -1.0f32 / *dist_list.offset(j as isize) as libc::c_float;
                 degree -= *ewgts.offset(j as isize) as libc::c_double;
                 j += 1;
             }
@@ -1933,8 +1816,8 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
     i = 1 as libc::c_int;
     while i < dim {
         let ref mut fresh19 = *directions.offset(i as isize);
-        *fresh19 = (*directions.offset(0 as libc::c_int as isize))
-            .offset((i * subspace_dim) as isize);
+        *fresh19 =
+            (*directions.offset(0 as libc::c_int as isize)).offset((i * subspace_dim) as isize);
         i += 1;
     }
     if smart_ini != 0 {
@@ -1942,8 +1825,8 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         while k < dim {
             i = 0 as libc::c_int;
             while i < subspace_dim {
-                *(*directions.offset(k as isize))
-                    .offset(i as isize) = 0 as libc::c_int as libc::c_double;
+                *(*directions.offset(k as isize)).offset(i as isize) =
+                    0 as libc::c_int as libc::c_double;
                 i += 1;
             }
             k += 1;
@@ -1951,13 +1834,13 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         if dim != 2 as libc::c_int {
             k = 0 as libc::c_int;
             while k < dim {
-                *(*directions.offset(k as isize))
-                    .offset(k as isize) = 1 as libc::c_int as libc::c_double;
+                *(*directions.offset(k as isize)).offset(k as isize) =
+                    1 as libc::c_int as libc::c_double;
                 k += 1;
             }
         } else {
-            *(*directions.offset(0 as libc::c_int as isize))
-                .offset(0 as libc::c_int as isize) = 1 as libc::c_int as libc::c_double;
+            *(*directions.offset(0 as libc::c_int as isize)).offset(0 as libc::c_int as isize) =
+                1 as libc::c_int as libc::c_double;
             if !iterativePCA_1D(
                 subspace,
                 subspace_dim,
@@ -1966,14 +1849,12 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             ) {
                 k = 0 as libc::c_int;
                 while k < subspace_dim {
-                    *(*directions.offset(1 as libc::c_int as isize))
-                        .offset(k as isize) = 0 as libc::c_int as libc::c_double;
+                    *(*directions.offset(1 as libc::c_int as isize)).offset(k as isize) =
+                        0 as libc::c_int as libc::c_double;
                     k += 1;
                 }
                 *(*directions.offset(1 as libc::c_int as isize))
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ) = 1 as libc::c_int as libc::c_double;
+                    .offset(1 as libc::c_int as isize) = 1 as libc::c_int as libc::c_double;
             }
         }
     } else {
@@ -1981,11 +1862,8 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         while k < dim {
             i = 0 as libc::c_int;
             while i < subspace_dim {
-                *(*directions.offset(k as isize))
-                    .offset(
-                        i as isize,
-                    ) = rand() as libc::c_double
-                    / 2147483647 as libc::c_int as libc::c_double;
+                *(*directions.offset(k as isize)).offset(i as isize) =
+                    rand() as libc::c_double / 2147483647 as libc::c_int as libc::c_double;
                 i += 1;
             }
             k += 1;
@@ -2005,11 +1883,20 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
     tmp_mat = 0 as *mut *mut libc::c_float;
     matrix = 0 as *mut *mut libc::c_float;
     mult_sparse_dense_mat_transpose(lap, subspace, n, subspace_dim, &mut tmp_mat);
-    mult_dense_mat(subspace, tmp_mat, subspace_dim, n, subspace_dim, &mut matrix);
+    mult_dense_mat(
+        subspace,
+        tmp_mat,
+        subspace_dim,
+        n,
+        subspace_dim,
+        &mut matrix,
+    );
     free(*tmp_mat.offset(0 as libc::c_int as isize) as *mut libc::c_void);
     free(tmp_mat as *mut libc::c_void);
-    b = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    b = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     b_restricted = gcalloc(
         subspace_dim as size_t,
         ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
@@ -2024,8 +1911,8 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
             while i < n {
                 degree = 0 as libc::c_int as libc::c_double;
                 *b.offset(i as isize) = 0 as libc::c_int as libc::c_double;
-                dist_list = ((*distances.offset(i as isize)).edist)
-                    .offset(-(1 as libc::c_int as isize));
+                dist_list =
+                    ((*distances.offset(i as isize)).edist).offset(-(1 as libc::c_int as isize));
                 edges = (*lap.offset(i as isize)).edges;
                 ewgts = (*lap.offset(i as isize)).ewgts;
                 j = 1 as libc::c_int;
@@ -2035,16 +1922,15 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
                     if dist_ij > 1e-30f64 {
                         L_ij = (-*ewgts.offset(j as isize)
                             * *dist_list.offset(j as isize) as libc::c_float)
-                            as libc::c_double / dist_ij;
+                            as libc::c_double
+                            / dist_ij;
                         degree -= L_ij;
-                        *b.offset(i as isize)
-                            += L_ij
-                                * *(*coords.offset(k as isize)).offset(node as isize);
+                        *b.offset(i as isize) +=
+                            L_ij * *(*coords.offset(k as isize)).offset(node as isize);
                     }
                     j += 1;
                 }
-                *b.offset(i as isize)
-                    += degree * *(*coords.offset(k as isize)).offset(i as isize);
+                *b.offset(i as isize) += degree * *(*coords.offset(k as isize)).offset(i as isize);
                 i += 1;
             }
             right_mult_with_vector_d(subspace, subspace_dim, n, b, b_restricted);
@@ -2074,8 +1960,7 @@ unsafe extern "C" fn sparse_stress_subspace_majorization_kD(
         converged = iterations % 2 as libc::c_int == 0 as libc::c_int;
         if converged {
             new_stress = compute_stress1(coords, distances, dim, n, exp);
-            converged = fabs(new_stress - old_stress) / (new_stress + 1e-10f64)
-                < Epsilon;
+            converged = fabs(new_stress - old_stress) / (new_stress + 1e-10f64) < Epsilon;
             old_stress = new_stress;
         }
         iterations += 1;
@@ -2171,15 +2056,12 @@ pub unsafe extern "C" fn mdsModel(
         while e < (*graph.offset(i as isize)).nedges {
             j = *((*graph.offset(i as isize)).edges).offset(e as isize);
             if !(j < i) {
-                delta
-                    += fabsf(
-                        *Dij.offset((i * nG + j - shift) as isize)
-                            - *((*graph.offset(i as isize)).ewgts).offset(e as isize),
-                    ) as libc::c_double;
-                *Dij
-                    .offset(
-                        (i * nG + j - shift) as isize,
-                    ) = *((*graph.offset(i as isize)).ewgts).offset(e as isize);
+                delta += fabsf(
+                    *Dij.offset((i * nG + j - shift) as isize)
+                        - *((*graph.offset(i as isize)).ewgts).offset(e as isize),
+                ) as libc::c_double;
+                *Dij.offset((i * nG + j - shift) as isize) =
+                    *((*graph.offset(i as isize)).ewgts).offset(e as isize);
             }
             e += 1;
         }
@@ -2242,8 +2124,7 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights_packed(
     let mut Dij: *mut libc::c_float = 0 as *mut libc::c_float;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
-    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize))
-        .ewgts;
+    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize)).ewgts;
     let mut nedges: libc::c_int = 0 as libc::c_int;
     let mut weights: *mut libc::c_float = 0 as *mut libc::c_float;
     let mut vtx_vec: *mut libc::c_int = 0 as *mut libc::c_int;
@@ -2259,8 +2140,10 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights_packed(
         nedges as size_t,
         ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
     ) as *mut libc::c_float;
-    vtx_vec = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    vtx_vec = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
         *vtx_vec.offset(i as isize) = 0 as libc::c_int;
@@ -2275,13 +2158,9 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights_packed(
             while j <= deg_i {
                 neighbor = *((*graph.offset(i as isize)).edges).offset(j as isize);
                 deg_j = (*graph.offset(neighbor as isize)).nedges - 1 as libc::c_int;
-                *weights
-                    .offset(
-                        j as isize,
-                    ) = fmaxf(
+                *weights.offset(j as isize) = fmaxf(
                     (deg_i + deg_j
-                        - 2 as libc::c_int
-                            * common_neighbors(graph, i, neighbor, vtx_vec))
+                        - 2 as libc::c_int * common_neighbors(graph, i, neighbor, vtx_vec))
                         as libc::c_float,
                     *((*graph.offset(i as isize)).ewgts).offset(j as isize),
                 );
@@ -2305,10 +2184,7 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights_packed(
             while j <= deg_i {
                 neighbor = *((*graph.offset(i as isize)).edges).offset(j as isize);
                 deg_j = (*graph.offset(neighbor as isize)).nedges - 1 as libc::c_int;
-                *weights
-                    .offset(
-                        j as isize,
-                    ) = deg_i as libc::c_float + deg_j as libc::c_float
+                *weights.offset(j as isize) = deg_i as libc::c_float + deg_j as libc::c_float
                     - (2 as libc::c_int * common_neighbors(graph, i, neighbor, vtx_vec))
                         as libc::c_float;
                 j += 1;
@@ -2328,8 +2204,7 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights_packed(
         while i < n {
             let ref mut fresh25 = (*graph.offset(i as isize)).ewgts;
             *fresh25 = old_weights;
-            old_weights = old_weights
-                .offset((*graph.offset(i as isize)).nedges as isize);
+            old_weights = old_weights.offset((*graph.offset(i as isize)).nedges as isize);
             i += 1;
         }
     }
@@ -2471,8 +2346,8 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                 }
                 j = 0 as libc::c_int;
                 while j < n {
-                    *(*d_coords.offset(i as isize)).offset(j as isize)
-                        += 1e-6f64 * (drand48() - 0.5f64);
+                    *(*d_coords.offset(i as isize)).offset(j as isize) +=
+                        1e-6f64 * (drand48() - 0.5f64);
                     j += 1;
                 }
                 orthog1(n, *d_coords.offset(i as isize));
@@ -2522,18 +2397,14 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                 *fresh26 = f_storage.offset((i * n) as isize);
                 j = 0 as libc::c_int;
                 while j < n {
-                    *(*coords.offset(i as isize))
-                        .offset(
-                            j as isize,
-                        ) = *(*d_coords.offset(i as isize)).offset(j as isize)
-                        as libc::c_float;
+                    *(*coords.offset(i as isize)).offset(j as isize) =
+                        *(*d_coords.offset(i as isize)).offset(j as isize) as libc::c_float;
                     j += 1;
                 }
                 i += 1;
             }
             if exp != 0 {
-                constant_term = n as libc::c_float
-                    * (n - 1 as libc::c_int) as libc::c_float
+                constant_term = n as libc::c_float * (n - 1 as libc::c_int) as libc::c_float
                     / 2 as libc::c_int as libc::c_float;
             } else {
                 constant_term = 0 as libc::c_int as libc::c_float;
@@ -2586,10 +2457,7 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
             count = 0 as libc::c_int;
             i = 0 as libc::c_int;
             while i < n {
-                *lap2
-                    .offset(
-                        count as isize,
-                    ) = (*degrees.offset(i as isize)).to_f32().unwrap();
+                *lap2.offset(count as isize) = (*degrees.offset(i as isize)).to_f32().unwrap();
                 i += 1;
                 count += step;
                 step -= 1;
@@ -2606,8 +2474,7 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
             k = 1 as libc::c_int;
             while k < dim {
                 let ref mut fresh28 = *b.offset(k as isize);
-                *fresh28 = (*b.offset(0 as libc::c_int as isize))
-                    .offset((k * n) as isize);
+                *fresh28 = (*b.offset(0 as libc::c_int as isize)).offset((k * n) as isize);
                 k += 1;
             }
             tmp_coords = gcalloc(
@@ -2646,9 +2513,7 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                     degrees as *mut libc::c_void,
                     0 as libc::c_int,
                     (n as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<f128::f128>() as libc::c_ulong,
-                        ),
+                        .wrapping_mul(::std::mem::size_of::<f128::f128>() as libc::c_ulong),
                 );
                 if exp == 2 as libc::c_int {
                     sqrt_vecf(lap_length, lap2, lap1);
@@ -2657,11 +2522,7 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                 i = 0 as libc::c_int;
                 while i < n - 1 as libc::c_int {
                     len = n - i - 1 as libc::c_int;
-                    set_vector_valf(
-                        len,
-                        0 as libc::c_int as libc::c_float,
-                        dist_accumulator,
-                    );
+                    set_vector_valf(len, 0 as libc::c_int as libc::c_float, dist_accumulator);
                     k = 0 as libc::c_int;
                     while k < dim {
                         let mut x: size_t = 0;
@@ -2686,8 +2547,8 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                             || *dist_accumulator.offset(j as isize)
                                 < 0 as libc::c_int as libc::c_float
                         {
-                            *dist_accumulator
-                                .offset(j as isize) = 0 as libc::c_int as libc::c_float;
+                            *dist_accumulator.offset(j as isize) =
+                                0 as libc::c_int as libc::c_float;
                         }
                         j += 1;
                     }
@@ -2700,8 +2561,8 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                             *fresh29 *= *dist_accumulator.offset(j as isize);
                             val = *fresh29;
                             degree += f128::f128::new(val);
-                            *degrees.offset((i + j + 1 as libc::c_int) as isize)
-                                -= f128::f128::new(val);
+                            *degrees.offset((i + j + 1 as libc::c_int) as isize) -=
+                                f128::f128::new(val);
                             j += 1;
                             count += 1;
                         }
@@ -2712,8 +2573,8 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                             *fresh30 = *dist_accumulator.offset(j as isize);
                             val = *fresh30;
                             degree += f128::f128::new(val);
-                            *degrees.offset((i + j + 1 as libc::c_int) as isize)
-                                -= f128::f128::new(val);
+                            *degrees.offset((i + j + 1 as libc::c_int) as isize) -=
+                                f128::f128::new(val);
                             j += 1;
                             count += 1;
                         }
@@ -2725,10 +2586,7 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                 count = 0 as libc::c_int;
                 i = 0 as libc::c_int;
                 while i < n {
-                    *lap1
-                        .offset(
-                            count as isize,
-                        ) = (*degrees.offset(i as isize)).to_f32().unwrap();
+                    *lap1.offset(count as isize) = (*degrees.offset(i as isize)).to_f32().unwrap();
                     i += 1;
                     count += step;
                     step -= 1;
@@ -2746,30 +2604,19 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                 new_stress = 0 as libc::c_int as libc::c_double;
                 k = 0 as libc::c_int;
                 while k < dim {
-                    new_stress
-                        += vectors_inner_productf(
-                            n,
-                            *coords.offset(k as isize),
-                            *b.offset(k as isize),
-                        );
+                    new_stress += vectors_inner_productf(
+                        n,
+                        *coords.offset(k as isize),
+                        *b.offset(k as isize),
+                    );
                     k += 1;
                 }
                 new_stress *= 2 as libc::c_int as libc::c_double;
                 new_stress += constant_term as libc::c_double;
                 k = 0 as libc::c_int;
                 while k < dim {
-                    right_mult_with_vector_ff(
-                        lap2,
-                        n,
-                        *coords.offset(k as isize),
-                        tmp_coords,
-                    );
-                    new_stress
-                        -= vectors_inner_productf(
-                            n,
-                            *coords.offset(k as isize),
-                            tmp_coords,
-                        );
+                    right_mult_with_vector_ff(lap2, n, *coords.offset(k as isize), tmp_coords);
+                    new_stress -= vectors_inner_productf(n, *coords.offset(k as isize), tmp_coords);
                     k += 1;
                 }
                 let mut diff: libc::c_double = old_stress - new_stress;
@@ -2797,41 +2644,39 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                             i = 0 as libc::c_int;
                             while i < n {
                                 np = *nodes.offset(i as isize);
-                                if !((*((*(np as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                                    .pinned as libc::c_int > 1 as libc::c_int)
+                                if !((*((*(np as *mut Agobj_t)).data as *mut Agnodeinfo_t)).pinned
+                                    as libc::c_int
+                                    > 1 as libc::c_int)
                                 {
-                                    *(*coords.offset(k as isize))
-                                        .offset(i as isize) = *tmp_coords.offset(i as isize);
+                                    *(*coords.offset(k as isize)).offset(i as isize) =
+                                        *tmp_coords.offset(i as isize);
                                 }
                                 i += 1;
                             }
                         }
                     } else if conjugate_gradient_mkernel(
-                            lap2,
-                            *coords.offset(k as isize),
-                            *b.offset(k as isize),
-                            n,
-                            conj_tol,
-                            n,
-                        ) < 0 as libc::c_int
-                        {
+                        lap2,
+                        *coords.offset(k as isize),
+                        *b.offset(k as isize),
+                        n,
+                        conj_tol,
+                        n,
+                    ) < 0 as libc::c_int
+                    {
                         iterations = -(1 as libc::c_int);
                         current_block = 15300195249473174512;
                         break 's_681;
                     }
                     k += 1;
                 }
-                if Verbose as libc::c_int != 0
-                    && iterations % 5 as libc::c_int == 0 as libc::c_int
+                if Verbose as libc::c_int != 0 && iterations % 5 as libc::c_int == 0 as libc::c_int
                 {
                     fprintf(
                         stderr,
                         b"%.3f \0" as *const u8 as *const libc::c_char,
                         new_stress,
                     );
-                    if (iterations + 5 as libc::c_int) % 50 as libc::c_int
-                        == 0 as libc::c_int
-                    {
+                    if (iterations + 5 as libc::c_int) % 50 as libc::c_int == 0 as libc::c_int {
                         fprintf(stderr, b"\n\0" as *const u8 as *const libc::c_char);
                     }
                 }
@@ -2854,11 +2699,8 @@ pub unsafe extern "C" fn stress_majorization_kD_mkernel(
                     while i < dim {
                         j = 0 as libc::c_int;
                         while j < n {
-                            *(*d_coords.offset(i as isize))
-                                .offset(
-                                    j as isize,
-                                ) = *(*coords.offset(i as isize)).offset(j as isize)
-                                as libc::c_double;
+                            *(*d_coords.offset(i as isize)).offset(j as isize) =
+                                *(*coords.offset(i as isize)).offset(j as isize) as libc::c_double;
                             j += 1;
                         }
                         i += 1;

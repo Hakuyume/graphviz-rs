@@ -1,12 +1,16 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
-    fn memcmp(
-        _: *const libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn memcmp(_: *const libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> libc::c_int;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn dtstrhash(_: libc::c_uint, _: *mut libc::c_void, _: libc::c_int) -> libc::c_uint;
     fn dtrestore(_: *mut Dt_t, _: *mut Dtlink_t) -> libc::c_int;
@@ -45,13 +49,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -76,16 +75,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -105,10 +98,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -116,16 +108,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 unsafe extern "C" fn dthtab(mut dt: *mut Dt_t) {
     let mut t: *mut Dtlink_t = 0 as *mut Dtlink_t;
     let mut r: *mut Dtlink_t = 0 as *mut Dtlink_t;
@@ -141,11 +126,9 @@ unsafe extern "C" fn dthtab(mut dt: *mut Dt_t) {
     }
     (*(*dt).data).minp = 0 as libc::c_int;
     n = (*(*dt).data).ntab;
-    if !((*dt).disc).is_null() && ((*(*dt).disc).eventf).is_some()
-        && ((*(*dt).disc).eventf)
-            .expect(
-                "non-null function pointer",
-            )(
+    if !((*dt).disc).is_null()
+        && ((*(*dt).disc).eventf).is_some()
+        && ((*(*dt).disc).eventf).expect("non-null function pointer")(
             dt,
             7 as libc::c_int,
             &mut n as *mut libc::c_int as *mut libc::c_void,
@@ -184,14 +167,10 @@ unsafe extern "C" fn dthtab(mut dt: *mut Dt_t) {
     } else {
         (*(*dt).data).hh._htab
     };
-    s = ((*dt).memoryf)
-        .expect(
-            "non-null function pointer",
-        )(
+    s = ((*dt).memoryf).expect("non-null function pointer")(
         dt,
         olds as *mut libc::c_void,
-        (n as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<*mut Dtlink_t>() as libc::c_ulong),
+        (n as libc::c_ulong).wrapping_mul(::std::mem::size_of::<*mut Dtlink_t>() as libc::c_ulong),
         (*dt).disc,
     ) as *mut *mut Dtlink_t;
     if s.is_null() {
@@ -212,10 +191,7 @@ unsafe extern "C" fn dthtab(mut dt: *mut Dt_t) {
         t = *hs;
         while !t.is_null() {
             r = (*t).right;
-            is = s
-                .offset(
-                    ((*t).hl._hash & (n - 1 as libc::c_int) as libc::c_uint) as isize,
-                );
+            is = s.offset(((*t).hl._hash & (n - 1 as libc::c_int) as libc::c_uint) as isize);
             if is == hs {
                 p = t;
             } else {
@@ -255,7 +231,8 @@ unsafe extern "C" fn dthash(
     let mut ends: *mut *mut Dtlink_t = 0 as *mut *mut Dtlink_t;
     if (*(*dt).data).type_0 & 0o10000 as libc::c_int != 0 {
         dtrestore(dt, 0 as *mut Dtlink_t);
-    } else {};
+    } else {
+    };
     disc = (*dt).disc;
     ky = (*disc).key;
     sz = (*disc).size;
@@ -265,9 +242,8 @@ unsafe extern "C" fn dthash(
     if obj.is_null() {
         if !(type_0 & (0o10 as libc::c_int | 0o20 as libc::c_int) != 0) {
             if (*(*dt).data).size <= 0 as libc::c_int
-                || type_0
-                    & (0o100 as libc::c_int | 0o200 as libc::c_int
-                        | 0o400 as libc::c_int) == 0
+                || type_0 & (0o100 as libc::c_int | 0o200 as libc::c_int | 0o400 as libc::c_int)
+                    == 0
             {
                 return 0 as *mut libc::c_void;
             }
@@ -281,10 +257,7 @@ unsafe extern "C" fn dthash(
                         while !t.is_null() {
                             r = (*t).right;
                             if ((*disc).freef).is_some() {
-                                ((*disc).freef)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                ((*disc).freef).expect("non-null function pointer")(
                                     dt,
                                     if lk < 0 as libc::c_int {
                                         (*(t as *mut Dthold_t)).obj
@@ -296,10 +269,7 @@ unsafe extern "C" fn dthash(
                                 );
                             }
                             if (*disc).link < 0 as libc::c_int {
-                                ((*dt).memoryf)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                ((*dt).memoryf).expect("non-null function pointer")(
                                     dt,
                                     t as *mut libc::c_void,
                                     0 as libc::c_int as size_t,
@@ -340,8 +310,7 @@ unsafe extern "C" fn dthash(
                     if lk < 0 as libc::c_int {
                         (*(t as *mut Dthold_t)).obj
                     } else {
-                        (t as *mut libc::c_char).offset(-(lk as isize))
-                            as *mut libc::c_void
+                        (t as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                     }
                 } else {
                     0 as *mut libc::c_void
@@ -354,16 +323,15 @@ unsafe extern "C" fn dthash(
         {
             if ((Some(((*dt).searchf).expect("non-null function pointer")))
                 .expect("non-null function pointer")(dt, obj, 0o4 as libc::c_int))
-                .is_null()
+            .is_null()
             {
                 return 0 as *mut libc::c_void;
             }
-            s = ((*(*dt).data).hh._htab)
-                .offset(
-                    ((*(*(*dt).data).here).hl._hash
-                        & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
-                        as isize,
-                );
+            s = ((*(*dt).data).hh._htab).offset(
+                ((*(*(*dt).data).here).hl._hash
+                    & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
+                    as isize,
+            );
             r = 0 as *mut Dtlink_t;
             p = 0 as *mut Dtlink_t;
             t = *s;
@@ -398,15 +366,17 @@ unsafe extern "C" fn dthash(
             }
         } else {
             if type_0
-                & (0o1000 as libc::c_int | 0o4 as libc::c_int | 0o1 as libc::c_int
-                    | 0o4000 as libc::c_int) != 0
+                & (0o1000 as libc::c_int
+                    | 0o4 as libc::c_int
+                    | 0o1 as libc::c_int
+                    | 0o4000 as libc::c_int)
+                != 0
             {
                 key = if type_0 & 0o1000 as libc::c_int != 0 {
                     obj
                 } else {
                     (if sz < 0 as libc::c_int {
-                        *((obj as *mut libc::c_char).offset(ky as isize)
-                            as *mut *mut libc::c_char)
+                        *((obj as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                     } else {
                         (obj as *mut libc::c_char).offset(ky as isize)
                     }) as *mut libc::c_void
@@ -426,8 +396,7 @@ unsafe extern "C" fn dthash(
                     (r as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                 };
                 key = (if sz < 0 as libc::c_int {
-                    *((obj as *mut libc::c_char).offset(ky as isize)
-                        as *mut *mut libc::c_char)
+                    *((obj as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                 } else {
                     (obj as *mut libc::c_char).offset(ky as isize)
                 }) as *mut libc::c_void;
@@ -439,29 +408,26 @@ unsafe extern "C" fn dthash(
                     && (if lk < 0 as libc::c_int {
                         (*(t as *mut Dthold_t)).obj
                     } else {
-                        (t as *mut libc::c_char).offset(-(lk as isize))
-                            as *mut libc::c_void
+                        (t as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                     }) == obj
                 {
                     hsh = (*t).hl._hash;
-                    s = ((*(*dt).data).hh._htab)
-                        .offset(
-                            (hsh
-                                & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
-                                as isize,
-                        );
+                    s = ((*(*dt).data).hh._htab).offset(
+                        (hsh & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint) as isize,
+                    );
                     p = 0 as *mut Dtlink_t;
                     current_block = 3736434875406665187;
                 } else {
                     key = (if sz < 0 as libc::c_int {
-                        *((obj as *mut libc::c_char).offset(ky as isize)
-                            as *mut *mut libc::c_char)
+                        *((obj as *mut libc::c_char).offset(ky as isize) as *mut *mut libc::c_char)
                     } else {
                         (obj as *mut libc::c_char).offset(ky as isize)
                     }) as *mut libc::c_void;
                     hsh = if ((*disc).hashf).is_some() {
                         (Some(((*disc).hashf).expect("non-null function pointer")))
-                            .expect("non-null function pointer")(dt, key, disc)
+                            .expect("non-null function pointer")(
+                            dt, key, disc
+                        )
                     } else {
                         dtstrhash(0 as libc::c_int as libc::c_uint, key, sz)
                     };
@@ -473,12 +439,10 @@ unsafe extern "C" fn dthash(
                     t = if (*(*dt).data).ntab <= 0 as libc::c_int {
                         0 as *mut Dtlink_t
                     } else {
-                        s = ((*(*dt).data).hh._htab)
-                            .offset(
-                                (hsh
-                                    & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
-                                    as isize,
-                            );
+                        s = ((*(*dt).data).hh._htab).offset(
+                            (hsh & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
+                                as isize,
+                        );
                         *s
                     };
                     p = 0 as *mut Dtlink_t;
@@ -487,8 +451,7 @@ unsafe extern "C" fn dthash(
                             k = if lk < 0 as libc::c_int {
                                 (*(t as *mut Dthold_t)).obj
                             } else {
-                                (t as *mut libc::c_char).offset(-(lk as isize))
-                                    as *mut libc::c_void
+                                (t as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                             };
                             k = (if sz < 0 as libc::c_int {
                                 *((k as *mut libc::c_char).offset(ky as isize)
@@ -498,7 +461,9 @@ unsafe extern "C" fn dthash(
                             }) as *mut libc::c_void;
                             if (if cmpf.is_some() {
                                 (Some(cmpf.expect("non-null function pointer")))
-                                    .expect("non-null function pointer")(dt, key, k, disc)
+                                    .expect("non-null function pointer")(
+                                    dt, key, k, disc
+                                )
                             } else {
                                 (if sz <= 0 as libc::c_int {
                                     strcmp(key as *const libc::c_char, k as *const libc::c_char)
@@ -519,14 +484,12 @@ unsafe extern "C" fn dthash(
             if !t.is_null() {
                 (*dt).type_0 |= 0o100000 as libc::c_int;
             }
-            if type_0
-                & (0o1000 as libc::c_int | 0o4 as libc::c_int | 0o2000 as libc::c_int)
-                != 0
-            {
+            if type_0 & (0o1000 as libc::c_int | 0o4 as libc::c_int | 0o2000 as libc::c_int) != 0 {
                 if t.is_null() {
                     return 0 as *mut libc::c_void;
                 }
-                if !p.is_null() && (*(*dt).data).type_0 & 0o1 as libc::c_int != 0
+                if !p.is_null()
+                    && (*(*dt).data).type_0 & 0o1 as libc::c_int != 0
                     && (*(*dt).data).loop_0 <= 0 as libc::c_int
                 {
                     let ref mut fresh6 = (*p).right;
@@ -550,27 +513,19 @@ unsafe extern "C" fn dthash(
                         return if lk < 0 as libc::c_int {
                             (*(t as *mut Dthold_t)).obj
                         } else {
-                            (t as *mut libc::c_char).offset(-(lk as isize))
-                                as *mut libc::c_void
+                            (t as *mut libc::c_char).offset(-(lk as isize)) as *mut libc::c_void
                         };
                     }
-                    if ((*disc).makef).is_some() && type_0 & 0o1 as libc::c_int != 0
-                        && {
-                            obj = ((*disc).makef)
-                                .expect("non-null function pointer")(dt, obj, disc);
-                            obj.is_null()
-                        }
-                    {
+                    if ((*disc).makef).is_some() && type_0 & 0o1 as libc::c_int != 0 && {
+                        obj = ((*disc).makef).expect("non-null function pointer")(dt, obj, disc);
+                        obj.is_null()
+                    } {
                         return 0 as *mut libc::c_void;
                     }
                     if lk >= 0 as libc::c_int {
-                        r = (obj as *mut libc::c_char).offset(lk as isize)
-                            as *mut Dtlink_t;
+                        r = (obj as *mut libc::c_char).offset(lk as isize) as *mut Dtlink_t;
                     } else {
-                        r = ((*dt).memoryf)
-                            .expect(
-                                "non-null function pointer",
-                            )(
+                        r = ((*dt).memoryf).expect("non-null function pointer")(
                             dt,
                             0 as *mut libc::c_void,
                             ::std::mem::size_of::<Dthold_t>() as libc::c_ulong,
@@ -580,11 +535,11 @@ unsafe extern "C" fn dthash(
                             let ref mut fresh10 = (*(r as *mut Dthold_t)).obj;
                             *fresh10 = obj;
                         } else {
-                            if ((*disc).makef).is_some() && ((*disc).freef).is_some()
+                            if ((*disc).makef).is_some()
+                                && ((*disc).freef).is_some()
                                 && type_0 & 0o1 as libc::c_int != 0
                             {
-                                ((*disc).freef)
-                                    .expect("non-null function pointer")(dt, obj, disc);
+                                ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
                             }
                             return 0 as *mut libc::c_void;
                         }
@@ -593,14 +548,11 @@ unsafe extern "C" fn dthash(
                     current_block = 6082913985297018206;
                 } else {
                     if type_0 & 0o10 as libc::c_int != 0 {
-                        if !t.is_null()
-                            && {
-                                p = (*t).right;
-                                p.is_null()
-                            }
-                        {
-                            ends = ((*(*dt).data).hh._htab)
-                                .offset((*(*dt).data).ntab as isize);
+                        if !t.is_null() && {
+                            p = (*t).right;
+                            p.is_null()
+                        } {
+                            ends = ((*(*dt).data).hh._htab).offset((*(*dt).data).ntab as isize);
                             s = s.offset(1 as libc::c_int as isize);
                             while s < ends {
                                 p = *s;
@@ -637,19 +589,14 @@ unsafe extern "C" fn dthash(
                         }
                         current_block = 16908778556176415536;
                     } else if type_0 & 0o40 as libc::c_int != 0 {
-                        if t.is_null() || (*(*dt).data).type_0 & 0o2 as libc::c_int != 0
-                        {
+                        if t.is_null() || (*(*dt).data).type_0 & 0o2 as libc::c_int != 0 {
                             current_block = 6082913985297018206;
                         } else {
                             if ((*disc).freef).is_some() {
-                                ((*disc).freef)
-                                    .expect("non-null function pointer")(dt, obj, disc);
+                                ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
                             }
                             if (*disc).link < 0 as libc::c_int {
-                                ((*dt).memoryf)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                ((*dt).memoryf).expect("non-null function pointer")(
                                     dt,
                                     r as *mut libc::c_void,
                                     0 as libc::c_int as size_t,
@@ -703,17 +650,11 @@ unsafe extern "C" fn dthash(
                         }
                         if (*(*dt).data).ntab == 0 as libc::c_int {
                             (*(*dt).data).size -= 1 as libc::c_int;
-                            if ((*disc).freef).is_some()
-                                && type_0 & 0o1 as libc::c_int != 0
-                            {
-                                ((*disc).freef)
-                                    .expect("non-null function pointer")(dt, obj, disc);
+                            if ((*disc).freef).is_some() && type_0 & 0o1 as libc::c_int != 0 {
+                                ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
                             }
                             if (*disc).link < 0 as libc::c_int {
-                                ((*disc).memoryf)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                ((*disc).memoryf).expect("non-null function pointer")(
                                     dt,
                                     r as *mut libc::c_void,
                                     0 as libc::c_int as size_t,
@@ -722,12 +663,10 @@ unsafe extern "C" fn dthash(
                             }
                             return 0 as *mut libc::c_void;
                         }
-                        s = ((*(*dt).data).hh._htab)
-                            .offset(
-                                (hsh
-                                    & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
-                                    as isize,
-                            );
+                        s = ((*(*dt).data).hh._htab).offset(
+                            (hsh & ((*(*dt).data).ntab - 1 as libc::c_int) as libc::c_uint)
+                                as isize,
+                        );
                         if !t.is_null() {
                             let ref mut fresh12 = (*r).right;
                             *fresh12 = (*t).right;
@@ -749,7 +688,7 @@ unsafe extern "C" fn dthash(
             8164104897091980844 => {}
             _ => {
                 if t.is_null() {
-                    return 0 as *mut libc::c_void
+                    return 0 as *mut libc::c_void;
                 } else {
                     if !p.is_null() {
                         let ref mut fresh18 = (*p).right;
@@ -780,10 +719,12 @@ unsafe extern "C" fn dthash(
                     ((*disc).freef).expect("non-null function pointer")(dt, obj, disc);
                 }
                 if (*disc).link < 0 as libc::c_int {
-                    ((*dt).memoryf)
-                        .expect(
-                            "non-null function pointer",
-                        )(dt, t as *mut libc::c_void, 0 as libc::c_int as size_t, disc);
+                    ((*dt).memoryf).expect("non-null function pointer")(
+                        dt,
+                        t as *mut libc::c_void,
+                        0 as libc::c_int as size_t,
+                        disc,
+                    );
                 }
                 return obj;
             }
@@ -834,13 +775,9 @@ static mut _Dtbag: Dtmethod_t = unsafe {
     }
 };
 #[no_mangle]
-pub static mut Dtset: *mut Dtmethod_t = unsafe {
-    &_Dtset as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtset: *mut Dtmethod_t = unsafe { &_Dtset as *const Dtmethod_t as *mut Dtmethod_t };
 #[no_mangle]
-pub static mut Dtbag: *mut Dtmethod_t = unsafe {
-    &_Dtbag as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dtbag: *mut Dtmethod_t = unsafe { &_Dtbag as *const Dtmethod_t as *mut Dtmethod_t };
 #[no_mangle]
 pub static mut _Dthash: Dtmethod_t = unsafe {
     {
@@ -859,6 +796,5 @@ pub static mut _Dthash: Dtmethod_t = unsafe {
     }
 };
 #[no_mangle]
-pub static mut Dthash: *mut Dtmethod_t = unsafe {
-    &_Dthash as *const Dtmethod_t as *mut Dtmethod_t
-};
+pub static mut Dthash: *mut Dtmethod_t =
+    unsafe { &_Dthash as *const Dtmethod_t as *mut Dtmethod_t };

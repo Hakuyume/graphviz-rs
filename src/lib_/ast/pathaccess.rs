@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -74,9 +82,18 @@ pub unsafe extern "C" fn pathaccess(
         st_size: 0,
         st_blksize: 0,
         st_blocks: 0,
-        st_atim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_mtim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_ctim: timespec { tv_sec: 0, tv_nsec: 0 },
+        st_atim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_mtim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_ctim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
         __glibc_reserved: [0; 3],
     };
     if mode & 0o4 as libc::c_int != 0 {
@@ -97,8 +114,7 @@ pub unsafe extern "C" fn pathaccess(
                     || st.st_mode & 0o170000 as libc::c_int as libc::c_uint
                         == 0o40000 as libc::c_int as libc::c_uint))
             {
-                if *path as libc::c_int == '/' as i32 || mode & 0o20 as libc::c_int == 0
-                {
+                if *path as libc::c_int == '/' as i32 || mode & 0o20 as libc::c_int == 0 {
                     return path;
                 }
                 dirs = getcwd(

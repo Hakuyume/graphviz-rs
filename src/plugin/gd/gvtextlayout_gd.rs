@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -61,7 +69,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -84,9 +92,7 @@ pub struct gvplugin_installed_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvtextlayout_engine_s {
-    pub textlayout: Option::<
-        unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool,
-    >,
+    pub textlayout: Option<unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool>,
 }
 pub type gvtextlayout_engine_t = gvtextlayout_engine_s;
 pub type gdInterpolationMethod = libc::c_uint;
@@ -122,9 +128,8 @@ pub const GD_BILINEAR_FIXED: gdInterpolationMethod = 3;
 pub const GD_BESSEL: gdInterpolationMethod = 2;
 pub const GD_BELL: gdInterpolationMethod = 1;
 pub const GD_DEFAULT: gdInterpolationMethod = 0;
-pub type interpolation_method = Option::<
-    unsafe extern "C" fn(libc::c_double, libc::c_double) -> libc::c_double,
->;
+pub type interpolation_method =
+    Option<unsafe extern "C" fn(libc::c_double, libc::c_double) -> libc::c_double>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gdImageStruct {
@@ -184,9 +189,7 @@ pub struct gdFTStringExtra {
 }
 pub type gdFTStringExtraPtr = *mut gdFTStringExtra;
 #[no_mangle]
-pub unsafe extern "C" fn gd_psfontResolve(
-    mut pa: *mut PostscriptAlias,
-) -> *mut libc::c_char {
+pub unsafe extern "C" fn gd_psfontResolve(mut pa: *mut PostscriptAlias) -> *mut libc::c_char {
     static mut buf: [libc::c_char; 1024] = [0; 1024];
     let mut comma: libc::c_int = 0 as libc::c_int;
     strcpy(buf.as_mut_ptr(), (*pa).family);
@@ -268,7 +271,7 @@ unsafe extern "C" fn gd_textlayout(
     (*span).yoffset_centerline = 0.1f64 * fontsize;
     if !fontname.is_null() {
         if fontsize <= 0.15f64 {
-            return 1 as libc::c_int != 0
+            return 1 as libc::c_int != 0;
         } else {
             if fontsize <= 1.5f64 {
                 fontsize = 1.5f64;
@@ -305,10 +308,8 @@ unsafe extern "C" fn gd_textlayout(
         if !((*span).str_0).is_null()
             && *((*span).str_0).offset(0 as libc::c_int as isize) as libc::c_int != 0
         {
-            (*span)
-                .size
-                .x = (brect[4 as libc::c_int as usize]
-                - brect[0 as libc::c_int as usize]) as libc::c_double;
+            (*span).size.x = (brect[4 as libc::c_int as usize] - brect[0 as libc::c_int as usize])
+                as libc::c_double;
             (*span).size.y = (fontsize * 1.2f64) as libc::c_int as libc::c_double;
         }
     }
@@ -319,10 +320,7 @@ static mut gd_textlayout_engine: gvtextlayout_engine_t = unsafe {
         let mut init = gvtextlayout_engine_s {
             textlayout: Some(
                 gd_textlayout
-                    as unsafe extern "C" fn(
-                        *mut textspan_t,
-                        *mut *mut libc::c_char,
-                    ) -> bool,
+                    as unsafe extern "C" fn(*mut textspan_t, *mut *mut libc::c_char) -> bool,
             ),
         };
         init

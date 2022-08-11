@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -13,17 +21,9 @@ extern "C" {
     ) -> libc::c_int;
     fn fscanf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn sscanf(_: *const libc::c_char, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn fgets(
-        __s: *mut libc::c_char,
-        __n: libc::c_int,
-        __stream: *mut FILE,
-    ) -> *mut libc::c_char;
+    fn fgets(__s: *mut libc::c_char, __n: libc::c_int, __stream: *mut FILE) -> *mut libc::c_char;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn __ctype_tolower_loc() -> *mut *const __int32_t;
@@ -213,47 +213,55 @@ pub unsafe extern "C" fn mm_read_banner(
     {
         return 14 as libc::c_int;
     }
-    if strcmp(mtx.as_mut_ptr(), b"matrix\0" as *const u8 as *const libc::c_char)
-        != 0 as libc::c_int
+    if strcmp(
+        mtx.as_mut_ptr(),
+        b"matrix\0" as *const u8 as *const libc::c_char,
+    ) != 0 as libc::c_int
     {
         return 15 as libc::c_int;
     }
     (*matcode)[0 as libc::c_int as usize] = 'M' as i32 as libc::c_char;
-    if strcmp(crd.as_mut_ptr(), b"coordinate\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
+    if strcmp(
+        crd.as_mut_ptr(),
+        b"coordinate\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
     {
         (*matcode)[1 as libc::c_int as usize] = 'C' as i32 as libc::c_char;
-    } else if strcmp(crd.as_mut_ptr(), b"array\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcmp(
+        crd.as_mut_ptr(),
+        b"array\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[1 as libc::c_int as usize] = 'A' as i32 as libc::c_char;
     } else {
-        return 15 as libc::c_int
+        return 15 as libc::c_int;
     }
-    if strcmp(data_type.as_mut_ptr(), b"real\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
+    if strcmp(
+        data_type.as_mut_ptr(),
+        b"real\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
     {
         (*matcode)[2 as libc::c_int as usize] = 'R' as i32 as libc::c_char;
     } else if strcmp(
-            data_type.as_mut_ptr(),
-            b"complex\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        data_type.as_mut_ptr(),
+        b"complex\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[2 as libc::c_int as usize] = 'C' as i32 as libc::c_char;
     } else if strcmp(
-            data_type.as_mut_ptr(),
-            b"pattern\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        data_type.as_mut_ptr(),
+        b"pattern\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[2 as libc::c_int as usize] = 'P' as i32 as libc::c_char;
     } else if strcmp(
-            data_type.as_mut_ptr(),
-            b"integer\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        data_type.as_mut_ptr(),
+        b"integer\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[2 as libc::c_int as usize] = 'I' as i32 as libc::c_char;
     } else {
-        return 15 as libc::c_int
+        return 15 as libc::c_int;
     }
     if strcmp(
         storage_scheme.as_mut_ptr(),
@@ -262,25 +270,25 @@ pub unsafe extern "C" fn mm_read_banner(
     {
         (*matcode)[3 as libc::c_int as usize] = 'G' as i32 as libc::c_char;
     } else if strcmp(
-            storage_scheme.as_mut_ptr(),
-            b"symmetric\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        storage_scheme.as_mut_ptr(),
+        b"symmetric\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[3 as libc::c_int as usize] = 'S' as i32 as libc::c_char;
     } else if strcmp(
-            storage_scheme.as_mut_ptr(),
-            b"hermitian\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        storage_scheme.as_mut_ptr(),
+        b"hermitian\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[3 as libc::c_int as usize] = 'H' as i32 as libc::c_char;
     } else if strcmp(
-            storage_scheme.as_mut_ptr(),
-            b"skew-symmetric\0" as *const u8 as *const libc::c_char,
-        ) == 0 as libc::c_int
-        {
+        storage_scheme.as_mut_ptr(),
+        b"skew-symmetric\0" as *const u8 as *const libc::c_char,
+    ) == 0 as libc::c_int
+    {
         (*matcode)[3 as libc::c_int as usize] = 'K' as i32 as libc::c_char;
     } else {
-        return 15 as libc::c_int
+        return 15 as libc::c_int;
     }
     return 0 as libc::c_int;
 }
@@ -312,7 +320,7 @@ pub unsafe extern "C" fn mm_read_mtx_crd_size(
         nz,
     ) == 3 as libc::c_int
     {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     } else {
         loop {
             num_items_read = fscanf(
@@ -333,66 +341,53 @@ pub unsafe extern "C" fn mm_read_mtx_crd_size(
     return 0 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn mm_typecode_to_str(
-    mut matcode: *mut libc::c_char,
-) -> *mut libc::c_char {
+pub unsafe extern "C" fn mm_typecode_to_str(mut matcode: *mut libc::c_char) -> *mut libc::c_char {
     let mut buffer: [libc::c_char; 100025] = [0; 100025];
     let mut types: [*mut libc::c_char; 4] = [0 as *mut libc::c_char; 4];
     if *matcode.offset(0 as libc::c_int as isize) as libc::c_int == 'M' as i32 {
-        types[0 as libc::c_int
-            as usize] = b"matrix\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[0 as libc::c_int as usize] =
+            b"matrix\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     }
     if *matcode.offset(1 as libc::c_int as isize) as libc::c_int == 'C' as i32 {
-        types[1 as libc::c_int
-            as usize] = b"coordinate\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[1 as libc::c_int as usize] =
+            b"coordinate\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(1 as libc::c_int as isize) as libc::c_int == 'A' as i32 {
-        types[1 as libc::c_int
-            as usize] = b"array\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[1 as libc::c_int as usize] =
+            b"array\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     }
     if *matcode.offset(2 as libc::c_int as isize) as libc::c_int == 'R' as i32 {
-        types[2 as libc::c_int
-            as usize] = b"real\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[2 as libc::c_int as usize] =
+            b"real\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(2 as libc::c_int as isize) as libc::c_int == 'C' as i32 {
-        types[2 as libc::c_int
-            as usize] = b"complex\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[2 as libc::c_int as usize] =
+            b"complex\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(2 as libc::c_int as isize) as libc::c_int == 'P' as i32 {
-        types[2 as libc::c_int
-            as usize] = b"pattern\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[2 as libc::c_int as usize] =
+            b"pattern\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(2 as libc::c_int as isize) as libc::c_int == 'I' as i32 {
-        types[2 as libc::c_int
-            as usize] = b"integer\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[2 as libc::c_int as usize] =
+            b"integer\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     }
     if *matcode.offset(3 as libc::c_int as isize) as libc::c_int == 'G' as i32 {
-        types[3 as libc::c_int
-            as usize] = b"general\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[3 as libc::c_int as usize] =
+            b"general\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(3 as libc::c_int as isize) as libc::c_int == 'S' as i32 {
-        types[3 as libc::c_int
-            as usize] = b"symmetric\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[3 as libc::c_int as usize] =
+            b"symmetric\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(3 as libc::c_int as isize) as libc::c_int == 'H' as i32 {
-        types[3 as libc::c_int
-            as usize] = b"hermitian\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[3 as libc::c_int as usize] =
+            b"hermitian\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if *matcode.offset(3 as libc::c_int as isize) as libc::c_int == 'K' as i32 {
-        types[3 as libc::c_int
-            as usize] = b"skew-symmetric\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        types[3 as libc::c_int as usize] =
+            b"skew-symmetric\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else {
-        return 0 as *mut libc::c_char
+        return 0 as *mut libc::c_char;
     }
     snprintf(
         buffer.as_mut_ptr(),

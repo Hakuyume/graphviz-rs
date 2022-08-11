@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -33,13 +41,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -64,16 +67,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -93,10 +90,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -104,21 +100,11 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 #[no_mangle]
-pub unsafe extern "C" fn dtopen(
-    mut disc: *mut Dtdisc_t,
-    mut meth: *mut Dtmethod_t,
-) -> *mut Dt_t {
+pub unsafe extern "C" fn dtopen(mut disc: *mut Dtdisc_t, mut meth: *mut Dtmethod_t) -> *mut Dt_t {
     let mut current_block: u64;
     let mut dt: *mut Dt_t = 0 as *mut Dt_t;
     let mut e: libc::c_int = 0;
@@ -147,10 +133,7 @@ pub unsafe extern "C" fn dtopen(
     *fresh5 = 0 as *mut libc::c_void;
     if ((*disc).eventf).is_some() {
         data = 0 as *mut Dtdata_t;
-        e = ((*disc).eventf)
-            .expect(
-                "non-null function pointer",
-            )(
+        e = ((*disc).eventf).expect("non-null function pointer")(
             dt,
             1 as libc::c_int,
             &mut data as *mut *mut Dtdata_t as *mut libc::c_void,
@@ -169,10 +152,7 @@ pub unsafe extern "C" fn dtopen(
                 current_block = 9989543335252588407;
             } else {
                 free(dt as *mut libc::c_void);
-                dt = ((*disc).memoryf)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                dt = ((*disc).memoryf).expect("non-null function pointer")(
                     0 as *mut Dt_t,
                     0 as *mut libc::c_void,
                     ::std::mem::size_of::<Dt_t>() as libc::c_ulong,
@@ -204,10 +184,7 @@ pub unsafe extern "C" fn dtopen(
     }
     match current_block {
         14359455889292382949 => {
-            data = ((*dt).memoryf)
-                .expect(
-                    "non-null function pointer",
-                )(
+            data = ((*dt).memoryf).expect("non-null function pointer")(
                 dt,
                 0 as *mut libc::c_void,
                 ::std::mem::size_of::<Dtdata_t>() as libc::c_ulong,
@@ -242,9 +219,12 @@ pub unsafe extern "C" fn dtopen(
             *fresh17 = meth;
             if ((*disc).eventf).is_some() {
                 (Some(((*disc).eventf).expect("non-null function pointer")))
-                    .expect(
-                        "non-null function pointer",
-                    )(dt, 5 as libc::c_int, dt as *mut libc::c_void, disc);
+                    .expect("non-null function pointer")(
+                    dt,
+                    5 as libc::c_int,
+                    dt as *mut libc::c_void,
+                    disc,
+                );
             }
             return dt;
         }

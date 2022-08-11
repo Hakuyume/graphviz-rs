@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -32,12 +40,9 @@ extern "C" {
     fn SingleLinkedList_new(data: *mut libc::c_void) -> SingleLinkedList;
     fn SingleLinkedList_delete(
         head: SingleLinkedList,
-        linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     );
-    fn SingleLinkedList_prepend(
-        l: SingleLinkedList,
-        data: *mut libc::c_void,
-    ) -> SingleLinkedList;
+    fn SingleLinkedList_prepend(l: SingleLinkedList, data: *mut libc::c_void) -> SingleLinkedList;
     fn SingleLinkedList_get_data(l: SingleLinkedList) -> *mut libc::c_void;
     fn SingleLinkedList_get_next(l: SingleLinkedList) -> SingleLinkedList;
 }
@@ -118,8 +123,7 @@ unsafe extern "C" fn node_data_new(
 ) -> node_data {
     let mut nd: node_data = 0 as *mut node_data_struct;
     let mut i: libc::c_int = 0;
-    nd = gmalloc(::std::mem::size_of::<node_data_struct>() as libc::c_ulong)
-        as node_data;
+    nd = gmalloc(::std::mem::size_of::<node_data_struct>() as libc::c_ulong) as node_data;
     (*nd).node_weight = weight;
     let ref mut fresh0 = (*nd).coord;
     *fresh0 = gmalloc(
@@ -145,9 +149,7 @@ unsafe extern "C" fn node_data_get_weight(mut d: *mut libc::c_void) -> libc::c_d
     let mut nd: node_data = d as node_data;
     return (*nd).node_weight;
 }
-unsafe extern "C" fn node_data_get_coord(
-    mut d: *mut libc::c_void,
-) -> *mut libc::c_double {
+unsafe extern "C" fn node_data_get_coord(mut d: *mut libc::c_void) -> *mut libc::c_double {
     let mut nd: node_data = d as node_data;
     return (*nd).coord;
 }
@@ -214,30 +216,17 @@ unsafe extern "C" fn QuadTree_get_supernodes_internal(
     l = (*qt).l;
     if !l.is_null() {
         while !l.is_null() {
-            check_or_realloc_arrays(
-                dim,
-                nsuper,
-                nsupermax,
-                center,
-                supernode_wgts,
-                distances,
-            );
+            check_or_realloc_arrays(dim, nsuper, nsupermax, center, supernode_wgts, distances);
             if node_data_get_id(SingleLinkedList_get_data(l)) != nodeid {
                 coord = node_data_get_coord(SingleLinkedList_get_data(l));
                 i = 0 as libc::c_int;
                 while i < dim {
-                    *(*center)
-                        .offset(
-                            (dim * *nsuper + i) as isize,
-                        ) = *coord.offset(i as isize);
+                    *(*center).offset((dim * *nsuper + i) as isize) = *coord.offset(i as isize);
                     i += 1;
                 }
-                *(*supernode_wgts)
-                    .offset(
-                        *nsuper as isize,
-                    ) = node_data_get_weight(SingleLinkedList_get_data(l));
-                *(*distances)
-                    .offset(*nsuper as isize) = point_distance(point, coord, dim);
+                *(*supernode_wgts).offset(*nsuper as isize) =
+                    node_data_get_weight(SingleLinkedList_get_data(l));
+                *(*distances).offset(*nsuper as isize) = point_distance(point, coord, dim);
                 *nsuper += 1;
             }
             l = SingleLinkedList_get_next(l);
@@ -246,25 +235,15 @@ unsafe extern "C" fn QuadTree_get_supernodes_internal(
     if !((*qt).qts).is_null() {
         dist = point_distance((*qt).center, point, dim);
         if (*qt).width < bh * dist {
-            check_or_realloc_arrays(
-                dim,
-                nsuper,
-                nsupermax,
-                center,
-                supernode_wgts,
-                distances,
-            );
+            check_or_realloc_arrays(dim, nsuper, nsupermax, center, supernode_wgts, distances);
             i = 0 as libc::c_int;
             while i < dim {
-                *(*center)
-                    .offset(
-                        (dim * *nsuper + i) as isize,
-                    ) = *((*qt).average).offset(i as isize);
+                *(*center).offset((dim * *nsuper + i) as isize) =
+                    *((*qt).average).offset(i as isize);
                 i += 1;
             }
             *(*supernode_wgts).offset(*nsuper as isize) = (*qt).total_weight;
-            *(*distances)
-                .offset(*nsuper as isize) = point_distance((*qt).average, point, dim);
+            *(*distances).offset(*nsuper as isize) = point_distance((*qt).average, point, dim);
             *nsuper += 1;
         } else {
             i = 0 as libc::c_int;
@@ -345,12 +324,12 @@ unsafe extern "C" fn get_or_assign_node_force(
     mut l: SingleLinkedList,
     mut dim: libc::c_int,
 ) -> *mut libc::c_double {
-    let mut f: *mut libc::c_double = (*(SingleLinkedList_get_data(l) as node_data)).data
-        as *mut libc::c_double;
+    let mut f: *mut libc::c_double =
+        (*(SingleLinkedList_get_data(l) as node_data)).data as *mut libc::c_double;
     if f.is_null() {
         let ref mut fresh2 = (*(SingleLinkedList_get_data(l) as node_data)).data;
-        *fresh2 = &mut *force.offset((i * dim) as isize) as *mut libc::c_double
-            as *mut libc::c_void;
+        *fresh2 =
+            &mut *force.offset((i * dim) as isize) as *mut libc::c_double as *mut libc::c_void;
         f = (*(SingleLinkedList_get_data(l) as node_data)).data as *mut libc::c_double;
     }
     return f;
@@ -409,7 +388,8 @@ unsafe extern "C" fn QuadTree_repulsive_force_interact(
     if qt1.is_null() || qt2.is_null() {
         return;
     }
-    if (*qt1).n > 0 as libc::c_int && (*qt2).n > 0 as libc::c_int {} else {
+    if (*qt1).n > 0 as libc::c_int && (*qt2).n > 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"qt1->n > 0 && qt2->n > 0\0" as *const u8 as *const libc::c_char,
             b"QuadTree.c\0" as *const u8 as *const libc::c_char,
@@ -436,7 +416,8 @@ unsafe extern "C" fn QuadTree_repulsive_force_interact(
         x2 = (*qt2).average;
         w2 = (*qt2).total_weight;
         f2 = get_or_alloc_force_qt(qt2, dim);
-        if dist > 0 as libc::c_int as libc::c_double {} else {
+        if dist > 0 as libc::c_int as libc::c_double {
+        } else {
             __assert_fail(
                 b"dist > 0\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
@@ -486,11 +467,15 @@ unsafe extern "C" fn QuadTree_repulsive_force_interact(
                     k = 0 as libc::c_int;
                     while k < dim {
                         if p == -(1 as libc::c_int) as libc::c_double {
-                            f = wgt1 * wgt2 * KP
+                            f = wgt1
+                                * wgt2
+                                * KP
                                 * (*x1.offset(k as isize) - *x2.offset(k as isize))
                                 / (dist * dist);
                         } else {
-                            f = wgt1 * wgt2 * KP
+                            f = wgt1
+                                * wgt2
+                                * KP
                                 * (*x1.offset(k as isize) - *x2.offset(k as isize))
                                 / pow(dist, 1.0f64 - p);
                         }
@@ -512,16 +497,7 @@ unsafe extern "C" fn QuadTree_repulsive_force_interact(
             j = i;
             while j < (1 as libc::c_int) << dim {
                 qt12 = *((*qt1).qts).offset(j as isize);
-                QuadTree_repulsive_force_interact(
-                    qt11,
-                    qt12,
-                    x,
-                    force,
-                    bh,
-                    p,
-                    KP,
-                    counts,
-                );
+                QuadTree_repulsive_force_interact(qt11, qt12, x, force, bh, p, KP, counts);
                 j += 1;
             }
             i += 1;
@@ -586,18 +562,16 @@ unsafe extern "C" fn QuadTree_repulsive_force_accumulate(
     dim = (*qt).dim;
     wgt = (*qt).total_weight;
     f = get_or_alloc_force_qt(qt, dim);
-    if wgt > 0 as libc::c_int as libc::c_double {} else {
+    if wgt > 0 as libc::c_int as libc::c_double {
+    } else {
         __assert_fail(
             b"wgt > 0\0" as *const u8 as *const libc::c_char,
             b"QuadTree.c\0" as *const u8 as *const libc::c_char,
             286 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 71],
-                &[libc::c_char; 71],
-            >(
+            (*::std::mem::transmute::<&[u8; 71], &[libc::c_char; 71]>(
                 b"void QuadTree_repulsive_force_accumulate(QuadTree, double *, double *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     let ref mut fresh6 = *counts.offset(2 as libc::c_int as isize);
@@ -621,18 +595,16 @@ unsafe extern "C" fn QuadTree_repulsive_force_accumulate(
     while i < (1 as libc::c_int) << dim {
         qt2 = *((*qt).qts).offset(i as isize);
         if !qt2.is_null() {
-            if (*qt2).n > 0 as libc::c_int {} else {
+            if (*qt2).n > 0 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"qt2->n > 0\0" as *const u8 as *const libc::c_char,
                     b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                     304 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 71],
-                        &[libc::c_char; 71],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 71], &[libc::c_char; 71]>(
                         b"void QuadTree_repulsive_force_accumulate(QuadTree, double *, double *)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             f2 = get_or_alloc_force_qt(qt2, dim);
@@ -727,34 +699,26 @@ pub unsafe extern "C" fn QuadTree_new_from_point_list(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            *xmin
-                .offset(
-                    k as isize,
-                ) = if *xmin.offset(k as isize) < *coord.offset((i * dim + k) as isize) {
-                *xmin.offset(k as isize)
-            } else {
-                *coord.offset((i * dim + k) as isize)
-            };
-            *xmax
-                .offset(
-                    k as isize,
-                ) = if *xmax.offset(k as isize) > *coord.offset((i * dim + k) as isize) {
-                *xmax.offset(k as isize)
-            } else {
-                *coord.offset((i * dim + k) as isize)
-            };
+            *xmin.offset(k as isize) =
+                if *xmin.offset(k as isize) < *coord.offset((i * dim + k) as isize) {
+                    *xmin.offset(k as isize)
+                } else {
+                    *coord.offset((i * dim + k) as isize)
+                };
+            *xmax.offset(k as isize) =
+                if *xmax.offset(k as isize) > *coord.offset((i * dim + k) as isize) {
+                    *xmax.offset(k as isize)
+                } else {
+                    *coord.offset((i * dim + k) as isize)
+                };
             k += 1;
         }
         i += 1;
     }
-    width = *xmax.offset(0 as libc::c_int as isize)
-        - *xmin.offset(0 as libc::c_int as isize);
+    width = *xmax.offset(0 as libc::c_int as isize) - *xmin.offset(0 as libc::c_int as isize);
     i = 0 as libc::c_int;
     while i < dim {
-        *center
-            .offset(
-                i as isize,
-            ) = (*xmin.offset(i as isize) + *xmax.offset(i as isize)) * 0.5f64;
+        *center.offset(i as isize) = (*xmin.offset(i as isize) + *xmax.offset(i as isize)) * 0.5f64;
         width = if width > *xmax.offset(i as isize) - *xmin.offset(i as isize) {
             width
         } else {
@@ -804,16 +768,16 @@ pub unsafe extern "C" fn QuadTree_new(
         *((*q).center).offset(i as isize) = *center.offset(i as isize);
         i += 1;
     }
-    if width > 0 as libc::c_int as libc::c_double {} else {
+    if width > 0 as libc::c_int as libc::c_double {
+    } else {
         __assert_fail(
             b"width > 0\0" as *const u8 as *const libc::c_char,
             b"QuadTree.c\0" as *const u8 as *const libc::c_char,
             400 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"QuadTree QuadTree_new(int, double *, double, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"QuadTree QuadTree_new(int, double *, double, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     (*q).width = width;
@@ -914,10 +878,10 @@ unsafe extern "C" fn QuadTree_add_internal(
     i = 0 as libc::c_int;
     while i < (*q).dim {
         *coord.offset(i as isize)
-            < *((*q).center).offset(i as isize) - (*q).width
-                - 1.0e5f64 * 1.0e-16f64 * (*q).width
+            < *((*q).center).offset(i as isize) - (*q).width - 1.0e5f64 * 1.0e-16f64 * (*q).width
             || *coord.offset(i as isize)
-                > *((*q).center).offset(i as isize) + (*q).width
+                > *((*q).center).offset(i as isize)
+                    + (*q).width
                     + 1.0e5f64 * 1.0e-16f64 * (*q).width;
         i += 1;
     }
@@ -935,18 +899,16 @@ unsafe extern "C" fn QuadTree_add_internal(
             i += 1;
         }
         nd = node_data_new((*q).dim, weight, coord, id);
-        if ((*q).l).is_null() {} else {
+        if ((*q).l).is_null() {
+        } else {
             __assert_fail(
                 b"!(q->l)\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                 492 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         let ref mut fresh13 = (*q).l;
@@ -955,10 +917,8 @@ unsafe extern "C" fn QuadTree_add_internal(
         (*q).total_weight += weight;
         i = 0 as libc::c_int;
         while i < (*q).dim {
-            *((*q).average)
-                .offset(
-                    i as isize,
-                ) = (*((*q).average).offset(i as isize) * (*q).n as libc::c_double
+            *((*q).average).offset(i as isize) = (*((*q).average).offset(i as isize)
+                * (*q).n as libc::c_double
                 + *coord.offset(i as isize))
                 / ((*q).n + 1 as libc::c_int) as libc::c_double;
             i += 1;
@@ -977,18 +937,16 @@ unsafe extern "C" fn QuadTree_add_internal(
             }
         }
         ii = QuadTree_get_quadrant(dim, (*q).center, coord);
-        if ii < (1 as libc::c_int) << dim && ii >= 0 as libc::c_int {} else {
+        if ii < (1 as libc::c_int) << dim && ii >= 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"ii < 1<<dim && ii >= 0\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                 505 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         if (*((*q).qts).offset(ii as isize)).is_null() {
@@ -1009,51 +967,45 @@ unsafe extern "C" fn QuadTree_add_internal(
             id,
             level + 1 as libc::c_int,
         );
-        if !(*((*q).qts).offset(ii as isize)).is_null() {} else {
+        if !(*((*q).qts).offset(ii as isize)).is_null() {
+        } else {
             __assert_fail(
                 b"q->qts[ii]\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                 509 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         if !((*q).l).is_null() {
             idd = node_data_get_id(SingleLinkedList_get_data((*q).l));
-            if (*q).n == 1 as libc::c_int {} else {
+            if (*q).n == 1 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"q->n == 1\0" as *const u8 as *const libc::c_char,
                     b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                     513 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 69],
-                        &[libc::c_char; 69],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                         b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             coord = node_data_get_coord(SingleLinkedList_get_data((*q).l));
             weight = node_data_get_weight(SingleLinkedList_get_data((*q).l));
             ii = QuadTree_get_quadrant(dim, (*q).center, coord);
-            if ii < (1 as libc::c_int) << dim && ii >= 0 as libc::c_int {} else {
+            if ii < (1 as libc::c_int) << dim && ii >= 0 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"ii < 1<<dim && ii >= 0\0" as *const u8 as *const libc::c_char,
                     b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                     517 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 69],
-                        &[libc::c_char; 69],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                         b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             if (*((*q).qts).offset(ii as isize)).is_null() {
@@ -1074,18 +1026,16 @@ unsafe extern "C" fn QuadTree_add_internal(
                 idd,
                 level + 1 as libc::c_int,
             );
-            if !(*((*q).qts).offset(ii as isize)).is_null() {} else {
+            if !(*((*q).qts).offset(ii as isize)).is_null() {
+            } else {
                 __assert_fail(
                     b"q->qts[ii]\0" as *const u8 as *const libc::c_char,
                     b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                     522 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 69],
-                        &[libc::c_char; 69],
-                    >(
+                    (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                         b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                     ))
-                        .as_ptr(),
+                    .as_ptr(),
                 );
             }
             SingleLinkedList_delete(
@@ -1098,18 +1048,16 @@ unsafe extern "C" fn QuadTree_add_internal(
         let ref mut fresh21 = (*q).n;
         *fresh21 += 1;
     } else {
-        if ((*q).qts).is_null() {} else {
+        if ((*q).qts).is_null() {
+        } else {
             __assert_fail(
                 b"!(q->qts)\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                 531 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         let ref mut fresh22 = (*q).n;
@@ -1117,27 +1065,23 @@ unsafe extern "C" fn QuadTree_add_internal(
         (*q).total_weight += weight;
         i = 0 as libc::c_int;
         while i < (*q).dim {
-            *((*q).average)
-                .offset(
-                    i as isize,
-                ) = (*((*q).average).offset(i as isize) * (*q).n as libc::c_double
+            *((*q).average).offset(i as isize) = (*((*q).average).offset(i as isize)
+                * (*q).n as libc::c_double
                 + *coord.offset(i as isize))
                 / ((*q).n + 1 as libc::c_int) as libc::c_double;
             i += 1;
         }
         nd = node_data_new((*q).dim, weight, coord, id);
-        if !((*q).l).is_null() {} else {
+        if !((*q).l).is_null() {
+        } else {
             __assert_fail(
                 b"q->l\0" as *const u8 as *const libc::c_char,
                 b"QuadTree.c\0" as *const u8 as *const libc::c_char,
                 537 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"QuadTree QuadTree_add_internal(QuadTree, double *, double, int, int)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         let ref mut fresh23 = (*q).l;
@@ -1390,11 +1334,7 @@ unsafe extern "C" fn QuadTree_print_internal(
         i = 0 as libc::c_int;
         while i < (1 as libc::c_int) << dim {
             fprintf(fp, b",(*b*){\0" as *const u8 as *const libc::c_char);
-            QuadTree_print_internal(
-                fp,
-                *((*q).qts).offset(i as isize),
-                level + 1 as libc::c_int,
-            );
+            QuadTree_print_internal(fp, *((*q).qts).offset(i as isize), level + 1 as libc::c_int);
             fprintf(fp, b"}\0" as *const u8 as *const libc::c_char);
             i += 1;
         }
@@ -1410,7 +1350,7 @@ pub unsafe extern "C" fn QuadTree_print(mut fp: *mut FILE, mut q: QuadTree) {
     } else if (*q).dim == 3 as libc::c_int {
         fprintf(fp, b"Graphics3D[{\0" as *const u8 as *const libc::c_char);
     } else {
-        return
+        return;
     }
     QuadTree_print_internal(fp, q, 0 as libc::c_int);
     if (*q).dim == 2 as libc::c_int {
@@ -1420,7 +1360,10 @@ pub unsafe extern "C" fn QuadTree_print(mut fp: *mut FILE, mut q: QuadTree) {
                 as *const libc::c_char,
         );
     } else {
-        fprintf(fp, b"}, PlotRange -> All]\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            fp,
+            b"}, PlotRange -> All]\n\0" as *const u8 as *const libc::c_char,
+        );
     };
 }
 unsafe extern "C" fn QuadTree_get_nearest_internal(
@@ -1467,18 +1410,15 @@ unsafe extern "C" fn QuadTree_get_nearest_internal(
         if *min >= 0 as libc::c_int as libc::c_double
             && dist - sqrt(dim as libc::c_double) * (*qt).width > *min
         {
-            return
+            return;
         } else {
             if tentative != 0 {
                 qmin = -(1 as libc::c_int) as libc::c_double;
                 i = 0 as libc::c_int;
                 while i < (1 as libc::c_int) << dim {
                     if !(*((*qt).qts).offset(i as isize)).is_null() {
-                        dist = point_distance(
-                            (**((*qt).qts).offset(i as isize)).average,
-                            point,
-                            dim,
-                        );
+                        dist =
+                            point_distance((**((*qt).qts).offset(i as isize)).average, point, dim);
                         if dist < qmin || qmin < 0 as libc::c_int as libc::c_double {
                             qmin = dist;
                             iq = i;
@@ -1486,7 +1426,8 @@ unsafe extern "C" fn QuadTree_get_nearest_internal(
                     }
                     i += 1;
                 }
-                if iq >= 0 as libc::c_int {} else {
+                if iq >= 0 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"iq >= 0\0" as *const u8 as *const libc::c_char,
                         b"QuadTree.c\0" as *const u8 as *const libc::c_char,

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -85,16 +93,17 @@ pub struct SparseMatrix_struct {
     pub size: libc::c_int,
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -131,16 +140,16 @@ pub unsafe extern "C" fn power_method(
     } else {
         K
     };
-    if K <= n && K > 0 as libc::c_int {} else {
+    if K <= n && K > 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"K <= n && K > 0\0" as *const u8 as *const libc::c_char,
             b"power.c\0" as *const u8 as *const libc::c_char,
             65 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 62],
-                &[libc::c_char; 62],
-            >(b"void power_method(void *, int, int, int, double **, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 62], &[libc::c_char; 62]>(
+                b"void power_method(void *, int, int, int, double **, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*eigv).is_null() {
@@ -153,10 +162,14 @@ pub unsafe extern "C" fn power_method(
         K as size_t,
         ::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong,
     ) as *mut *mut libc::c_double;
-    vv = gv_calloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    u = gv_calloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    vv = gv_calloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    u = gv_calloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     srand(random_seed as libc::c_uint);
     k = 0 as libc::c_int;
     while k < K {
@@ -184,11 +197,8 @@ pub unsafe extern "C" fn power_method(
                 uij = vector_product(n, u, *v.offset(j as isize));
                 i = 0 as libc::c_int;
                 while i < n {
-                    *u
-                        .offset(
-                            i as isize,
-                        ) = *u.offset(i as isize)
-                        - uij * *(*v.offset(j as isize)).offset(i as isize);
+                    *u.offset(i as isize) =
+                        *u.offset(i as isize) - uij * *(*v.offset(j as isize)).offset(i as isize);
                     i += 1;
                 }
                 j += 1;
@@ -214,19 +224,15 @@ pub unsafe extern "C" fn power_method(
             i = 0 as libc::c_int;
             while i < n {
                 *u.offset(i as isize) = *vv.offset(i as isize) * unorm;
-                res = res
-                    + *u.offset(i as isize)
-                        * *(*v.offset(k as isize)).offset(i as isize);
+                res = res + *u.offset(i as isize) * *(*v.offset(k as isize)).offset(i as isize);
                 *(*v.offset(k as isize)).offset(i as isize) = *u.offset(i as isize);
                 i += 1;
             }
-            if !(res < 1 as libc::c_int as libc::c_double - tolerance
-                && {
-                    let fresh1 = iter;
-                    iter = iter + 1;
-                    fresh1 < maxit
-                })
-            {
+            if !(res < 1 as libc::c_int as libc::c_double - tolerance && {
+                let fresh1 = iter;
+                iter = iter + 1;
+                fresh1 < maxit
+            }) {
                 break;
             }
         }

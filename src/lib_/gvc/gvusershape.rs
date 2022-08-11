@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -14,11 +22,7 @@ extern "C" {
     fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
     fn sscanf(_: *const libc::c_char, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn fgetc(__stream: *mut FILE) -> libc::c_int;
-    fn fgets(
-        __s: *mut libc::c_char,
-        __n: libc::c_int,
-        __stream: *mut FILE,
-    ) -> *mut libc::c_char;
+    fn fgets(__s: *mut libc::c_char, __n: libc::c_int, __stream: *mut FILE) -> *mut libc::c_char;
     fn feof(__stream: *mut FILE) -> libc::c_int;
     fn fread(
         _: *mut libc::c_void,
@@ -26,30 +30,14 @@ extern "C" {
         _: libc::c_ulong,
         _: *mut FILE,
     ) -> libc::c_ulong;
-    fn fseek(
-        __stream: *mut FILE,
-        __off: libc::c_long,
-        __whence: libc::c_int,
-    ) -> libc::c_int;
+    fn fseek(__stream: *mut FILE, __off: libc::c_long, __whence: libc::c_int) -> libc::c_int;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strstr(_: *const libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn memcmp(
-        _: *const libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
-    fn memchr(
-        _: *const libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcmp(_: *const libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> libc::c_int;
+    fn memchr(_: *const libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strtod(_: *const libc::c_char, _: *mut *mut libc::c_char) -> libc::c_double;
     fn free(_: *mut libc::c_void);
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
@@ -232,9 +220,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -248,25 +234,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -279,9 +258,7 @@ pub type gvloadimage_engine_t = gvloadimage_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvloadimage_engine_s {
-    pub loadimage: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> (),
-    >,
+    pub loadimage: Option<unsafe extern "C" fn(*mut GVJ_t, *mut usershape_t, boxf, bool) -> ()>,
 }
 pub type usershape_t = usershape_s;
 #[derive(Copy, Clone)]
@@ -302,7 +279,7 @@ pub struct usershape_s {
     pub dpi: libc::c_int,
     pub data: *mut libc::c_void,
     pub datasize: size_t,
-    pub datafree: Option::<unsafe extern "C" fn(*mut usershape_t) -> ()>,
+    pub datafree: Option<unsafe extern "C" fn(*mut usershape_t) -> ()>,
 }
 pub type imagetype_t = libc::c_uint;
 pub const FT_TIFF: imagetype_t = 13;
@@ -424,7 +401,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -572,16 +550,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -597,18 +569,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -616,16 +582,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -667,9 +626,8 @@ pub struct C2RustUnnamed_4 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -699,13 +657,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -738,26 +691,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -766,29 +711,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -796,8 +733,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -831,7 +768,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -857,9 +794,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -985,7 +920,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1071,13 +1006,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1086,7 +1020,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1171,7 +1105,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1267,47 +1201,42 @@ unsafe extern "C" fn imagetype(mut us: *mut usershape_t) -> libc::c_int {
                 let ref mut fresh0 = (*us).stringtype;
                 *fresh0 = knowntypes[i as usize].stringtype;
                 (*us).type_0 = knowntypes[i as usize].type_0 as imagetype_t;
-                if (*us).type_0 as libc::c_uint == FT_XML as libc::c_int as libc::c_uint
-                {
+                if (*us).type_0 as libc::c_uint == FT_XML as libc::c_int as libc::c_uint {
                     while !(fgets(
                         line.as_mut_ptr(),
                         ::std::mem::size_of::<[libc::c_char; 200]>() as libc::c_ulong
                             as libc::c_int,
                         (*us).f,
                     ))
-                        .is_null()
+                    .is_null()
                     {
                         if memcmp(
                             line.as_mut_ptr() as *const libc::c_void,
-                            b"<svg\0" as *const u8 as *const libc::c_char
-                                as *const libc::c_void,
+                            b"<svg\0" as *const u8 as *const libc::c_char as *const libc::c_void,
                             (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
                                 .wrapping_sub(1 as libc::c_int as libc::c_ulong),
                         ) == 0
                         {
                             let ref mut fresh1 = (*us).stringtype;
-                            *fresh1 = b"svg\0" as *const u8 as *const libc::c_char
-                                as *mut libc::c_char;
+                            *fresh1 =
+                                b"svg\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                             let ref mut fresh2 = (*us).type_0;
                             *fresh2 = FT_SVG;
                             return *fresh2 as libc::c_int;
                         }
                     }
-                } else if (*us).type_0 as libc::c_uint
-                        == FT_RIFF as libc::c_int as libc::c_uint
-                    {
+                } else if (*us).type_0 as libc::c_uint == FT_RIFF as libc::c_int as libc::c_uint {
                     if memcmp(
                         header.as_mut_ptr().offset(8 as libc::c_int as isize)
                             as *const libc::c_void,
-                        b"WEBP\0" as *const u8 as *const libc::c_char
-                            as *const libc::c_void,
+                        b"WEBP\0" as *const u8 as *const libc::c_char as *const libc::c_void,
                         (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
                             .wrapping_sub(1 as libc::c_int as libc::c_ulong),
                     ) == 0
                     {
                         let ref mut fresh3 = (*us).stringtype;
-                        *fresh3 = b"webp\0" as *const u8 as *const libc::c_char
-                            as *mut libc::c_char;
+                        *fresh3 =
+                            b"webp\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                         let ref mut fresh4 = (*us).type_0;
                         *fresh4 = FT_WEBP;
                         return *fresh4 as libc::c_int;
@@ -1336,9 +1265,7 @@ unsafe extern "C" fn get_int_lsb_first(
         if feof(f) != 0 {
             return 0 as libc::c_int != 0;
         }
-        *val
-            |= (ch as libc::c_uint)
-                << (8 as libc::c_int as libc::c_ulong).wrapping_mul(i);
+        *val |= (ch as libc::c_uint) << (8 as libc::c_int as libc::c_ulong).wrapping_mul(i);
         i = i.wrapping_add(1);
     }
     return 1 as libc::c_int != 0;
@@ -1367,34 +1294,32 @@ unsafe extern "C" fn svg_units_convert(
     mut u: *mut libc::c_char,
 ) -> libc::c_uint {
     if strcmp(u, b"in\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
-        return (if n * 72 as libc::c_int as libc::c_double
-            >= 0 as libc::c_int as libc::c_double
-        {
+        return (if n * 72 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double {
             (n * 72 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
         } else {
             (n * 72 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
         }) as libc::c_uint;
     }
     if strcmp(u, b"px\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
-        return (if n * 72 as libc::c_int as libc::c_double
-            / 96 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+        return (if n * 72 as libc::c_int as libc::c_double / 96 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
-            (n * 72 as libc::c_int as libc::c_double
-                / 96 as libc::c_int as libc::c_double + 0.5f64) as libc::c_int
+            (n * 72 as libc::c_int as libc::c_double / 96 as libc::c_int as libc::c_double + 0.5f64)
+                as libc::c_int
         } else {
-            (n * 72 as libc::c_int as libc::c_double
-                / 96 as libc::c_int as libc::c_double - 0.5f64) as libc::c_int
+            (n * 72 as libc::c_int as libc::c_double / 96 as libc::c_int as libc::c_double - 0.5f64)
+                as libc::c_int
         }) as libc::c_uint;
     }
     if strcmp(u, b"pc\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
-        return (if n * 72 as libc::c_int as libc::c_double
-            / 6 as libc::c_int as libc::c_double >= 0 as libc::c_int as libc::c_double
+        return (if n * 72 as libc::c_int as libc::c_double / 6 as libc::c_int as libc::c_double
+            >= 0 as libc::c_int as libc::c_double
         {
-            (n * 72 as libc::c_int as libc::c_double / 6 as libc::c_int as libc::c_double
-                + 0.5f64) as libc::c_int
+            (n * 72 as libc::c_int as libc::c_double / 6 as libc::c_int as libc::c_double + 0.5f64)
+                as libc::c_int
         } else {
-            (n * 72 as libc::c_int as libc::c_double / 6 as libc::c_int as libc::c_double
-                - 0.5f64) as libc::c_int
+            (n * 72 as libc::c_int as libc::c_double / 6 as libc::c_int as libc::c_double - 0.5f64)
+                as libc::c_int
         }) as libc::c_uint;
     }
     if strcmp(u, b"pt\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
@@ -1410,22 +1335,18 @@ unsafe extern "C" fn svg_units_convert(
         return (if n * (72 as libc::c_int as libc::c_double * 0.393700787f64)
             >= 0 as libc::c_int as libc::c_double
         {
-            (n * (72 as libc::c_int as libc::c_double * 0.393700787f64) + 0.5f64)
-                as libc::c_int
+            (n * (72 as libc::c_int as libc::c_double * 0.393700787f64) + 0.5f64) as libc::c_int
         } else {
-            (n * (72 as libc::c_int as libc::c_double * 0.393700787f64) - 0.5f64)
-                as libc::c_int
+            (n * (72 as libc::c_int as libc::c_double * 0.393700787f64) - 0.5f64) as libc::c_int
         }) as libc::c_uint;
     }
     if strcmp(u, b"mm\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         return (if n * (72 as libc::c_int as libc::c_double * 0.0393700787f64)
             >= 0 as libc::c_int as libc::c_double
         {
-            (n * (72 as libc::c_int as libc::c_double * 0.0393700787f64) + 0.5f64)
-                as libc::c_int
+            (n * (72 as libc::c_int as libc::c_double * 0.0393700787f64) + 0.5f64) as libc::c_int
         } else {
-            (n * (72 as libc::c_int as libc::c_double * 0.0393700787f64) - 0.5f64)
-                as libc::c_int
+            (n * (72 as libc::c_int as libc::c_double * 0.0393700787f64) - 0.5f64) as libc::c_int
         }) as libc::c_uint;
     }
     return 0 as libc::c_int as libc::c_uint;
@@ -1453,10 +1374,11 @@ unsafe extern "C" fn find_attribute(
             }
             if *s.offset(i as isize) as libc::c_int == '=' as i32
                 && *s.offset(i.wrapping_add(1 as libc::c_int as libc::c_ulong) as isize)
-                    as libc::c_int == '"' as i32
+                    as libc::c_int
+                    == '"' as i32
             {
-                i = (i as libc::c_ulong).wrapping_add(2 as libc::c_int as libc::c_ulong)
-                    as size_t as size_t;
+                i = (i as libc::c_ulong).wrapping_add(2 as libc::c_int as libc::c_ulong) as size_t
+                    as size_t;
                 (*result).value_start = i;
                 (*result).value_extent = 0 as libc::c_int as size_t;
                 while *s.offset(i as isize) as libc::c_int != '"' as i32
@@ -1497,7 +1419,8 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
         ::std::mem::size_of::<[libc::c_char; 200]>() as libc::c_ulong as libc::c_int,
         (*us).f,
     ))
-        .is_null() && (!wFlag || !hFlag)
+    .is_null()
+        && (!wFlag || !hFlag)
     {
         re_string = line.as_mut_ptr();
         let mut match_0: match_t = match_t {
@@ -1507,20 +1430,16 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
             value_extent: 0,
         };
         while find_attribute(re_string, &mut match_0) == 0 as libc::c_int {
-            *re_string
-                .offset(
-                    (match_0.value_start).wrapping_add(match_0.value_extent) as isize,
-                ) = '\0' as i32 as libc::c_char;
+            *re_string.offset((match_0.value_start).wrapping_add(match_0.value_extent) as isize) =
+                '\0' as i32 as libc::c_char;
             attribute = re_string.offset(match_0.key_start as isize);
             value = re_string.offset(match_0.value_start as isize);
-            re_string = re_string
-                .offset(
-                    (match_0.value_start)
-                        .wrapping_add(match_0.value_extent)
-                        .wrapping_add(1 as libc::c_int as libc::c_ulong) as isize,
-                );
-            if match_0.key_extent
-                == strlen(b"width\0" as *const u8 as *const libc::c_char)
+            re_string = re_string.offset(
+                (match_0.value_start)
+                    .wrapping_add(match_0.value_extent)
+                    .wrapping_add(1 as libc::c_int as libc::c_ulong) as isize,
+            );
+            if match_0.key_extent == strlen(b"width\0" as *const u8 as *const libc::c_char)
                 && strncmp(
                     attribute,
                     b"width\0" as *const u8 as *const libc::c_char,
@@ -1537,11 +1456,11 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
                     w = svg_units_convert(n, u.as_mut_ptr());
                     wFlag = 1 as libc::c_int != 0;
                 } else if sscanf(
-                        value,
-                        b"%lf\0" as *const u8 as *const libc::c_char,
-                        &mut n as *mut libc::c_double,
-                    ) == 1 as libc::c_int
-                    {
+                    value,
+                    b"%lf\0" as *const u8 as *const libc::c_char,
+                    &mut n as *mut libc::c_double,
+                ) == 1 as libc::c_int
+                {
                     w = svg_units_convert(
                         n,
                         b"pt\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1551,14 +1470,13 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
                 if hFlag {
                     break;
                 }
-            } else if match_0.key_extent
-                    == strlen(b"height\0" as *const u8 as *const libc::c_char)
-                    && strncmp(
-                        attribute,
-                        b"height\0" as *const u8 as *const libc::c_char,
-                        match_0.key_extent,
-                    ) == 0 as libc::c_int
-                {
+            } else if match_0.key_extent == strlen(b"height\0" as *const u8 as *const libc::c_char)
+                && strncmp(
+                    attribute,
+                    b"height\0" as *const u8 as *const libc::c_char,
+                    match_0.key_extent,
+                ) == 0 as libc::c_int
+            {
                 if sscanf(
                     value,
                     b"%lf%2s\0" as *const u8 as *const libc::c_char,
@@ -1569,11 +1487,11 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
                     h = svg_units_convert(n, u.as_mut_ptr());
                     hFlag = 1 as libc::c_int != 0;
                 } else if sscanf(
-                        value,
-                        b"%lf\0" as *const u8 as *const libc::c_char,
-                        &mut n as *mut libc::c_double,
-                    ) == 1 as libc::c_int
-                    {
+                    value,
+                    b"%lf\0" as *const u8 as *const libc::c_char,
+                    &mut n as *mut libc::c_double,
+                ) == 1 as libc::c_int
+                {
                     h = svg_units_convert(
                         n,
                         b"pt\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1584,8 +1502,7 @@ unsafe extern "C" fn svg_size(mut us: *mut usershape_t) {
                     break;
                 }
             } else {
-                if !(match_0.key_extent
-                    == strlen(b"viewBox\0" as *const u8 as *const libc::c_char)
+                if !(match_0.key_extent == strlen(b"viewBox\0" as *const u8 as *const libc::c_char)
                     && strncmp(
                         attribute,
                         b"viewBox\0" as *const u8 as *const libc::c_char,
@@ -1620,8 +1537,7 @@ unsafe extern "C" fn png_size(mut us: *mut usershape_t) {
     (*us).dpi = 0 as libc::c_int;
     fseek((*us).f, 16 as libc::c_int as libc::c_long, 0 as libc::c_int);
     if get_int_msb_first((*us).f, 4 as libc::c_int as size_t, &mut w) as libc::c_int != 0
-        && get_int_msb_first((*us).f, 4 as libc::c_int as size_t, &mut h) as libc::c_int
-            != 0
+        && get_int_msb_first((*us).f, 4 as libc::c_int as size_t, &mut h) as libc::c_int != 0
     {
         (*us).w = w as libc::c_int;
         (*us).h = h as libc::c_int;
@@ -1633,8 +1549,7 @@ unsafe extern "C" fn ico_size(mut us: *mut usershape_t) {
     (*us).dpi = 0 as libc::c_int;
     fseek((*us).f, 6 as libc::c_int as libc::c_long, 0 as libc::c_int);
     if get_int_msb_first((*us).f, 1 as libc::c_int as size_t, &mut w) as libc::c_int != 0
-        && get_int_msb_first((*us).f, 1 as libc::c_int as size_t, &mut h) as libc::c_int
-            != 0
+        && get_int_msb_first((*us).f, 1 as libc::c_int as size_t, &mut h) as libc::c_int != 0
     {
         (*us).w = w as libc::c_int;
         (*us).h = h as libc::c_int;
@@ -1647,20 +1562,16 @@ unsafe extern "C" fn webp_size(mut us: *mut usershape_t) {
     fseek((*us).f, 15 as libc::c_int as libc::c_long, 0 as libc::c_int);
     if fgetc((*us).f) == 'X' as i32 {
         fseek((*us).f, 24 as libc::c_int as libc::c_long, 0 as libc::c_int);
-        if get_int_lsb_first((*us).f, 4 as libc::c_int as size_t, &mut w) as libc::c_int
-            != 0
-            && get_int_lsb_first((*us).f, 4 as libc::c_int as size_t, &mut h)
-                as libc::c_int != 0
+        if get_int_lsb_first((*us).f, 4 as libc::c_int as size_t, &mut w) as libc::c_int != 0
+            && get_int_lsb_first((*us).f, 4 as libc::c_int as size_t, &mut h) as libc::c_int != 0
         {
             (*us).w = w as libc::c_int;
             (*us).h = h as libc::c_int;
         }
     } else {
         fseek((*us).f, 26 as libc::c_int as libc::c_long, 0 as libc::c_int);
-        if get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut w) as libc::c_int
-            != 0
-            && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut h)
-                as libc::c_int != 0
+        if get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut w) as libc::c_int != 0
+            && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut h) as libc::c_int != 0
         {
             (*us).w = w as libc::c_int;
             (*us).h = h as libc::c_int;
@@ -1673,8 +1584,7 @@ unsafe extern "C" fn gif_size(mut us: *mut usershape_t) {
     (*us).dpi = 0 as libc::c_int;
     fseek((*us).f, 6 as libc::c_int as libc::c_long, 0 as libc::c_int);
     if get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut w) as libc::c_int != 0
-        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut h) as libc::c_int
-            != 0
+        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut h) as libc::c_int != 0
     {
         (*us).w = w as libc::c_int;
         (*us).h = h as libc::c_int;
@@ -1687,14 +1597,13 @@ unsafe extern "C" fn bmp_size(mut us: *mut usershape_t) {
     let mut size_y_lsw: libc::c_uint = 0;
     (*us).dpi = 0 as libc::c_int;
     fseek((*us).f, 16 as libc::c_int as libc::c_long, 0 as libc::c_int);
-    if get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x_msw)
-        as libc::c_int != 0
-        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x_lsw)
-            as libc::c_int != 0
-        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y_msw)
-            as libc::c_int != 0
-        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y_lsw)
-            as libc::c_int != 0
+    if get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x_msw) as libc::c_int != 0
+        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x_lsw) as libc::c_int
+            != 0
+        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y_msw) as libc::c_int
+            != 0
+        && get_int_lsb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y_lsw) as libc::c_int
+            != 0
     {
         (*us).w = (size_x_msw << 16 as libc::c_int | size_x_lsw) as libc::c_int;
         (*us).h = (size_y_msw << 16 as libc::c_int | size_y_lsw) as libc::c_int;
@@ -1731,7 +1640,7 @@ unsafe extern "C" fn jpeg_size(mut us: *mut usershape_t) {
             marker as libc::c_int,
             ::std::mem::size_of::<[libc::c_uchar; 11]>() as libc::c_ulong,
         ))
-            .is_null()
+        .is_null()
         {
             continue;
         }
@@ -1739,9 +1648,11 @@ unsafe extern "C" fn jpeg_size(mut us: *mut usershape_t) {
             if fseek((*us).f, 3 as libc::c_int as libc::c_long, 1 as libc::c_int)
                 == 0 as libc::c_int
                 && get_int_msb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x)
-                    as libc::c_int != 0
+                    as libc::c_int
+                    != 0
                 && get_int_msb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y)
-                    as libc::c_int != 0
+                    as libc::c_int
+                    != 0
             {
                 (*us).h = size_x as libc::c_int;
                 (*us).w = size_y as libc::c_int;
@@ -1754,10 +1665,11 @@ unsafe extern "C" fn jpeg_size(mut us: *mut usershape_t) {
             {
                 return;
             }
-            if get_int_msb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x)
-                as libc::c_int != 0
+            if get_int_msb_first((*us).f, 2 as libc::c_int as size_t, &mut size_x) as libc::c_int
+                != 0
                 && get_int_msb_first((*us).f, 2 as libc::c_int as size_t, &mut size_y)
-                    as libc::c_int != 0
+                    as libc::c_int
+                    != 0
             {
                 (*us).h = size_x as libc::c_int;
                 (*us).w = size_y as libc::c_int;
@@ -1772,7 +1684,7 @@ unsafe extern "C" fn jpeg_size(mut us: *mut usershape_t) {
             length.wrapping_sub(2 as libc::c_int as libc::c_uint) as libc::c_long,
             1 as libc::c_int,
         );
-    };
+    }
 }
 unsafe extern "C" fn ps_size(mut us: *mut usershape_t) {
     let mut line: [libc::c_char; 8192] = [0; 8192];
@@ -1789,7 +1701,7 @@ unsafe extern "C" fn ps_size(mut us: *mut usershape_t) {
         ::std::mem::size_of::<[libc::c_char; 8192]>() as libc::c_ulong as libc::c_int,
         (*us).f,
     ))
-        .is_null()
+    .is_null()
     {
         linep = strstr(
             line.as_mut_ptr(),
@@ -1839,14 +1751,15 @@ unsafe extern "C" fn skipWS(mut str: *mut stream_t) {
             break;
         }
         if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISspace as libc::c_int as libc::c_ushort as libc::c_int != 0
+            & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
         {
             let ref mut fresh9 = (*str).s;
             *fresh9 = (*fresh9).offset(1);
         } else {
-            return
+            return;
         }
-    };
+    }
 }
 unsafe extern "C" fn scanNum(
     mut tok: *mut libc::c_char,
@@ -1872,7 +1785,8 @@ unsafe extern "C" fn getNum(mut str: *mut stream_t, mut buf: *mut libc::c_char) 
         }) as libc::c_char;
         if !(c as libc::c_int != 0
             && (*(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
                 || c as libc::c_int == '.' as i32))
         {
             break;
@@ -1928,15 +1842,16 @@ unsafe extern "C" fn bboxPDF(mut fp: *mut FILE, mut bp: *mut boxf) -> libc::c_in
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut buf: [libc::c_char; 8192] = [0; 8192];
     while !(fgets(buf.as_mut_ptr(), 8192 as libc::c_int, fp)).is_null() {
-        s = strstr(buf.as_mut_ptr(), b"/MediaBox\0" as *const u8 as *const libc::c_char);
+        s = strstr(
+            buf.as_mut_ptr(),
+            b"/MediaBox\0" as *const u8 as *const libc::c_char,
+        );
         if !s.is_null() {
             str.buf = buf.as_mut_ptr();
-            str
-                .s = s
-                .offset(
-                    (::std::mem::size_of::<[libc::c_char; 10]>() as libc::c_ulong)
-                        .wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
-                );
+            str.s = s.offset(
+                (::std::mem::size_of::<[libc::c_char; 10]>() as libc::c_ulong)
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
+            );
             str.fp = fp;
             return boxof(&mut str, bp);
         }
@@ -1980,11 +1895,7 @@ static mut ImageDictDisc: Dtdisc_t = unsafe {
             makef: None,
             freef: Some(
                 usershape_close
-                    as unsafe extern "C" fn(
-                        *mut Dict_t,
-                        *mut libc::c_void,
-                        *mut Dtdisc_t,
-                    ) -> (),
+                    as unsafe extern "C" fn(*mut Dict_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
             ),
             comparf: None,
             hashf: None,
@@ -1995,84 +1906,81 @@ static mut ImageDictDisc: Dtdisc_t = unsafe {
     }
 };
 #[no_mangle]
-pub unsafe extern "C" fn gvusershape_find(
-    mut name: *const libc::c_char,
-) -> *mut usershape_t {
+pub unsafe extern "C" fn gvusershape_find(mut name: *const libc::c_char) -> *mut usershape_t {
     let mut us: *mut usershape_t = 0 as *mut usershape_t;
-    if !name.is_null() {} else {
+    if !name.is_null() {
+    } else {
         __assert_fail(
             b"name\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             578 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"usershape_t *gvusershape_find(const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"usershape_t *gvusershape_find(const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if *name.offset(0 as libc::c_int as isize) != 0 {} else {
+    if *name.offset(0 as libc::c_int as isize) != 0 {
+    } else {
         __assert_fail(
             b"name[0]\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             579 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"usershape_t *gvusershape_find(const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"usershape_t *gvusershape_find(const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if ImageDict.is_null() {
         return 0 as *mut usershape_t;
     }
-    us = (Some(
-        ((*(ImageDict as *mut Dt_t)).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )(ImageDict, name as *mut libc::c_void, 0o1000 as libc::c_int)
-        as *mut usershape_t;
+    us = (Some(((*(ImageDict as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        ImageDict,
+        name as *mut libc::c_void,
+        0o1000 as libc::c_int,
+    ) as *mut usershape_t;
     return us;
 }
 #[no_mangle]
 pub unsafe extern "C" fn gvusershape_file_access(mut us: *mut usershape_t) -> bool {
     static mut usershape_files_open_cnt: libc::c_int = 0;
     let mut fn_0: *const libc::c_char = 0 as *const libc::c_char;
-    if !us.is_null() {} else {
+    if !us.is_null() {
+    } else {
         __assert_fail(
             b"us\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             594 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 45],
-                &[libc::c_char; 45],
-            >(b"_Bool gvusershape_file_access(usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 45], &[libc::c_char; 45]>(
+                b"_Bool gvusershape_file_access(usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*us).name).is_null() {} else {
+    if !((*us).name).is_null() {
+    } else {
         __assert_fail(
             b"us->name\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             595 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 45],
-                &[libc::c_char; 45],
-            >(b"_Bool gvusershape_file_access(usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 45], &[libc::c_char; 45]>(
+                b"_Bool gvusershape_file_access(usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if *((*us).name).offset(0 as libc::c_int as isize) != 0 {} else {
+    if *((*us).name).offset(0 as libc::c_int as isize) != 0 {
+    } else {
         __assert_fail(
             b"us->name[0]\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             596 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 45],
-                &[libc::c_char; 45],
-            >(b"_Bool gvusershape_file_access(usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 45], &[libc::c_char; 45]>(
+                b"_Bool gvusershape_file_access(usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if !((*us).f).is_null() {
@@ -2104,16 +2012,16 @@ pub unsafe extern "C" fn gvusershape_file_access(mut us: *mut usershape_t) -> bo
             usershape_files_open_cnt += 1;
         }
     }
-    if !((*us).f).is_null() {} else {
+    if !((*us).f).is_null() {
+    } else {
         __assert_fail(
             b"us->f\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             615 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 45],
-                &[libc::c_char; 45],
-            >(b"_Bool gvusershape_file_access(usershape_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 45], &[libc::c_char; 45]>(
+                b"_Bool gvusershape_file_access(usershape_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return 1 as libc::c_int != 0;
@@ -2134,20 +2042,18 @@ unsafe extern "C" fn freeUsershape(mut us: *mut usershape_t) {
     }
     free(us as *mut libc::c_void);
 }
-unsafe extern "C" fn gvusershape_open(
-    mut name: *const libc::c_char,
-) -> *mut usershape_t {
+unsafe extern "C" fn gvusershape_open(mut name: *const libc::c_char) -> *mut usershape_t {
     let mut us: *mut usershape_t = 0 as *mut usershape_t;
-    if !name.is_null() {} else {
+    if !name.is_null() {
+    } else {
         __assert_fail(
             b"name\0" as *const u8 as *const libc::c_char,
             b"gvusershape.c\0" as *const u8 as *const libc::c_char,
             639 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"usershape_t *gvusershape_open(const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"usershape_t *gvusershape_open(const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if ImageDict.is_null() {
@@ -2155,24 +2061,23 @@ unsafe extern "C" fn gvusershape_open(
     }
     us = gvusershape_find(name);
     if us.is_null() {
-        us = zmalloc(::std::mem::size_of::<usershape_t>() as libc::c_ulong)
-            as *mut usershape_t;
+        us = zmalloc(::std::mem::size_of::<usershape_t>() as libc::c_ulong) as *mut usershape_t;
         let ref mut fresh15 = (*us).name;
         *fresh15 = agstrdup(0 as *mut Agraph_t, name);
         if !gvusershape_file_access(us) {
             freeUsershape(us);
             return 0 as *mut usershape_t;
         }
-        if !((*us).f).is_null() {} else {
+        if !((*us).f).is_null() {
+        } else {
             __assert_fail(
                 b"us->f\0" as *const u8 as *const libc::c_char,
                 b"gvusershape.c\0" as *const u8 as *const libc::c_char,
                 653 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 44],
-                    &[libc::c_char; 44],
-                >(b"usershape_t *gvusershape_open(const char *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                    b"usershape_t *gvusershape_open(const char *)\0",
+                ))
+                .as_ptr(),
             );
         }
         match imagetype(us) {
@@ -2221,19 +2126,18 @@ unsafe extern "C" fn gvusershape_open(
         }
         gvusershape_file_release(us);
         (Some(((*(ImageDict as *mut Dt_t)).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )(ImageDict, us as *mut libc::c_void, 0o1 as libc::c_int);
+            .expect("non-null function pointer")(
+            ImageDict,
+            us as *mut libc::c_void,
+            0o1 as libc::c_int,
+        );
         return us;
     }
     gvusershape_file_release(us);
     return us;
 }
 #[no_mangle]
-pub unsafe extern "C" fn gvusershape_size_dpi(
-    mut us: *mut usershape_t,
-    mut dpi: pointf,
-) -> point {
+pub unsafe extern "C" fn gvusershape_size_dpi(mut us: *mut usershape_t, mut dpi: pointf) -> point {
     let mut rv: point = point { x: 0, y: 0 };
     if us.is_null() {
         rv.y = -(1 as libc::c_int);
@@ -2255,8 +2159,7 @@ pub unsafe extern "C" fn gvusershape_size(
 ) -> point {
     let mut rv: point = point { x: 0, y: 0 };
     let mut dpi: pointf = pointf { x: 0., y: 0. };
-    static mut oldpath: *mut libc::c_char = 0 as *const libc::c_char
-        as *mut libc::c_char;
+    static mut oldpath: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
     let mut us: *mut usershape_t = 0 as *mut usershape_t;
     if name.is_null() || *name as libc::c_int == '\0' as i32 {
         rv.y = -(1 as libc::c_int);
@@ -2288,46 +2191,43 @@ unsafe extern "C" fn run_static_initializers() {
                 template: b"\x89PNG\r\n\x1A\n\0" as *const u8 as *const libc::c_char
                     as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 9]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_PNG as libc::c_int,
-                stringtype: b"png\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"png\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"%!PS-Adobe-\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"%!PS-Adobe-\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 12]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_PS as libc::c_int,
-                stringtype: b"ps\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"ps\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"BM\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"BM\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 3]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_BMP as libc::c_int,
-                stringtype: b"bmp\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"bmp\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"GIF8\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"GIF8\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_GIF as libc::c_int,
-                stringtype: b"gif\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"gif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
@@ -2336,22 +2236,21 @@ unsafe extern "C" fn run_static_initializers() {
                 template: b"\xFF\xD8\xFF\xE0\0" as *const u8 as *const libc::c_char
                     as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_JPEG as libc::c_int,
-                stringtype: b"jpeg\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"jpeg\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"%PDF-\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"%PDF-\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 6]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_PDF as libc::c_int,
-                stringtype: b"pdf\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"pdf\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
@@ -2360,46 +2259,43 @@ unsafe extern "C" fn run_static_initializers() {
                 template: b"\xC5\xD0\xD3\xC6\0" as *const u8 as *const libc::c_char
                     as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_EPS as libc::c_int,
-                stringtype: b"eps\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"eps\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"<?xml\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"<?xml\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 6]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_XML as libc::c_int,
-                stringtype: b"xml\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"xml\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"RIFF\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"RIFF\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_RIFF as libc::c_int,
-                stringtype: b"riff\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"riff\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },
         {
             let mut init = knowntype_t {
-                template: b"\0\0\x01\0\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                template: b"\0\0\x01\0\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 size: (::std::mem::size_of::<[libc::c_char; 5]>() as libc::c_ulong)
-                    .wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int,
+                    .wrapping_sub(1 as libc::c_int as libc::c_ulong)
+                    as libc::c_int,
                 type_0: FT_ICO as libc::c_int,
-                stringtype: b"ico\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                stringtype: b"ico\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             };
             init
         },

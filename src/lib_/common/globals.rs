@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 pub type Dtlink_t = _dtlink_s;
@@ -40,23 +48,19 @@ pub struct fdpParms_s {
 }
 pub type fdpParms_t = fdpParms_s;
 #[no_mangle]
-pub static mut Version: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut Version: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
-pub static mut Files: *mut *mut libc::c_char = 0 as *const *mut libc::c_char
-    as *mut *mut libc::c_char;
+pub static mut Files: *mut *mut libc::c_char =
+    0 as *const *mut libc::c_char as *mut *mut libc::c_char;
 #[no_mangle]
-pub static mut Lib: *mut *const libc::c_char = 0 as *const *const libc::c_char
-    as *mut *const libc::c_char;
+pub static mut Lib: *mut *const libc::c_char =
+    0 as *const *const libc::c_char as *mut *const libc::c_char;
 #[no_mangle]
-pub static mut CmdName: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut CmdName: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
-pub static mut Gvfilepath: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut Gvfilepath: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
-pub static mut Gvimagepath: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut Gvimagepath: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub static mut Verbose: libc::c_uchar = 0;
 #[no_mangle]
@@ -64,8 +68,7 @@ pub static mut Reduce: libc::c_uchar = 0;
 #[no_mangle]
 pub static mut MemTest: libc::c_int = 0;
 #[no_mangle]
-pub static mut HTTPServerEnVar: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut HTTPServerEnVar: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub static mut graphviz_errors: libc::c_int = 0;
 #[no_mangle]
@@ -75,8 +78,8 @@ pub static mut PSinputscale: libc::c_double = 0.;
 #[no_mangle]
 pub static mut Show_cnt: libc::c_int = 0;
 #[no_mangle]
-pub static mut Show_boxes: *mut *mut libc::c_char = 0 as *const *mut libc::c_char
-    as *mut *mut libc::c_char;
+pub static mut Show_boxes: *mut *mut libc::c_char =
+    0 as *const *mut libc::c_char as *mut *mut libc::c_char;
 #[no_mangle]
 pub static mut CL_type: libc::c_int = 0;
 #[no_mangle]
@@ -291,6 +294,5 @@ static mut fdpParms: fdpParms_t = {
     init
 };
 #[no_mangle]
-pub static mut fdp_parms: *mut fdpParms_s = unsafe {
-    &fdpParms as *const fdpParms_t as *mut fdpParms_t
-};
+pub static mut fdp_parms: *mut fdpParms_s =
+    unsafe { &fdpParms as *const fdpParms_t as *mut fdpParms_t };

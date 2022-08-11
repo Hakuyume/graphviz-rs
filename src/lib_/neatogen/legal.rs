@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -8,12 +16,7 @@ extern "C" {
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn abs(_: libc::c_int) -> libc::c_int;
     fn agerr(level: agerrlevel_t, fmt: *const libc::c_char, _: ...) -> libc::c_int;
     static mut Verbose: libc::c_uchar;
@@ -59,9 +62,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct pointf_s {
@@ -139,11 +141,7 @@ unsafe extern "C" fn sign(mut v: libc::c_double) -> libc::c_int {
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn sgnarea(
-    mut l: *mut vertex,
-    mut m: *mut vertex,
-    mut i: *mut libc::c_int,
-) {
+unsafe extern "C" fn sgnarea(mut l: *mut vertex, mut m: *mut vertex, mut i: *mut libc::c_int) {
     let mut a: libc::c_double = 0.;
     let mut b: libc::c_double = 0.;
     let mut c: libc::c_double = 0.;
@@ -160,15 +158,15 @@ unsafe extern "C" fn sgnarea(
     } else {
         l.offset(1 as libc::c_int as isize)
     }))
-        .pos
-        .x - a;
+    .pos
+    .x - a;
     d = (*(if l == (*(*l).poly).finish {
         (*(*l).poly).start
     } else {
         l.offset(1 as libc::c_int as isize)
     }))
-        .pos
-        .y - b;
+    .pos
+    .y - b;
     e = (*m).pos.x - a;
     f = (*m).pos.y - b;
     g = (*(if m == (*(*m).poly).finish {
@@ -176,23 +174,21 @@ unsafe extern "C" fn sgnarea(
     } else {
         m.offset(1 as libc::c_int as isize)
     }))
-        .pos
-        .x - a;
+    .pos
+    .x - a;
     h = (*(if m == (*(*m).poly).finish {
         (*(*m).poly).start
     } else {
         m.offset(1 as libc::c_int as isize)
     }))
-        .pos
-        .y - b;
+    .pos
+    .y - b;
     t = c * f - d * e;
     *i.offset(0 as libc::c_int as isize) = sign(t);
     t = c * h - d * g;
     *i.offset(1 as libc::c_int as isize) = sign(t);
-    *i
-        .offset(
-            2 as libc::c_int as isize,
-        ) = *i.offset(0 as libc::c_int as isize) * *i.offset(1 as libc::c_int as isize);
+    *i.offset(2 as libc::c_int as isize) =
+        *i.offset(0 as libc::c_int as isize) * *i.offset(1 as libc::c_int as isize);
 }
 unsafe extern "C" fn between(
     mut f: libc::c_double,
@@ -233,7 +229,7 @@ unsafe extern "C" fn online(
     } else {
         l.offset(1 as libc::c_int as isize)
     })
-        .pos;
+    .pos;
     c = if i == 0 as libc::c_int {
         (*m).pos
     } else {
@@ -242,7 +238,7 @@ unsafe extern "C" fn online(
         } else {
             m.offset(1 as libc::c_int as isize)
         })
-            .pos
+        .pos
     };
     return if a.x == b.x {
         (a.x == c.x && -(1 as libc::c_int) != between(a.y, c.y, b.y)) as libc::c_int
@@ -276,14 +272,14 @@ unsafe extern "C" fn intpoint(
     } else {
         l.offset(1 as libc::c_int as isize)
     })
-        .pos;
+    .pos;
     ms = (*m).pos;
     me = (*if m == (*(*m).poly).finish {
         (*(*m).poly).start
     } else {
         m.offset(1 as libc::c_int as isize)
     })
-        .pos;
+    .pos;
     match cond {
         3 => {
             if ls.x == le.x {
@@ -359,15 +355,15 @@ unsafe extern "C" fn putSeg(mut i: libc::c_int, mut v: *mut vertex) {
         } else {
             v.offset(1 as libc::c_int as isize)
         })
-            .pos
-            .x,
+        .pos
+        .x,
         (*if v == (*(*v).poly).finish {
             (*(*v).poly).start
         } else {
             v.offset(1 as libc::c_int as isize)
         })
-            .pos
-            .y,
+        .pos
+        .y,
     );
 }
 unsafe extern "C" fn realIntersect(
@@ -385,19 +381,17 @@ unsafe extern "C" fn realIntersect(
     } else {
         firstv.offset(1 as libc::c_int as isize)
     })
-        .pos;
+    .pos;
     vsd = (*secondv).pos;
     avsd = (*if secondv == (*(*secondv).poly).finish {
         (*(*secondv).poly).start
     } else {
         secondv.offset(1 as libc::c_int as isize)
     })
-        .pos;
+    .pos;
     if vft.x != avft.x && vsd.x != avsd.x
-        || vft.x == avft.x && !(vft.x == p.x && vft.y == p.y)
-            && !(avft.x == p.x && avft.y == p.y)
-        || vsd.x == avsd.x && !(vsd.x == p.x && vsd.y == p.y)
-            && !(avsd.x == p.x && avsd.y == p.y)
+        || vft.x == avft.x && !(vft.x == p.x && vft.y == p.y) && !(avft.x == p.x && avft.y == p.y)
+        || vsd.x == avsd.x && !(vsd.x == p.x && vsd.y == p.y) && !(avsd.x == p.x && avsd.y == p.y)
     {
         if Verbose as libc::c_int > 1 as libc::c_int {
             fprintf(
@@ -411,7 +405,7 @@ unsafe extern "C" fn realIntersect(
         }
         return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn find_intersection(
@@ -448,33 +442,29 @@ unsafe extern "C" fn find_intersection(
             return 0 as libc::c_int;
         }
     } else if intpoint(
-            l,
-            m,
-            &mut x,
-            &mut y,
-            if i[0 as libc::c_int as usize] == i[1 as libc::c_int as usize] {
-                2 as libc::c_int
-                    * (if online(l, m, 0 as libc::c_int) > online(l, m, 1 as libc::c_int)
-                    {
-                        online(l, m, 0 as libc::c_int)
-                    } else {
-                        online(l, m, 1 as libc::c_int)
-                    })
-            } else {
-                online(l, m, abs(i[0 as libc::c_int as usize]))
-            },
-        ) == 0
-        {
-        return 0 as libc::c_int
+        l,
+        m,
+        &mut x,
+        &mut y,
+        if i[0 as libc::c_int as usize] == i[1 as libc::c_int as usize] {
+            2 as libc::c_int
+                * (if online(l, m, 0 as libc::c_int) > online(l, m, 1 as libc::c_int) {
+                    online(l, m, 0 as libc::c_int)
+                } else {
+                    online(l, m, 1 as libc::c_int)
+                })
+        } else {
+            online(l, m, abs(i[0 as libc::c_int as usize]))
+        },
+    ) == 0
+    {
+        return 0 as libc::c_int;
     }
     p.x = x;
     p.y = y;
     return realIntersect(l, m, p);
 }
-unsafe extern "C" fn gt(
-    mut a: *const libc::c_void,
-    mut b: *const libc::c_void,
-) -> libc::c_int {
+unsafe extern "C" fn gt(mut a: *const libc::c_void, mut b: *const libc::c_void) -> libc::c_int {
     let mut i: *const *const vertex = a as *const *const vertex;
     let mut j: *const *const vertex = b as *const *const vertex;
     if (**i).pos.x > (**j).pos.x {
@@ -529,20 +519,12 @@ unsafe extern "C" fn find_ints(
         pvertex as *mut libc::c_void,
         (*input).nvertices as size_t,
         ::std::mem::size_of::<*mut vertex>() as libc::c_ulong,
-        Some(
-            gt
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
-        ),
+        Some(gt as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int),
     );
     i = 0 as libc::c_int;
     's_50: while i < (*input).nvertices {
         pt1 = *pvertex.offset(i as isize);
-        pt2 = if *pvertex.offset(i as isize)
-            == (*(**pvertex.offset(i as isize)).poly).start
-        {
+        pt2 = if *pvertex.offset(i as isize) == (*(**pvertex.offset(i as isize)).poly).start {
             (*(**pvertex.offset(i as isize)).poly).finish
         } else {
             (*pvertex.offset(i as isize)).offset(-(1 as libc::c_int as isize))
@@ -591,8 +573,7 @@ unsafe extern "C" fn find_ints(
                     if tempa.is_null() {
                         agerr(
                             AGERR,
-                            b"trying to delete a non-line\n\0" as *const u8
-                                as *const libc::c_char,
+                            b"trying to delete a non-line\n\0" as *const u8 as *const libc::c_char,
                         );
                         return -(1 as libc::c_int);
                     }
@@ -620,9 +601,7 @@ unsafe extern "C" fn find_ints(
                 }
                 _ => {}
             }
-            pt2 = if *pvertex.offset(i as isize)
-                == (*(**pvertex.offset(i as isize)).poly).finish
-            {
+            pt2 = if *pvertex.offset(i as isize) == (*(**pvertex.offset(i as isize)).poly).finish {
                 (*(**pvertex.offset(i as isize)).poly).start
             } else {
                 (*pvertex.offset(i as isize)).offset(1 as libc::c_int as isize)
@@ -681,22 +660,22 @@ unsafe extern "C" fn findInside(
                     return 1 as libc::c_int;
                 }
             } else if (*polygon_list.offset(j as isize)).bb.LL.x
+                <= (*polygon_list.offset(i as isize)).bb.UR.x
+                && (*polygon_list.offset(j as isize)).bb.LL.x
+                    >= (*polygon_list.offset(i as isize)).bb.LL.x
+                && (*polygon_list.offset(j as isize)).bb.LL.y
+                    <= (*polygon_list.offset(i as isize)).bb.UR.y
+                && (*polygon_list.offset(j as isize)).bb.LL.y
+                    >= (*polygon_list.offset(i as isize)).bb.LL.y
+                && ((*polygon_list.offset(j as isize)).bb.UR.x
                     <= (*polygon_list.offset(i as isize)).bb.UR.x
-                    && (*polygon_list.offset(j as isize)).bb.LL.x
+                    && (*polygon_list.offset(j as isize)).bb.UR.x
                         >= (*polygon_list.offset(i as isize)).bb.LL.x
-                    && (*polygon_list.offset(j as isize)).bb.LL.y
+                    && (*polygon_list.offset(j as isize)).bb.UR.y
                         <= (*polygon_list.offset(i as isize)).bb.UR.y
-                    && (*polygon_list.offset(j as isize)).bb.LL.y
-                        >= (*polygon_list.offset(i as isize)).bb.LL.y
-                    && ((*polygon_list.offset(j as isize)).bb.UR.x
-                        <= (*polygon_list.offset(i as isize)).bb.UR.x
-                        && (*polygon_list.offset(j as isize)).bb.UR.x
-                            >= (*polygon_list.offset(i as isize)).bb.LL.x
-                        && (*polygon_list.offset(j as isize)).bb.UR.y
-                            <= (*polygon_list.offset(i as isize)).bb.UR.y
-                        && (*polygon_list.offset(j as isize)).bb.UR.y
-                            >= (*polygon_list.offset(i as isize)).bb.LL.y)
-                {
+                    && (*polygon_list.offset(j as isize)).bb.UR.y
+                        >= (*polygon_list.offset(i as isize)).bb.LL.y)
+            {
                 if in_poly(*p1, *((*p2).ps).offset(0 as libc::c_int as isize)) != 0 {
                     return 1 as libc::c_int;
                 }
@@ -777,8 +756,7 @@ pub unsafe extern "C" fn Plegal_arrangement(
             j += 1;
         }
         let ref mut fresh15 = (*polygon_list.offset(i as isize)).finish;
-        *fresh15 = &mut *vertex_list.offset((vno - 1 as libc::c_int) as isize)
-            as *mut vertex;
+        *fresh15 = &mut *vertex_list.offset((vno - 1 as libc::c_int) as isize) as *mut vertex;
         (*polygon_list.offset(i as isize)).bb = bb;
         i += 1;
     }

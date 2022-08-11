@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -42,28 +50,24 @@ unsafe extern "C" fn gcd(mut y: libc::c_int, mut x: libc::c_int) -> libc::c_int 
 pub unsafe extern "C" fn freeinit(mut fl: *mut Freelist, mut size: libc::c_int) {
     let ref mut fresh0 = (*fl).head;
     *fresh0 = 0 as *mut freenode;
-    (*fl)
-        .nodesize = (if (size as libc::c_ulong)
+    (*fl).nodesize = (if (size as libc::c_ulong)
         .wrapping_rem(::std::mem::size_of::<Freenode>() as libc::c_ulong)
         == 0 as libc::c_int as libc::c_ulong
     {
         size as libc::c_ulong
     } else if (::std::mem::size_of::<Freenode>() as libc::c_ulong)
-            .wrapping_rem(size as libc::c_ulong) == 0 as libc::c_int as libc::c_ulong
-        {
+        .wrapping_rem(size as libc::c_ulong)
+        == 0 as libc::c_int as libc::c_ulong
+    {
         ::std::mem::size_of::<Freenode>() as libc::c_ulong
     } else {
-        (size as libc::c_ulong)
-            .wrapping_mul(
-                (::std::mem::size_of::<Freenode>() as libc::c_ulong)
-                    .wrapping_div(
-                        gcd(
-                            size,
-                            ::std::mem::size_of::<Freenode>() as libc::c_ulong
-                                as libc::c_int,
-                        ) as libc::c_ulong,
-                    ),
+        (size as libc::c_ulong).wrapping_mul(
+            (::std::mem::size_of::<Freenode>() as libc::c_ulong).wrapping_div(gcd(
+                size,
+                ::std::mem::size_of::<Freenode>() as libc::c_ulong as libc::c_int,
             )
+                as libc::c_ulong),
+        )
     }) as libc::c_int;
     if !((*fl).blocklist).is_null() {
         let mut bp: *mut Freeblock = 0 as *mut Freeblock;
@@ -87,8 +91,7 @@ pub unsafe extern "C" fn getfree(mut fl: *mut Freelist) -> *mut libc::c_void {
     if ((*fl).head).is_null() {
         let mut size: libc::c_int = (*fl).nodesize;
         let mut cp: *mut libc::c_char = 0 as *mut libc::c_char;
-        mem = gmalloc(::std::mem::size_of::<Freeblock>() as libc::c_ulong)
-            as *mut Freeblock;
+        mem = gmalloc(::std::mem::size_of::<Freeblock>() as libc::c_ulong) as *mut Freeblock;
         let ref mut fresh2 = (*mem).nodes;
         *fresh2 = gmalloc((sqrt_nsites * size) as size_t) as *mut freenode;
         cp = (*mem).nodes as *mut libc::c_char;

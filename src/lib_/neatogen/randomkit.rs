@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 #[derive(Copy, Clone)]
@@ -32,11 +40,8 @@ pub unsafe extern "C" fn rk_random(mut state: *mut rk_state) -> libc::c_ulong {
         i = 0 as libc::c_int;
         while i < 624 as libc::c_int - 397 as libc::c_int {
             y = (*state).key[i as usize] & 0x80000000 as libc::c_ulong
-                | (*state).key[(i + 1 as libc::c_int) as usize]
-                    & 0x7fffffff as libc::c_ulong;
-            (*state)
-                .key[i
-                as usize] = (*state).key[(i + 397 as libc::c_int) as usize]
+                | (*state).key[(i + 1 as libc::c_int) as usize] & 0x7fffffff as libc::c_ulong;
+            (*state).key[i as usize] = (*state).key[(i + 397 as libc::c_int) as usize]
                 ^ y >> 1 as libc::c_int
                 ^ (y & 1 as libc::c_int as libc::c_ulong).wrapping_neg()
                     & 0x9908b0df as libc::c_ulong;
@@ -44,12 +49,9 @@ pub unsafe extern "C" fn rk_random(mut state: *mut rk_state) -> libc::c_ulong {
         }
         while i < 624 as libc::c_int - 1 as libc::c_int {
             y = (*state).key[i as usize] & 0x80000000 as libc::c_ulong
-                | (*state).key[(i + 1 as libc::c_int) as usize]
-                    & 0x7fffffff as libc::c_ulong;
-            (*state)
-                .key[i
-                as usize] = (*state)
-                .key[(i + (397 as libc::c_int - 624 as libc::c_int)) as usize]
+                | (*state).key[(i + 1 as libc::c_int) as usize] & 0x7fffffff as libc::c_ulong;
+            (*state).key[i as usize] = (*state).key
+                [(i + (397 as libc::c_int - 624 as libc::c_int)) as usize]
                 ^ y >> 1 as libc::c_int
                 ^ (y & 1 as libc::c_int as libc::c_ulong).wrapping_neg()
                     & 0x9908b0df as libc::c_ulong;
@@ -58,12 +60,10 @@ pub unsafe extern "C" fn rk_random(mut state: *mut rk_state) -> libc::c_ulong {
         y = (*state).key[(624 as libc::c_int - 1 as libc::c_int) as usize]
             & 0x80000000 as libc::c_ulong
             | (*state).key[0 as libc::c_int as usize] & 0x7fffffff as libc::c_ulong;
-        (*state)
-            .key[(624 as libc::c_int - 1 as libc::c_int)
-            as usize] = (*state).key[(397 as libc::c_int - 1 as libc::c_int) as usize]
+        (*state).key[(624 as libc::c_int - 1 as libc::c_int) as usize] = (*state).key
+            [(397 as libc::c_int - 1 as libc::c_int) as usize]
             ^ y >> 1 as libc::c_int
-            ^ (y & 1 as libc::c_int as libc::c_ulong).wrapping_neg()
-                & 0x9908b0df as libc::c_ulong;
+            ^ (y & 1 as libc::c_int as libc::c_ulong).wrapping_neg() & 0x9908b0df as libc::c_ulong;
         (*state).pos = 0 as libc::c_int;
     }
     let ref mut fresh0 = (*state).pos;

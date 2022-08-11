@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -48,8 +56,7 @@ pub unsafe extern "C" fn bfs(
             closestDist = *dist.offset(closestVertex as isize);
             i = 1 as libc::c_int;
             while i < (*graph.offset(closestVertex as isize)).nedges {
-                neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                    .offset(i as isize);
+                neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
                 if (*dist.offset(neighbor as isize) as libc::c_double) < -0.5f64 {
                     *dist.offset(neighbor as isize) = closestDist + 1 as libc::c_int;
                     enQueue(Q, neighbor);
@@ -62,15 +69,11 @@ pub unsafe extern "C" fn bfs(
             closestDist = *dist.offset(closestVertex as isize);
             i = 1 as libc::c_int;
             while i < (*graph.offset(closestVertex as isize)).nedges {
-                neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                    .offset(i as isize);
+                neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
                 if (*dist.offset(neighbor as isize) as libc::c_double) < -0.5f64 {
-                    *dist
-                        .offset(
-                            neighbor as isize,
-                        ) = closestDist
-                        + *((*graph.offset(closestVertex as isize)).ewgts)
-                            .offset(i as isize) as DistType;
+                    *dist.offset(neighbor as isize) = closestDist
+                        + *((*graph.offset(closestVertex as isize)).ewgts).offset(i as isize)
+                            as DistType;
                     enQueue(Q, neighbor);
                 }
                 i += 1;
@@ -114,8 +117,7 @@ pub unsafe extern "C" fn bfs_bounded(
             *visited_nodes.offset(fresh0 as isize) = closestVertex;
             i = 1 as libc::c_int;
             while i < (*graph.offset(closestVertex as isize)).nedges {
-                neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                    .offset(i as isize);
+                neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
                 if (*dist.offset(neighbor as isize) as libc::c_double) < -0.5f64 {
                     *dist.offset(neighbor as isize) = closestDist + 1 as libc::c_int;
                     enQueue(Q, neighbor);
@@ -153,10 +155,7 @@ pub unsafe extern "C" fn initQueue(mut qp: *mut Queue, mut startVertex: libc::c_
     (*qp).end = 1 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn deQueue(
-    mut qp: *mut Queue,
-    mut vertex: *mut libc::c_int,
-) -> bool {
+pub unsafe extern "C" fn deQueue(mut qp: *mut Queue, mut vertex: *mut libc::c_int) -> bool {
     if (*qp).start >= (*qp).end {
         return 0 as libc::c_int != 0;
     }

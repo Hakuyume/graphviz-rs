@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -23,8 +31,8 @@ unsafe extern "C" fn dpd_ccw(
     mut p2: *mut Ppoint_t,
     mut p3: *mut Ppoint_t,
 ) -> libc::c_int {
-    let mut d: libc::c_double = ((*p1).y - (*p2).y) * ((*p3).x - (*p2).x)
-        - ((*p3).y - (*p2).y) * ((*p1).x - (*p2).x);
+    let mut d: libc::c_double =
+        ((*p1).y - (*p2).y) * ((*p3).x - (*p2).x) - ((*p3).y - (*p2).y) * ((*p1).x - (*p2).x);
     return if d > 0 as libc::c_int as libc::c_double {
         2 as libc::c_int
     } else if d < 0 as libc::c_int as libc::c_double {
@@ -36,7 +44,7 @@ unsafe extern "C" fn dpd_ccw(
 #[no_mangle]
 pub unsafe extern "C" fn Ptriangulate(
     mut polygon: *mut Ppoly_t,
-    mut fn_0: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut Ppoint_t) -> ()>,
+    mut fn_0: Option<unsafe extern "C" fn(*mut libc::c_void, *mut Ppoint_t) -> ()>,
     mut vc: *mut libc::c_void,
 ) -> libc::c_int {
     let mut i: libc::c_int = 0;
@@ -63,7 +71,7 @@ pub unsafe extern "C" fn Ptriangulate(
 unsafe extern "C" fn triangulate(
     mut pointp: *mut *mut Ppoint_t,
     mut pointn: libc::c_int,
-    mut fn_0: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut Ppoint_t) -> ()>,
+    mut fn_0: Option<unsafe extern "C" fn(*mut libc::c_void, *mut Ppoint_t) -> ()>,
     mut vc: *mut libc::c_void,
 ) -> libc::c_int {
     let mut i: libc::c_int = 0;
@@ -171,7 +179,8 @@ unsafe extern "C" fn dpd_intersects(
     let mut ccw2: libc::c_int = 0;
     let mut ccw3: libc::c_int = 0;
     let mut ccw4: libc::c_int = 0;
-    if dpd_ccw(pa, pb, pc) == 3 as libc::c_int || dpd_ccw(pa, pb, pd) == 3 as libc::c_int
+    if dpd_ccw(pa, pb, pc) == 3 as libc::c_int
+        || dpd_ccw(pa, pb, pd) == 3 as libc::c_int
         || dpd_ccw(pc, pd, pa) == 3 as libc::c_int
         || dpd_ccw(pc, pd, pb) == 3 as libc::c_int
     {

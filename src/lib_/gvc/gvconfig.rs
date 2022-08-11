@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -11,11 +19,7 @@ extern "C" {
     pub type gvlayout_engine_s;
     pub type gvtextlayout_engine_s;
     pub type dirent;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
     fn getenv(__name: *const libc::c_char) -> *mut libc::c_char;
@@ -30,39 +34,26 @@ extern "C" {
     fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
     fn fclose(__stream: *mut FILE) -> libc::c_int;
     static mut stderr: *mut FILE;
-    fn memmove(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memmove(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong)
+        -> *mut libc::c_void;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strcat(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strrchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strstr(_: *const libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn dl_iterate_phdr(
-        __callback: Option::<
-            unsafe extern "C" fn(
-                *mut dl_phdr_info,
-                size_t,
-                *mut libc::c_void,
-            ) -> libc::c_int,
+        __callback: Option<
+            unsafe extern "C" fn(*mut dl_phdr_info, size_t, *mut libc::c_void) -> libc::c_int,
         >,
         __data: *mut libc::c_void,
     ) -> libc::c_int;
     fn glob(
         __pattern: *const libc::c_char,
         __flags: libc::c_int,
-        __errfunc: Option::<
-            unsafe extern "C" fn(*const libc::c_char, libc::c_int) -> libc::c_int,
-        >,
+        __errfunc: Option<unsafe extern "C" fn(*const libc::c_char, libc::c_int) -> libc::c_int>,
         __pglob: *mut glob_t,
     ) -> libc::c_int;
     fn globfree(__pglob: *mut glob_t);
@@ -82,10 +73,7 @@ extern "C" {
         api: api_t,
         type_0: *const libc::c_char,
     ) -> *mut gvplugin_available_t;
-    fn gvplugin_library_load(
-        gvc: *mut GVC_t,
-        path: *mut libc::c_char,
-    ) -> *mut gvplugin_library_t;
+    fn gvplugin_library_load(gvc: *mut GVC_t, path: *mut libc::c_char) -> *mut gvplugin_library_t;
     fn gvplugin_api(str: *const libc::c_char) -> api_t;
     fn gvplugin_api_name(api: api_t) -> *mut libc::c_char;
     fn gvtextlayout_select(gvc: *mut GVC_t) -> libc::c_int;
@@ -240,9 +228,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -281,25 +267,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -401,7 +380,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -562,16 +542,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -587,18 +561,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -606,16 +574,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -657,9 +618,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -688,13 +648,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -727,26 +682,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -755,29 +702,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -785,8 +724,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -820,7 +759,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -846,9 +785,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -1009,17 +946,11 @@ pub struct glob_t {
     pub gl_pathv: *mut *mut libc::c_char,
     pub gl_offs: __size_t,
     pub gl_flags: libc::c_int,
-    pub gl_closedir: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub gl_readdir: Option::<unsafe extern "C" fn(*mut libc::c_void) -> *mut dirent>,
-    pub gl_opendir: Option::<
-        unsafe extern "C" fn(*const libc::c_char) -> *mut libc::c_void,
-    >,
-    pub gl_lstat: Option::<
-        unsafe extern "C" fn(*const libc::c_char, *mut stat) -> libc::c_int,
-    >,
-    pub gl_stat: Option::<
-        unsafe extern "C" fn(*const libc::c_char, *mut stat) -> libc::c_int,
-    >,
+    pub gl_closedir: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub gl_readdir: Option<unsafe extern "C" fn(*mut libc::c_void) -> *mut dirent>,
+    pub gl_opendir: Option<unsafe extern "C" fn(*const libc::c_char) -> *mut libc::c_void>,
+    pub gl_lstat: Option<unsafe extern "C" fn(*const libc::c_char, *mut stat) -> libc::c_int>,
+    pub gl_stat: Option<unsafe extern "C" fn(*const libc::c_char, *mut stat) -> libc::c_int>,
 }
 pub type agerrlevel_t = libc::c_uint;
 pub const AGPREV: agerrlevel_t = 3;
@@ -1041,10 +972,11 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
 #[inline]
 unsafe extern "C" fn gv_strdup(mut original: *const libc::c_char) -> *mut libc::c_char {
     let mut copy: *mut libc::c_char = strdup(original);
-    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int
-        as libc::c_long != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return copy;
@@ -1054,9 +986,9 @@ unsafe extern "C" fn gvplugin_package_record(
     mut package_path: *const libc::c_char,
     mut name: *const libc::c_char,
 ) -> *mut gvplugin_package_t {
-    let mut package: *mut gvplugin_package_t = gmalloc(
-        ::std::mem::size_of::<gvplugin_package_t>() as libc::c_ulong,
-    ) as *mut gvplugin_package_t;
+    let mut package: *mut gvplugin_package_t =
+        gmalloc(::std::mem::size_of::<gvplugin_package_t>() as libc::c_ulong)
+            as *mut gvplugin_package_t;
     let ref mut fresh0 = (*package).path;
     *fresh0 = if !package_path.is_null() {
         gv_strdup(package_path)
@@ -1071,10 +1003,7 @@ unsafe extern "C" fn gvplugin_package_record(
     *fresh3 = package;
     return package;
 }
-unsafe extern "C" fn separator(
-    mut nest: *mut libc::c_int,
-    mut tokens: *mut *mut libc::c_char,
-) {
+unsafe extern "C" fn separator(mut nest: *mut libc::c_int, mut tokens: *mut *mut libc::c_char) {
     let mut c: libc::c_char = 0;
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     s = *tokens;
@@ -1102,7 +1031,8 @@ unsafe extern "C" fn separator(
             *nest -= 1;
             s = s.offset(1);
         } else {
-            if !(c as libc::c_int == ' ' as i32 || c as libc::c_int == '\n' as i32
+            if !(c as libc::c_int == ' ' as i32
+                || c as libc::c_int == '\n' as i32
                 || c as libc::c_int == '\t' as i32)
             {
                 break;
@@ -1126,9 +1056,12 @@ unsafe extern "C" fn token(
         if !(c != 0) {
             break;
         }
-        if c as libc::c_int == '#' as i32 || c as libc::c_int == ' ' as i32
-            || c as libc::c_int == '\t' as i32 || c as libc::c_int == '\n' as i32
-            || c as libc::c_int == '{' as i32 || c as libc::c_int == '}' as i32
+        if c as libc::c_int == '#' as i32
+            || c as libc::c_int == ' ' as i32
+            || c as libc::c_int == '\t' as i32
+            || c as libc::c_int == '\n' as i32
+            || c as libc::c_int == '{' as i32
+            || c as libc::c_int == '}' as i32
         {
             break;
         }
@@ -1182,8 +1115,7 @@ unsafe extern "C" fn gvconfig_plugin_install_from_config(
                     if !rc {
                         agerr(
                             AGERR,
-                            b"config error: %s %s %s\n\0" as *const u8
-                                as *const libc::c_char,
+                            b"config error: %s %s %s\n\0" as *const u8 as *const libc::c_char,
                             package_path,
                             api,
                             type_0,
@@ -1232,7 +1164,7 @@ pub unsafe extern "C" fn gvconfig_plugin_install_from_library(
             i += 1;
         }
         apis = apis.offset(1);
-    };
+    }
 }
 unsafe extern "C" fn gvconfig_plugin_install_builtins(mut gvc: *mut GVC_t) {
     let mut s: *const lt_symlist_t = 0 as *const lt_symlist_t;
@@ -1247,8 +1179,7 @@ unsafe extern "C" fn gvconfig_plugin_install_builtins(mut gvc: *mut GVC_t) {
             break;
         }
         if *name.offset(0 as libc::c_int as isize) as libc::c_int == 'g' as i32
-            && !(strstr(name, b"_LTX_library\0" as *const u8 as *const libc::c_char))
-                .is_null()
+            && !(strstr(name, b"_LTX_library\0" as *const u8 as *const libc::c_char)).is_null()
         {
             gvconfig_plugin_install_from_library(
                 gvc,
@@ -1257,7 +1188,7 @@ unsafe extern "C" fn gvconfig_plugin_install_builtins(mut gvc: *mut GVC_t) {
             );
         }
         s = s.offset(1);
-    };
+    }
 }
 unsafe extern "C" fn gvconfig_write_library_config(
     mut gvc: *mut GVC_t,
@@ -1287,9 +1218,7 @@ unsafe extern "C" fn gvconfig_write_library_config(
         );
         i = 0 as libc::c_int;
         while !((*types.offset(i as isize)).type_0).is_null() {
-            if (gvplugin_load(gvc, (*apis).api, (*types.offset(i as isize)).type_0))
-                .is_null()
-            {
+            if (gvplugin_load(gvc, (*apis).api, (*types.offset(i as isize)).type_0)).is_null() {
                 fprintf(f, b"#FAILS\0" as *const u8 as *const libc::c_char);
             }
             fprintf(
@@ -1311,10 +1240,7 @@ unsafe extern "C" fn line_callback(
     mut line: *mut libc::c_void,
 ) -> libc::c_int {
     let mut p: *const libc::c_char = (*info).dlpi_name;
-    let mut tmp: *mut libc::c_char = strstr(
-        p,
-        b"/libgvc.\0" as *const u8 as *const libc::c_char,
-    );
+    let mut tmp: *mut libc::c_char = strstr(p, b"/libgvc.\0" as *const u8 as *const libc::c_char);
     if !tmp.is_null() {
         *tmp = 0 as libc::c_int as libc::c_char;
         if strcmp(
@@ -1378,40 +1304,41 @@ unsafe extern "C" fn is_plugin(mut filepath: *const libc::c_char) -> bool {
     if filepath.is_null() {
         return 0 as libc::c_int != 0;
     }
-    static mut SUFFIX: [libc::c_char; 1] = unsafe {
-        *::std::mem::transmute::<&[u8; 1], &[libc::c_char; 1]>(b"\0")
-    };
+    static mut SUFFIX: [libc::c_char; 1] =
+        unsafe { *::std::mem::transmute::<&[u8; 1], &[libc::c_char; 1]>(b"\0") };
     let mut len: size_t = strlen(filepath);
     if len < strlen(SUFFIX.as_ptr())
         || strcmp(
-            filepath.offset(len as isize).offset(-(strlen(SUFFIX.as_ptr()) as isize)),
+            filepath
+                .offset(len as isize)
+                .offset(-(strlen(SUFFIX.as_ptr()) as isize)),
             SUFFIX.as_ptr(),
         ) != 0 as libc::c_int
     {
         return 0 as libc::c_int != 0;
     }
-    len = (len as libc::c_ulong).wrapping_sub(strlen(SUFFIX.as_ptr())) as size_t
-        as size_t;
-    static mut VERSION: [libc::c_char; 2] = unsafe {
-        *::std::mem::transmute::<&[u8; 2], &[libc::c_char; 2]>(b"6\0")
-    };
+    len = (len as libc::c_ulong).wrapping_sub(strlen(SUFFIX.as_ptr())) as size_t as size_t;
+    static mut VERSION: [libc::c_char; 2] =
+        unsafe { *::std::mem::transmute::<&[u8; 2], &[libc::c_char; 2]>(b"6\0") };
     if len < strlen(VERSION.as_ptr())
         || strncmp(
-            filepath.offset(len as isize).offset(-(strlen(VERSION.as_ptr()) as isize)),
+            filepath
+                .offset(len as isize)
+                .offset(-(strlen(VERSION.as_ptr()) as isize)),
             VERSION.as_ptr(),
             strlen(VERSION.as_ptr()),
         ) != 0 as libc::c_int
     {
         return 0 as libc::c_int != 0;
     }
-    len = (len as libc::c_ulong).wrapping_sub(strlen(VERSION.as_ptr())) as size_t
-        as size_t;
-    static mut SO: [libc::c_char; 5] = unsafe {
-        *::std::mem::transmute::<&[u8; 5], &[libc::c_char; 5]>(b".so.\0")
-    };
+    len = (len as libc::c_ulong).wrapping_sub(strlen(VERSION.as_ptr())) as size_t as size_t;
+    static mut SO: [libc::c_char; 5] =
+        unsafe { *::std::mem::transmute::<&[u8; 5], &[libc::c_char; 5]>(b".so.\0") };
     if len < strlen(SO.as_ptr())
         || strncmp(
-            filepath.offset(len as isize).offset(-(strlen(SO.as_ptr()) as isize)),
+            filepath
+                .offset(len as isize)
+                .offset(-(strlen(SO.as_ptr()) as isize)),
             SO.as_ptr(),
             strlen(SO.as_ptr()),
         ) != 0 as libc::c_int
@@ -1420,10 +1347,7 @@ unsafe extern "C" fn is_plugin(mut filepath: *const libc::c_char) -> bool {
     }
     return 1 as libc::c_int != 0;
 }
-unsafe extern "C" fn config_rescan(
-    mut gvc: *mut GVC_t,
-    mut config_path: *mut libc::c_char,
-) {
+unsafe extern "C" fn config_rescan(mut gvc: *mut GVC_t, mut config_path: *mut libc::c_char) {
     let mut f: *mut FILE = 0 as *mut FILE;
     let mut globbuf: glob_t = glob_t {
         gl_pathc: 0,
@@ -1440,8 +1364,8 @@ unsafe extern "C" fn config_rescan(
     let mut libdir: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut rc: libc::c_int = 0;
     let mut library: *mut gvplugin_library_t = 0 as *mut gvplugin_library_t;
-    let mut plugin_glob: *mut libc::c_char = b"libgvplugin_*\0" as *const u8
-        as *const libc::c_char as *mut libc::c_char;
+    let mut plugin_glob: *mut libc::c_char =
+        b"libgvplugin_*\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     if !config_path.is_null() {
         f = fopen(config_path, b"w\0" as *const u8 as *const libc::c_char);
         if f.is_null() {
@@ -1454,13 +1378,13 @@ unsafe extern "C" fn config_rescan(
         }
         fprintf(
             f,
-            b"# This file was generated by \"dot -c\" at time of install.\n\n\0"
-                as *const u8 as *const libc::c_char,
+            b"# This file was generated by \"dot -c\" at time of install.\n\n\0" as *const u8
+                as *const libc::c_char,
         );
         fprintf(
             f,
-            b"# You may temporarily disable a plugin by removing or commenting out\n\0"
-                as *const u8 as *const libc::c_char,
+            b"# You may temporarily disable a plugin by removing or commenting out\n\0" as *const u8
+                as *const libc::c_char,
         );
         fprintf(
             f,
@@ -1473,8 +1397,8 @@ unsafe extern "C" fn config_rescan(
         );
         fprintf(
             f,
-            b"# Manual edits to this file **will be lost** on upgrade.\n\n\0"
-                as *const u8 as *const libc::c_char,
+            b"# Manual edits to this file **will be lost** on upgrade.\n\n\0" as *const u8
+                as *const libc::c_char,
         );
     }
     libdir = gvconfig_libdir(gvc);
@@ -1492,10 +1416,7 @@ unsafe extern "C" fn config_rescan(
         let mut i: size_t = 0 as libc::c_int as size_t;
         while i < globbuf.gl_pathc {
             if is_plugin(*(globbuf.gl_pathv).offset(i as isize)) {
-                library = gvplugin_library_load(
-                    gvc,
-                    *(globbuf.gl_pathv).offset(i as isize),
-                );
+                library = gvplugin_library_load(gvc, *(globbuf.gl_pathv).offset(i as isize));
                 if !library.is_null() {
                     gvconfig_plugin_install_from_library(
                         gvc,
@@ -1509,17 +1430,12 @@ unsafe extern "C" fn config_rescan(
         let mut i_0: size_t = 0 as libc::c_int as size_t;
         while i_0 < globbuf.gl_pathc {
             if is_plugin(*(globbuf.gl_pathv).offset(i_0 as isize)) {
-                library = gvplugin_library_load(
-                    gvc,
-                    *(globbuf.gl_pathv).offset(i_0 as isize),
-                );
+                library = gvplugin_library_load(gvc, *(globbuf.gl_pathv).offset(i_0 as isize));
                 if !library.is_null() {
                     let mut p: *mut libc::c_char = strrchr(
                         *(globbuf.gl_pathv).offset(i_0 as isize),
-                        (*::std::mem::transmute::<
-                            &[u8; 2],
-                            &[libc::c_char; 2],
-                        >(b"/\0"))[0 as libc::c_int as usize] as libc::c_int,
+                        (*::std::mem::transmute::<&[u8; 2], &[libc::c_char; 2]>(b"/\0"))
+                            [0 as libc::c_int as usize] as libc::c_int,
                     );
                     if !p.is_null() {
                         p = p.offset(1);
@@ -1553,9 +1469,18 @@ pub unsafe extern "C" fn gvconfig(mut gvc: *mut GVC_t, mut rescan: bool) {
         st_size: 0,
         st_blksize: 0,
         st_blocks: 0,
-        st_atim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_mtim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_ctim: timespec { tv_sec: 0, tv_nsec: 0 },
+        st_atim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_mtim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_ctim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
         __glibc_reserved: [0; 3],
     };
     let mut libdir_st: stat = stat {
@@ -1570,16 +1495,25 @@ pub unsafe extern "C" fn gvconfig(mut gvc: *mut GVC_t, mut rescan: bool) {
         st_size: 0,
         st_blksize: 0,
         st_blocks: 0,
-        st_atim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_mtim: timespec { tv_sec: 0, tv_nsec: 0 },
-        st_ctim: timespec { tv_sec: 0, tv_nsec: 0 },
+        st_atim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_mtim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_ctim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
         __glibc_reserved: [0; 3],
     };
     let mut f: *mut FILE = 0 as *mut FILE;
     let mut config_text: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut libdir: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut config_file_name: *mut libc::c_char = b"config6\0" as *const u8
-        as *const libc::c_char as *mut libc::c_char;
+    let mut config_file_name: *mut libc::c_char =
+        b"config6\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     gvconfig_plugin_install_builtins(gvc);
     (*gvc).config_found = 0 as libc::c_int != 0;
     if (*gvc).common.demand_loading != 0 {
@@ -1598,7 +1532,10 @@ pub unsafe extern "C" fn gvconfig(mut gvc: *mut GVC_t, mut rescan: bool) {
                     .wrapping_add(1 as libc::c_int as libc::c_ulong),
             ) as *mut libc::c_char;
             strcpy((*gvc).config_path, libdir);
-            strcat((*gvc).config_path, b"/\0" as *const u8 as *const libc::c_char);
+            strcat(
+                (*gvc).config_path,
+                b"/\0" as *const u8 as *const libc::c_char,
+            );
             strcat((*gvc).config_path, config_file_name);
         }
         if rescan {
@@ -1612,12 +1549,14 @@ pub unsafe extern "C" fn gvconfig(mut gvc: *mut GVC_t, mut rescan: bool) {
             gvtextlayout_select(gvc);
             return;
         } else {
-            f = fopen((*gvc).config_path, b"r\0" as *const u8 as *const libc::c_char);
+            f = fopen(
+                (*gvc).config_path,
+                b"r\0" as *const u8 as *const libc::c_char,
+            );
             if f.is_null() {
                 agerr(
                     AGERR,
-                    b"failed to open %s for read.\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"failed to open %s for read.\n\0" as *const u8 as *const libc::c_char,
                     (*gvc).config_path,
                 );
                 return;

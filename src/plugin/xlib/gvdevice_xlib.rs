@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -43,10 +51,7 @@ extern "C" {
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn read(__fd: libc::c_int, __buf: *mut libc::c_void, __nbytes: size_t) -> ssize_t;
     fn getcwd(__buf: *mut libc::c_char, __size: size_t) -> *mut libc::c_char;
-    fn execvp(
-        __file: *const libc::c_char,
-        __argv: *const *mut libc::c_char,
-    ) -> libc::c_int;
+    fn execvp(__file: *const libc::c_char, __argv: *const *mut libc::c_char) -> libc::c_int;
     fn fork() -> __pid_t;
     fn ioctl(__fd: libc::c_int, __request: libc::c_ulong, _: ...) -> libc::c_int;
     fn inotify_init() -> libc::c_int;
@@ -63,18 +68,8 @@ extern "C" {
     fn XOpenDisplay(_: *const libc::c_char) -> *mut Display;
     fn XDisplayName(_: *const libc::c_char) -> *mut libc::c_char;
     fn XInternAtom(_: *mut Display, _: *const libc::c_char, _: libc::c_int) -> Atom;
-    fn XCreateColormap(
-        _: *mut Display,
-        _: Window,
-        _: *mut Visual,
-        _: libc::c_int,
-    ) -> Colormap;
-    fn XCreateGC(
-        _: *mut Display,
-        _: Drawable,
-        _: libc::c_ulong,
-        _: *mut XGCValues,
-    ) -> GC;
+    fn XCreateColormap(_: *mut Display, _: Window, _: *mut Visual, _: libc::c_int) -> Colormap;
+    fn XCreateGC(_: *mut Display, _: Drawable, _: libc::c_ulong, _: *mut XGCValues) -> GC;
     fn XCreatePixmap(
         _: *mut Display,
         _: Drawable,
@@ -97,12 +92,7 @@ extern "C" {
         _: *mut XSetWindowAttributes,
     ) -> Window;
     fn XStringToKeysym(_: *const libc::c_char) -> KeySym;
-    fn XSetWMProtocols(
-        _: *mut Display,
-        _: Window,
-        _: *mut Atom,
-        _: libc::c_int,
-    ) -> libc::c_int;
+    fn XSetWMProtocols(_: *mut Display, _: Window, _: *mut Atom, _: libc::c_int) -> libc::c_int;
     fn XCopyArea(
         _: *mut Display,
         _: Drawable,
@@ -161,10 +151,7 @@ extern "C" {
         _: *mut XWMHints,
         _: *mut XClassHint,
     );
-    fn XRenderFindVisualFormat(
-        dpy: *mut Display,
-        visual: *const Visual,
-    ) -> *mut XRenderPictFormat;
+    fn XRenderFindVisualFormat(dpy: *mut Display, visual: *const Visual) -> *mut XRenderPictFormat;
 }
 pub type size_t = libc::c_ulong;
 pub type __uint32_t = libc::c_uint;
@@ -343,9 +330,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -359,25 +344,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -408,9 +386,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -486,7 +464,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -647,16 +626,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -672,18 +645,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -691,16 +658,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -742,9 +702,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -773,13 +732,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -812,26 +766,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -840,29 +786,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -870,8 +808,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -905,7 +843,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -948,7 +886,7 @@ pub type XPointer = *mut libc::c_char;
 pub struct _XExtData {
     pub number: libc::c_int,
     pub next: *mut _XExtData,
-    pub free_private: Option::<unsafe extern "C" fn(*mut _XExtData) -> libc::c_int>,
+    pub free_private: Option<unsafe extern "C" fn(*mut _XExtData) -> libc::c_int>,
     pub private_data: XPointer,
 }
 pub type XExtData = _XExtData;
@@ -1065,7 +1003,7 @@ pub struct C2RustUnnamed_4 {
     pub private4: XID,
     pub private5: XID,
     pub private6: libc::c_int,
-    pub resource_alloc: Option::<unsafe extern "C" fn(*mut _XDisplay) -> XID>,
+    pub resource_alloc: Option<unsafe extern "C" fn(*mut _XDisplay) -> XID>,
     pub byte_order: libc::c_int,
     pub bitmap_unit: libc::c_int,
     pub bitmap_pad: libc::c_int,
@@ -1085,7 +1023,7 @@ pub struct C2RustUnnamed_4 {
     pub private14: XPointer,
     pub max_request_size: libc::c_uint,
     pub db: *mut _XrmHashBucketRec,
-    pub private15: Option::<unsafe extern "C" fn(*mut _XDisplay) -> libc::c_int>,
+    pub private15: Option<unsafe extern "C" fn(*mut _XDisplay) -> libc::c_int>,
     pub display_name: *mut libc::c_char,
     pub default_screen: libc::c_int,
     pub nscreens: libc::c_int,
@@ -1675,59 +1613,52 @@ pub type window_t = window_xlib_s;
 unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
-unsafe extern "C" fn handle_configure_notify(
-    mut job: *mut GVJ_t,
-    mut cev: *mut XConfigureEvent,
-) {
+unsafe extern "C" fn handle_configure_notify(mut job: *mut GVJ_t, mut cev: *mut XConfigureEvent) {
     if (*cev).width >= 0 as libc::c_int
-        && !(b"Xlib returned an event with negative width\0" as *const u8
-            as *const libc::c_char)
+        && !(b"Xlib returned an event with negative width\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"cev->width >= 0 && \"Xlib returned an event with negative width\"\0"
-                as *const u8 as *const libc::c_char,
+            b"cev->width >= 0 && \"Xlib returned an event with negative width\"\0" as *const u8
+                as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             69 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 57],
-                &[libc::c_char; 57],
-            >(b"void handle_configure_notify(GVJ_t *, XConfigureEvent *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 57], &[libc::c_char; 57]>(
+                b"void handle_configure_notify(GVJ_t *, XConfigureEvent *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*cev).height >= 0 as libc::c_int
-        && !(b"Xlib returned an event with negative height\0" as *const u8
-            as *const libc::c_char)
+        && !(b"Xlib returned an event with negative height\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"cev->height >= 0 && \"Xlib returned an event with negative height\"\0"
-                as *const u8 as *const libc::c_char,
+            b"cev->height >= 0 && \"Xlib returned an event with negative height\"\0" as *const u8
+                as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             70 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 57],
-                &[libc::c_char; 57],
-            >(b"void handle_configure_notify(GVJ_t *, XConfigureEvent *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 57], &[libc::c_char; 57]>(
+                b"void handle_configure_notify(GVJ_t *, XConfigureEvent *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    (*job).zoom
-        *= 1 as libc::c_int as libc::c_double
-            + (if (((*cev).width as libc::c_double - (*job).width as libc::c_double)
-                / (*job).width as libc::c_double)
-                < ((*cev).height as libc::c_double - (*job).height as libc::c_double)
-                    / (*job).height as libc::c_double
-            {
-                ((*cev).width as libc::c_double - (*job).width as libc::c_double)
-                    / (*job).width as libc::c_double
-            } else {
-                ((*cev).height as libc::c_double - (*job).height as libc::c_double)
-                    / (*job).height as libc::c_double
-            });
-    if (*cev).width as libc::c_uint > (*job).width
-        || (*cev).height as libc::c_uint > (*job).height
+    (*job).zoom *= 1 as libc::c_int as libc::c_double
+        + (if (((*cev).width as libc::c_double - (*job).width as libc::c_double)
+            / (*job).width as libc::c_double)
+            < ((*cev).height as libc::c_double - (*job).height as libc::c_double)
+                / (*job).height as libc::c_double
+        {
+            ((*cev).width as libc::c_double - (*job).width as libc::c_double)
+                / (*job).width as libc::c_double
+        } else {
+            ((*cev).height as libc::c_double - (*job).height as libc::c_double)
+                / (*job).height as libc::c_double
+        });
+    if (*cev).width as libc::c_uint > (*job).width || (*cev).height as libc::c_uint > (*job).height
     {
         (*job).has_grown = 1 as libc::c_int != 0;
     }
@@ -1742,34 +1673,34 @@ unsafe extern "C" fn handle_expose(mut job: *mut GVJ_t, mut eev: *mut XExposeEve
         && !(b"Xlib returned an expose event with negative width\0" as *const u8
             as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"eev->width >= 0 && \"Xlib returned an expose event with negative width\"\0"
                 as *const u8 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             89 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"void handle_expose(GVJ_t *, XExposeEvent *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"void handle_expose(GVJ_t *, XExposeEvent *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*eev).height >= 0 as libc::c_int
         && !(b"Xlib returned an expose event with negative height\0" as *const u8
             as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"eev->height >= 0 && \"Xlib returned an expose event with negative height\"\0"
                 as *const u8 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             91 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"void handle_expose(GVJ_t *, XExposeEvent *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"void handle_expose(GVJ_t *, XExposeEvent *)\0",
+            ))
+            .as_ptr(),
         );
     }
     XCopyArea(
@@ -1792,16 +1723,12 @@ unsafe extern "C" fn handle_client_message(
     let mut window: *mut window_t = 0 as *mut window_t;
     window = (*job).window as *mut window_t;
     if (*cmev).format == 32 as libc::c_int
-        && (*cmev).data.l[0 as libc::c_int as usize] as Atom
-            == (*window).wm_delete_window_atom
+        && (*cmev).data.l[0 as libc::c_int as usize] as Atom == (*window).wm_delete_window_atom
     {
         graphviz_exit(0 as libc::c_int);
     }
 }
-unsafe extern "C" fn handle_keypress(
-    mut job: *mut GVJ_t,
-    mut kev: *mut XKeyEvent,
-) -> bool {
+unsafe extern "C" fn handle_keypress(mut job: *mut GVJ_t, mut kev: *mut XKeyEvent) -> bool {
     let mut i: libc::c_int = 0;
     let mut keycodes: *mut KeyCode = 0 as *mut KeyCode;
     keycodes = (*job).keycodes as *mut KeyCode;
@@ -1809,16 +1736,14 @@ unsafe extern "C" fn handle_keypress(
     while i < (*job).numkeys {
         if (*kev).keycode == *keycodes.offset(i as isize) as libc::c_uint {
             return ((*((*job).keybindings).offset(i as isize)).callback)
-                .expect("non-null function pointer")(job) != 0 as libc::c_int;
+                .expect("non-null function pointer")(job)
+                != 0 as libc::c_int;
         }
         i += 1;
     }
     return 0 as libc::c_int != 0;
 }
-unsafe extern "C" fn find_argb_visual(
-    mut dpy: *mut Display,
-    mut scr: libc::c_int,
-) -> *mut Visual {
+unsafe extern "C" fn find_argb_visual(mut dpy: *mut Display, mut scr: libc::c_int) -> *mut Visual {
     let mut xvi: *mut XVisualInfo = 0 as *mut XVisualInfo;
     let mut template: XVisualInfo = XVisualInfo {
         visual: 0 as *mut Visual,
@@ -1852,9 +1777,7 @@ unsafe extern "C" fn find_argb_visual(
     i = 0 as libc::c_int;
     while i < nvi {
         format = XRenderFindVisualFormat(dpy, (*xvi.offset(i as isize)).visual);
-        if (*format).type_0 == 1 as libc::c_int
-            && (*format).direct.alphaMask as libc::c_int != 0
-        {
+        if (*format).type_0 == 1 as libc::c_int && (*format).direct.alphaMask as libc::c_int != 0 {
             visual = (*xvi.offset(i as isize)).visual;
             break;
         } else {
@@ -1916,7 +1839,8 @@ unsafe extern "C" fn handle_xlib_events(
                             && !(b"Xlib returned invalid button event\0" as *const u8
                                 as *const libc::c_char)
                                 .is_null()
-                        {} else {
+                        {
+                        } else {
                             __assert_fail(
                                 b"xev.xbutton.button >= 1 && xev.xbutton.button <= 5 && \"Xlib returned invalid button event\"\0"
                                     as *const u8 as *const libc::c_char,
@@ -1929,18 +1853,20 @@ unsafe extern "C" fn handle_xlib_events(
                                     .as_ptr(),
                             );
                         }
-                        ((*(*job).callbacks).button_press)
-                            .expect(
-                                "non-null function pointer",
-                            )(job, xev.xbutton.button as libc::c_int, pointer);
+                        ((*(*job).callbacks).button_press).expect("non-null function pointer")(
+                            job,
+                            xev.xbutton.button as libc::c_int,
+                            pointer,
+                        );
                         rc += 1;
                     }
                     6 => {
                         if (*job).button != 0 {
                             pointer.x = xev.xbutton.x as libc::c_double;
                             pointer.y = xev.xbutton.y as libc::c_double;
-                            ((*(*job).callbacks).motion)
-                                .expect("non-null function pointer")(job, pointer);
+                            ((*(*job).callbacks).motion).expect("non-null function pointer")(
+                                job, pointer,
+                            );
                             rc += 1;
                         }
                     }
@@ -1952,7 +1878,8 @@ unsafe extern "C" fn handle_xlib_events(
                             && !(b"Xlib returned invalid button event\0" as *const u8
                                 as *const libc::c_char)
                                 .is_null()
-                        {} else {
+                        {
+                        } else {
                             __assert_fail(
                                 b"xev.xbutton.button >= 1 && xev.xbutton.button <= 5 && \"Xlib returned invalid button event\"\0"
                                     as *const u8 as *const libc::c_char,
@@ -1965,13 +1892,15 @@ unsafe extern "C" fn handle_xlib_events(
                                     .as_ptr(),
                             );
                         }
-                        ((*(*job).callbacks).button_release)
-                            .expect(
-                                "non-null function pointer",
-                            )(job, xev.xbutton.button as libc::c_int, pointer);
+                        ((*(*job).callbacks).button_release).expect("non-null function pointer")(
+                            job,
+                            xev.xbutton.button as libc::c_int,
+                            pointer,
+                        );
                         if !((*job).selected_href).is_null()
                             && *((*job).selected_href).offset(0 as libc::c_int as isize)
-                                as libc::c_int != 0
+                                as libc::c_int
+                                != 0
                             && xev.xbutton.button == 1 as libc::c_int as libc::c_uint
                         {
                             browser_show(job);
@@ -2012,55 +1941,53 @@ unsafe extern "C" fn update_display(mut job: *mut GVJ_t, mut dpy: *mut Display) 
     window = (*job).window as *mut window_t;
     if (*job).width <= 2147483647 as libc::c_int as libc::c_uint
         && !(b"out of range width\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"job->width <= (unsigned)INT_MAX && \"out of range width\"\0" as *const u8
                 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             251 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 40],
-                &[libc::c_char; 40],
-            >(b"void update_display(GVJ_t *, Display *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 40], &[libc::c_char; 40]>(
+                b"void update_display(GVJ_t *, Display *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*job).height <= 2147483647 as libc::c_int as libc::c_uint
         && !(b"out of range height\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"job->height <= (unsigned)INT_MAX && \"out of range height\"\0" as *const u8
                 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             252 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 40],
-                &[libc::c_char; 40],
-            >(b"void update_display(GVJ_t *, Display *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 40], &[libc::c_char; 40]>(
+                b"void update_display(GVJ_t *, Display *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*job).has_grown {
         XFreePixmap(dpy, (*window).pix);
         if (*window).depth >= 0 as libc::c_int
-            && !(b"Xlib returned invalid window depth\0" as *const u8
-                as *const libc::c_char)
+            && !(b"Xlib returned invalid window depth\0" as *const u8 as *const libc::c_char)
                 .is_null()
-        {} else {
+        {
+        } else {
             __assert_fail(
-                b"window->depth >= 0 && \"Xlib returned invalid window depth\"\0"
-                    as *const u8 as *const libc::c_char,
+                b"window->depth >= 0 && \"Xlib returned invalid window depth\"\0" as *const u8
+                    as *const libc::c_char,
                 b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
                 256 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 40],
-                    &[libc::c_char; 40],
-                >(b"void update_display(GVJ_t *, Display *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 40], &[libc::c_char; 40]>(
+                    b"void update_display(GVJ_t *, Display *)\0",
+                ))
+                .as_ptr(),
             );
         }
-        (*window)
-            .pix = XCreatePixmap(
+        (*window).pix = XCreatePixmap(
             dpy,
             (*window).win,
             (*job).width,
@@ -2107,11 +2034,7 @@ unsafe extern "C" fn update_display(mut job: *mut GVJ_t, mut dpy: *mut Display) 
         (*job).needs_refresh = 0 as libc::c_int != 0;
     }
 }
-unsafe extern "C" fn init_window(
-    mut job: *mut GVJ_t,
-    mut dpy: *mut Display,
-    mut scr: libc::c_int,
-) {
+unsafe extern "C" fn init_window(mut job: *mut GVJ_t, mut dpy: *mut Display, mut scr: libc::c_int) {
     let mut argb: libc::c_int = 0 as libc::c_int;
     let mut base: *const libc::c_char = b"\0" as *const u8 as *const libc::c_char;
     let mut gcv: XGCValues = XGCValues {
@@ -2189,15 +2112,12 @@ unsafe extern "C" fn init_window(
     *fresh1 = window as *mut libc::c_void;
     (*job).fit_mode = 0 as libc::c_int != 0;
     (*job).needs_refresh = 1 as libc::c_int != 0;
-    if argb != 0
-        && {
-            let ref mut fresh2 = (*window).visual;
-            *fresh2 = find_argb_visual(dpy, scr);
-            !(*fresh2).is_null()
-        }
-    {
-        (*window)
-            .cmap = XCreateColormap(
+    if argb != 0 && {
+        let ref mut fresh2 = (*window).visual;
+        *fresh2 = find_argb_visual(dpy, scr);
+        !(*fresh2).is_null()
+    } {
+        (*window).cmap = XCreateColormap(
             dpy,
             (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).root,
             (*window).visual,
@@ -2213,26 +2133,18 @@ unsafe extern "C" fn init_window(
             | (1 as libc::c_long) << 13 as libc::c_int) as uint64_t;
         (*window).depth = 32 as libc::c_int;
     } else {
-        (*window)
-            .cmap = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).cmap;
+        (*window).cmap = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).cmap;
         let ref mut fresh3 = (*window).visual;
-        *fresh3 = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize))
-            .root_visual;
-        attributes
-            .background_pixel = (*((*(dpy as _XPrivDisplay)).screens)
-            .offset(scr as isize))
-            .white_pixel;
-        attributes
-            .border_pixel = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize))
-            .black_pixel;
+        *fresh3 = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).root_visual;
+        attributes.background_pixel =
+            (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).white_pixel;
+        attributes.border_pixel =
+            (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).black_pixel;
         attributemask = ((1 as libc::c_long) << 1 as libc::c_int
             | (1 as libc::c_long) << 3 as libc::c_int) as uint64_t;
-        (*window)
-            .depth = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize))
-            .root_depth;
+        (*window).depth = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).root_depth;
     }
-    (*window)
-        .win = XCreateWindow(
+    (*window).win = XCreateWindow(
         dpy,
         (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).root,
         0 as libc::c_int,
@@ -2259,33 +2171,33 @@ unsafe extern "C" fn init_window(
     (*normalhints).y = 0 as libc::c_int;
     if (*job).width <= 2147483647 as libc::c_int as libc::c_uint
         && !(b"out of range width\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"job->width <= (unsigned)INT_MAX && \"out of range width\"\0" as *const u8
                 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             348 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"void init_window(GVJ_t *, Display *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"void init_window(GVJ_t *, Display *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     (*normalhints).width = (*job).width as libc::c_int;
     if (*job).height <= 2147483647 as libc::c_int as libc::c_uint
         && !(b"out of range height\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"job->height <= (unsigned)INT_MAX && \"out of range height\"\0" as *const u8
                 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             350 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"void init_window(GVJ_t *, Display *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"void init_window(GVJ_t *, Display *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     (*normalhints).height = (*job).height as libc::c_int;
@@ -2313,23 +2225,21 @@ unsafe extern "C" fn init_window(
     XFree(normalhints as *mut libc::c_void);
     free(name as *mut libc::c_void);
     if (*window).depth >= 0 as libc::c_int
-        && !(b"Xlib returned invalid window depth\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"Xlib returned invalid window depth\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
-            b"window->depth >= 0 && \"Xlib returned invalid window depth\"\0"
-                as *const u8 as *const libc::c_char,
+            b"window->depth >= 0 && \"Xlib returned invalid window depth\"\0" as *const u8
+                as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             368 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 42],
-                &[libc::c_char; 42],
-            >(b"void init_window(GVJ_t *, Display *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                b"void init_window(GVJ_t *, Display *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    (*window)
-        .pix = XCreatePixmap(
+    (*window).pix = XCreatePixmap(
         dpy,
         (*window).win,
         (*job).width,
@@ -2339,9 +2249,7 @@ unsafe extern "C" fn init_window(
     if argb != 0 {
         gcv.foreground = 0 as libc::c_int as libc::c_ulong;
     } else {
-        gcv
-            .foreground = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize))
-            .white_pixel;
+        gcv.foreground = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).white_pixel;
     }
     let ref mut fresh6 = (*window).gc;
     *fresh6 = XCreateGC(
@@ -2351,16 +2259,14 @@ unsafe extern "C" fn init_window(
         &mut gcv,
     );
     update_display(job, dpy);
-    (*window)
-        .event_mask = ((1 as libc::c_long) << 2 as libc::c_int
+    (*window).event_mask = ((1 as libc::c_long) << 2 as libc::c_int
         | (1 as libc::c_long) << 3 as libc::c_int
         | (1 as libc::c_long) << 6 as libc::c_int
         | (1 as libc::c_long) << 0 as libc::c_int
         | (1 as libc::c_long) << 17 as libc::c_int
         | (1 as libc::c_long) << 15 as libc::c_int) as uint64_t;
     XSelectInput(dpy, (*window).win, (*window).event_mask as libc::c_long);
-    (*window)
-        .wm_delete_window_atom = XInternAtom(
+    (*window).wm_delete_window_atom = XInternAtom(
         dpy,
         b"WM_DELETE_WINDOW\0" as *const u8 as *const libc::c_char,
         0 as libc::c_int,
@@ -2378,10 +2284,11 @@ unsafe extern "C" fn handle_stdin_events(mut job: *mut GVJ_t) -> libc::c_int {
     if feof(stdin) != 0 {
         return -(1 as libc::c_int);
     }
-    ((*(*job).callbacks).read)
-        .expect(
-            "non-null function pointer",
-        )(job, (*job).input_filename, (*job).layout_type);
+    ((*(*job).callbacks).read).expect("non-null function pointer")(
+        job,
+        (*job).input_filename,
+        (*job).layout_type,
+    );
     rc += 1;
     return rc;
 }
@@ -2402,24 +2309,26 @@ unsafe extern "C" fn handle_file_events(
         &mut avail as *mut libc::c_int,
     );
     if ret < 0 as libc::c_int {
-        fprintf(stderr, b"ioctl() failed\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"ioctl() failed\n\0" as *const u8 as *const libc::c_char,
+        );
         return -(1 as libc::c_int);
     }
     if avail != 0 {
         if avail > 0 as libc::c_int
-            && !(b"invalid value from FIONREAD\0" as *const u8 as *const libc::c_char)
-                .is_null()
-        {} else {
+            && !(b"invalid value from FIONREAD\0" as *const u8 as *const libc::c_char).is_null()
+        {
+        } else {
             __assert_fail(
                 b"avail > 0 && \"invalid value from FIONREAD\"\0" as *const u8
                     as *const libc::c_char,
                 b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
                 418 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 37],
-                    &[libc::c_char; 37],
-                >(b"int handle_file_events(GVJ_t *, int)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                    b"int handle_file_events(GVJ_t *, int)\0",
+                ))
+                .as_ptr(),
             );
         }
         let mut buf: *mut libc::c_void = malloc(avail as size_t);
@@ -2454,25 +2363,26 @@ unsafe extern "C" fn handle_file_events(
                     p = (*job).input_filename;
                 }
                 if strcmp(((*event).name).as_mut_ptr(), p) == 0 as libc::c_int {
-                    ((*(*job).callbacks).read)
-                        .expect(
-                            "non-null function pointer",
-                        )(job, (*job).input_filename, (*job).layout_type);
+                    ((*(*job).callbacks).read).expect("non-null function pointer")(
+                        job,
+                        (*job).input_filename,
+                        (*job).layout_type,
+                    );
                     rc += 1;
                 }
             }
             let mut ln: size_t = ((*event).len as libc::c_ulong)
                 .wrapping_add(::std::mem::size_of::<inotify_event>() as libc::c_ulong);
-            if ln <= len as size_t {} else {
+            if ln <= len as size_t {
+            } else {
                 __assert_fail(
                     b"ln <= (size_t)len\0" as *const u8 as *const libc::c_char,
                     b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
                     446 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 37],
-                        &[libc::c_char; 37],
-                    >(b"int handle_file_events(GVJ_t *, int)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                        b"int handle_file_events(GVJ_t *, int)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             bf = bf.offset(ln as isize);
@@ -2482,8 +2392,7 @@ unsafe extern "C" fn handle_file_events(
         if len != 0 as libc::c_int {
             fprintf(
                 stderr,
-                b"length miscalculation, len = %d\n\0" as *const u8
-                    as *const libc::c_char,
+                b"length miscalculation, len = %d\n\0" as *const u8 as *const libc::c_char,
                 len,
             );
             return -(1 as libc::c_int);
@@ -2512,16 +2421,16 @@ unsafe extern "C" fn xlib_initialize(mut firstjob: *mut GVJ_t) {
     let ref mut fresh7 = (*firstjob).display;
     *fresh7 = dpy as *mut libc::c_void;
     (*firstjob).screen = scr;
-    if (*firstjob).numkeys >= 0 as libc::c_int {} else {
+    if (*firstjob).numkeys >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"firstjob->numkeys >= 0\0" as *const u8 as *const libc::c_char,
             b"gvdevice_xlib.c\0" as *const u8 as *const libc::c_char,
             481 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void xlib_initialize(GVJ_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void xlib_initialize(GVJ_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     keycodes = malloc(
@@ -2538,9 +2447,7 @@ unsafe extern "C" fn xlib_initialize(mut firstjob: *mut GVJ_t) {
     }
     i = 0 as libc::c_int;
     while i < (*firstjob).numkeys {
-        keysym = XStringToKeysym(
-            (*((*firstjob).keybindings).offset(i as isize)).keystring,
-        );
+        keysym = XStringToKeysym((*((*firstjob).keybindings).offset(i as isize)).keystring);
         if keysym == 0 as libc::c_long as libc::c_ulong {
             fprintf(
                 stderr,
@@ -2554,18 +2461,14 @@ unsafe extern "C" fn xlib_initialize(mut firstjob: *mut GVJ_t) {
     }
     let ref mut fresh8 = (*firstjob).keycodes;
     *fresh8 = keycodes as *mut libc::c_void;
-    (*firstjob)
-        .device_dpi
-        .x = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).width
-        as libc::c_double * 25.4f64
-        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mwidth
-            as libc::c_double;
-    (*firstjob)
-        .device_dpi
-        .y = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).height
-        as libc::c_double * 25.4f64
-        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mheight
-            as libc::c_double;
+    (*firstjob).device_dpi.x = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).width
+        as libc::c_double
+        * 25.4f64
+        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mwidth as libc::c_double;
+    (*firstjob).device_dpi.y = (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).height
+        as libc::c_double
+        * 25.4f64
+        / (*((*(dpy as _XPrivDisplay)).screens).offset(scr as isize)).mheight as libc::c_double;
     (*firstjob).device_sets_dpi = 1 as libc::c_int != 0;
     initialized = 1 as libc::c_int != 0;
 }
@@ -2579,7 +2482,9 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
     let mut xlib_fd: libc::c_int = 0;
     let mut ret: libc::c_int = 0;
     let mut events: libc::c_int = 0;
-    let mut rfds: fd_set = fd_set { __fds_bits: [0; 16] };
+    let mut rfds: fd_set = fd_set {
+        __fds_bits: [0; 16],
+    };
     let mut watching_stdin_p: bool = 0 as libc::c_int != 0;
     let mut wd: libc::c_int = 0 as libc::c_int;
     let mut inotify_fd: libc::c_int = 0 as libc::c_int;
@@ -2603,8 +2508,8 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
     if !((*firstjob).input_filename).is_null() {
         if (*firstjob).graph_index == 0 as libc::c_int {
             watching_file_p = 1 as libc::c_int != 0;
-            if *((*firstjob).input_filename).offset(0 as libc::c_int as isize)
-                as libc::c_int != '/' as i32
+            if *((*firstjob).input_filename).offset(0 as libc::c_int as isize) as libc::c_int
+                != '/' as i32
             {
                 cwd = getcwd(0 as *mut libc::c_char, 0 as libc::c_int as size_t);
                 dir = realloc(
@@ -2629,7 +2534,11 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
             p = strrchr(dir, '/' as i32);
             *p = '\0' as i32 as libc::c_char;
             wd = inotify_add_watch(inotify_fd, dir, 0x2 as libc::c_int as uint32_t);
-            numfds = if inotify_fd > numfds { inotify_fd } else { numfds };
+            numfds = if inotify_fd > numfds {
+                inotify_fd
+            } else {
+                numfds
+            };
         }
     } else {
         watching_stdin_p = 1 as libc::c_int != 0;
@@ -2654,16 +2563,15 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
     loop {
         events = 0 as libc::c_int;
         if watching_file_p {
-            if rfds
-                .__fds_bits[(inotify_fd
+            if rfds.__fds_bits[(inotify_fd
                 / (8 as libc::c_int
-                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                        as libc::c_int)) as usize]
+                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                as usize]
                 & ((1 as libc::c_ulong)
                     << inotify_fd
                         % (8 as libc::c_int
-                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                as libc::c_int)) as __fd_mask
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as __fd_mask
                 != 0 as libc::c_int as libc::c_long
             {
                 ret = handle_file_events(firstjob, inotify_fd);
@@ -2672,57 +2580,51 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
                 }
                 events += ret;
             }
-            rfds
-                .__fds_bits[(inotify_fd
+            rfds.__fds_bits[(inotify_fd
                 / (8 as libc::c_int
-                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                        as libc::c_int)) as usize]
-                |= ((1 as libc::c_ulong)
-                    << inotify_fd
-                        % (8 as libc::c_int
-                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                as libc::c_int)) as __fd_mask;
+                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                as usize] |= ((1 as libc::c_ulong)
+                << inotify_fd
+                    % (8 as libc::c_int
+                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                as __fd_mask;
         }
         if watching_stdin_p {
-            if rfds
-                .__fds_bits[(stdin_fd
+            if rfds.__fds_bits[(stdin_fd
                 / (8 as libc::c_int
-                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                        as libc::c_int)) as usize]
+                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                as usize]
                 & ((1 as libc::c_ulong)
                     << stdin_fd
                         % (8 as libc::c_int
-                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                as libc::c_int)) as __fd_mask
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as __fd_mask
                 != 0 as libc::c_int as libc::c_long
             {
                 ret = handle_stdin_events(firstjob);
                 if ret < 0 as libc::c_int {
                     watching_stdin_p = 0 as libc::c_int != 0;
-                    rfds
-                        .__fds_bits[(stdin_fd
+                    rfds.__fds_bits[(stdin_fd
                         / (8 as libc::c_int
-                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                as libc::c_int)) as usize]
-                        &= !(((1 as libc::c_ulong)
-                            << stdin_fd
-                                % (8 as libc::c_int
-                                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                        as libc::c_int)) as __fd_mask);
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                        as usize] &= !(((1 as libc::c_ulong)
+                        << stdin_fd
+                            % (8 as libc::c_int
+                                * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
+                                    as libc::c_int))
+                        as __fd_mask);
                 }
                 events += ret;
             }
             if watching_stdin_p {
-                rfds
-                    .__fds_bits[(stdin_fd
+                rfds.__fds_bits[(stdin_fd
                     / (8 as libc::c_int
-                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                            as libc::c_int)) as usize]
-                    |= ((1 as libc::c_ulong)
-                        << stdin_fd
-                            % (8 as libc::c_int
-                                * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                                    as libc::c_int)) as __fd_mask;
+                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as usize] |= ((1 as libc::c_ulong)
+                    << stdin_fd
+                        % (8 as libc::c_int
+                            * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+                    as __fd_mask;
             }
         }
         ret = handle_xlib_events(firstjob, dpy);
@@ -2730,16 +2632,14 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
             break;
         }
         events += ret;
-        rfds
-            .__fds_bits[(xlib_fd
+        rfds.__fds_bits[(xlib_fd
             / (8 as libc::c_int
                 * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
-            as usize]
-            |= ((1 as libc::c_ulong)
-                << xlib_fd
-                    % (8 as libc::c_int
-                        * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong
-                            as libc::c_int)) as __fd_mask;
+            as usize] |= ((1 as libc::c_ulong)
+            << xlib_fd
+                % (8 as libc::c_int
+                    * ::std::mem::size_of::<__fd_mask>() as libc::c_ulong as libc::c_int))
+            as __fd_mask;
         if events != 0 {
             job = firstjob;
             while !job.is_null() {
@@ -2758,7 +2658,10 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
         if !(ret < 0 as libc::c_int) {
             continue;
         }
-        fprintf(stderr, b"select() failed\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"select() failed\n\0" as *const u8 as *const libc::c_char,
+        );
         break;
     }
     if watching_file_p {
@@ -2771,18 +2674,26 @@ unsafe extern "C" fn xlib_finalize(mut firstjob: *mut GVJ_t) {
 }
 static mut device_features_xlib: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
-        flags: (1 as libc::c_int) << 8 as libc::c_int
-            | (1 as libc::c_int) << 7 as libc::c_int,
+        flags: (1 as libc::c_int) << 8 as libc::c_int | (1 as libc::c_int) << 7 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_pagesize: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 96.0f64, y: 96.0f64 };
+            let mut init = pointf_s {
+                x: 96.0f64,
+                y: 96.0f64,
+            };
             init
         },
     };
@@ -2806,8 +2717,8 @@ pub static mut gvdevice_types_xlib: [gvplugin_installed_t; 3] = unsafe {
                 id: 0 as libc::c_int,
                 type_0: b"xlib:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &device_engine_xlib as *const gvdevice_engine_t
-                    as *mut gvdevice_engine_t as *mut libc::c_void,
+                engine: &device_engine_xlib as *const gvdevice_engine_t as *mut gvdevice_engine_t
+                    as *mut libc::c_void,
                 features: &device_features_xlib as *const gvdevice_features_t
                     as *mut gvdevice_features_t as *mut libc::c_void,
             };
@@ -2818,8 +2729,8 @@ pub static mut gvdevice_types_xlib: [gvplugin_installed_t; 3] = unsafe {
                 id: 0 as libc::c_int,
                 type_0: b"x11:cairo\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &device_engine_xlib as *const gvdevice_engine_t
-                    as *mut gvdevice_engine_t as *mut libc::c_void,
+                engine: &device_engine_xlib as *const gvdevice_engine_t as *mut gvdevice_engine_t
+                    as *mut libc::c_void,
                 features: &device_features_xlib as *const gvdevice_features_t
                     as *mut gvdevice_features_t as *mut libc::c_void,
             };

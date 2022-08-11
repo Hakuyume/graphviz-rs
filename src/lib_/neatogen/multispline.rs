@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -23,11 +31,7 @@ extern "C" {
         __line: libc::c_uint,
         __function: *const libc::c_char,
     ) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn agraphof(obj: *mut libc::c_void) -> *mut Agraph_t;
     fn agnameof(_: *mut libc::c_void) -> *mut libc::c_char;
@@ -37,13 +41,7 @@ extern "C" {
     fn zmalloc(_: size_t) -> *mut libc::c_void;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn gmalloc(_: size_t) -> *mut libc::c_void;
-    fn line_intersect(
-        a: pointf,
-        b: pointf,
-        c: pointf,
-        d: pointf,
-        p: *mut pointf,
-    ) -> libc::c_int;
+    fn line_intersect(a: pointf, b: pointf, c: pointf, d: pointf, p: *mut pointf) -> libc::c_int;
     fn makeStraightEdge(
         g: *mut graph_t,
         e: *mut edge_t,
@@ -233,9 +231,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -249,25 +245,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -369,7 +358,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -530,16 +520,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -555,18 +539,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -574,16 +552,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -625,9 +596,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -656,13 +626,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -695,26 +660,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -723,29 +680,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -753,8 +702,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -788,7 +737,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -814,9 +763,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -957,7 +904,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1003,8 +950,8 @@ pub struct port {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct splineInfo {
-    pub swapEnds: Option::<unsafe extern "C" fn(*mut edge_t) -> bool>,
-    pub splineMerge: Option::<unsafe extern "C" fn(*mut node_t) -> bool>,
+    pub swapEnds: Option<unsafe extern "C" fn(*mut edge_t) -> bool>,
+    pub splineMerge: Option<unsafe extern "C" fn(*mut node_t) -> bool>,
     pub ignoreSwap: bool,
     pub isOrtho: bool,
 }
@@ -1068,13 +1015,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1083,7 +1029,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1317,21 +1263,15 @@ unsafe extern "C" fn cmpItem(
     mut disc: *mut Dtdisc_t,
 ) -> libc::c_int {
     if *p1.offset(0 as libc::c_int as isize) < *p2.offset(0 as libc::c_int as isize) {
-        return -(1 as libc::c_int)
-    } else if *p1.offset(0 as libc::c_int as isize)
-            > *p2.offset(0 as libc::c_int as isize)
-        {
-        return 1 as libc::c_int
-    } else if *p1.offset(1 as libc::c_int as isize)
-            < *p2.offset(1 as libc::c_int as isize)
-        {
-        return -(1 as libc::c_int)
-    } else if *p1.offset(1 as libc::c_int as isize)
-            > *p2.offset(1 as libc::c_int as isize)
-        {
-        return 1 as libc::c_int
+        return -(1 as libc::c_int);
+    } else if *p1.offset(0 as libc::c_int as isize) > *p2.offset(0 as libc::c_int as isize) {
+        return 1 as libc::c_int;
+    } else if *p1.offset(1 as libc::c_int as isize) < *p2.offset(1 as libc::c_int as isize) {
+        return -(1 as libc::c_int);
+    } else if *p1.offset(1 as libc::c_int as isize) > *p2.offset(1 as libc::c_int as isize) {
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn newItem(
@@ -1339,18 +1279,13 @@ unsafe extern "C" fn newItem(
     mut objp: *mut item,
     mut disc: *mut Dtdisc_t,
 ) -> *mut libc::c_void {
-    let mut newp: *mut item = zmalloc(::std::mem::size_of::<item>() as libc::c_ulong)
-        as *mut item;
+    let mut newp: *mut item = zmalloc(::std::mem::size_of::<item>() as libc::c_ulong) as *mut item;
     (*newp).a[0 as libc::c_int as usize] = (*objp).a[0 as libc::c_int as usize];
     (*newp).a[1 as libc::c_int as usize] = (*objp).a[1 as libc::c_int as usize];
     (*newp).t = (*objp).t;
     return newp as *mut libc::c_void;
 }
-unsafe extern "C" fn freeItem(
-    mut d: *mut Dt_t,
-    mut obj: *mut item,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn freeItem(mut d: *mut Dt_t, mut obj: *mut item, mut disc: *mut Dtdisc_t) {
     free(obj as *mut libc::c_void);
 }
 static mut itemdisc: Dtdisc_t = Dtdisc_t {
@@ -1388,9 +1323,11 @@ unsafe extern "C" fn addMap(
     it.a[1 as libc::c_int as usize] = b;
     it.t = t;
     (Some(((*map).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(map, &mut it as *mut item as *mut libc::c_void, 0o1 as libc::c_int);
+        .expect("non-null function pointer")(
+        map,
+        &mut it as *mut item as *mut libc::c_void,
+        0o1 as libc::c_int,
+    );
 }
 unsafe extern "C" fn mapSegToTri(mut sf: *mut surface_t) -> *mut Dt_t {
     let mut map: *mut Dt_t = dtopen(&mut itemdisc, Dtoset);
@@ -1439,20 +1376,21 @@ unsafe extern "C" fn findMap(
     it.a[0 as libc::c_int as usize] = a;
     it.a[1 as libc::c_int as usize] = b;
     ip = (Some(((*map).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(map, &mut it as *mut item as *mut libc::c_void, 0o4 as libc::c_int)
-        as *mut item;
-    if !ip.is_null() {} else {
+        .expect("non-null function pointer")(
+        map,
+        &mut it as *mut item as *mut libc::c_void,
+        0o4 as libc::c_int,
+    ) as *mut item;
+    if !ip.is_null() {
+    } else {
         __assert_fail(
             b"ip\0" as *const u8 as *const libc::c_char,
             b"multispline.c\0" as *const u8 as *const libc::c_char,
             154 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"int findMap(Dt_t *, int, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"int findMap(Dt_t *, int, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     return (*ip).t;
@@ -1470,17 +1408,13 @@ unsafe extern "C" fn newIpair(
     mut objp: *mut Ipair,
     mut disc: *mut Dtdisc_t,
 ) -> *mut libc::c_void {
-    let mut newp: *mut Ipair = zmalloc(::std::mem::size_of::<Ipair>() as libc::c_ulong)
-        as *mut Ipair;
+    let mut newp: *mut Ipair =
+        zmalloc(::std::mem::size_of::<Ipair>() as libc::c_ulong) as *mut Ipair;
     (*newp).i = (*objp).i;
     (*newp).j = (*objp).j;
     return newp as *mut libc::c_void;
 }
-unsafe extern "C" fn freeIpair(
-    mut d: *mut Dt_t,
-    mut obj: *mut Ipair,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn freeIpair(mut d: *mut Dt_t, mut obj: *mut Ipair, mut disc: *mut Dtdisc_t) {
     free(obj as *mut libc::c_void);
 }
 static mut ipairdisc: Dtdisc_t = unsafe {
@@ -1490,41 +1424,26 @@ static mut ipairdisc: Dtdisc_t = unsafe {
             size: ::std::mem::size_of::<libc::c_int>() as libc::c_ulong as libc::c_int,
             link: 0 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
+                Option<
+                    unsafe extern "C" fn(*mut Dt_t, *mut Ipair, *mut Dtdisc_t) -> *mut libc::c_void,
+                >,
+                Dtmake_f,
+            >(Some(
+                newIpair
+                    as unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut Ipair,
                         *mut Dtdisc_t,
                     ) -> *mut libc::c_void,
-                >,
-                Dtmake_f,
-            >(
-                Some(
-                    newIpair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut Ipair,
-                            *mut Dtdisc_t,
-                        ) -> *mut libc::c_void,
-                ),
-            ),
+            )),
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut Ipair, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut Ipair, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    freeIpair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut Ipair,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                freeIpair as unsafe extern "C" fn(*mut Dt_t, *mut Ipair, *mut Dtdisc_t) -> (),
+            )),
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut libc::c_int,
@@ -1533,17 +1452,15 @@ static mut ipairdisc: Dtdisc_t = unsafe {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    cmpIpair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut libc::c_int,
-                            *mut libc::c_int,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                cmpIpair
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut libc::c_int,
+                        *mut libc::c_int,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,
@@ -1551,11 +1468,7 @@ static mut ipairdisc: Dtdisc_t = unsafe {
         init
     }
 };
-unsafe extern "C" fn vmapAdd(
-    mut map: *mut Dt_t,
-    mut i: libc::c_int,
-    mut j: libc::c_int,
-) {
+unsafe extern "C" fn vmapAdd(mut map: *mut Dt_t, mut i: libc::c_int, mut j: libc::c_int) {
     let mut obj: Ipair = Ipair {
         link: Dtlink_t {
             right: 0 as *mut Dtlink_t,
@@ -1567,17 +1480,20 @@ unsafe extern "C" fn vmapAdd(
     obj.i = i;
     obj.j = j;
     (Some(((*map).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(map, &mut obj as *mut Ipair as *mut libc::c_void, 0o1 as libc::c_int);
+        .expect("non-null function pointer")(
+        map,
+        &mut obj as *mut Ipair as *mut libc::c_void,
+        0o1 as libc::c_int,
+    );
 }
 unsafe extern "C" fn vMap(mut map: *mut Dt_t, mut i: libc::c_int) -> libc::c_int {
     let mut ip: *mut Ipair = 0 as *mut Ipair;
     ip = (Some(((*map).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(map, &mut i as *mut libc::c_int as *mut libc::c_void, 0o1000 as libc::c_int)
-        as *mut Ipair;
+        .expect("non-null function pointer")(
+        map,
+        &mut i as *mut libc::c_int as *mut libc::c_void,
+        0o1000 as libc::c_int,
+    ) as *mut Ipair;
     return (*ip).j;
 }
 unsafe extern "C" fn mapTri(mut map: *mut Dt_t, mut tp: *mut tri) {
@@ -1592,19 +1508,14 @@ unsafe extern "C" fn addTri(
     mut j: libc::c_int,
     mut oldp: *mut tri,
 ) -> *mut tri {
-    let mut tp: *mut tri = zmalloc(::std::mem::size_of::<tri>() as libc::c_ulong)
-        as *mut tri;
+    let mut tp: *mut tri = zmalloc(::std::mem::size_of::<tri>() as libc::c_ulong) as *mut tri;
     (*tp).v.i = i;
     (*tp).v.j = j;
     let ref mut fresh3 = (*tp).nxttri;
     *fresh3 = oldp;
     return tp;
 }
-unsafe extern "C" fn bisect(
-    mut pp: pointf,
-    mut cp: pointf,
-    mut np: pointf,
-) -> libc::c_double {
+unsafe extern "C" fn bisect(mut pp: pointf, mut cp: pointf, mut np: pointf) -> libc::c_double {
     let mut theta: libc::c_double = 0.;
     let mut phi: libc::c_double = 0.;
     theta = atan2(np.y - cp.y, np.x - cp.x);
@@ -1623,9 +1534,9 @@ unsafe extern "C" fn raySeg(
         return 0 as libc::c_int;
     }
     if wa == 0 as libc::c_int {
-        return (wind(v, b, w) * wind(v, b, a) >= 0 as libc::c_int) as libc::c_int
+        return (wind(v, b, w) * wind(v, b, a) >= 0 as libc::c_int) as libc::c_int;
     } else {
-        return (wind(v, a, w) * wind(v, a, b) >= 0 as libc::c_int) as libc::c_int
+        return (wind(v, a, w) * wind(v, a, b) >= 0 as libc::c_int) as libc::c_int;
     };
 }
 unsafe extern "C" fn raySegIntersect(
@@ -1636,9 +1547,9 @@ unsafe extern "C" fn raySegIntersect(
     mut p: *mut pointf,
 ) -> libc::c_int {
     if raySeg(v, w, a, b) != 0 {
-        return line_intersect(v, w, a, b, p)
+        return line_intersect(v, w, a, b, p);
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn triPoint(
@@ -1699,8 +1610,10 @@ unsafe extern "C" fn mkCtrlPts(
     if idx < 0 as libc::c_int {
         return 0 as *mut pointf;
     }
-    ps = gcalloc(mult as size_t, ::std::mem::size_of::<pointf>() as libc::c_ulong)
-        as *mut pointf;
+    ps = gcalloc(
+        mult as size_t,
+        ::std::mem::size_of::<pointf>() as libc::c_ulong,
+    ) as *mut pointf;
     theta = bisect(prev, v, nxt);
     sinTheta = sin(theta);
     cosTheta = cos(theta);
@@ -1738,19 +1651,16 @@ unsafe extern "C" fn mkCtrlPts(
     } else {
         i = 0 as libc::c_int;
         while i < mult {
-            (*ps.offset((mult - i - 1 as libc::c_int) as isize))
-                .x = v.x + i as libc::c_double * sep * cosTheta;
-            (*ps.offset((mult - i - 1 as libc::c_int) as isize))
-                .y = v.y + i as libc::c_double * sep * sinTheta;
+            (*ps.offset((mult - i - 1 as libc::c_int) as isize)).x =
+                v.x + i as libc::c_double * sep * cosTheta;
+            (*ps.offset((mult - i - 1 as libc::c_int) as isize)).y =
+                v.y + i as libc::c_double * sep * sinTheta;
             i += 1;
         }
     }
     return ps;
 }
-unsafe extern "C" fn triCenter(
-    mut pts: *mut pointf,
-    mut idxs: *mut libc::c_int,
-) -> pointf {
+unsafe extern "C" fn triCenter(mut pts: *mut pointf, mut idxs: *mut libc::c_int) -> pointf {
     let fresh4 = idxs;
     idxs = idxs.offset(1);
     let mut a: pointf = *pts.offset(*fresh4 as isize);
@@ -1836,15 +1746,12 @@ unsafe extern "C" fn degT(mut ip: *mut libc::c_int) -> libc::c_int {
         return 1 as libc::c_int;
     }
     if *ip == -(1 as libc::c_int) {
-        return 2 as libc::c_int
+        return 2 as libc::c_int;
     } else {
-        return 3 as libc::c_int
+        return 3 as libc::c_int;
     };
 }
-unsafe extern "C" fn sharedEdge(
-    mut p: *mut libc::c_int,
-    mut q: *mut libc::c_int,
-) -> ipair {
+unsafe extern "C" fn sharedEdge(mut p: *mut libc::c_int, mut q: *mut libc::c_int) -> ipair {
     let mut pt: ipair = ipair { i: 0, j: 0 };
     let mut tmp: libc::c_int = 0;
     let mut p1: libc::c_int = 0;
@@ -1852,8 +1759,7 @@ unsafe extern "C" fn sharedEdge(
     p1 = *p;
     p2 = *p.offset(1 as libc::c_int as isize);
     if p1 == *q {
-        if p2 != *q.offset(1 as libc::c_int as isize)
-            && p2 != *q.offset(2 as libc::c_int as isize)
+        if p2 != *q.offset(1 as libc::c_int as isize) && p2 != *q.offset(2 as libc::c_int as isize)
         {
             p2 = *p.offset(2 as libc::c_int as isize);
         }
@@ -1889,8 +1795,7 @@ unsafe extern "C" fn addTriEdge(
     let mut hp: *mut tnode = ((*g).nodes).offset(h as isize);
     (*ep).t = t;
     (*ep).h = h;
-    (*ep)
-        .dist = sqrt(
+    (*ep).dist = sqrt(
         ((*tp).ctr.x - (*hp).ctr.x) * ((*tp).ctr.x - (*hp).ctr.x)
             + ((*tp).ctr.y - (*hp).ctr.y) * ((*tp).ctr.y - (*hp).ctr.y),
     );
@@ -1953,13 +1858,11 @@ unsafe extern "C" fn mkTriGraph(
         (*np).ne = 0 as libc::c_int;
         let ref mut fresh16 = (*np).edges;
         *fresh16 = edgei;
-        (*np)
-            .ctr = triCenter(pts, ((*sf).faces).offset((3 as libc::c_int * i) as isize));
-        edgei = edgei
-            .offset(
-                (degT(((*sf).neigh).offset((3 as libc::c_int * i) as isize))
-                    + 1 as libc::c_int) as isize,
-            );
+        (*np).ctr = triCenter(pts, ((*sf).faces).offset((3 as libc::c_int * i) as isize));
+        edgei = edgei.offset(
+            (degT(((*sf).neigh).offset((3 as libc::c_int * i) as isize)) + 1 as libc::c_int)
+                as isize,
+        );
         i += 1;
     }
     np = ((*g).nodes).offset(i as isize);
@@ -1975,14 +1878,12 @@ unsafe extern "C" fn mkTriGraph(
         np = ((*g).nodes).offset(i as isize);
         jp = ((*sf).neigh).offset((3 as libc::c_int * i) as isize);
         ne = 0 as libc::c_int;
-        while ne < 3 as libc::c_int
-            && {
-                let fresh19 = jp;
-                jp = jp.offset(1);
-                j = *fresh19;
-                j != -(1 as libc::c_int)
-            }
-        {
+        while ne < 3 as libc::c_int && {
+            let fresh19 = jp;
+            jp = jp.offset(1);
+            j = *fresh19;
+            j != -(1 as libc::c_int)
+        } {
             if i < j {
                 let mut dist: libc::c_double = sqrt(
                     ((*np).ctr.x - (*((*g).nodes).offset(j as isize)).ctr.x)
@@ -2016,9 +1917,8 @@ pub unsafe extern "C" fn mkRouter(
     mut obsp: *mut *mut Ppoly_t,
     mut npoly: libc::c_int,
 ) -> *mut router_t {
-    let mut rtr: *mut router_t = zmalloc(
-        ::std::mem::size_of::<router_t>() as libc::c_ulong,
-    ) as *mut router_t;
+    let mut rtr: *mut router_t =
+        zmalloc(::std::mem::size_of::<router_t>() as libc::c_ulong) as *mut router_t;
     let mut obs: *mut Ppoly_t = 0 as *mut Ppoly_t;
     let mut bb: boxf = boxf {
         LL: pointf { x: 0., y: 0. },
@@ -2041,8 +1941,10 @@ pub unsafe extern "C" fn mkRouter(
     let mut six: libc::c_int = 0 as libc::c_int;
     bb = bbox(obsp, npoly, &mut npts);
     npts += 4 as libc::c_int;
-    pts = gcalloc(npts as size_t, ::std::mem::size_of::<pointf>() as libc::c_ulong)
-        as *mut pointf;
+    pts = gcalloc(
+        npts as size_t,
+        ::std::mem::size_of::<pointf>() as libc::c_ulong,
+    ) as *mut pointf;
     segs = gcalloc(
         (2 as libc::c_int * npts) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
@@ -2091,10 +1993,7 @@ pub unsafe extern "C" fn mkRouter(
             }
             let fresh27 = ix;
             ix = ix + 1;
-            *pts
-                .offset(
-                    fresh27 as isize,
-                ) = *((*obs).ps).offset((j - 1 as libc::c_int) as isize);
+            *pts.offset(fresh27 as isize) = *((*obs).ps).offset((j - 1 as libc::c_int) as isize);
             j += 1;
         }
         if (*obs).pn > maxv {
@@ -2103,10 +2002,14 @@ pub unsafe extern "C" fn mkRouter(
         i += 1;
     }
     *obsi.offset(i as isize) = ix;
-    x = gcalloc(npts as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    y = gcalloc(npts as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    x = gcalloc(
+        npts as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    y = gcalloc(
+        npts as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < npts {
         *x.offset(i as isize) = (*pts.offset(i as isize)).x;
@@ -2132,11 +2035,7 @@ pub unsafe extern "C" fn mkRouter(
     freeSurface(sf);
     return rtr;
 }
-unsafe extern "C" fn finishEdge(
-    mut e: *mut edge_t,
-    mut spl: Ppoly_t,
-    mut flip: libc::c_int,
-) {
+unsafe extern "C" fn finishEdge(mut e: *mut edge_t, mut spl: Ppoly_t, mut flip: libc::c_int) {
     let mut j: libc::c_int = 0;
     let mut spline: *mut pointf = gcalloc(
         spl.pn as size_t,
@@ -2145,10 +2044,7 @@ unsafe extern "C" fn finishEdge(
     if flip != 0 {
         j = 0 as libc::c_int;
         while j < spl.pn {
-            *spline
-                .offset(
-                    (spl.pn - 1 as libc::c_int - j) as isize,
-                ) = *(spl.ps).offset(j as isize);
+            *spline.offset((spl.pn - 1 as libc::c_int - j) as isize) = *(spl.ps).offset(j as isize);
             j += 1;
         }
     } else {
@@ -2163,24 +2059,20 @@ unsafe extern "C" fn finishEdge(
             stderr,
             b"spline %s %s\n\0" as *const u8 as *const libc::c_char,
             agnameof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 3 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                     e
                 } else {
                     e.offset(1 as libc::c_int as isize)
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
             agnameof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
         );
     }
@@ -2191,7 +2083,7 @@ unsafe extern "C" fn finishEdge(
         } else {
             e.offset(-(1 as libc::c_int as isize))
         })
-            .node,
+        .node,
         spline,
         spl.pn,
         &mut sinfo,
@@ -2232,14 +2124,14 @@ unsafe extern "C" fn tweakPath(
     mut t: libc::c_int,
     mut pl: Ppolyline_t,
 ) {
-    *(pl.ps)
-        .offset(
-            0 as libc::c_int as isize,
-        ) = tweakEnd(poly, s, pl, *(pl.ps).offset(1 as libc::c_int as isize));
-    *(pl.ps)
-        .offset(
-            (pl.pn - 1 as libc::c_int) as isize,
-        ) = tweakEnd(poly, t, pl, *(pl.ps).offset((pl.pn - 2 as libc::c_int) as isize));
+    *(pl.ps).offset(0 as libc::c_int as isize) =
+        tweakEnd(poly, s, pl, *(pl.ps).offset(1 as libc::c_int as isize));
+    *(pl.ps).offset((pl.pn - 1 as libc::c_int) as isize) = tweakEnd(
+        poly,
+        t,
+        pl,
+        *(pl.ps).offset((pl.pn - 2 as libc::c_int) as isize),
+    );
 }
 unsafe extern "C" fn genroute(
     mut trip: *mut tripoly_t,
@@ -2275,15 +2167,14 @@ unsafe extern "C" fn genroute(
         ::std::mem::size_of::<Pedge_t>() as libc::c_ulong,
     ) as *mut Pedge_t;
     let mut pn: libc::c_int = 0;
-    let mut mult: libc::c_int = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-        .count as libc::c_int;
-    let mut head: *mut node_t = (*if ((*(e as *mut Agobj_t)).tag).objtype()
-        as libc::c_int == 2 as libc::c_int
-    {
-        e
-    } else {
-        e.offset(-(1 as libc::c_int as isize))
-    })
+    let mut mult: libc::c_int =
+        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).count as libc::c_int;
+    let mut head: *mut node_t =
+        (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
+            e
+        } else {
+            e.offset(-(1 as libc::c_int as isize))
+        })
         .node;
     let mut rv: libc::c_int = 0 as libc::c_int;
     poly.ps = 0 as *mut Ppoint_t;
@@ -2295,32 +2186,33 @@ unsafe extern "C" fn genroute(
     if Pshortestpath(&mut (*trip).poly, eps.as_mut_ptr(), &mut pl) < 0 as libc::c_int {
         agerr(
             AGWARN,
-            b"Could not create control points for multiple spline for edge (%s,%s)\n\0"
-                as *const u8 as *const libc::c_char,
+            b"Could not create control points for multiple spline for edge (%s,%s)\n\0" as *const u8
+                as *const libc::c_char,
             agnameof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 3 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                     e
                 } else {
                     e.offset(1 as libc::c_int as isize)
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
             agnameof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
         );
         rv = 1 as libc::c_int;
     } else if pl.pn == 2 as libc::c_int {
-        makeStraightEdge(agraphof(head as *mut libc::c_void), e, doPolyline, &mut sinfo);
+        makeStraightEdge(
+            agraphof(head as *mut libc::c_void),
+            e,
+            doPolyline,
+            &mut sinfo,
+        );
     } else {
         evs[0 as libc::c_int as usize].y = 0 as libc::c_int as libc::c_double;
         evs[0 as libc::c_int as usize].x = evs[0 as libc::c_int as usize].y;
@@ -2331,14 +2223,12 @@ unsafe extern "C" fn genroute(
             j = 0 as libc::c_int;
             while j < poly.pn {
                 (*medges.offset(j as isize)).a = *(poly.ps).offset(j as isize);
-                (*medges.offset(j as isize))
-                    .b = *(poly.ps).offset(((j + 1 as libc::c_int) % poly.pn) as isize);
+                (*medges.offset(j as isize)).b =
+                    *(poly.ps).offset(((j + 1 as libc::c_int) % poly.pn) as isize);
                 j += 1;
             }
             tweakPath(poly, s, t, pl);
-            if Proutespline(medges, poly.pn, pl, evs.as_mut_ptr(), &mut spl)
-                < 0 as libc::c_int
-            {
+            if Proutespline(medges, poly.pn, pl, evs.as_mut_ptr(), &mut spl) < 0 as libc::c_int {
                 agerr(
                     AGWARN,
                     b"Could not create control points for multiple spline for edge (%s,%s)\n\0"
@@ -2351,7 +2241,7 @@ unsafe extern "C" fn genroute(
                         } else {
                             e.offset(1 as libc::c_int as isize)
                         })
-                            .node as *mut libc::c_void,
+                        .node as *mut libc::c_void,
                     ),
                     agnameof(
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -2361,7 +2251,7 @@ unsafe extern "C" fn genroute(
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         })
-                            .node as *mut libc::c_void,
+                        .node as *mut libc::c_void,
                     ),
                 );
                 rv = 1 as libc::c_int;
@@ -2369,14 +2259,13 @@ unsafe extern "C" fn genroute(
                 finishEdge(
                     e,
                     spl,
-                    ((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
+                    ((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int
                     {
                         e
                     } else {
                         e.offset(-(1 as libc::c_int as isize))
                     }))
-                        .node != head) as libc::c_int,
+                    .node != head) as libc::c_int,
                 );
                 free(medges as *mut libc::c_void);
                 return 0 as libc::c_int;
@@ -2415,7 +2304,7 @@ unsafe extern "C" fn genroute(
                             } else {
                                 e.offset(1 as libc::c_int as isize)
                             })
-                                .node as *mut libc::c_void,
+                            .node as *mut libc::c_void,
                         ),
                         agnameof(
                             (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -2425,7 +2314,7 @@ unsafe extern "C" fn genroute(
                             } else {
                                 e.offset(-(1 as libc::c_int as isize))
                             })
-                                .node as *mut libc::c_void,
+                            .node as *mut libc::c_void,
                         ),
                     );
                     rv = 1 as libc::c_int;
@@ -2438,42 +2327,31 @@ unsafe extern "C" fn genroute(
             match current_block {
                 11715752260437999342 => {}
                 _ => {
-                    poly
-                        .ps = gcalloc(
+                    poly.ps = gcalloc(
                         pn as size_t,
                         ::std::mem::size_of::<pointf>() as libc::c_ulong,
                     ) as *mut pointf;
                     poly.pn = pn;
                     i = 0 as libc::c_int;
                     while i < mult {
-                        *(poly.ps)
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = eps[0 as libc::c_int as usize];
+                        *(poly.ps).offset(0 as libc::c_int as isize) =
+                            eps[0 as libc::c_int as usize];
                         j = 1 as libc::c_int;
                         while j < pl.pn - 1 as libc::c_int {
-                            *(poly.ps)
-                                .offset(
-                                    j as isize,
-                                ) = *(*cpts.offset((j - 1 as libc::c_int) as isize))
-                                .offset(i as isize);
+                            *(poly.ps).offset(j as isize) =
+                                *(*cpts.offset((j - 1 as libc::c_int) as isize)).offset(i as isize);
                             j += 1;
                         }
-                        *(poly.ps)
-                            .offset(
-                                (pl.pn - 1 as libc::c_int) as isize,
-                            ) = eps[1 as libc::c_int as usize];
+                        *(poly.ps).offset((pl.pn - 1 as libc::c_int) as isize) =
+                            eps[1 as libc::c_int as usize];
                         j = 1 as libc::c_int;
                         while j < pl.pn - 1 as libc::c_int {
-                            *(poly.ps)
-                                .offset(
-                                    (pn - j) as isize,
-                                ) = *(*cpts.offset((j - 1 as libc::c_int) as isize))
-                                .offset((i + 1 as libc::c_int) as isize);
+                            *(poly.ps).offset((pn - j) as isize) = *(*cpts
+                                .offset((j - 1 as libc::c_int) as isize))
+                            .offset((i + 1 as libc::c_int) as isize);
                             j += 1;
                         }
-                        if Pshortestpath(&mut poly, eps.as_mut_ptr(), &mut mmpl)
-                            < 0 as libc::c_int
+                        if Pshortestpath(&mut poly, eps.as_mut_ptr(), &mut mmpl) < 0 as libc::c_int
                         {
                             agerr(
                                 AGWARN,
@@ -2508,26 +2386,14 @@ unsafe extern "C" fn genroute(
                             } else {
                                 j = 0 as libc::c_int;
                                 while j < poly.pn {
-                                    (*medges.offset(j as isize))
-                                        .a = *(poly.ps).offset(j as isize);
-                                    (*medges.offset(j as isize))
-                                        .b = *(poly.ps)
+                                    (*medges.offset(j as isize)).a = *(poly.ps).offset(j as isize);
+                                    (*medges.offset(j as isize)).b = *(poly.ps)
                                         .offset(((j + 1 as libc::c_int) % poly.pn) as isize);
                                     j += 1;
                                 }
-                                tweakPath(
-                                    poly,
-                                    0 as libc::c_int,
-                                    pl.pn - 1 as libc::c_int,
-                                    mmpl,
-                                );
-                                if Proutespline(
-                                    medges,
-                                    poly.pn,
-                                    mmpl,
-                                    evs.as_mut_ptr(),
-                                    &mut spl,
-                                ) < 0 as libc::c_int
+                                tweakPath(poly, 0 as libc::c_int, pl.pn - 1 as libc::c_int, mmpl);
+                                if Proutespline(medges, poly.pn, mmpl, evs.as_mut_ptr(), &mut spl)
+                                    < 0 as libc::c_int
                                 {
                                     agerr(
                                         AGWARN,
@@ -2568,10 +2434,10 @@ unsafe extern "C" fn genroute(
                                 } else {
                                     e.offset(-(1 as libc::c_int as isize))
                                 }))
-                                    .node != head) as libc::c_int,
+                                .node
+                                    != head) as libc::c_int,
                             );
-                            e = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                                .to_virt;
+                            e = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                             i += 1;
                         }
                     }
@@ -2663,11 +2529,9 @@ unsafe extern "C" fn addEndpoint(
     mut v_id: libc::c_int,
     mut sides: libc::c_int,
 ) {
-    let mut obs_id: libc::c_int = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .lim;
+    let mut obs_id: libc::c_int = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lim;
     let mut starti: libc::c_int = *((*rtr).obs).offset(obs_id as isize);
-    let mut endi: libc::c_int = *((*rtr).obs)
-        .offset((obs_id + 1 as libc::c_int) as isize);
+    let mut endi: libc::c_int = *((*rtr).obs).offset((obs_id + 1 as libc::c_int) as isize);
     let mut pts: *mut pointf = (*rtr).ps;
     let mut i: libc::c_int = 0;
     let mut t: libc::c_int = 0;
@@ -2722,11 +2586,10 @@ unsafe extern "C" fn addEndpoint(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"multispline.c\0" as *const u8 as *const libc::c_char,
                 986 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 57],
-                    &[libc::c_char; 57],
-                >(b"void addEndpoint(router_t *, pointf, node_t *, int, int)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 57], &[libc::c_char; 57]>(
+                    b"void addEndpoint(router_t *, pointf, node_t *, int, int)\0",
+                ))
+                .as_ptr(),
             );
         }
     }
@@ -2742,10 +2605,15 @@ unsafe extern "C" fn addEndpoint(
             seg.j = starti;
         }
         t = findMap((*rtr).trimap, seg.i, seg.j);
-        if !(sides != 0 && inCone(v0, p, v1, *pts.offset(seg.i as isize)) == 0
+        if !(sides != 0
+            && inCone(v0, p, v1, *pts.offset(seg.i as isize)) == 0
             && inCone(v0, p, v1, *pts.offset(seg.j as isize)) == 0
-            && raySeg(p, vr, *pts.offset(seg.i as isize), *pts.offset(seg.j as isize))
-                == 0)
+            && raySeg(
+                p,
+                vr,
+                *pts.offset(seg.i as isize),
+                *pts.offset(seg.j as isize),
+            ) == 0)
         {
             d = sqrt(
                 (p.x - (*((*(*rtr).tg).nodes).offset(t as isize)).ctr.x)
@@ -2784,11 +2652,10 @@ unsafe extern "C" fn edgeToSeg(
         b"0\0" as *const u8 as *const libc::c_char,
         b"multispline.c\0" as *const u8 as *const libc::c_char,
         1027 as libc::c_int as libc::c_uint,
-        (*::std::mem::transmute::<
-            &[u8; 36],
-            &[libc::c_char; 36],
-        >(b"ipair edgeToSeg(tgraph *, int, int)\0"))
-            .as_ptr(),
+        (*::std::mem::transmute::<&[u8; 36], &[libc::c_char; 36]>(
+            b"ipair edgeToSeg(tgraph *, int, int)\0",
+        ))
+        .as_ptr(),
     );
     return ip;
 }
@@ -3027,18 +2894,13 @@ unsafe extern "C" fn mkPoly(
     *sx = cnt1 + 1 as libc::c_int;
     return ps;
 }
-unsafe extern "C" fn resetGraph(
-    mut g: *mut tgraph,
-    mut ncnt: libc::c_int,
-    mut ecnt: libc::c_int,
-) {
+unsafe extern "C" fn resetGraph(mut g: *mut tgraph, mut ncnt: libc::c_int, mut ecnt: libc::c_int) {
     let mut i: libc::c_int = 0;
     let mut np: *mut tnode = (*g).nodes;
     (*g).nedges = ecnt;
     i = 0 as libc::c_int;
     while i < ncnt {
-        if ((*np).edges).offset((*np).ne as isize)
-            == (*np.offset(1 as libc::c_int as isize)).edges
+        if ((*np).edges).offset((*np).ne as isize) == (*np.offset(1 as libc::c_int as isize)).edges
         {
             let ref mut fresh66 = (*np).ne;
             *fresh66 -= 1;
@@ -3047,11 +2909,7 @@ unsafe extern "C" fn resetGraph(
         i += 1;
     }
 }
-unsafe extern "C" fn PQgen(
-    mut pq: *mut PQ,
-    mut sz: libc::c_int,
-    mut guard: libc::c_int,
-) {
+unsafe extern "C" fn PQgen(mut pq: *mut PQ, mut sz: libc::c_int, mut guard: libc::c_int) {
     let ref mut fresh67 = (*pq).pq;
     *fresh67 = gcalloc(
         (sz + 1 as libc::c_int) as size_t,
@@ -3091,7 +2949,10 @@ unsafe extern "C" fn PQupheap(mut ppq: *mut PQ, mut k: libc::c_int) {
 }
 unsafe extern "C" fn PQinsert(mut pq: *mut PQ, mut np: libc::c_int) -> libc::c_int {
     if (*pq).PQcnt == (*pq).PQsize {
-        agerr(AGERR, b"Heap overflow\n\0" as *const u8 as *const libc::c_char);
+        agerr(
+            AGERR,
+            b"Heap overflow\n\0" as *const u8 as *const libc::c_char,
+        );
         return 1 as libc::c_int;
     }
     let ref mut fresh68 = (*pq).PQcnt;
@@ -3133,10 +2994,7 @@ unsafe extern "C" fn PQremove(mut pq: *mut PQ) -> libc::c_int {
     let mut n: libc::c_int = 0;
     if (*pq).PQcnt != 0 {
         n = *((*pq).pq).offset(1 as libc::c_int as isize);
-        *((*pq).pq)
-            .offset(
-                1 as libc::c_int as isize,
-            ) = *((*pq).pq).offset((*pq).PQcnt as isize);
+        *((*pq).pq).offset(1 as libc::c_int as isize) = *((*pq).pq).offset((*pq).PQcnt as isize);
         let ref mut fresh69 = (*pq).PQcnt;
         *fresh69 -= 1;
         if (*pq).PQcnt != 0 {
@@ -3144,14 +3002,10 @@ unsafe extern "C" fn PQremove(mut pq: *mut PQ) -> libc::c_int {
         }
         return n;
     } else {
-        return *((*pq).pq).offset(0 as libc::c_int as isize)
+        return *((*pq).pq).offset(0 as libc::c_int as isize);
     };
 }
-unsafe extern "C" fn PQupdate(
-    mut pq: *mut PQ,
-    mut n: libc::c_int,
-    mut d: libc::c_float,
-) {
+unsafe extern "C" fn PQupdate(mut pq: *mut PQ, mut n: libc::c_int, mut d: libc::c_float) {
     *((*(pq as *mut PPQ)).vals).offset(n as isize) = d;
     PQupheap(pq, *((*(pq as *mut PPQ)).idxs).offset(n as isize));
 }
@@ -3188,8 +3042,7 @@ unsafe extern "C" fn triPath(
         if !(i != -(1 as libc::c_int)) {
             break;
         }
-        *((*(pq as *mut PPQ)).vals).offset(i as isize)
-            *= -(1 as libc::c_int) as libc::c_float;
+        *((*(pq as *mut PPQ)).vals).offset(i as isize) *= -(1 as libc::c_int) as libc::c_float;
         if i == v1 {
             break;
         }
@@ -3202,23 +3055,17 @@ unsafe extern "C" fn triPath(
             } else {
                 adjn = (*e).t;
             }
-            if *((*(pq as *mut PPQ)).vals).offset(adjn as isize)
-                < 0 as libc::c_int as libc::c_float
+            if *((*(pq as *mut PPQ)).vals).offset(adjn as isize) < 0 as libc::c_int as libc::c_float
             {
-                d = -(*((*(pq as *mut PPQ)).vals).offset(i as isize) as libc::c_double
-                    + (*e).dist);
-                if *((*(pq as *mut PPQ)).vals).offset(adjn as isize)
-                    == -3.40282347e+38f32
-                {
-                    *((*(pq as *mut PPQ)).vals)
-                        .offset(adjn as isize) = d as libc::c_float;
+                d = -(*((*(pq as *mut PPQ)).vals).offset(i as isize) as libc::c_double + (*e).dist);
+                if *((*(pq as *mut PPQ)).vals).offset(adjn as isize) == -3.40282347e+38f32 {
+                    *((*(pq as *mut PPQ)).vals).offset(adjn as isize) = d as libc::c_float;
                     *dad.offset(adjn as isize) = i;
                     if PQinsert(pq, adjn) != 0 {
                         return 0 as *mut libc::c_int;
                     }
-                } else if (*((*(pq as *mut PPQ)).vals).offset(adjn as isize)
-                        as libc::c_double) < d
-                    {
+                } else if (*((*(pq as *mut PPQ)).vals).offset(adjn as isize) as libc::c_double) < d
+                {
                     PQupdate(pq, adjn, d as libc::c_float);
                     *dad.offset(adjn as isize) = i;
                 }
@@ -3234,23 +3081,20 @@ pub unsafe extern "C" fn makeMultiSpline(
     mut rtr: *mut router_t,
     mut doPolyline: libc::c_int,
 ) -> libc::c_int {
-    let mut line: Ppolyline_t = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-        .path;
-    let mut t: *mut node_t = (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-        == 3 as libc::c_int
-    {
-        e
-    } else {
-        e.offset(1 as libc::c_int as isize)
-    })
+    let mut line: Ppolyline_t = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).path;
+    let mut t: *mut node_t =
+        (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
+            e
+        } else {
+            e.offset(1 as libc::c_int as isize)
+        })
         .node;
-    let mut h: *mut node_t = (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-        == 2 as libc::c_int
-    {
-        e
-    } else {
-        e.offset(-(1 as libc::c_int as isize))
-    })
+    let mut h: *mut node_t =
+        (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
+            e
+        } else {
+            e.offset(-(1 as libc::c_int as isize))
+        })
         .node;
     let mut t_p: pointf = *(line.ps).offset(0 as libc::c_int as isize);
     let mut h_p: pointf = *(line.ps).offset((line.pn - 1 as libc::c_int) as isize);
@@ -3277,18 +3121,24 @@ pub unsafe extern "C" fn makeMultiSpline(
         t_p,
         t,
         t_id,
-        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).tail_port.side
-            as libc::c_int,
+        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
+            .tail_port
+            .side as libc::c_int,
     );
     addEndpoint(
         rtr,
         h_p,
         h,
         h_id,
-        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).head_port.side
-            as libc::c_int,
+        (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
+            .head_port
+            .side as libc::c_int,
     );
-    PQgen(&mut pq.pq, (*rtr).tn + 2 as libc::c_int, -(1 as libc::c_int));
+    PQgen(
+        &mut pq.pq,
+        (*rtr).tn + 2 as libc::c_int,
+        -(1 as libc::c_int),
+    );
     idxs = gcalloc(
         (pq.pq.PQsize + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
@@ -3330,41 +3180,26 @@ unsafe extern "C" fn run_static_initializers() {
                 as libc::c_int,
             link: 0 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
+                Option<
+                    unsafe extern "C" fn(*mut Dt_t, *mut item, *mut Dtdisc_t) -> *mut libc::c_void,
+                >,
+                Dtmake_f,
+            >(Some(
+                newItem
+                    as unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut item,
                         *mut Dtdisc_t,
                     ) -> *mut libc::c_void,
-                >,
-                Dtmake_f,
-            >(
-                Some(
-                    newItem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut item,
-                            *mut Dtdisc_t,
-                        ) -> *mut libc::c_void,
-                ),
-            ),
+            )),
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut item, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut item, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    freeItem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut item,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                freeItem as unsafe extern "C" fn(*mut Dt_t, *mut item, *mut Dtdisc_t) -> (),
+            )),
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut libc::c_int,
@@ -3373,17 +3208,15 @@ unsafe extern "C" fn run_static_initializers() {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    cmpItem
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut libc::c_int,
-                            *mut libc::c_int,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                cmpItem
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut libc::c_int,
+                        *mut libc::c_int,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,

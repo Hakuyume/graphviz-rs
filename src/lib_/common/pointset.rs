@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -55,16 +63,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -80,18 +82,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -99,16 +95,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -154,11 +143,7 @@ unsafe extern "C" fn mkPair(mut p: point) -> *mut pair {
     (*pp).id = p;
     return pp;
 }
-unsafe extern "C" fn freePair(
-    mut d: *mut Dt_t,
-    mut pp: *mut pair,
-    mut disc: *mut Dtdisc_t,
-) {
+unsafe extern "C" fn freePair(mut d: *mut Dt_t, mut pp: *mut pair, mut disc: *mut Dtdisc_t) {
     free(pp as *mut libc::c_void);
 }
 unsafe extern "C" fn cmppair(
@@ -168,15 +153,15 @@ unsafe extern "C" fn cmppair(
     mut disc: *mut Dtdisc_t,
 ) -> libc::c_int {
     if (*key1).x > (*key2).x {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else if (*key1).x < (*key2).x {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else if (*key1).y > (*key2).y {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else if (*key1).y < (*key2).y {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 static mut intPairDisc: Dtdisc_t = unsafe {
@@ -187,22 +172,13 @@ static mut intPairDisc: Dtdisc_t = unsafe {
             link: 0 as libc::c_ulong as libc::c_int,
             makef: None,
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut pair, *mut Dtdisc_t) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut pair, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    freePair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut pair,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                freePair as unsafe extern "C" fn(*mut Dt_t, *mut pair, *mut Dtdisc_t) -> (),
+            )),
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut point,
@@ -211,17 +187,15 @@ static mut intPairDisc: Dtdisc_t = unsafe {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    cmppair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut point,
-                            *mut point,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                cmppair
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut point,
+                        *mut point,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,
@@ -242,28 +216,22 @@ pub unsafe extern "C" fn insertPS(mut ps: *mut PointSet, mut pt: point) {
     let mut pp: *mut pair = 0 as *mut pair;
     pp = mkPair(pt);
     if (Some(((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(ps, pp as *mut libc::c_void, 0o1 as libc::c_int) != pp as *mut libc::c_void
+        .expect("non-null function pointer")(ps, pp as *mut libc::c_void, 0o1 as libc::c_int)
+        != pp as *mut libc::c_void
     {
         free(pp as *mut libc::c_void);
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn addPS(
-    mut ps: *mut PointSet,
-    mut x: libc::c_int,
-    mut y: libc::c_int,
-) {
+pub unsafe extern "C" fn addPS(mut ps: *mut PointSet, mut x: libc::c_int, mut y: libc::c_int) {
     let mut pt: point = point { x: 0, y: 0 };
     let mut pp: *mut pair = 0 as *mut pair;
     pt.x = x;
     pt.y = y;
     pp = mkPair(pt);
     if (Some(((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(ps, pp as *mut libc::c_void, 0o1 as libc::c_int) != pp as *mut libc::c_void
+        .expect("non-null function pointer")(ps, pp as *mut libc::c_void, 0o1 as libc::c_int)
+        != pp as *mut libc::c_void
     {
         free(pp as *mut libc::c_void);
     }
@@ -278,13 +246,13 @@ pub unsafe extern "C" fn inPS(mut ps: *mut PointSet, mut pt: point) -> libc::c_i
         id: point { x: 0, y: 0 },
     };
     p.id = pt;
-    return if !((Some(
-        ((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer"),
+    return if !((Some(((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        ps,
+        &mut p as *mut pair as *mut libc::c_void,
+        0o4 as libc::c_int,
     ))
-        .expect(
-            "non-null function pointer",
-        )(ps, &mut p as *mut pair as *mut libc::c_void, 0o4 as libc::c_int))
-        .is_null()
+    .is_null()
     {
         1 as libc::c_int
     } else {
@@ -306,13 +274,13 @@ pub unsafe extern "C" fn isInPS(
     };
     p.id.x = x;
     p.id.y = y;
-    return if !((Some(
-        ((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer"),
+    return if !((Some(((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        ps,
+        &mut p as *mut pair as *mut libc::c_void,
+        0o4 as libc::c_int,
     ))
-        .expect(
-            "non-null function pointer",
-        )(ps, &mut p as *mut pair as *mut libc::c_void, 0o4 as libc::c_int))
-        .is_null()
+    .is_null()
     {
         1 as libc::c_int
     } else {
@@ -326,10 +294,8 @@ pub unsafe extern "C" fn sizeOf(mut ps: *mut PointSet) -> libc::c_int {
 #[no_mangle]
 pub unsafe extern "C" fn pointsOf(mut ps: *mut PointSet) -> *mut point {
     let mut n: libc::c_int = dtsize(ps);
-    let mut pts: *mut point = gcalloc(
-        n as size_t,
-        ::std::mem::size_of::<point>() as libc::c_ulong,
-    ) as *mut point;
+    let mut pts: *mut point =
+        gcalloc(n as size_t, ::std::mem::size_of::<point>() as libc::c_ulong) as *mut point;
     let mut p: *mut pair = 0 as *mut pair;
     let mut pp: *mut point = pts;
     p = dtflatten(ps) as *mut pair;
@@ -358,11 +324,7 @@ unsafe extern "C" fn mkMPair(
     (*ap).v = (*obj).v;
     return ap;
 }
-unsafe extern "C" fn freeMPair(
-    mut d: *mut Dt_t,
-    mut ap: *mut mpair,
-    mut disc: *mut MPairDisc,
-) {
+unsafe extern "C" fn freeMPair(mut d: *mut Dt_t, mut ap: *mut mpair, mut disc: *mut MPairDisc) {
     let ref mut fresh2 = (*ap).link.right;
     *fresh2 = (*disc).flist as *mut Dtlink_t;
     let ref mut fresh3 = (*disc).flist;
@@ -375,41 +337,20 @@ static mut intMPairDisc: Dtdisc_t = unsafe {
             size: ::std::mem::size_of::<point>() as libc::c_ulong as libc::c_int,
             link: 0 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut Dt_t,
-                        *mut mpair,
-                        *mut MPairDisc,
-                    ) -> *mut mpair,
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut mpair, *mut MPairDisc) -> *mut mpair>,
                 Dtmake_f,
-            >(
-                Some(
-                    mkMPair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut mpair,
-                            *mut MPairDisc,
-                        ) -> *mut mpair,
-                ),
-            ),
+            >(Some(
+                mkMPair
+                    as unsafe extern "C" fn(*mut Dt_t, *mut mpair, *mut MPairDisc) -> *mut mpair,
+            )),
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut Dt_t, *mut mpair, *mut MPairDisc) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut mpair, *mut MPairDisc) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    freeMPair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut mpair,
-                            *mut MPairDisc,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                freeMPair as unsafe extern "C" fn(*mut Dt_t, *mut mpair, *mut MPairDisc) -> (),
+            )),
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut point,
@@ -418,17 +359,15 @@ static mut intMPairDisc: Dtdisc_t = unsafe {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    cmppair
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut point,
-                            *mut point,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                cmppair
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut point,
+                        *mut point,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,
@@ -438,9 +377,8 @@ static mut intMPairDisc: Dtdisc_t = unsafe {
 };
 #[no_mangle]
 pub unsafe extern "C" fn newPM() -> *mut PointMap {
-    let mut dp: *mut MPairDisc = gmalloc(
-        ::std::mem::size_of::<MPairDisc>() as libc::c_ulong,
-    ) as *mut MPairDisc;
+    let mut dp: *mut MPairDisc =
+        gmalloc(::std::mem::size_of::<MPairDisc>() as libc::c_ulong) as *mut MPairDisc;
     (*dp).disc = intMPairDisc;
     let ref mut fresh4 = (*dp).flist;
     *fresh4 = 0 as *mut mpair;
@@ -449,9 +387,7 @@ pub unsafe extern "C" fn newPM() -> *mut PointMap {
 #[no_mangle]
 pub unsafe extern "C" fn clearPM(mut ps: *mut PointMap) {
     (Some(((*(ps as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(ps, 0 as *mut libc::c_void, 0o100 as libc::c_int);
+        .expect("non-null function pointer")(ps, 0 as *mut libc::c_void, 0o100 as libc::c_int);
 }
 #[no_mangle]
 pub unsafe extern "C" fn freePM(mut ps: *mut PointMap) {
@@ -487,9 +423,10 @@ pub unsafe extern "C" fn insertPM(
     dummy.id.y = y;
     dummy.v = v;
     p = (Some(((*(pm as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(pm, &mut dummy as *mut mpair as *mut libc::c_void, 0o1 as libc::c_int)
-        as *mut mpair;
+        .expect("non-null function pointer")(
+        pm,
+        &mut dummy as *mut mpair as *mut libc::c_void,
+        0o1 as libc::c_int,
+    ) as *mut mpair;
     return (*p).v;
 }

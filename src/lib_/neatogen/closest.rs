@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -18,18 +26,9 @@ extern "C" {
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn quicksort_place(
-        _: *mut libc::c_double,
-        _: *mut libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-    );
+    fn quicksort_place(_: *mut libc::c_double, _: *mut libc::c_int, _: libc::c_int, _: libc::c_int);
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
 }
 pub type size_t = libc::c_ulong;
@@ -107,16 +106,17 @@ unsafe extern "C" fn gv_alloc(mut size: size_t) -> *mut libc::c_void {
     return gv_calloc(1 as libc::c_int as size_t, size);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -127,32 +127,32 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
 }
 #[inline]
 unsafe extern "C" fn stack_size(mut stack: *const gv_stack_t) -> size_t {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             23 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"size_t stack_size(const gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 38], &[libc::c_char; 38]>(
+                b"size_t stack_size(const gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return (*stack).size;
 }
 #[inline]
 unsafe extern "C" fn stack_is_empty(mut stack: *const gv_stack_t) -> bool {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             28 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"_Bool stack_is_empty(const gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"_Bool stack_is_empty(const gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return stack_size(stack) == 0 as libc::c_int as libc::c_ulong;
@@ -162,22 +162,22 @@ unsafe extern "C" fn stack_push(
     mut stack: *mut gv_stack_t,
     mut item: *mut libc::c_void,
 ) -> libc::c_int {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             34 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*stack).size == (*stack).capacity {
-        if ((18446744073709551615 as libc::c_ulong)
-            .wrapping_div(2 as libc::c_int as libc::c_ulong) < (*stack).capacity)
-            as libc::c_int as libc::c_long != 0
+        if ((18446744073709551615 as libc::c_ulong).wrapping_div(2 as libc::c_int as libc::c_ulong)
+            < (*stack).capacity) as libc::c_int as libc::c_long
+            != 0
         {
             return 75 as libc::c_int;
         }
@@ -190,8 +190,8 @@ unsafe extern "C" fn stack_push(
             (*stack).base as *mut libc::c_void,
             (::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong).wrapping_mul(c),
         ) as *mut *mut libc::c_void;
-        if (b == 0 as *mut libc::c_void as *mut *mut libc::c_void) as libc::c_int
-            as libc::c_long != 0
+        if (b == 0 as *mut libc::c_void as *mut *mut libc::c_void) as libc::c_int as libc::c_long
+            != 0
         {
             return 12 as libc::c_int;
         }
@@ -199,28 +199,28 @@ unsafe extern "C" fn stack_push(
         let ref mut fresh0 = (*stack).base;
         *fresh0 = b;
     }
-    if !((*stack).base).is_null() {} else {
+    if !((*stack).base).is_null() {
+    } else {
         __assert_fail(
             b"stack->base != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*stack).capacity > (*stack).size {} else {
+    if (*stack).capacity > (*stack).size {
+    } else {
         __assert_fail(
             b"stack->capacity > stack->size\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             59 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 37],
-                &[libc::c_char; 37],
-            >(b"int stack_push(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 37], &[libc::c_char; 37]>(
+                b"int stack_push(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let ref mut fresh1 = *((*stack).base).offset((*stack).size as isize);
@@ -230,20 +230,17 @@ unsafe extern "C" fn stack_push(
     return 0 as libc::c_int;
 }
 #[inline]
-unsafe extern "C" fn stack_push_or_exit(
-    mut stack: *mut gv_stack_t,
-    mut item: *mut libc::c_void,
-) {
-    if !stack.is_null() {} else {
+unsafe extern "C" fn stack_push_or_exit(mut stack: *mut gv_stack_t, mut item: *mut libc::c_void) {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             70 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 46],
-                &[libc::c_char; 46],
-            >(b"void stack_push_or_exit(gv_stack_t *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                b"void stack_push_or_exit(gv_stack_t *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut r: libc::c_int = stack_push(stack, item);
@@ -258,38 +255,35 @@ unsafe extern "C" fn stack_push_or_exit(
 }
 #[inline]
 unsafe extern "C" fn stack_top(mut stack: *mut gv_stack_t) -> *mut libc::c_void {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             81 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void *stack_top(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void *stack_top(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if !stack_is_empty(stack)
-        && !(b"access to top of an empty stack\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"access to top of an empty stack\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
-            b"!stack_is_empty(stack) && \"access to top of an empty stack\"\0"
-                as *const u8 as *const libc::c_char,
+            b"!stack_is_empty(stack) && \"access to top of an empty stack\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             82 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void *stack_top(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void *stack_top(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return *((*stack).base)
-        .offset(
-            ((*stack).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
-        );
+        .offset(((*stack).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
 }
 #[inline]
 unsafe extern "C" fn stack_pop(mut stack: *mut gv_stack_t) -> *mut libc::c_void {
@@ -300,16 +294,16 @@ unsafe extern "C" fn stack_pop(mut stack: *mut gv_stack_t) -> *mut libc::c_void 
 }
 #[inline]
 unsafe extern "C" fn stack_reset(mut stack: *mut gv_stack_t) {
-    if !stack.is_null() {} else {
+    if !stack.is_null() {
+    } else {
         __assert_fail(
             b"stack != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/stack.h\0" as *const u8 as *const libc::c_char,
             95 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 31],
-                &[libc::c_char; 31],
-            >(b"void stack_reset(gv_stack_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 31], &[libc::c_char; 31]>(
+                b"void stack_reset(gv_stack_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     free((*stack).base as *mut libc::c_void);
@@ -320,8 +314,7 @@ unsafe extern "C" fn stack_reset(mut stack: *mut gv_stack_t) {
     );
 }
 unsafe extern "C" fn push(mut s: *mut gv_stack_t, mut x: Pair) {
-    let mut copy: *mut Pair = gv_alloc(::std::mem::size_of::<Pair>() as libc::c_ulong)
-        as *mut Pair;
+    let mut copy: *mut Pair = gv_alloc(::std::mem::size_of::<Pair>() as libc::c_ulong) as *mut Pair;
     *copy = x;
     stack_push_or_exit(s, copy as *mut libc::c_void);
 }
@@ -342,10 +335,8 @@ unsafe extern "C" fn heapify(mut h: *mut PairHeap, mut i: libc::c_int) {
         l = 2 as libc::c_int * i;
         r = 2 as libc::c_int * i + 1 as libc::c_int;
         if l < (*h).heapSize
-            && ((*((*h).data).offset(l as isize)).dist
-                < (*((*h).data).offset(i as isize)).dist
-                || (*((*h).data).offset(l as isize)).dist
-                    == (*((*h).data).offset(i as isize)).dist
+            && ((*((*h).data).offset(l as isize)).dist < (*((*h).data).offset(i as isize)).dist
+                || (*((*h).data).offset(l as isize)).dist == (*((*h).data).offset(i as isize)).dist
                     && rand() % 2 as libc::c_int != 0)
         {
             largest = l;
@@ -373,7 +364,7 @@ unsafe extern "C" fn heapify(mut h: *mut PairHeap, mut i: libc::c_int) {
         *((*h).data).offset(largest as isize) = *((*h).data).offset(i as isize);
         *((*h).data).offset(i as isize) = temp;
         i = largest;
-    };
+    }
 }
 unsafe extern "C" fn freeHeap(mut h: *mut PairHeap) {
     free((*h).data as *mut libc::c_void);
@@ -402,9 +393,7 @@ unsafe extern "C" fn initHeap(
     while i < n - 1 as libc::c_int {
         edge.left = *ordering.offset(i as isize);
         edge.right = *ordering.offset((i + 1 as libc::c_int) as isize);
-        edge
-            .dist = *place
-            .offset(*ordering.offset((i + 1 as libc::c_int) as isize) as isize)
+        edge.dist = *place.offset(*ordering.offset((i + 1 as libc::c_int) as isize) as isize)
             - *place.offset(*ordering.offset(i as isize) as isize);
         *((*h).data).offset(i as isize) = edge;
         i += 1;
@@ -420,10 +409,8 @@ unsafe extern "C" fn extractMax(mut h: *mut PairHeap, mut max: *mut Pair) -> boo
         return 0 as libc::c_int != 0;
     }
     *max = *((*h).data).offset(0 as libc::c_int as isize);
-    *((*h).data)
-        .offset(
-            0 as libc::c_int as isize,
-        ) = *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
+    *((*h).data).offset(0 as libc::c_int as isize) =
+        *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
     let ref mut fresh5 = (*h).heapSize;
     *fresh5 -= 1;
     heapify(h, 0 as libc::c_int);
@@ -456,8 +443,7 @@ unsafe extern "C" fn insert(mut h: *mut PairHeap, mut edge: Pair) {
             dist: 0.,
         };
         temp = *((*h).data).offset(i as isize);
-        *((*h).data)
-            .offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
+        *((*h).data).offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
         *((*h).data).offset((i / 2 as libc::c_int) as isize) = temp;
         i = i / 2 as libc::c_int;
     }
@@ -517,18 +503,14 @@ unsafe extern "C" fn find_closest_pairs(
     initHeap(&mut heap, place, ordering, n);
     i = 1 as libc::c_int;
     while i < n {
-        *left
-            .offset(
-                *ordering.offset(i as isize) as isize,
-            ) = *ordering.offset((i - 1 as libc::c_int) as isize);
+        *left.offset(*ordering.offset(i as isize) as isize) =
+            *ordering.offset((i - 1 as libc::c_int) as isize);
         i += 1;
     }
     i = 0 as libc::c_int;
     while i < n - 1 as libc::c_int {
-        *right
-            .offset(
-                *ordering.offset(i as isize) as isize,
-            ) = *ordering.offset((i + 1 as libc::c_int) as isize);
+        *right.offset(*ordering.offset(i as isize) as isize) =
+            *ordering.offset((i + 1 as libc::c_int) as isize);
         i += 1;
     }
     i = 0 as libc::c_int;
@@ -544,14 +526,11 @@ unsafe extern "C" fn find_closest_pairs(
         right_index = *inv_ordering.offset(pair.right as isize);
         if left_index > 0 as libc::c_int {
             neighbor = *ordering.offset((left_index - 1 as libc::c_int) as isize);
-            if *inv_ordering.offset(*right.offset(neighbor as isize) as isize)
-                < right_index
-            {
+            if *inv_ordering.offset(*right.offset(neighbor as isize) as isize) < right_index {
                 new_pair.left = neighbor;
                 new_pair.right = pair.right;
-                new_pair
-                    .dist = *place.offset(pair.right as isize)
-                    - *place.offset(neighbor as isize);
+                new_pair.dist =
+                    *place.offset(pair.right as isize) - *place.offset(neighbor as isize);
                 insert(&mut heap, new_pair);
                 *right.offset(neighbor as isize) = pair.right;
                 *left.offset(pair.right as isize) = neighbor;
@@ -559,14 +538,11 @@ unsafe extern "C" fn find_closest_pairs(
         }
         if right_index < n - 1 as libc::c_int {
             neighbor = *ordering.offset((right_index + 1 as libc::c_int) as isize);
-            if *inv_ordering.offset(*left.offset(neighbor as isize) as isize)
-                > left_index
-            {
+            if *inv_ordering.offset(*left.offset(neighbor as isize) as isize) > left_index {
                 new_pair.left = pair.left;
                 new_pair.right = neighbor;
-                new_pair
-                    .dist = *place.offset(neighbor as isize)
-                    - *place.offset(pair.left as isize);
+                new_pair.dist =
+                    *place.offset(neighbor as isize) - *place.offset(pair.left as isize);
                 insert(&mut heap, new_pair);
                 *left.offset(neighbor as isize) = pair.left;
                 *right.offset(pair.left as isize) = neighbor;
@@ -580,11 +556,7 @@ unsafe extern "C" fn find_closest_pairs(
     free(inv_ordering as *mut libc::c_void);
     freeHeap(&mut heap);
 }
-unsafe extern "C" fn add_edge(
-    mut graph: *mut vtx_data,
-    mut u: libc::c_int,
-    mut v: libc::c_int,
-) {
+unsafe extern "C" fn add_edge(mut graph: *mut vtx_data, mut u: libc::c_int, mut v: libc::c_int) {
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < (*graph.offset(u as isize)).nedges {
@@ -602,11 +574,11 @@ unsafe extern "C" fn add_edge(
     *fresh10 = *fresh10 + 1;
     *((*graph.offset(v as isize)).edges).offset(fresh11 as isize) = u;
     if !((*graph.offset(0 as libc::c_int as isize)).ewgts).is_null() {
-        let ref mut fresh12 = *((*graph.offset(u as isize)).ewgts)
-            .offset(0 as libc::c_int as isize);
+        let ref mut fresh12 =
+            *((*graph.offset(u as isize)).ewgts).offset(0 as libc::c_int as isize);
         *fresh12 -= 1.;
-        let ref mut fresh13 = *((*graph.offset(v as isize)).ewgts)
-            .offset(0 as libc::c_int as isize);
+        let ref mut fresh13 =
+            *((*graph.offset(v as isize)).ewgts).offset(0 as libc::c_int as isize);
         *fresh13 -= 1.;
     }
 }
@@ -656,8 +628,10 @@ unsafe extern "C" fn construct_graph(
         *weights.offset(i_1 as isize) = 1.0f64 as libc::c_float;
         i_1 = i_1.wrapping_add(1);
     }
-    new_graph = gcalloc(n as size_t, ::std::mem::size_of::<vtx_data>() as libc::c_ulong)
-        as *mut vtx_data;
+    new_graph = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<vtx_data>() as libc::c_ulong,
+    ) as *mut vtx_data;
     *New_graph = new_graph;
     let mut i_2: libc::c_int = 0 as libc::c_int;
     while i_2 < n {

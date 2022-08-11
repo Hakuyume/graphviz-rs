@@ -1,15 +1,20 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
-    fn memmove(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memmove(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong)
+        -> *mut libc::c_void;
 }
 pub type size_t = libc::c_ulong;
 #[derive(Copy, Clone)]
@@ -41,10 +46,7 @@ unsafe extern "C" fn make_space(mut vm: *mut Vmalloc_t) -> bool {
     return 1 as libc::c_int != 0;
 }
 #[no_mangle]
-pub unsafe extern "C" fn vmalloc(
-    mut vm: *mut Vmalloc_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+pub unsafe extern "C" fn vmalloc(mut vm: *mut Vmalloc_t, mut size: size_t) -> *mut libc::c_void {
     if !make_space(vm) {
         return 0 as *mut libc::c_void;
     }
@@ -66,8 +68,7 @@ pub unsafe extern "C" fn vmfree(mut vm: *mut Vmalloc_t, mut data: *mut libc::c_v
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < (*vm).size {
         if *((*vm).allocated).offset(i as isize) == data {
-            let mut extent: size_t = (::std::mem::size_of::<*mut libc::c_void>()
-                as libc::c_ulong)
+            let mut extent: size_t = (::std::mem::size_of::<*mut libc::c_void>() as libc::c_ulong)
                 .wrapping_mul(
                     ((*vm).size)
                         .wrapping_sub(i)
@@ -75,8 +76,9 @@ pub unsafe extern "C" fn vmfree(mut vm: *mut Vmalloc_t, mut data: *mut libc::c_v
                 );
             memmove(
                 ((*vm).allocated).offset(i as isize) as *mut libc::c_void,
-                ((*vm).allocated).offset(i as isize).offset(1 as libc::c_int as isize)
-                    as *const libc::c_void,
+                ((*vm).allocated)
+                    .offset(i as isize)
+                    .offset(1 as libc::c_int as isize) as *const libc::c_void,
                 extent,
             );
             let ref mut fresh3 = (*vm).size;

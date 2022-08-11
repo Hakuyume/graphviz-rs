@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -47,17 +55,11 @@ pub struct lt__advise {
     pub c2rust_padding: [u8; 3],
 }
 pub type lt_dladvise = *mut lt__advise;
-pub type lt_module_open = unsafe extern "C" fn(
-    lt_user_data,
-    *const libc::c_char,
-    lt_dladvise,
-) -> lt_module;
+pub type lt_module_open =
+    unsafe extern "C" fn(lt_user_data, *const libc::c_char, lt_dladvise) -> lt_module;
 pub type lt_module_close = unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int;
-pub type lt_find_sym = unsafe extern "C" fn(
-    lt_user_data,
-    lt_module,
-    *const libc::c_char,
-) -> *mut libc::c_void;
+pub type lt_find_sym =
+    unsafe extern "C" fn(lt_user_data, lt_module, *const libc::c_char) -> *mut libc::c_void;
 pub type lt_dlloader_init = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_exit = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_priority = libc::c_uint;
@@ -68,11 +70,11 @@ pub const LT_DLLOADER_PREPEND: lt_dlloader_priority = 0;
 pub struct lt_dlvtable {
     pub name: *const libc::c_char,
     pub sym_prefix: *const libc::c_char,
-    pub module_open: Option::<lt_module_open>,
-    pub module_close: Option::<lt_module_close>,
-    pub find_sym: Option::<lt_find_sym>,
-    pub dlloader_init: Option::<lt_dlloader_init>,
-    pub dlloader_exit: Option::<lt_dlloader_exit>,
+    pub module_open: Option<lt_module_open>,
+    pub module_close: Option<lt_module_close>,
+    pub find_sym: Option<lt_find_sym>,
+    pub dlloader_init: Option<lt_dlloader_init>,
+    pub dlloader_exit: Option<lt_dlloader_exit>,
     pub dlloader_data: lt_user_data,
     pub priority: lt_dlloader_priority,
 }
@@ -125,12 +127,10 @@ pub struct symlist_chain {
 }
 static mut vtable: *mut lt_dlvtable = 0 as *const lt_dlvtable as *mut lt_dlvtable;
 #[no_mangle]
-pub unsafe extern "C" fn preopen_LTX_get_vtable(
-    mut loader_data: lt_user_data,
-) -> *mut lt_dlvtable {
+pub unsafe extern "C" fn preopen_LTX_get_vtable(mut loader_data: lt_user_data) -> *mut lt_dlvtable {
     if vtable.is_null() {
-        vtable = lt__zalloc(::std::mem::size_of::<lt_dlvtable>() as libc::c_ulong)
-            as *mut lt_dlvtable;
+        vtable =
+            lt__zalloc(::std::mem::size_of::<lt_dlvtable>() as libc::c_ulong) as *mut lt_dlvtable;
     }
     if !vtable.is_null() && ((*vtable).name).is_null() {
         let ref mut fresh0 = (*vtable).name;
@@ -147,9 +147,7 @@ pub unsafe extern "C" fn preopen_LTX_get_vtable(
                 ) -> lt_module,
         );
         let ref mut fresh3 = (*vtable).module_close;
-        *fresh3 = Some(
-            vm_close as unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int,
-        );
+        *fresh3 = Some(vm_close as unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int);
         let ref mut fresh4 = (*vtable).find_sym;
         *fresh4 = Some(
             vm_sym
@@ -173,8 +171,7 @@ pub unsafe extern "C" fn preopen_LTX_get_vtable(
     }
     return vtable;
 }
-static mut preloaded_symlists: *mut symlist_chain = 0 as *const symlist_chain
-    as *mut symlist_chain;
+static mut preloaded_symlists: *mut symlist_chain = 0 as *const symlist_chain as *mut symlist_chain;
 static mut default_preloaded_symbols: *const lt_dlsymlist = 0 as *const lt_dlsymlist;
 unsafe extern "C" fn vl_init(mut loader_data: lt_user_data) -> libc::c_int {
     let mut errors: libc::c_int = 0 as libc::c_int;
@@ -215,11 +212,9 @@ unsafe extern "C" fn vm_open(
                 if ((*symbol).address).is_null()
                     && strcmp((*symbol).name, filename) == 0 as libc::c_int
                 {
-                    let mut next_symbol: *const lt_dlsymlist = symbol
-                        .offset(1 as libc::c_int as isize);
-                    if !((*next_symbol).address).is_null()
-                        && !((*next_symbol).name).is_null()
-                    {
+                    let mut next_symbol: *const lt_dlsymlist =
+                        symbol.offset(1 as libc::c_int as isize);
+                    if !((*next_symbol).address).is_null() && !((*next_symbol).name).is_null() {
                         module = (*lists).symlist as lt_module;
                         current_block = 7683756912919051300;
                         break 's_36;
@@ -232,18 +227,13 @@ unsafe extern "C" fn vm_open(
         match current_block {
             7683756912919051300 => {}
             _ => {
-                lt__set_last_error(
-                    lt__error_string(LT_ERROR_FILE_NOT_FOUND as libc::c_int),
-                );
+                lt__set_last_error(lt__error_string(LT_ERROR_FILE_NOT_FOUND as libc::c_int));
             }
         }
     }
     return module;
 }
-unsafe extern "C" fn vm_close(
-    mut loader_data: lt_user_data,
-    mut module: lt_module,
-) -> libc::c_int {
+unsafe extern "C" fn vm_close(mut loader_data: lt_user_data, mut module: lt_module) -> libc::c_int {
     module = 0 as lt_module;
     return 0 as libc::c_int;
 }
@@ -294,9 +284,9 @@ unsafe extern "C" fn add_symlist(mut symlist: *const lt_dlsymlist) -> libc::c_in
         lists = (*lists).next;
     }
     if lists.is_null() {
-        let mut tmp: *mut symlist_chain = lt__zalloc(
-            ::std::mem::size_of::<symlist_chain>() as libc::c_ulong,
-        ) as *mut symlist_chain;
+        let mut tmp: *mut symlist_chain =
+            lt__zalloc(::std::mem::size_of::<symlist_chain>() as libc::c_ulong)
+                as *mut symlist_chain;
         if !tmp.is_null() {
             let ref mut fresh8 = (*tmp).symlist;
             *fresh8 = symlist;
@@ -309,9 +299,9 @@ unsafe extern "C" fn add_symlist(mut symlist: *const lt_dlsymlist) -> libc::c_in
                     b"@INIT@\0" as *const u8 as *const libc::c_char,
                 ) == 0 as libc::c_int
             {
-                let mut init_symlist: Option::<unsafe extern "C" fn() -> ()> = None;
+                let mut init_symlist: Option<unsafe extern "C" fn() -> ()> = None;
                 let ref mut fresh10 = *(&mut init_symlist
-                    as *mut Option::<unsafe extern "C" fn() -> ()>
+                    as *mut Option<unsafe extern "C" fn() -> ()>
                     as *mut *mut libc::c_void);
                 *fresh10 = (*symlist.offset(1 as libc::c_int as isize)).address;
                 (Some(init_symlist.expect("non-null function pointer")))
@@ -324,16 +314,12 @@ unsafe extern "C" fn add_symlist(mut symlist: *const lt_dlsymlist) -> libc::c_in
     return errors;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt_dlpreload_default(
-    mut preloaded: *const lt_dlsymlist,
-) -> libc::c_int {
+pub unsafe extern "C" fn lt_dlpreload_default(mut preloaded: *const lt_dlsymlist) -> libc::c_int {
     default_preloaded_symbols = preloaded;
     return 0 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt_dlpreload(
-    mut preloaded: *const lt_dlsymlist,
-) -> libc::c_int {
+pub unsafe extern "C" fn lt_dlpreload(mut preloaded: *const lt_dlsymlist) -> libc::c_int {
     let mut errors: libc::c_int = 0 as libc::c_int;
     if !preloaded.is_null() {
         errors = add_symlist(preloaded);
@@ -348,15 +334,14 @@ pub unsafe extern "C" fn lt_dlpreload(
 #[no_mangle]
 pub unsafe extern "C" fn lt_dlpreload_open(
     mut originator: *const libc::c_char,
-    mut func: Option::<lt_dlpreload_callback_func>,
+    mut func: Option<lt_dlpreload_callback_func>,
 ) -> libc::c_int {
     let mut list: *mut symlist_chain = 0 as *mut symlist_chain;
     let mut errors: libc::c_int = 0 as libc::c_int;
     let mut found: libc::c_int = 0 as libc::c_int;
     list = preloaded_symlists;
     while !list.is_null() {
-        if !originator.is_null()
-            && strcmp((*(*list).symlist).name, originator) == 0 as libc::c_int
+        if !originator.is_null() && strcmp((*(*list).symlist).name, originator) == 0 as libc::c_int
             || originator.is_null()
                 && strcmp(
                     (*(*list).symlist).name,
@@ -382,9 +367,10 @@ pub unsafe extern "C" fn lt_dlpreload_open(
                     if handle.is_null() {
                         errors += 1;
                     } else {
-                        errors
-                            += (Some(func.expect("non-null function pointer")))
-                                .expect("non-null function pointer")(handle);
+                        errors += (Some(func.expect("non-null function pointer")))
+                            .expect("non-null function pointer")(
+                            handle
+                        );
                     }
                 }
             }

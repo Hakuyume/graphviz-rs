@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -35,11 +43,7 @@ extern "C" {
         name: *mut libc::c_char,
         value: *const libc::c_char,
     ) -> *mut Agsym_t;
-    fn agnxtattr(
-        g: *mut Agraph_t,
-        kind: libc::c_int,
-        attr: *mut Agsym_t,
-    ) -> *mut Agsym_t;
+    fn agnxtattr(g: *mut Agraph_t, kind: libc::c_int, attr: *mut Agsym_t) -> *mut Agsym_t;
     fn aginit(
         g: *mut Agraph_t,
         kind: libc::c_int,
@@ -48,23 +52,12 @@ extern "C" {
         move_to_front: libc::c_int,
     );
     fn agxget(obj: *mut libc::c_void, sym: *mut Agsym_t) -> *mut libc::c_char;
-    fn gv_argvlist_set_item(
-        list: *mut gv_argvlist_t,
-        index: libc::c_int,
-        item: *mut libc::c_char,
-    );
-    fn strdup_and_subst_obj(
-        str: *mut libc::c_char,
-        obj: *mut libc::c_void,
-    ) -> *mut libc::c_char;
+    fn gv_argvlist_set_item(list: *mut gv_argvlist_t, index: libc::c_int, item: *mut libc::c_char);
+    fn strdup_and_subst_obj(str: *mut libc::c_char, obj: *mut libc::c_void) -> *mut libc::c_char;
     fn overlap_edge(e: *mut edge_t, b: boxf) -> bool;
     fn overlap_node(n: *mut node_t, b: boxf) -> bool;
     fn emit_graph(job: *mut GVJ_t, g: *mut graph_t);
-    fn gvLayout(
-        gvc: *mut GVC_t,
-        g: *mut graph_t,
-        engine: *const libc::c_char,
-    ) -> libc::c_int;
+    fn gvLayout(gvc: *mut GVC_t, g: *mut graph_t, engine: *const libc::c_char) -> libc::c_int;
     fn gvRenderFilename(
         gvc: *mut GVC_t,
         g: *mut graph_t,
@@ -220,9 +213,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -236,25 +227,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -356,7 +340,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -517,16 +502,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -542,18 +521,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -561,16 +534,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -612,9 +578,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -644,13 +609,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -683,26 +643,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -711,29 +663,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -741,8 +685,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -776,7 +720,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -802,9 +746,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -854,8 +796,8 @@ pub type gvlayout_engine_t = gvlayout_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvlayout_engine_s {
-    pub layout: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
 }
 pub type gvplugin_active_textlayout_t = gvplugin_active_textlayout_s;
 #[derive(Copy, Clone)]
@@ -944,7 +886,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1043,13 +985,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1058,7 +999,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1149,7 +1090,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1284,28 +1225,28 @@ pub type C2RustUnnamed_8 = libc::c_uint;
 pub const GVATTR_COLOR: C2RustUnnamed_8 = 2;
 pub const GVATTR_BOOL: C2RustUnnamed_8 = 1;
 pub const GVATTR_STRING: C2RustUnnamed_8 = 0;
-static mut s_digraph: *mut libc::c_char = b"digraph\0" as *const u8
-    as *const libc::c_char as *mut libc::c_char;
-static mut s_graph: *mut libc::c_char = b"graph\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut s_subgraph: *mut libc::c_char = b"subgraph\0" as *const u8
-    as *const libc::c_char as *mut libc::c_char;
-static mut s_node: *mut libc::c_char = b"node\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut s_edge: *mut libc::c_char = b"edge\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut s_tooltip: *mut libc::c_char = b"tooltip\0" as *const u8
-    as *const libc::c_char as *mut libc::c_char;
-static mut s_href: *mut libc::c_char = b"href\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut s_URL: *mut libc::c_char = b"URL\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut s_tailport: *mut libc::c_char = b"tailport\0" as *const u8
-    as *const libc::c_char as *mut libc::c_char;
-static mut s_headport: *mut libc::c_char = b"headport\0" as *const u8
-    as *const libc::c_char as *mut libc::c_char;
-static mut s_key: *mut libc::c_char = b"key\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
+static mut s_digraph: *mut libc::c_char =
+    b"digraph\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_graph: *mut libc::c_char =
+    b"graph\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_subgraph: *mut libc::c_char =
+    b"subgraph\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_node: *mut libc::c_char =
+    b"node\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_edge: *mut libc::c_char =
+    b"edge\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_tooltip: *mut libc::c_char =
+    b"tooltip\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_href: *mut libc::c_char =
+    b"href\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_URL: *mut libc::c_char =
+    b"URL\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_tailport: *mut libc::c_char =
+    b"tailport\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_headport: *mut libc::c_char =
+    b"headport\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut s_key: *mut libc::c_char =
+    b"key\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
 unsafe extern "C" fn gv_graph_state(mut job: *mut GVJ_t, mut g: *mut graph_t) {
     let mut j: libc::c_int = 0;
     let mut a: *mut Agsym_t = 0 as *mut Agsym_t;
@@ -1355,10 +1296,7 @@ unsafe extern "C" fn gv_graph_state(mut job: *mut GVJ_t, mut g: *mut graph_t) {
     }
     if !a.is_null() {
         let ref mut fresh7 = (*job).selected_href;
-        *fresh7 = strdup_and_subst_obj(
-            agxget(g as *mut libc::c_void, a),
-            g as *mut libc::c_void,
-        );
+        *fresh7 = strdup_and_subst_obj(agxget(g as *mut libc::c_void, a), g as *mut libc::c_void);
     }
 }
 unsafe extern "C" fn gv_node_state(mut job: *mut GVJ_t, mut n: *mut node_t) {
@@ -1407,10 +1345,7 @@ unsafe extern "C" fn gv_node_state(mut job: *mut GVJ_t, mut n: *mut node_t) {
     }
     if !a.is_null() {
         let ref mut fresh12 = (*job).selected_href;
-        *fresh12 = strdup_and_subst_obj(
-            agxget(n as *mut libc::c_void, a),
-            n as *mut libc::c_void,
-        );
+        *fresh12 = strdup_and_subst_obj(agxget(n as *mut libc::c_void, a), n as *mut libc::c_void);
     }
 }
 unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
@@ -1430,14 +1365,12 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
         nlist,
         fresh14,
         agnameof(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 3 as libc::c_int
-            {
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                 e
             } else {
                 e.offset(1 as libc::c_int as isize)
             })
-                .node as *mut libc::c_void,
+            .node as *mut libc::c_void,
         ),
     );
     j += 1;
@@ -1446,18 +1379,14 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
     gv_argvlist_set_item(
         nlist,
         fresh15,
-        (if agisdirected(
-            agraphof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 3 as libc::c_int
-                {
-                    e
-                } else {
-                    e.offset(1 as libc::c_int as isize)
-                })
-                    .node as *mut libc::c_void,
-            ),
-        ) != 0
+        (if agisdirected(agraphof(
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
+                e
+            } else {
+                e.offset(1 as libc::c_int as isize)
+            })
+            .node as *mut libc::c_void,
+        )) != 0
         {
             b"->\0" as *const u8 as *const libc::c_char
         } else {
@@ -1470,32 +1399,26 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
         nlist,
         fresh16,
         agnameof(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node as *mut libc::c_void,
+            .node as *mut libc::c_void,
         ),
     );
     j += 1;
     j += 1;
     (*nlist).argc = j;
     alist = &mut (*job).selected_obj_attributes;
-    g = agroot(
-        agraphof(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
-                e
-            } else {
-                e.offset(-(1 as libc::c_int as isize))
-            })
-                .node as *mut libc::c_void,
-        ) as *mut libc::c_void,
-    );
+    g = agroot(agraphof(
+        (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
+            e
+        } else {
+            e.offset(-(1 as libc::c_int as isize))
+        })
+        .node as *mut libc::c_void,
+    ) as *mut libc::c_void);
     a = 0 as *mut Agsym_t;
     loop {
         a = agnxtattr(g, 2 as libc::c_int, a);
@@ -1503,23 +1426,11 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
             break;
         }
         if strcmp((*a).name, s_tailport) == 0 as libc::c_int {
-            gv_argvlist_set_item(
-                nlist,
-                2 as libc::c_int,
-                agxget(e as *mut libc::c_void, a),
-            );
+            gv_argvlist_set_item(nlist, 2 as libc::c_int, agxget(e as *mut libc::c_void, a));
         } else if strcmp((*a).name, s_headport) == 0 as libc::c_int {
-            gv_argvlist_set_item(
-                nlist,
-                5 as libc::c_int,
-                agxget(e as *mut libc::c_void, a),
-            );
+            gv_argvlist_set_item(nlist, 5 as libc::c_int, agxget(e as *mut libc::c_void, a));
         } else if strcmp((*a).name, s_key) == 0 as libc::c_int {
-            gv_argvlist_set_item(
-                nlist,
-                6 as libc::c_int,
-                agxget(e as *mut libc::c_void, a),
-            );
+            gv_argvlist_set_item(nlist, 6 as libc::c_int, agxget(e as *mut libc::c_void, a));
             continue;
         }
         let fresh17 = j;
@@ -1532,14 +1443,12 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
     (*alist).argc = j;
     a = agattr(
         agraphof(
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node as *mut libc::c_void,
+            .node as *mut libc::c_void,
         ),
         2 as libc::c_int,
         s_href,
@@ -1548,14 +1457,12 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
     if a.is_null() {
         a = agattr(
             agraphof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
             2 as libc::c_int,
             s_URL,
@@ -1564,10 +1471,7 @@ unsafe extern "C" fn gv_edge_state(mut job: *mut GVJ_t, mut e: *mut edge_t) {
     }
     if !a.is_null() {
         let ref mut fresh19 = (*job).selected_href;
-        *fresh19 = strdup_and_subst_obj(
-            agxget(e as *mut libc::c_void, a),
-            e as *mut libc::c_void,
-        );
+        *fresh19 = strdup_and_subst_obj(agxget(e as *mut libc::c_void, a), e as *mut libc::c_void);
     }
 }
 unsafe extern "C" fn gvevent_refresh(mut job: *mut GVJ_t) {
@@ -1575,19 +1479,15 @@ unsafe extern "C" fn gvevent_refresh(mut job: *mut GVJ_t) {
     if ((*job).selected_obj).is_null() {
         let ref mut fresh20 = (*job).selected_obj;
         *fresh20 = g as *mut libc::c_void;
-        let ref mut fresh21 = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
-            .gui_state;
-        *fresh21 = (*fresh21 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
-            as libc::c_uchar;
+        let ref mut fresh21 = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gui_state;
+        *fresh21 =
+            (*fresh21 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar;
         gv_graph_state(job, g);
     }
     emit_graph(job, g);
     (*job).has_been_rendered = 1 as libc::c_int != 0;
 }
-unsafe extern "C" fn gvevent_find_cluster(
-    mut g: *mut graph_t,
-    mut b: boxf,
-) -> *mut graph_t {
+unsafe extern "C" fn gvevent_find_cluster(mut g: *mut graph_t, mut b: boxf) -> *mut graph_t {
     let mut i: libc::c_int = 0;
     let mut sg: *mut graph_t = 0 as *mut graph_t;
     let mut bb: boxf = boxf {
@@ -1597,8 +1497,7 @@ unsafe extern "C" fn gvevent_find_cluster(
     i = 1 as libc::c_int;
     while i <= (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).n_cluster {
         sg = gvevent_find_cluster(
-            *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust)
-                .offset(i as isize),
+            *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust).offset(i as isize),
             b,
         );
         if !sg.is_null() {
@@ -1606,19 +1505,28 @@ unsafe extern "C" fn gvevent_find_cluster(
         }
         i += 1;
     }
-    bb.LL.x = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).bb.LL.x;
-    bb.LL.y = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).bb.LL.y;
-    bb.UR.x = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).bb.UR.x;
-    bb.UR.y = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).bb.UR.y;
+    bb.LL.x = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .bb
+        .LL
+        .x;
+    bb.LL.y = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .bb
+        .LL
+        .y;
+    bb.UR.x = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .bb
+        .UR
+        .x;
+    bb.UR.y = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
+        .bb
+        .UR
+        .y;
     if b.UR.x >= bb.LL.x && bb.UR.x >= b.LL.x && b.UR.y >= bb.LL.y && bb.UR.y >= b.LL.y {
         return g;
     }
     return 0 as *mut graph_t;
 }
-unsafe extern "C" fn gvevent_find_obj(
-    mut g: *mut graph_t,
-    mut b: boxf,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gvevent_find_obj(mut g: *mut graph_t, mut b: boxf) -> *mut libc::c_void {
     let mut sg: *mut graph_t = 0 as *mut graph_t;
     let mut n: *mut node_t = 0 as *mut node_t;
     let mut e: *mut edge_t = 0 as *mut edge_t;
@@ -1655,24 +1563,24 @@ unsafe extern "C" fn gvevent_leave_obj(mut job: *mut GVJ_t) {
                     as *mut Agraphinfo_t))
                     .gui_state;
                 *fresh22 = (*fresh22 as libc::c_int
-                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             1 => {
                 let ref mut fresh23 = (*((*(obj as *mut node_t as *mut Agobj_t)).data
                     as *mut Agnodeinfo_t))
                     .gui_state;
                 *fresh23 = (*fresh23 as libc::c_int
-                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             2 => {
                 let ref mut fresh24 = (*((*(obj as *mut edge_t as *mut Agobj_t)).data
                     as *mut Agedgeinfo_t))
                     .gui_state;
                 *fresh24 = (*fresh24 as libc::c_int
-                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             _ => {}
         }
@@ -1694,27 +1602,22 @@ unsafe extern "C" fn gvevent_enter_obj(mut job: *mut GVJ_t) {
         match agobjkind(obj) {
             0 => {
                 g = obj as *mut graph_t;
-                let ref mut fresh27 = (*((*(g as *mut Agobj_t)).data
-                    as *mut Agraphinfo_t))
-                    .gui_state;
-                *fresh27 = (*fresh27 as libc::c_int
-                    | (1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh27 =
+                    (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gui_state;
+                *fresh27 = (*fresh27 as libc::c_int | (1 as libc::c_int) << 0 as libc::c_int)
+                    as libc::c_uchar;
                 a = agattr(g, 0 as libc::c_int, s_tooltip, 0 as *const libc::c_char);
                 if !a.is_null() {
                     let ref mut fresh28 = (*job).active_tooltip;
-                    *fresh28 = strdup_and_subst_obj(
-                        agxget(g as *mut libc::c_void, a),
-                        obj,
-                    );
+                    *fresh28 = strdup_and_subst_obj(agxget(g as *mut libc::c_void, a), obj);
                 }
             }
             1 => {
                 n = obj as *mut node_t;
-                let ref mut fresh29 = (*((*(n as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .gui_state;
-                *fresh29 = (*fresh29 as libc::c_int
-                    | (1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh29 =
+                    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state;
+                *fresh29 = (*fresh29 as libc::c_int | (1 as libc::c_int) << 0 as libc::c_int)
+                    as libc::c_uchar;
                 a = agattr(
                     agraphof(n as *mut libc::c_void),
                     1 as libc::c_int,
@@ -1723,19 +1626,15 @@ unsafe extern "C" fn gvevent_enter_obj(mut job: *mut GVJ_t) {
                 );
                 if !a.is_null() {
                     let ref mut fresh30 = (*job).active_tooltip;
-                    *fresh30 = strdup_and_subst_obj(
-                        agxget(n as *mut libc::c_void, a),
-                        obj,
-                    );
+                    *fresh30 = strdup_and_subst_obj(agxget(n as *mut libc::c_void, a), obj);
                 }
             }
             2 => {
                 e = obj as *mut edge_t;
-                let ref mut fresh31 = (*((*(e as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .gui_state;
-                *fresh31 = (*fresh31 as libc::c_int
-                    | (1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh31 =
+                    (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).gui_state;
+                *fresh31 = (*fresh31 as libc::c_int | (1 as libc::c_int) << 0 as libc::c_int)
+                    as libc::c_uchar;
                 a = agattr(
                     agraphof(
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -1745,7 +1644,7 @@ unsafe extern "C" fn gvevent_enter_obj(mut job: *mut GVJ_t) {
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         })
-                            .node as *mut libc::c_void,
+                        .node as *mut libc::c_void,
                     ),
                     2 as libc::c_int,
                     s_tooltip,
@@ -1753,10 +1652,7 @@ unsafe extern "C" fn gvevent_enter_obj(mut job: *mut GVJ_t) {
                 );
                 if !a.is_null() {
                     let ref mut fresh32 = (*job).active_tooltip;
-                    *fresh32 = strdup_and_subst_obj(
-                        agxget(e as *mut libc::c_void, a),
-                        obj,
-                    );
+                    *fresh32 = strdup_and_subst_obj(agxget(e as *mut libc::c_void, a), obj);
                 }
             }
             _ => {}
@@ -1803,43 +1699,37 @@ unsafe extern "C" fn gvevent_select_current_obj(mut job: *mut GVJ_t) {
     if !obj.is_null() {
         match agobjkind(obj) {
             0 => {
-                let ref mut fresh34 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agraphinfo_t))
-                    .gui_state;
-                *fresh34 = (*fresh34 as libc::c_int
-                    | (1 as libc::c_int) << 2 as libc::c_int) as libc::c_uchar;
-                let ref mut fresh35 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agraphinfo_t))
-                    .gui_state;
+                let ref mut fresh34 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agraphinfo_t)).gui_state;
+                *fresh34 = (*fresh34 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int)
+                    as libc::c_uchar;
+                let ref mut fresh35 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agraphinfo_t)).gui_state;
                 *fresh35 = (*fresh35 as libc::c_int
-                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             1 => {
-                let ref mut fresh36 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .gui_state;
-                *fresh36 = (*fresh36 as libc::c_int
-                    | (1 as libc::c_int) << 2 as libc::c_int) as libc::c_uchar;
-                let ref mut fresh37 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .gui_state;
+                let ref mut fresh36 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state;
+                *fresh36 = (*fresh36 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int)
+                    as libc::c_uchar;
+                let ref mut fresh37 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state;
                 *fresh37 = (*fresh37 as libc::c_int
-                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             2 => {
-                let ref mut fresh38 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .gui_state;
-                *fresh38 = (*fresh38 as libc::c_int
-                    | (1 as libc::c_int) << 2 as libc::c_int) as libc::c_uchar;
-                let ref mut fresh39 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .gui_state;
+                let ref mut fresh38 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agedgeinfo_t)).gui_state;
+                *fresh38 = (*fresh38 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int)
+                    as libc::c_uchar;
+                let ref mut fresh39 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agedgeinfo_t)).gui_state;
                 *fresh39 = (*fresh39 as libc::c_int
-                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar
-                        as libc::c_int) as libc::c_uchar;
+                    & !((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar as libc::c_int)
+                    as libc::c_uchar;
             }
             _ => {}
         }
@@ -1853,27 +1743,24 @@ unsafe extern "C" fn gvevent_select_current_obj(mut job: *mut GVJ_t) {
     if !obj.is_null() {
         match agobjkind(obj) {
             0 => {
-                let ref mut fresh42 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agraphinfo_t))
-                    .gui_state;
-                *fresh42 = (*fresh42 as libc::c_int
-                    | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh42 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agraphinfo_t)).gui_state;
+                *fresh42 = (*fresh42 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
+                    as libc::c_uchar;
                 gv_graph_state(job, obj as *mut graph_t);
             }
             1 => {
-                let ref mut fresh43 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .gui_state;
-                *fresh43 = (*fresh43 as libc::c_int
-                    | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh43 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agnodeinfo_t)).gui_state;
+                *fresh43 = (*fresh43 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
+                    as libc::c_uchar;
                 gv_node_state(job, obj as *mut node_t);
             }
             2 => {
-                let ref mut fresh44 = (*((*(obj as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .gui_state;
-                *fresh44 = (*fresh44 as libc::c_int
-                    | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar;
+                let ref mut fresh44 =
+                    (*((*(obj as *mut Agobj_t)).data as *mut Agedgeinfo_t)).gui_state;
+                *fresh44 = (*fresh44 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
+                    as libc::c_uchar;
                 gv_edge_state(job, obj as *mut edge_t);
             }
             _ => {}
@@ -1907,19 +1794,19 @@ unsafe extern "C" fn gvevent_button_press(
         4 => {
             (*job).fit_mode = 0 as libc::c_int != 0;
             if (*job).rotation != 0 {
-                (*job).focus.x
-                    -= (pointer.y - (*job).height as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.y);
-                (*job).focus.y
-                    += (pointer.x - (*job).width as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.x);
+                (*job).focus.x -= (pointer.y - (*job).height as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.y);
+                (*job).focus.y += (pointer.x - (*job).width as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.x);
             } else {
-                (*job).focus.x
-                    += (pointer.x - (*job).width as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.x);
-                (*job).focus.y
-                    += (pointer.y - (*job).height as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.y);
+                (*job).focus.x += (pointer.x - (*job).width as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.x);
+                (*job).focus.y += (pointer.y - (*job).height as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.y);
             }
             (*job).zoom *= 1.1f64;
             (*job).needs_refresh = 1 as libc::c_int != 0;
@@ -1928,19 +1815,19 @@ unsafe extern "C" fn gvevent_button_press(
             (*job).fit_mode = 0 as libc::c_int != 0;
             (*job).zoom /= 1.1f64;
             if (*job).rotation != 0 {
-                (*job).focus.x
-                    += (pointer.y - (*job).height as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.y);
-                (*job).focus.y
-                    -= (pointer.x - (*job).width as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.x);
+                (*job).focus.x += (pointer.y - (*job).height as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.y);
+                (*job).focus.y -= (pointer.x - (*job).width as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.x);
             } else {
-                (*job).focus.x
-                    -= (pointer.x - (*job).width as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.x);
-                (*job).focus.y
-                    -= (pointer.y - (*job).height as libc::c_double / 2.0f64)
-                        * (1.1f64 - 1.0f64) / ((*job).zoom * (*job).devscale.y);
+                (*job).focus.x -= (pointer.x - (*job).width as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.x);
+                (*job).focus.y -= (pointer.y - (*job).height as libc::c_double / 2.0f64)
+                    * (1.1f64 - 1.0f64)
+                    / ((*job).zoom * (*job).devscale.y);
             }
             (*job).needs_refresh = 1 as libc::c_int != 0;
         }
@@ -2027,8 +1914,7 @@ unsafe extern "C" fn toggle_fit_cb(mut job: *mut GVJ_t) -> libc::c_int {
         let mut dflt_height: libc::c_int = 0;
         dflt_width = (*job).width as libc::c_int;
         dflt_height = (*job).height as libc::c_int;
-        (*job)
-            .zoom = if ((*job).width as libc::c_double / dflt_width as libc::c_double)
+        (*job).zoom = if ((*job).width as libc::c_double / dflt_width as libc::c_double)
             < (*job).height as libc::c_double / dflt_height as libc::c_double
         {
             (*job).width as libc::c_double / dflt_width as libc::c_double
@@ -2045,7 +1931,8 @@ unsafe extern "C" fn gvevent_modify(
     mut job: *mut GVJ_t,
     mut name: *const libc::c_char,
     mut value: *const libc::c_char,
-) {}
+) {
+}
 unsafe extern "C" fn gvevent_delete(mut job: *mut GVJ_t) {}
 unsafe extern "C" fn gvevent_read(
     mut job: *mut GVJ_t,
@@ -2112,10 +1999,7 @@ unsafe extern "C" fn gvevent_read(
     *fresh48 = 0 as *mut libc::c_void;
     (*job).needs_refresh = 1 as libc::c_int != 0;
 }
-unsafe extern "C" fn gvevent_layout(
-    mut job: *mut GVJ_t,
-    mut layout: *const libc::c_char,
-) {
+unsafe extern "C" fn gvevent_layout(mut job: *mut GVJ_t, mut layout: *const libc::c_char) {
     gvLayout((*job).gvc, (*(*job).gvc).g, layout);
 }
 unsafe extern "C" fn gvevent_render(
@@ -2148,117 +2032,85 @@ pub static mut gvevent_key_binding: [gvevent_key_binding_t; 14] = unsafe {
     [
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"Q\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    quit_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"Q\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(quit_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"Left\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    left_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"Left\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(left_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"KP_Left\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    left_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"KP_Left\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(left_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"Right\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    right_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"Right\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(right_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"KP_Right\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    right_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"KP_Right\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(right_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"Up\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                keystring: b"Up\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 callback: Some(up_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"KP_Up\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                keystring: b"KP_Up\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 callback: Some(up_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"Down\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    down_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"Down\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(down_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"KP_Down\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    down_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"KP_Down\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(down_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"plus\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    zoom_in_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"plus\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(zoom_in_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"KP_Add\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    zoom_in_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"KP_Add\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(zoom_in_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"minus\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    zoom_out_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"minus\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(zoom_out_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
@@ -2266,19 +2118,14 @@ pub static mut gvevent_key_binding: [gvevent_key_binding_t; 14] = unsafe {
             let mut init = gvevent_key_binding_s {
                 keystring: b"KP_Subtract\0" as *const u8 as *const libc::c_char
                     as *mut libc::c_char,
-                callback: Some(
-                    zoom_out_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                callback: Some(zoom_out_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
         {
             let mut init = gvevent_key_binding_s {
-                keystring: b"F\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                callback: Some(
-                    toggle_fit_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
-                ),
+                keystring: b"F\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                callback: Some(toggle_fit_cb as unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int),
             };
             init
         },
@@ -2292,16 +2139,13 @@ pub static mut gvdevice_callbacks: gvdevice_callbacks_t = unsafe {
         let mut init = gvdevice_callbacks_s {
             refresh: Some(gvevent_refresh as unsafe extern "C" fn(*mut GVJ_t) -> ()),
             button_press: Some(
-                gvevent_button_press
-                    as unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
+                gvevent_button_press as unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
             ),
             button_release: Some(
                 gvevent_button_release
                     as unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
             ),
-            motion: Some(
-                gvevent_motion as unsafe extern "C" fn(*mut GVJ_t, pointf) -> (),
-            ),
+            motion: Some(gvevent_motion as unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()),
             modify: Some(
                 gvevent_modify
                     as unsafe extern "C" fn(
@@ -2320,8 +2164,7 @@ pub static mut gvdevice_callbacks: gvdevice_callbacks_t = unsafe {
                     ) -> (),
             ),
             layout: Some(
-                gvevent_layout
-                    as unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> (),
+                gvevent_layout as unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> (),
             ),
             render: Some(
                 gvevent_render

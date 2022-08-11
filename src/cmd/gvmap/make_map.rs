@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -28,16 +36,8 @@ extern "C" {
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn srand(__seed: libc::c_uint);
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn __assert_fail(
         __assertion: *const libc::c_char,
@@ -74,9 +74,7 @@ extern "C" {
         format: libc::c_int,
     ) -> SparseMatrix;
     fn SparseMatrix_from_coordinate_format(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_from_coordinate_format_not_compacted(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_from_coordinate_format_not_compacted(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_export(f: *mut FILE, A: SparseMatrix);
     fn SparseMatrix_delete(A: SparseMatrix);
     fn SparseMatrix_coordinate_form_add_entry(
@@ -86,14 +84,9 @@ extern "C" {
         val: *mut libc::c_void,
     ) -> SparseMatrix;
     fn SparseMatrix_transpose(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_weakly_connected_components(
         A0: SparseMatrix,
         ncomp: *mut libc::c_int,
@@ -142,11 +135,7 @@ extern "C" {
         tol: libc::c_double,
         flag: *mut libc::c_int,
     );
-    fn country_graph_coloring(
-        seed: libc::c_int,
-        A: SparseMatrix,
-        p: *mut *mut libc::c_int,
-    );
+    fn country_graph_coloring(seed: libc::c_int, A: SparseMatrix, p: *mut *mut libc::c_int);
     fn rgb2hex(
         r: libc::c_float,
         g: libc::c_float,
@@ -302,13 +291,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -333,16 +317,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -362,10 +340,9 @@ pub union C2RustUnnamed_2 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -373,16 +350,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -463,17 +433,11 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -506,26 +470,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -534,29 +490,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -564,8 +512,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -606,41 +554,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -649,7 +596,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn agxbinit(
@@ -685,10 +636,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -726,9 +680,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -761,8 +721,7 @@ unsafe extern "C" fn agxbprint(
         return rc;
     }
     size = (rc as size_t).wrapping_add(1 as libc::c_int as libc::c_ulong);
-    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long
-        as size_t;
+    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long as size_t;
     if unused_space < size {
         let mut extra: size_t = size.wrapping_sub(unused_space);
         agxbmore(xb, extra);
@@ -770,17 +729,16 @@ unsafe extern "C" fn agxbprint(
     result = vsnprintf((*xb).ptr, size, fmt, ap.as_va_list());
     if result == size.wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int
         || result < 0 as libc::c_int
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"result == (int)(size - 1) || result < 0\0" as *const u8
-                as *const libc::c_char,
+            b"result == (int)(size - 1) || result < 0\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/agxbuf.h\0" as *const u8 as *const libc::c_char,
             138 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 43],
-                &[libc::c_char; 43],
-            >(b"int agxbprint(agxbuf *, const char *, ...)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 43], &[libc::c_char; 43]>(
+                b"int agxbprint(agxbuf *, const char *, ...)\0",
+            ))
+            .as_ptr(),
         );
     }
     if result > 0 as libc::c_int {
@@ -808,16 +766,17 @@ unsafe extern "C" fn agxbuse(mut xb: *mut agxbuf) -> *mut libc::c_char {
     return (*xb).ptr;
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -874,18 +833,12 @@ pub unsafe extern "C" fn map_palette_optimal_coloring(
     ) as *mut libc::c_float;
     i = 0 as libc::c_int;
     while i < n {
-        *(*rgb_r)
-            .offset(
-                (i + 1 as libc::c_int) as isize,
-            ) = *colors.offset((cdim * i) as isize) as libc::c_float;
-        *(*rgb_g)
-            .offset(
-                (i + 1 as libc::c_int) as isize,
-            ) = *colors.offset((cdim * i + 1 as libc::c_int) as isize) as libc::c_float;
-        *(*rgb_b)
-            .offset(
-                (i + 1 as libc::c_int) as isize,
-            ) = *colors.offset((cdim * i + 2 as libc::c_int) as isize) as libc::c_float;
+        *(*rgb_r).offset((i + 1 as libc::c_int) as isize) =
+            *colors.offset((cdim * i) as isize) as libc::c_float;
+        *(*rgb_g).offset((i + 1 as libc::c_int) as isize) =
+            *colors.offset((cdim * i + 1 as libc::c_int) as isize) as libc::c_float;
+        *(*rgb_b).offset((i + 1 as libc::c_int) as isize) =
+            *colors.offset((cdim * i + 2 as libc::c_int) as isize) as libc::c_float;
         i += 1;
     }
     free(colors as *mut libc::c_void);
@@ -930,8 +883,7 @@ unsafe extern "C" fn get_poly_id(
     mut ip: libc::c_int,
     mut point_poly_map: SparseMatrix,
 ) -> libc::c_int {
-    return *((*point_poly_map).ja)
-        .offset(*((*point_poly_map).ia).offset(ip as isize) as isize);
+    return *((*point_poly_map).ja).offset(*((*point_poly_map).ia).offset(ip as isize) as isize);
 }
 #[no_mangle]
 pub unsafe extern "C" fn improve_contiguity(
@@ -957,18 +909,16 @@ pub unsafe extern "C" fn improve_contiguity(
     let mut maxit: libc::c_int = 10 as libc::c_int;
     let mut tol: libc::c_double = 0.001f64;
     D = SparseMatrix_get_real_adjacency_matrix_symmetrized(graph);
-    if (*graph).m == n {} else {
+    if (*graph).m == n {
+    } else {
         __assert_fail(
             b"graph->m == n\0" as *const u8 as *const libc::c_char,
             b"make_map.c\0" as *const u8 as *const libc::c_char,
             122 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 79],
-                &[libc::c_char; 79],
-            >(
+            (*::std::mem::transmute::<&[u8; 79], &[libc::c_char; 79]>(
                 b"void improve_contiguity(int, int, int *, SparseMatrix, double *, SparseMatrix)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     ia = (*D).ia;
@@ -997,41 +947,34 @@ pub unsafe extern "C" fn improve_contiguity(
     if Verbose != 0 {
         fprintf(
             stderr,
-            b"ratio (edges among discontiguous regions vs total edges)=%f\n\0"
-                as *const u8 as *const libc::c_char,
+            b"ratio (edges among discontiguous regions vs total edges)=%f\n\0" as *const u8
+                as *const libc::c_char,
             nbad as libc::c_double / *ia.offset(n as isize) as libc::c_double,
         );
     }
     stress_model(dim, D, D, &mut x, 0 as libc::c_int, maxit, tol, &mut flag);
-    if flag == 0 {} else {
+    if flag == 0 {
+    } else {
         __assert_fail(
             b"!flag\0" as *const u8 as *const libc::c_char,
             b"make_map.c\0" as *const u8 as *const libc::c_char,
             149 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 79],
-                &[libc::c_char; 79],
-            >(
+            (*::std::mem::transmute::<&[u8; 79], &[libc::c_char; 79]>(
                 b"void improve_contiguity(int, int, int *, SparseMatrix, double *, SparseMatrix)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     SparseMatrix_delete(D);
     SparseMatrix_delete(point_poly_map);
 }
-unsafe extern "C" fn normal(
-    mut v: *mut libc::c_double,
-    mut normal_0: *mut libc::c_double,
-) {
+unsafe extern "C" fn normal(mut v: *mut libc::c_double, mut normal_0: *mut libc::c_double) {
     if *v.offset(0 as libc::c_int as isize) == 0 as libc::c_int as libc::c_double {
         *normal_0.offset(0 as libc::c_int as isize) = 1 as libc::c_int as libc::c_double;
         *normal_0.offset(1 as libc::c_int as isize) = 0 as libc::c_int as libc::c_double;
     } else {
-        *normal_0
-            .offset(0 as libc::c_int as isize) = -*v.offset(1 as libc::c_int as isize);
-        *normal_0
-            .offset(1 as libc::c_int as isize) = *v.offset(0 as libc::c_int as isize);
+        *normal_0.offset(0 as libc::c_int as isize) = -*v.offset(1 as libc::c_int as isize);
+        *normal_0.offset(1 as libc::c_int as isize) = *v.offset(0 as libc::c_int as isize);
     };
 }
 unsafe extern "C" fn triangle_center(
@@ -1074,8 +1017,7 @@ unsafe extern "C" fn triangle_center(
     bot = nyz[0 as libc::c_int as usize]
         * (*x.offset(0 as libc::c_int as isize) - *y.offset(0 as libc::c_int as isize))
         + nyz[1 as libc::c_int as usize]
-            * (*x.offset(1 as libc::c_int as isize)
-                - *y.offset(1 as libc::c_int as isize));
+            * (*x.offset(1 as libc::c_int as isize) - *y.offset(1 as libc::c_int as isize));
     if bot == 0 as libc::c_int as libc::c_double {
         *c.offset(0 as libc::c_int as isize) = xy[0 as libc::c_int as usize];
         *c.offset(1 as libc::c_int as isize) = xy[1 as libc::c_int as usize];
@@ -1084,15 +1026,12 @@ unsafe extern "C" fn triangle_center(
     beta = ((*x.offset(0 as libc::c_int as isize) - *y.offset(0 as libc::c_int as isize))
         * (xy[0 as libc::c_int as usize] - yz[0 as libc::c_int as usize])
         + (*x.offset(1 as libc::c_int as isize) - *y.offset(1 as libc::c_int as isize))
-            * (xy[1 as libc::c_int as usize] - yz[1 as libc::c_int as usize])) / bot;
-    *c
-        .offset(
-            0 as libc::c_int as isize,
-        ) = yz[0 as libc::c_int as usize] + beta * nyz[0 as libc::c_int as usize];
-    *c
-        .offset(
-            1 as libc::c_int as isize,
-        ) = yz[1 as libc::c_int as usize] + beta * nyz[1 as libc::c_int as usize];
+            * (xy[1 as libc::c_int as usize] - yz[1 as libc::c_int as usize]))
+        / bot;
+    *c.offset(0 as libc::c_int as isize) =
+        yz[0 as libc::c_int as usize] + beta * nyz[0 as libc::c_int as usize];
+    *c.offset(1 as libc::c_int as isize) =
+        yz[1 as libc::c_int as usize] + beta * nyz[1 as libc::c_int as usize];
 }
 unsafe extern "C" fn matrix_add_entry(
     mut A: SparseMatrix,
@@ -1169,8 +1108,7 @@ unsafe extern "C" fn plot_dot_labels(
         } else {
             fprintf(
                 f,
-                b"%d [label=\"%s\", pos=\"%lf,%lf\"];\n\0" as *const u8
-                    as *const libc::c_char,
+                b"%d [label=\"%s\", pos=\"%lf,%lf\"];\n\0" as *const u8 as *const libc::c_char,
                 i,
                 *labels.offset(i as isize),
                 *x.offset((i * dim) as isize),
@@ -1209,8 +1147,7 @@ unsafe extern "C" fn dot_polygon(
             ) as size_t;
             agxbprint(
                 sbuff,
-                b" c %zu -%s S %zu -setlinewidth(%f) L %d \0" as *const u8
-                    as *const libc::c_char,
+                b" c %zu -%s S %zu -setlinewidth(%f) L %d \0" as *const u8 as *const libc::c_char,
                 strlen(cstring),
                 cstring,
                 len_swidth.wrapping_add(14 as libc::c_int as libc::c_ulong),
@@ -1275,17 +1212,13 @@ unsafe extern "C" fn plot_dot_polygons(
     let mut xp: *mut libc::c_float = 0 as *mut libc::c_float;
     let mut yp: *mut libc::c_float = 0 as *mut libc::c_float;
     let mut fill: libc::c_int = -(1 as libc::c_int);
-    let mut cstring: [libc::c_char; 10] = *::std::mem::transmute::<
-        &[u8; 10],
-        &mut [libc::c_char; 10],
-    >(b"#aaaaaaff\0");
-    let mut use_line: libc::c_int = (line_width >= 0 as libc::c_int as libc::c_double)
-        as libc::c_int;
+    let mut cstring: [libc::c_char; 10] =
+        *::std::mem::transmute::<&[u8; 10], &mut [libc::c_char; 10]>(b"#aaaaaaff\0");
+    let mut use_line: libc::c_int =
+        (line_width >= 0 as libc::c_int as libc::c_double) as libc::c_int;
     i = 0 as libc::c_int;
     while i < npolys {
-        maxlen = if maxlen
-            > *ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize)
-        {
+        maxlen = if maxlen > *ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize) {
             maxlen
         } else {
             *ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize)
@@ -1301,7 +1234,11 @@ unsafe extern "C" fn plot_dot_polygons(
         ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
     ) as *mut libc::c_float;
     if Verbose != 0 {
-        fprintf(stderr, b"npolys = %d\n\0" as *const u8 as *const libc::c_char, npolys);
+        fprintf(
+            stderr,
+            b"npolys = %d\n\0" as *const u8 as *const libc::c_char,
+            npolys,
+        );
     }
     first = abs(*a.offset(0 as libc::c_int as isize));
     ipoly = first + 1 as libc::c_int;
@@ -1310,9 +1247,8 @@ unsafe extern "C" fn plot_dot_polygons(
         np = 0 as libc::c_int;
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
-            if *ja.offset(j as isize) < nverts
-                && *ja.offset(j as isize) >= 0 as libc::c_int
-            {} else {
+            if *ja.offset(j as isize) < nverts && *ja.offset(j as isize) >= 0 as libc::c_int {
+            } else {
                 __assert_fail(
                     b"ja[j] < nverts && ja[j] >= 0\0" as *const u8
                         as *const libc::c_char,
@@ -1341,21 +1277,14 @@ unsafe extern "C" fn plot_dot_polygons(
                 dot_one_poly(sbuff, line_width, fill, np, xp, yp, cstring.as_mut_ptr());
                 np = 0 as libc::c_int;
             }
-            *xp
-                .offset(
-                    np as isize,
-                ) = *x_poly.offset((2 as libc::c_int * *ja.offset(j as isize)) as isize)
+            *xp.offset(np as isize) = *x_poly
+                .offset((2 as libc::c_int * *ja.offset(j as isize)) as isize)
                 as libc::c_float;
             let fresh11 = np;
             np = np + 1;
-            *yp
-                .offset(
-                    fresh11 as isize,
-                ) = *x_poly
-                .offset(
-                    (2 as libc::c_int * *ja.offset(j as isize) + 1 as libc::c_int)
-                        as isize,
-                ) as libc::c_float;
+            *yp.offset(fresh11 as isize) = *x_poly
+                .offset((2 as libc::c_int * *ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                as libc::c_float;
             j += 1;
         }
         if use_line != 0 {
@@ -1404,7 +1333,11 @@ pub unsafe extern "C" fn plot_dot_map(
         eptr: 0 as *mut libc::c_char,
         dyna: 0,
     };
-    agxbinit(&mut sbuff, 0 as libc::c_int as libc::c_uint, 0 as *mut libc::c_char);
+    agxbinit(
+        &mut sbuff,
+        0 as libc::c_int as libc::c_uint,
+        0 as *mut libc::c_char,
+    );
     if r.is_null() || g.is_null() || b.is_null() {
         plot_polyQ = 0 as libc::c_int != 0;
     }
@@ -1504,7 +1437,11 @@ pub unsafe extern "C" fn plot_dot_map(
         );
     }
     if gr.is_null() {
-        fprintf(f, b"%s\0" as *const u8 as *const libc::c_char, agxbuse(&mut sbuff));
+        fprintf(
+            f,
+            b"%s\0" as *const u8 as *const libc::c_char,
+            agxbuse(&mut sbuff),
+        );
         fprintf(f, b"\"\n\0" as *const u8 as *const libc::c_char);
     } else {
         agattr(
@@ -1543,8 +1480,10 @@ unsafe extern "C" fn get_tri(
     let mut A: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut trilist: *mut libc::c_int = get_triangles(x, n, &mut ntri);
-    *T = gv_calloc(ntri as size_t, ::std::mem::size_of::<Triangle>() as libc::c_ulong)
-        as *mut Triangle;
+    *T = gv_calloc(
+        ntri as size_t,
+        ::std::mem::size_of::<Triangle>() as libc::c_ulong,
+    ) as *mut Triangle;
     A = SparseMatrix_new(
         n,
         n,
@@ -1556,9 +1495,8 @@ unsafe extern "C" fn get_tri(
     while i < ntri {
         j = 0 as libc::c_int;
         while j < 3 as libc::c_int {
-            (*(*T).offset(i as isize))
-                .vertices[j
-                as usize] = *trilist.offset((i * 3 as libc::c_int + j) as isize);
+            (*(*T).offset(i as isize)).vertices[j as usize] =
+                *trilist.offset((i * 3 as libc::c_int + j) as isize);
             j += 1;
         }
         i0 = (*(*T).offset(i as isize)).vertices[0 as libc::c_int as usize];
@@ -1641,7 +1579,8 @@ unsafe extern "C" fn get_country_graph(
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             jj = *ja.offset(j as isize);
-            if i != jj && *groups.offset(i as isize) != *groups.offset(jj as isize)
+            if i != jj
+                && *groups.offset(i as isize) != *groups.offset(jj as isize)
                 && *groups.offset(jj as isize) != GRP_RANDOM
                 && *groups.offset(jj as isize) != GRP_BBOX
             {
@@ -1706,12 +1645,7 @@ unsafe extern "C" fn conn_comp(
         i += 1;
     }
     BB = SparseMatrix_from_coordinate_format(B);
-    SparseMatrix_weakly_connected_components(
-        BB,
-        &mut ncomps,
-        &mut comps,
-        &mut comps_ptr,
-    );
+    SparseMatrix_weakly_connected_components(BB, &mut ncomps, &mut comps, &mut comps_ptr);
     SparseMatrix_delete(B);
     SparseMatrix_delete(BB);
     *poly_point_map = SparseMatrix_new(
@@ -1773,7 +1707,8 @@ unsafe extern "C" fn get_poly_lines(
     let mut gmask: *mut libc::c_int = 0 as *mut libc::c_int;
     graph = 0 as SparseMatrix;
     if !graph.is_null() {
-        if (*graph).m == n {} else {
+        if (*graph).m == n {
+        } else {
             __assert_fail(
                 b"graph->m == n\0" as *const u8 as *const libc::c_char,
                 b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -1853,58 +1788,53 @@ unsafe extern "C" fn get_poly_lines(
                     jj = *ie.offset(ii as isize);
                     while jj < *ie.offset((ii + 1 as libc::c_int) as isize) {
                         if *groups.offset(*je.offset(jj as isize) as isize)
-                            != *groups.offset(ii as isize) && jj < nz - 1 as libc::c_int
+                            != *groups.offset(ii as isize)
+                            && jj < nz - 1 as libc::c_int
                             && *je.offset(jj as isize)
                                 == *je.offset((jj + 1 as libc::c_int) as isize)
                         {
                             t1 = *e.offset(jj as isize);
                             t2 = *e.offset((jj + 1 as libc::c_int) as isize);
-                            nlink = *elist
-                                .offset((t1 * edim + 2 as libc::c_int) as isize)
+                            nlink = *elist.offset((t1 * edim + 2 as libc::c_int) as isize)
                                 % 2 as libc::c_int;
                             *elist.offset((t1 * edim + nlink) as isize) = t2;
                             if !graph.is_null() {
                                 if *gmask.offset(*je.offset(jj as isize) as isize) == ii {
                                     *elist
-                                        .offset(
-                                            (t1 * edim + nlink + 3 as libc::c_int) as isize,
-                                        ) = POLY_LINE_REAL_EDGE as libc::c_int;
+                                        .offset((t1 * edim + nlink + 3 as libc::c_int) as isize) =
+                                        POLY_LINE_REAL_EDGE as libc::c_int;
                                 } else {
                                     fprintf(
                                         stderr,
                                         b"not real!!!\n\0" as *const u8 as *const libc::c_char,
                                     );
                                     *elist
-                                        .offset(
-                                            (t1 * edim + nlink + 3 as libc::c_int) as isize,
-                                        ) = POLY_LINE_NOT_REAL_EDGE as libc::c_int;
+                                        .offset((t1 * edim + nlink + 3 as libc::c_int) as isize) =
+                                        POLY_LINE_NOT_REAL_EDGE as libc::c_int;
                                 }
                             }
-                            let ref mut fresh14 = *elist
-                                .offset((t1 * edim + 2 as libc::c_int) as isize);
+                            let ref mut fresh14 =
+                                *elist.offset((t1 * edim + 2 as libc::c_int) as isize);
                             *fresh14 += 1;
-                            nlink = *elist
-                                .offset((t2 * edim + 2 as libc::c_int) as isize)
+                            nlink = *elist.offset((t2 * edim + 2 as libc::c_int) as isize)
                                 % 2 as libc::c_int;
                             *elist.offset((t2 * edim + nlink) as isize) = t1;
-                            let ref mut fresh15 = *elist
-                                .offset((t2 * edim + 2 as libc::c_int) as isize);
+                            let ref mut fresh15 =
+                                *elist.offset((t2 * edim + 2 as libc::c_int) as isize);
                             *fresh15 += 1;
                             if !graph.is_null() {
                                 if *gmask.offset(*je.offset(jj as isize) as isize) == ii {
                                     *elist
-                                        .offset(
-                                            (t2 * edim + nlink + 3 as libc::c_int) as isize,
-                                        ) = POLY_LINE_REAL_EDGE as libc::c_int;
+                                        .offset((t2 * edim + nlink + 3 as libc::c_int) as isize) =
+                                        POLY_LINE_REAL_EDGE as libc::c_int;
                                 } else {
                                     fprintf(
                                         stderr,
                                         b"not real!!!\n\0" as *const u8 as *const libc::c_char,
                                     );
                                     *elist
-                                        .offset(
-                                            (t2 * edim + nlink + 3 as libc::c_int) as isize,
-                                        ) = POLY_LINE_NOT_REAL_EDGE as libc::c_int;
+                                        .offset((t2 * edim + nlink + 3 as libc::c_int) as isize) =
+                                        POLY_LINE_NOT_REAL_EDGE as libc::c_int;
                                 }
                             }
                             let fresh16 = nnt;
@@ -1947,8 +1877,7 @@ unsafe extern "C" fn get_poly_lines(
                 while next != sta {
                     *mask.offset(next as isize) = i;
                     if !graph.is_null()
-                        && *elist
-                            .offset((edim * cur + nlink + 3 as libc::c_int) as isize)
+                        && *elist.offset((edim * cur + nlink + 3 as libc::c_int) as isize)
                             == POLY_LINE_NOT_REAL_EDGE as libc::c_int
                     {
                         ipoly2 = -ipoly;
@@ -1967,7 +1896,8 @@ unsafe extern "C" fn get_poly_lines(
                         nlink = 1 as libc::c_int;
                         nn = *elist.offset((edim * next + 1 as libc::c_int) as isize);
                     }
-                    if nn != cur {} else {
+                    if nn != cur {
+                    } else {
                         __assert_fail(
                             b"nn != cur\0" as *const u8 as *const libc::c_char,
                             b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -2029,30 +1959,23 @@ unsafe extern "C" fn plot_cycle(
         if !(next != head) {
             break;
         }
-        x1 = *x
-            .offset(
-                (2 as libc::c_int
-                    * *edge_table.offset((2 as libc::c_int * cur) as isize)) as isize,
-            );
-        y1 = *x
-            .offset(
-                (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)
-                    + 1 as libc::c_int) as isize,
-            );
-        x2 = *x
-            .offset(
-                (2 as libc::c_int
-                    * *edge_table
-                        .offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize))
-                    as isize,
-            );
-        y2 = *x
-            .offset(
-                (2 as libc::c_int
-                    * *edge_table
-                        .offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize)
-                    + 1 as libc::c_int) as isize,
-            );
+        x1 = *x.offset(
+            (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)) as isize,
+        );
+        y1 = *x.offset(
+            (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)
+                + 1 as libc::c_int) as isize,
+        );
+        x2 = *x.offset(
+            (2 as libc::c_int
+                * *edge_table.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize))
+                as isize,
+        );
+        y2 = *x.offset(
+            (2 as libc::c_int
+                * *edge_table.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize)
+                + 1 as libc::c_int) as isize,
+        );
         printf(
             b"{Black,Arrow[{{%f,%f},{%f,%f}}],Green,Text[%d, {%f,%f}],Text[%d, {%f,%f}]},\0"
                 as *const u8 as *const libc::c_char,
@@ -2069,30 +1992,23 @@ unsafe extern "C" fn plot_cycle(
         );
         cur = next;
     }
-    x1 = *x
-        .offset(
-            (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize))
-                as isize,
-        );
-    y1 = *x
-        .offset(
-            (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)
-                + 1 as libc::c_int) as isize,
-        );
-    x2 = *x
-        .offset(
-            (2 as libc::c_int
-                * *edge_table
-                    .offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize))
-                as isize,
-        );
-    y2 = *x
-        .offset(
-            (2 as libc::c_int
-                * *edge_table
-                    .offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize)
-                + 1 as libc::c_int) as isize,
-        );
+    x1 = *x.offset(
+        (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)) as isize,
+    );
+    y1 = *x.offset(
+        (2 as libc::c_int * *edge_table.offset((2 as libc::c_int * cur) as isize)
+            + 1 as libc::c_int) as isize,
+    );
+    x2 = *x.offset(
+        (2 as libc::c_int
+            * *edge_table.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize))
+            as isize,
+    );
+    y2 = *x.offset(
+        (2 as libc::c_int
+            * *edge_table.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize)
+            + 1 as libc::c_int) as isize,
+    );
     printf(
         b"{Black,Arrow[{{%f,%f},{%f,%f}}],Green,Text[%d, {%f,%f}],Text[%d, {%f,%f}]}}]\0"
             as *const u8 as *const libc::c_char,
@@ -2116,7 +2032,10 @@ unsafe extern "C" fn cycle_print(
     let mut cur: libc::c_int = 0;
     let mut next: libc::c_int = 0;
     cur = head;
-    fprintf(stderr, b"cycle (edges): {\0" as *const u8 as *const libc::c_char);
+    fprintf(
+        stderr,
+        b"cycle (edges): {\0" as *const u8 as *const libc::c_char,
+    );
     loop {
         next = *cycle.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize);
         if !(next != head) {
@@ -2127,7 +2046,10 @@ unsafe extern "C" fn cycle_print(
     }
     fprintf(stderr, b"%d}\n\0" as *const u8 as *const libc::c_char, cur);
     cur = head;
-    fprintf(stderr, b"cycle (vertices): \0" as *const u8 as *const libc::c_char);
+    fprintf(
+        stderr,
+        b"cycle (vertices): \0" as *const u8 as *const libc::c_char,
+    );
     loop {
         next = *cycle.offset((2 as libc::c_int * cur + 1 as libc::c_int) as isize);
         if !(next != head) {
@@ -2232,15 +2154,15 @@ unsafe extern "C" fn get_polygon_solids(
     while i < n {
         j = *ie.offset(i as isize);
         while j < *ie.offset((i + 1 as libc::c_int) as isize) {
-            if j
-                < *ie.offset(n as isize) - *ie.offset(0 as libc::c_int as isize)
-                    - 1 as libc::c_int && i > *je.offset(j as isize)
+            if j < *ie.offset(n as isize) - *ie.offset(0 as libc::c_int as isize) - 1 as libc::c_int
+                && i > *je.offset(j as isize)
                 && *je.offset(j as isize) == *je.offset((j + 1 as libc::c_int) as isize)
             {
                 t1 = *e.offset(j as isize);
                 t2 = *e.offset((j + 1 as libc::c_int) as isize);
                 jj = *je.offset(j as isize);
-                if jj < n {} else {
+                if jj < n {
+                } else {
                     __assert_fail(
                         b"jj < n\0" as *const u8 as *const libc::c_char,
                         b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -2255,8 +2177,7 @@ unsafe extern "C" fn get_polygon_solids(
                     );
                 }
                 *edge_table.offset((ne * 2 as libc::c_int) as isize) = t1;
-                *edge_table
-                    .offset((ne * 2 as libc::c_int + 1 as libc::c_int) as isize) = t2;
+                *edge_table.offset((ne * 2 as libc::c_int + 1 as libc::c_int) as isize) = t2;
                 half_edges = SparseMatrix_coordinate_form_add_entry(
                     half_edges,
                     i,
@@ -2271,8 +2192,7 @@ unsafe extern "C" fn get_polygon_solids(
                 );
                 ne += 1;
                 *edge_table.offset((ne * 2 as libc::c_int) as isize) = t2;
-                *edge_table
-                    .offset((ne * 2 as libc::c_int + 1 as libc::c_int) as isize) = t1;
+                *edge_table.offset((ne * 2 as libc::c_int + 1 as libc::c_int) as isize) = t1;
                 half_edges = SparseMatrix_coordinate_form_add_entry(
                     half_edges,
                     i,
@@ -2292,7 +2212,8 @@ unsafe extern "C" fn get_polygon_solids(
         }
         i += 1;
     }
-    if (*E).nz >= ne {} else {
+    if (*E).nz >= ne {
+    } else {
         __assert_fail(
             b"E->nz >= ne\0" as *const u8 as *const libc::c_char,
             b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -2355,11 +2276,9 @@ unsafe extern "C" fn get_polygon_solids(
         if DEBUG_CYCLE != 0 {
             fprintf(
                 stderr,
-                b"\n ============  comp %d has %d members\n\0" as *const u8
-                    as *const libc::c_char,
+                b"\n ============  comp %d has %d members\n\0" as *const u8 as *const libc::c_char,
                 i,
-                *comps_ptr.offset((i + 1 as libc::c_int) as isize)
-                    - *comps_ptr.offset(i as isize),
+                *comps_ptr.offset((i + 1 as libc::c_int) as isize) - *comps_ptr.offset(i as isize),
             );
         }
         k = *comps_ptr.offset(i as isize);
@@ -2370,11 +2289,9 @@ unsafe extern "C" fn get_polygon_solids(
             if DEBUG_CYCLE != 0 {
                 fprintf(
                     stderr,
-                    b"member = %d has %d neighbors\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"member = %d has %d neighbors\n\0" as *const u8 as *const libc::c_char,
                     ii,
-                    *ie.offset((ii + 1 as libc::c_int) as isize)
-                        - *ie.offset(ii as isize),
+                    *ie.offset((ii + 1 as libc::c_int) as isize) - *ie.offset(ii as isize),
                 );
             }
             j = *ie.offset(ii as isize);
@@ -2394,11 +2311,9 @@ unsafe extern "C" fn get_polygon_solids(
                             .offset((2 as libc::c_int * ee + 1 as libc::c_int) as isize),
                     );
                 }
-                nlink = *elist.offset((t1 * edim + 2 as libc::c_int) as isize)
-                    % 2 as libc::c_int;
+                nlink = *elist.offset((t1 * edim + 2 as libc::c_int) as isize) % 2 as libc::c_int;
                 *elist.offset((t1 * edim + nlink) as isize) = ee;
-                let ref mut fresh18 = *elist
-                    .offset((t1 * edim + 2 as libc::c_int) as isize);
+                let ref mut fresh18 = *elist.offset((t1 * edim + 2 as libc::c_int) as isize);
                 *fresh18 += 1;
                 if *edge_cycle_map.offset(ee as isize) != NOT_ON_CYCLE {
                     duplicate = ee;
@@ -2409,21 +2324,17 @@ unsafe extern "C" fn get_polygon_solids(
             if duplicate == NO_DUPLICATE as libc::c_int {
                 ecur = ee;
                 cycle_head = ecur;
-                *cycle
-                    .offset(
-                        (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                    ) = ecur;
+                *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize) = ecur;
                 *cycle.offset((2 as libc::c_int * ecur) as isize) = ecur;
                 *edge_cycle_map.offset(ecur as isize) = 1 as libc::c_int;
                 cur = *edge_table.offset((2 as libc::c_int * ecur) as isize);
                 head = cur;
-                next = *edge_table
-                    .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                next = *edge_table.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                 if DEBUG_CYCLE != 0 {
                     fprintf(
                         stderr,
-                        b"NEW CYCLE\n starting with edge %d, {head,tail}={%d,%d}\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"NEW CYCLE\n starting with edge %d, {head,tail}={%d,%d}\n\0" as *const u8
+                            as *const libc::c_char,
                         ee,
                         head,
                         next,
@@ -2433,49 +2344,36 @@ unsafe extern "C" fn get_polygon_solids(
                     enext = *elist.offset((edim * next + 0 as libc::c_int) as isize);
                     if *edge_table.offset((2 as libc::c_int * enext) as isize) == cur
                         && *edge_table
-                            .offset(
-                                (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                            ) == next
-                        || *edge_table.offset((2 as libc::c_int * enext) as isize)
+                            .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize)
                             == next
+                        || *edge_table.offset((2 as libc::c_int * enext) as isize) == next
                             && *edge_table
-                                .offset(
-                                    (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                ) == cur
+                                .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize)
+                                == cur
                     {
                         enext = *elist.offset((edim * next + 1 as libc::c_int) as isize);
                     }
                     if DEBUG_CYCLE != 0 {
                         fprintf(
                             stderr,
-                            b"cur edge = %d, next edge %d, {head,tail}={%d,%d},\n\0"
-                                as *const u8 as *const libc::c_char,
+                            b"cur edge = %d, next edge %d, {head,tail}={%d,%d},\n\0" as *const u8
+                                as *const libc::c_char,
                             ecur,
                             enext,
                             *edge_table.offset((2 as libc::c_int * enext) as isize),
                             *edge_table
-                                .offset(
-                                    (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                ),
+                                .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize),
                         );
                     }
                     nn = *edge_table.offset((2 as libc::c_int * enext) as isize);
                     if nn == next {
                         nn = *edge_table
-                            .offset(
-                                (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                            );
+                            .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize);
                     }
-                    *cycle
-                        .offset(
-                            (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                        ) = *cycle
-                        .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                    *cycle.offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize) =
+                        *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                     *cycle.offset((2 as libc::c_int * enext) as isize) = ecur;
-                    *cycle
-                        .offset(
-                            (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                        ) = enext;
+                    *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize) = enext;
                     *cycle.offset((2 as libc::c_int * ee) as isize) = enext;
                     *edge_cycle_map.offset(enext as isize) = 1 as libc::c_int;
                     ecur = enext;
@@ -2489,8 +2387,7 @@ unsafe extern "C" fn get_polygon_solids(
                 ee = duplicate;
                 ecur = ee;
                 while *emask.offset(ecur as isize) == ii {
-                    ecur = *cycle
-                        .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                    ecur = *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                 }
                 if DEBUG_CYCLE != 0 {
                     fprintf(
@@ -2507,29 +2404,19 @@ unsafe extern "C" fn get_polygon_solids(
                     if DEBUG_CYCLE != 0 {
                         fprintf(
                             stderr,
-                            b" remove edge %d (%d--%d)\n\0" as *const u8
-                                as *const libc::c_char,
+                            b" remove edge %d (%d--%d)\n\0" as *const u8 as *const libc::c_char,
                             ecur,
                             *edge_table.offset((2 as libc::c_int * ecur) as isize),
                             *edge_table
-                                .offset(
-                                    (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                                ),
+                                .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize),
                         );
                     }
                     *edge_cycle_map.offset(ecur as isize) = NOT_ON_CYCLE;
-                    enext = *cycle
-                        .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                    enext = *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                     eprev = *cycle.offset((2 as libc::c_int * ecur) as isize);
-                    *cycle
-                        .offset(
-                            (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                        ) = ecur;
+                    *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize) = ecur;
                     *cycle.offset((2 as libc::c_int * ecur) as isize) = ecur;
-                    *cycle
-                        .offset(
-                            (2 as libc::c_int * eprev + 1 as libc::c_int) as isize,
-                        ) = enext;
+                    *cycle.offset((2 as libc::c_int * eprev + 1 as libc::c_int) as isize) = enext;
                     *cycle.offset((2 as libc::c_int * enext) as isize) = eprev;
                     elast = ecur;
                     ecur = eprev;
@@ -2537,24 +2424,18 @@ unsafe extern "C" fn get_polygon_solids(
                 if DEBUG_CYCLE != 0 {
                     fprintf(
                         stderr,
-                        b"remaining (broken) cycle = \0" as *const u8
-                            as *const libc::c_char,
+                        b"remaining (broken) cycle = \0" as *const u8 as *const libc::c_char,
                     );
                     cycle_print(
-                        *cycle
-                            .offset(
-                                (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                            ),
+                        *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize),
                         cycle,
                         edge_table,
                     );
                 }
                 ehead = ecur;
-                etail = *cycle
-                    .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                etail = *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                 cycle_head = ehead;
-                head = *edge_table
-                    .offset((2 as libc::c_int * ehead + 1 as libc::c_int) as isize);
+                head = *edge_table.offset((2 as libc::c_int * ehead + 1 as libc::c_int) as isize);
                 tail = *edge_table.offset((2 as libc::c_int * etail) as isize);
                 ecur = *elist.offset((edim * head + 0 as libc::c_int) as isize);
                 if same_edge(ecur, elast, edge_table) != 0 {
@@ -2575,35 +2456,29 @@ unsafe extern "C" fn get_polygon_solids(
                         ecur,
                     );
                 }
-                *cycle
-                    .offset(
-                        (2 as libc::c_int * ehead + 1 as libc::c_int) as isize,
-                    ) = ecur;
+                *cycle.offset((2 as libc::c_int * ehead + 1 as libc::c_int) as isize) = ecur;
                 *cycle.offset((2 as libc::c_int * ecur) as isize) = ehead;
                 *cycle.offset((2 as libc::c_int * etail) as isize) = ecur;
-                *cycle
-                    .offset(
-                        (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                    ) = etail;
+                *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize) = etail;
                 if same_edge(ecur, efirst, edge_table) != 0 {
                     if DEBUG_CYCLE != 0 {
                         fprintf(
                             stderr,
-                            b"this voro cell fill in a hole completely!!!!\n\0"
-                                as *const u8 as *const libc::c_char,
+                            b"this voro cell fill in a hole completely!!!!\n\0" as *const u8
+                                as *const libc::c_char,
                         );
                     }
                 } else {
                     *edge_cycle_map.offset(ecur as isize) = 1 as libc::c_int;
                     cur = *edge_table.offset((2 as libc::c_int * ecur) as isize);
                     head = cur;
-                    next = *edge_table
-                        .offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
+                    next =
+                        *edge_table.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                     if DEBUG_CYCLE != 0 {
                         fprintf(
                             stderr,
-                            b"starting with edge %d, {head,tail}={%d,%d}\n\0"
-                                as *const u8 as *const libc::c_char,
+                            b"starting with edge %d, {head,tail}={%d,%d}\n\0" as *const u8
+                                as *const libc::c_char,
                             ecur,
                             head,
                             next,
@@ -2613,52 +2488,38 @@ unsafe extern "C" fn get_polygon_solids(
                         enext = *elist.offset((edim * next + 0 as libc::c_int) as isize);
                         if *edge_table.offset((2 as libc::c_int * enext) as isize) == cur
                             && *edge_table
-                                .offset(
-                                    (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                ) == next
-                            || *edge_table.offset((2 as libc::c_int * enext) as isize)
+                                .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize)
                                 == next
+                            || *edge_table.offset((2 as libc::c_int * enext) as isize) == next
                                 && *edge_table
-                                    .offset(
-                                        (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                    ) == cur
+                                    .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize)
+                                    == cur
                         {
-                            enext = *elist
-                                .offset((edim * next + 1 as libc::c_int) as isize);
+                            enext = *elist.offset((edim * next + 1 as libc::c_int) as isize);
                         }
                         if DEBUG_CYCLE != 0 {
                             fprintf(
                                 stderr,
                                 b"cur edge = %d, next edge %d, {head,tail}={%d,%d},\n\0"
-                                    as *const u8 as *const libc::c_char,
+                                    as *const u8
+                                    as *const libc::c_char,
                                 ecur,
                                 enext,
                                 *edge_table.offset((2 as libc::c_int * enext) as isize),
                                 *edge_table
-                                    .offset(
-                                        (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                    ),
+                                    .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize),
                             );
                         }
                         nn = *edge_table.offset((2 as libc::c_int * enext) as isize);
                         if nn == next {
                             nn = *edge_table
-                                .offset(
-                                    (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                                );
+                                .offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize);
                         }
-                        *cycle
-                            .offset(
-                                (2 as libc::c_int * enext + 1 as libc::c_int) as isize,
-                            ) = *cycle
-                            .offset(
-                                (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                            );
+                        *cycle.offset((2 as libc::c_int * enext + 1 as libc::c_int) as isize) =
+                            *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize);
                         *cycle.offset((2 as libc::c_int * enext) as isize) = ecur;
-                        *cycle
-                            .offset(
-                                (2 as libc::c_int * ecur + 1 as libc::c_int) as isize,
-                            ) = enext;
+                        *cycle.offset((2 as libc::c_int * ecur + 1 as libc::c_int) as isize) =
+                            enext;
                         *cycle.offset((2 as libc::c_int * etail) as isize) = enext;
                         *edge_cycle_map.offset(enext as isize) = 1 as libc::c_int;
                         ecur = enext;
@@ -2747,7 +2608,8 @@ unsafe extern "C" fn get_polygons(
     let mut GRP_RANDOM: libc::c_int = 0;
     let mut GRP_BBOX: libc::c_int = 0;
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
-    if dim == 2 as libc::c_int {} else {
+    if dim == 2 as libc::c_int {
+    } else {
         __assert_fail(
             b"dim == 2\0" as *const u8 as *const libc::c_char,
             b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -2804,13 +2666,10 @@ unsafe extern "C" fn get_polygons(
     if exclude_random != 0 {
         i = ncomps - 1 as libc::c_int;
         while i >= 0 as libc::c_int {
-            if *groups
-                .offset(*comps.offset(*comps_ptr.offset(i as isize) as isize) as isize)
+            if *groups.offset(*comps.offset(*comps_ptr.offset(i as isize) as isize) as isize)
                 != GRP_RANDOM
-                && *groups
-                    .offset(
-                        *comps.offset(*comps_ptr.offset(i as isize) as isize) as isize,
-                    ) != GRP_BBOX
+                && *groups.offset(*comps.offset(*comps_ptr.offset(i as isize) as isize) as isize)
+                    != GRP_BBOX
             {
                 break;
             }
@@ -2827,8 +2686,7 @@ unsafe extern "C" fn get_polygons(
     } else {
         i = ncomps - 1 as libc::c_int;
         while i >= 0 as libc::c_int {
-            if *groups
-                .offset(*comps.offset(*comps_ptr.offset(i as isize) as isize) as isize)
+            if *groups.offset(*comps.offset(*comps_ptr.offset(i as isize) as isize) as isize)
                 != GRP_BBOX
             {
                 break;
@@ -2853,10 +2711,7 @@ unsafe extern "C" fn get_polygons(
     while i < nt {
         j = 0 as libc::c_int;
         while j < dim {
-            *(*x_poly)
-                .offset(
-                    (i * dim + j) as isize,
-                ) = (*Tp.offset(i as isize)).center[j as usize];
+            *(*x_poly).offset((i * dim + j) as isize) = (*Tp.offset(i as isize)).center[j as usize];
             j += 1;
         }
         i += 1;
@@ -2942,14 +2797,12 @@ unsafe extern "C" fn make_map_internal(
     while i < n {
         j = 0 as libc::c_int;
         while j < dim2 {
-            xmax[j
-                as usize] = if xmax[j as usize] > *x.offset((i * dim + j) as isize) {
+            xmax[j as usize] = if xmax[j as usize] > *x.offset((i * dim + j) as isize) {
                 xmax[j as usize]
             } else {
                 *x.offset((i * dim + j) as isize)
             };
-            xmin[j
-                as usize] = if xmin[j as usize] < *x.offset((i * dim + j) as isize) {
+            xmin[j as usize] = if xmin[j as usize] < *x.offset((i * dim + j) as isize) {
                 xmin[j as usize]
             } else {
                 *x.offset((i * dim + j) as isize)
@@ -2958,10 +2811,10 @@ unsafe extern "C" fn make_map_internal(
         }
         i += 1;
     }
-    boxsize[0 as libc::c_int
-        as usize] = xmax[0 as libc::c_int as usize] - xmin[0 as libc::c_int as usize];
-    boxsize[1 as libc::c_int
-        as usize] = xmax[1 as libc::c_int as usize] - xmin[1 as libc::c_int as usize];
+    boxsize[0 as libc::c_int as usize] =
+        xmax[0 as libc::c_int as usize] - xmin[0 as libc::c_int as usize];
+    boxsize[1 as libc::c_int as usize] =
+        xmax[1 as libc::c_int as usize] - xmin[1 as libc::c_int as usize];
     area = boxsize[0 as libc::c_int as usize] * boxsize[1 as libc::c_int as usize];
     if *nrandom == 0 as libc::c_int {
         *nrandom = n;
@@ -2989,7 +2842,11 @@ unsafe extern "C" fn make_map_internal(
     let mut t: libc::c_int = 0;
     let mut np: libc::c_int = nedgep;
     if !graph.is_null() && np != 0 {
-        fprintf(stderr, b"add art np = %d\n\0" as *const u8 as *const libc::c_char, np);
+        fprintf(
+            stderr,
+            b"add art np = %d\n\0" as *const u8 as *const libc::c_char,
+            np,
+        );
         nz_0 = (*graph).nz;
         y = gv_calloc(
             (dim * n + dim * nz_0 * np) as size_t,
@@ -3023,22 +2880,20 @@ unsafe extern "C" fn make_map_internal(
                     while t < np {
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *y
-                                .offset(
-                                    (nz_0 * dim + k) as isize,
-                                ) = t as libc::c_double / np as libc::c_double
+                            *y.offset((nz_0 * dim + k) as isize) = t as libc::c_double
+                                / np as libc::c_double
                                 * *x.offset((i * dim + k) as isize)
                                 + (1 as libc::c_int as libc::c_double
                                     - t as libc::c_double / np as libc::c_double)
-                                    * *x
-                                        .offset(
-                                            (*((*graph).ja).offset(j as isize) * dim + k) as isize,
-                                        );
+                                    * *x.offset(
+                                        (*((*graph).ja).offset(j as isize) * dim + k) as isize,
+                                    );
                             k += 1;
                         }
                         if n + (nz_0 - n) * np + t < n + nz_0 * np
                             && n + (nz_0 - n) * np + t >= 0 as libc::c_int
-                        {} else {
+                        {
+                        } else {
                             __assert_fail(
                                 b"n + (nz-n)*np + t < n + nz*np && n + (nz-n)*np + t >= 0\0"
                                     as *const u8 as *const libc::c_char,
@@ -3054,14 +2909,10 @@ unsafe extern "C" fn make_map_internal(
                             );
                         }
                         if t as libc::c_double / np as libc::c_double > 0.5f64 {
-                            *grouping
-                                .offset(nz_0 as isize) = *grouping.offset(i as isize);
+                            *grouping.offset(nz_0 as isize) = *grouping.offset(i as isize);
                         } else {
-                            *grouping
-                                .offset(
-                                    nz_0 as isize,
-                                ) = *grouping
-                                .offset(*((*graph).ja).offset(j as isize) as isize);
+                            *grouping.offset(nz_0 as isize) =
+                                *grouping.offset(*((*graph).ja).offset(j as isize) as isize);
                         }
                         nz_0 += 1;
                         t += 1;
@@ -3073,8 +2924,7 @@ unsafe extern "C" fn make_map_internal(
         }
         fprintf(
             stderr,
-            b"after adding edge points, n:%d->%d\n\0" as *const u8
-                as *const libc::c_char,
+            b"after adding edge points, n:%d->%d\n\0" as *const u8 as *const libc::c_char,
             n,
             nz_0,
         );
@@ -3088,41 +2938,31 @@ unsafe extern "C" fn make_map_internal(
     if *nrandom != 0 as libc::c_int {
         i = 0 as libc::c_int;
         while i < dim2 {
-            if *bounding_box_margin.offset(i as isize)
-                > 0 as libc::c_int as libc::c_double
-            {
+            if *bounding_box_margin.offset(i as isize) > 0 as libc::c_int as libc::c_double {
                 xmin[i as usize] -= *bounding_box_margin.offset(i as isize);
                 xmax[i as usize] += *bounding_box_margin.offset(i as isize);
-            } else if *bounding_box_margin.offset(i as isize)
-                    < 0 as libc::c_int as libc::c_double
-                {
-                xmin[i as usize]
-                    -= boxsize[i as usize] * -*bounding_box_margin.offset(i as isize);
-                xmax[i as usize]
-                    += boxsize[i as usize] * -*bounding_box_margin.offset(i as isize);
+            } else if *bounding_box_margin.offset(i as isize) < 0 as libc::c_int as libc::c_double {
+                xmin[i as usize] -= boxsize[i as usize] * -*bounding_box_margin.offset(i as isize);
+                xmax[i as usize] += boxsize[i as usize] * -*bounding_box_margin.offset(i as isize);
             } else {
-                xmin[i as usize]
-                    -= if boxsize[i as usize] * 0.2f64 > 2.0f64 * shore_depth_tol {
-                        boxsize[i as usize] * 0.2f64
-                    } else {
-                        2.0f64 * shore_depth_tol
-                    };
-                xmax[i as usize]
-                    += if boxsize[i as usize] * 0.2f64
-                        > 2 as libc::c_int as libc::c_double * shore_depth_tol
-                    {
-                        boxsize[i as usize] * 0.2f64
-                    } else {
-                        2 as libc::c_int as libc::c_double * shore_depth_tol
-                    };
+                xmin[i as usize] -= if boxsize[i as usize] * 0.2f64 > 2.0f64 * shore_depth_tol {
+                    boxsize[i as usize] * 0.2f64
+                } else {
+                    2.0f64 * shore_depth_tol
+                };
+                xmax[i as usize] += if boxsize[i as usize] * 0.2f64
+                    > 2 as libc::c_int as libc::c_double * shore_depth_tol
+                {
+                    boxsize[i as usize] * 0.2f64
+                } else {
+                    2 as libc::c_int as libc::c_double * shore_depth_tol
+                };
             }
             i += 1;
         }
         if Verbose != 0 {
-            let mut bbm0: libc::c_double = *bounding_box_margin
-                .offset(0 as libc::c_int as isize);
-            let mut bbm1: libc::c_double = *bounding_box_margin
-                .offset(1 as libc::c_int as isize);
+            let mut bbm0: libc::c_double = *bounding_box_margin.offset(0 as libc::c_int as isize);
+            let mut bbm1: libc::c_double = *bounding_box_margin.offset(1 as libc::c_int as isize);
             if bbm0 > 0 as libc::c_int as libc::c_double {
                 fprintf(
                     stderr,
@@ -3132,8 +2972,7 @@ unsafe extern "C" fn make_map_internal(
             } else if bbm0 < 0 as libc::c_int as libc::c_double {
                 fprintf(
                     stderr,
-                    b"bounding box margin: (%.06f * %.06f)\0" as *const u8
-                        as *const libc::c_char,
+                    b"bounding box margin: (%.06f * %.06f)\0" as *const u8 as *const libc::c_char,
                     boxsize[0 as libc::c_int as usize],
                     -bbm0,
                 );
@@ -3151,7 +2990,11 @@ unsafe extern "C" fn make_map_internal(
                 );
             }
             if bbm1 > 0 as libc::c_int as libc::c_double {
-                fprintf(stderr, b" %.06f\n\0" as *const u8 as *const libc::c_char, bbm1);
+                fprintf(
+                    stderr,
+                    b" %.06f\n\0" as *const u8 as *const libc::c_char,
+                    bbm1,
+                );
             } else if bbm1 < 0 as libc::c_int as libc::c_double {
                 fprintf(
                     stderr,
@@ -3179,8 +3022,7 @@ unsafe extern "C" fn make_map_internal(
             let mut area2: libc::c_double = 0.;
             area2 = (xmax[1 as libc::c_int as usize] - xmin[1 as libc::c_int as usize])
                 * (xmax[0 as libc::c_int as usize] - xmin[0 as libc::c_int as usize]);
-            n1 = area2 as libc::c_int as libc::c_double
-                / (shore_depth_tol * shore_depth_tol);
+            n1 = area2 as libc::c_int as libc::c_double / (shore_depth_tol * shore_depth_tol);
             n2 = n as libc::c_double * (area2 as libc::c_int as libc::c_double / area);
             *nrandom = (if n1 > n2 { n1 } else { n2 }) as libc::c_int;
         }
@@ -3219,9 +3061,8 @@ unsafe extern "C" fn make_map_internal(
         while i < *nrandom {
             j = 0 as libc::c_int;
             while j < dim2 {
-                point[j
-                    as usize] = xmin[j as usize]
-                    + (xmax[j as usize] - xmin[j as usize]) * drand();
+                point[j as usize] =
+                    xmin[j as usize] + (xmax[j as usize] - xmin[j as usize]) * drand();
                 j += 1;
             }
             QuadTree_get_nearest(
@@ -3232,7 +3073,8 @@ unsafe extern "C" fn make_map_internal(
                 &mut min,
                 flag,
             );
-            if *flag == 0 {} else {
+            if *flag == 0 {
+            } else {
                 __assert_fail(
                     b"!(*flag)\0" as *const u8 as *const libc::c_char,
                     b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -3254,8 +3096,8 @@ unsafe extern "C" fn make_map_internal(
                 }
                 nz += 1;
             } else if INCLUDE_OK_POINTS != 0
-                    && min > shore_depth_tol / 10 as libc::c_int as libc::c_double
-                {
+                && min > shore_depth_tol / 10 as libc::c_int as libc::c_double
+            {
                 j = 0 as libc::c_int;
                 while j < dim2 {
                     *xran.offset((nzok * dim2 + j) as isize) = point[j as usize];
@@ -3306,16 +3148,10 @@ unsafe extern "C" fn make_map_internal(
     }
     i += 1;
     *xran.offset((i * dim2) as isize) = xmin[0 as libc::c_int as usize];
-    *xran
-        .offset(
-            (i * dim2 + 1 as libc::c_int) as isize,
-        ) = xmax[1 as libc::c_int as usize];
+    *xran.offset((i * dim2 + 1 as libc::c_int) as isize) = xmax[1 as libc::c_int as usize];
     i += 1;
     *xran.offset((i * dim2) as isize) = xmax[0 as libc::c_int as usize];
-    *xran
-        .offset(
-            (i * dim2 + 1 as libc::c_int) as isize,
-        ) = xmin[1 as libc::c_int as usize];
+    *xran.offset((i * dim2 + 1 as libc::c_int) as isize) = xmin[1 as libc::c_int as usize];
     *nrandom += 4 as libc::c_int;
     if INCLUDE_OK_POINTS != 0 {
         *xcombined = gv_calloc(
@@ -3332,8 +3168,7 @@ unsafe extern "C" fn make_map_internal(
     while i < n {
         j = 0 as libc::c_int;
         while j < dim2 {
-            *(*xcombined)
-                .offset((i * dim2 + j) as isize) = *x.offset((i * dim + j) as isize);
+            *(*xcombined).offset((i * dim2 + j) as isize) = *x.offset((i * dim + j) as isize);
             j += 1;
         }
         i += 1;
@@ -3342,10 +3177,8 @@ unsafe extern "C" fn make_map_internal(
     while i < *nrandom {
         j = 0 as libc::c_int;
         while j < dim2 {
-            *(*xcombined)
-                .offset(
-                    ((i + nn) * dim2 + j) as isize,
-                ) = *xran.offset((i * dim + j) as isize);
+            *(*xcombined).offset(((i + nn) * dim2 + j) as isize) =
+                *xran.offset((i * dim + j) as isize);
             j += 1;
         }
         i += 1;
@@ -3355,10 +3188,8 @@ unsafe extern "C" fn make_map_internal(
         while i < nn - n {
             j = 0 as libc::c_int;
             while j < dim2 {
-                *(*xcombined)
-                    .offset(
-                        ((i + n) * dim2 + j) as isize,
-                    ) = *xran.offset(((nzok0 - i) * dim + j) as isize);
+                *(*xcombined).offset(((i + n) * dim2 + j) as isize) =
+                    *xran.offset(((nzok0 - i) * dim + j) as isize);
                 j += 1;
             }
             i += 1;
@@ -3409,7 +3240,8 @@ unsafe extern "C" fn make_map_internal(
             }
             i += 1;
         }
-        if nz_1 == n * dim {} else {
+        if nz_1 == n * dim {
+        } else {
             __assert_fail(
                 b"nz == n*dim\0" as *const u8 as *const libc::c_char,
                 b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -3442,7 +3274,11 @@ unsafe extern "C" fn make_map_internal(
         *nrandom += n - nh;
         n = nh;
         if Verbose != 0 {
-            fprintf(stderr, b"nh = %d\n\0" as *const u8 as *const libc::c_char, nh);
+            fprintf(
+                stderr,
+                b"nh = %d\n\0" as *const u8 as *const libc::c_char,
+                nh,
+            );
         }
         free(xtemp as *mut libc::c_void);
     }
@@ -3505,14 +3341,9 @@ unsafe extern "C" fn add_point(
             ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
     }
-    *(*x)
-        .offset(
-            (*n * 2 as libc::c_int) as isize,
-        ) = *point.offset(0 as libc::c_int as isize);
-    *(*x)
-        .offset(
-            (*n * 2 as libc::c_int + 1 as libc::c_int) as isize,
-        ) = *point.offset(1 as libc::c_int as isize);
+    *(*x).offset((*n * 2 as libc::c_int) as isize) = *point.offset(0 as libc::c_int as isize);
+    *(*x).offset((*n * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+        *point.offset(1 as libc::c_int as isize);
     *(*groups).offset(*n as isize) = igrp;
     *n += 1;
 }
@@ -3532,30 +3363,21 @@ unsafe extern "C" fn get_boundingbox(
     *bbox.offset(2 as libc::c_int as isize) = *fresh23;
     i = 0 as libc::c_int;
     while i < n {
-        *bbox
-            .offset(
-                0 as libc::c_int as isize,
-            ) = if *bbox.offset(0 as libc::c_int as isize)
+        *bbox.offset(0 as libc::c_int as isize) = if *bbox.offset(0 as libc::c_int as isize)
             < *x.offset((i * dim) as isize) - *width.offset((i * dim) as isize)
         {
             *bbox.offset(0 as libc::c_int as isize)
         } else {
             *x.offset((i * dim) as isize) - *width.offset((i * dim) as isize)
         };
-        *bbox
-            .offset(
-                1 as libc::c_int as isize,
-            ) = if *bbox.offset(1 as libc::c_int as isize)
+        *bbox.offset(1 as libc::c_int as isize) = if *bbox.offset(1 as libc::c_int as isize)
             > *x.offset((i * dim) as isize) + *width.offset((i * dim) as isize)
         {
             *bbox.offset(1 as libc::c_int as isize)
         } else {
             *x.offset((i * dim) as isize) + *width.offset((i * dim) as isize)
         };
-        *bbox
-            .offset(
-                2 as libc::c_int as isize,
-            ) = if *bbox.offset(2 as libc::c_int as isize)
+        *bbox.offset(2 as libc::c_int as isize) = if *bbox.offset(2 as libc::c_int as isize)
             < *x.offset((i * dim + 1 as libc::c_int) as isize)
                 - *width.offset((i * dim + 1 as libc::c_int) as isize)
         {
@@ -3564,10 +3386,7 @@ unsafe extern "C" fn get_boundingbox(
             *x.offset((i * dim + 1 as libc::c_int) as isize)
                 - *width.offset((i * dim + 1 as libc::c_int) as isize)
         };
-        *bbox
-            .offset(
-                3 as libc::c_int as isize,
-            ) = if *bbox.offset(3 as libc::c_int as isize)
+        *bbox.offset(3 as libc::c_int as isize) = if *bbox.offset(3 as libc::c_int as isize)
             > *x.offset((i * dim + 1 as libc::c_int) as isize)
                 + *width.offset((i * dim + 1 as libc::c_int) as isize)
         {
@@ -3654,8 +3473,7 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
         }
         fprintf(
             stderr,
-            b"max grouping - min grouping + 1 = %d\n\0" as *const u8
-                as *const libc::c_char,
+            b"max grouping - min grouping + 1 = %d\n\0" as *const u8 as *const libc::c_char,
             maxgp - mingp + 1 as libc::c_int,
         );
     }
@@ -3683,7 +3501,7 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
             country_graph,
             highlight_cluster,
             flag,
-        )
+        );
     } else {
         avgsize[0 as libc::c_int as usize] = 0 as libc::c_int as libc::c_double;
         avgsize[1 as libc::c_int as usize] = 0 as libc::c_int as libc::c_double;
@@ -3701,8 +3519,7 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
             avgsize[i as usize] /= n as libc::c_double;
             i += 1;
         }
-        avgsz = 0.5f64
-            * (avgsize[0 as libc::c_int as usize] + avgsize[1 as libc::c_int as usize]);
+        avgsz = 0.5f64 * (avgsize[0 as libc::c_int as usize] + avgsize[1 as libc::c_int as usize]);
         if Verbose != 0 {
             fprintf(
                 stderr,
@@ -3725,10 +3542,7 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
             *groups.offset(i as isize) = *grouping.offset(i as isize);
             j = 0 as libc::c_int;
             while j < 2 as libc::c_int {
-                *X
-                    .offset(
-                        (i * 2 as libc::c_int + j) as isize,
-                    ) = *x.offset((i * dim + j) as isize);
+                *X.offset((i * 2 as libc::c_int + j) as isize) = *x.offset((i * dim + j) as isize);
                 j += 1;
             }
             i += 1;
@@ -3745,19 +3559,16 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
             if Verbose != 0 {
                 fprintf(
                     stderr,
-                    b"setting shore length ======%f\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"setting shore length ======%f\n\0" as *const u8 as *const libc::c_char,
                     shore_depth_tol,
                 );
             }
         }
         if K > 0 as libc::c_int {
-            delta[0 as libc::c_int
-                as usize] = 0.5f64 * avgsize[0 as libc::c_int as usize]
-                / K as libc::c_double;
-            delta[1 as libc::c_int
-                as usize] = 0.5f64 * avgsize[1 as libc::c_int as usize]
-                / K as libc::c_double;
+            delta[0 as libc::c_int as usize] =
+                0.5f64 * avgsize[0 as libc::c_int as usize] / K as libc::c_double;
+            delta[1 as libc::c_int as usize] =
+                0.5f64 * avgsize[1 as libc::c_int as usize] / K as libc::c_double;
         } else {
             delta[1 as libc::c_int as usize] = 0.0f64;
             delta[0 as libc::c_int as usize] = delta[1 as libc::c_int as usize];
@@ -3770,22 +3581,18 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 if avgsz == 0 as libc::c_int as libc::c_double {
                     nadded[j as usize] = 0 as libc::c_int;
                 } else {
-                    nadded[j
-                        as usize] = (K as libc::c_double
-                        * *sizes.offset((i * dim + j) as isize) / avgsz) as libc::c_int;
+                    nadded[j as usize] = (K as libc::c_double
+                        * *sizes.offset((i * dim + j) as isize)
+                        / avgsz) as libc::c_int;
                 }
                 j += 1;
             }
             if nadded[0 as libc::c_int as usize] > 0 as libc::c_int {
-                h[0 as libc::c_int
-                    as usize] = *sizes.offset((i * dim) as isize)
+                h[0 as libc::c_int as usize] = *sizes.offset((i * dim) as isize)
                     / nadded[0 as libc::c_int as usize] as libc::c_double;
-                point[0 as libc::c_int
-                    as usize] = *x.offset((i * dim) as isize)
-                    - *sizes.offset((i * dim) as isize)
-                        / 2 as libc::c_int as libc::c_double;
-                point[1 as libc::c_int
-                    as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
+                point[0 as libc::c_int as usize] = *x.offset((i * dim) as isize)
+                    - *sizes.offset((i * dim) as isize) / 2 as libc::c_int as libc::c_double;
+                point[1 as libc::c_int as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
                     + *sizes.offset((i * dim + 1 as libc::c_int) as isize)
                         / 2 as libc::c_int as libc::c_double;
                 p1 = point[1 as libc::c_int as usize];
@@ -3800,9 +3607,8 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 k = 0 as libc::c_int;
                 while k < nadded[0 as libc::c_int as usize] - 1 as libc::c_int {
                     point[0 as libc::c_int as usize] += h[0 as libc::c_int as usize];
-                    point[1 as libc::c_int
-                        as usize] = p1
-                        + (0.5f64 - drand()) * delta[1 as libc::c_int as usize];
+                    point[1 as libc::c_int as usize] =
+                        p1 + (0.5f64 - drand()) * delta[1 as libc::c_int as usize];
                     add_point(
                         &mut N,
                         igrp,
@@ -3813,12 +3619,9 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                     );
                     k += 1;
                 }
-                point[0 as libc::c_int
-                    as usize] = *x.offset((i * dim) as isize)
-                    + *sizes.offset((i * dim) as isize)
-                        / 2 as libc::c_int as libc::c_double;
-                point[1 as libc::c_int
-                    as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
+                point[0 as libc::c_int as usize] = *x.offset((i * dim) as isize)
+                    + *sizes.offset((i * dim) as isize) / 2 as libc::c_int as libc::c_double;
+                point[1 as libc::c_int as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
                     - *sizes.offset((i * dim + 1 as libc::c_int) as isize)
                         / 2 as libc::c_int as libc::c_double;
                 p1 = point[1 as libc::c_int as usize];
@@ -3833,9 +3636,8 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 k = 0 as libc::c_int;
                 while k < nadded[0 as libc::c_int as usize] - 1 as libc::c_int {
                     point[0 as libc::c_int as usize] -= h[0 as libc::c_int as usize];
-                    point[1 as libc::c_int
-                        as usize] = p1
-                        + (0.5f64 - drand()) * delta[1 as libc::c_int as usize];
+                    point[1 as libc::c_int as usize] =
+                        p1 + (0.5f64 - drand()) * delta[1 as libc::c_int as usize];
                     add_point(
                         &mut N,
                         igrp,
@@ -3848,16 +3650,12 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 }
             }
             if nadded[1 as libc::c_int as usize] > 0 as libc::c_int {
-                h[1 as libc::c_int
-                    as usize] = *sizes.offset((i * dim + 1 as libc::c_int) as isize)
+                h[1 as libc::c_int as usize] = *sizes.offset((i * dim + 1 as libc::c_int) as isize)
                     / nadded[1 as libc::c_int as usize] as libc::c_double;
-                point[0 as libc::c_int
-                    as usize] = *x.offset((i * dim) as isize)
-                    - *sizes.offset((i * dim) as isize)
-                        / 2 as libc::c_int as libc::c_double;
+                point[0 as libc::c_int as usize] = *x.offset((i * dim) as isize)
+                    - *sizes.offset((i * dim) as isize) / 2 as libc::c_int as libc::c_double;
                 p0 = point[0 as libc::c_int as usize];
-                point[1 as libc::c_int
-                    as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
+                point[1 as libc::c_int as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
                     - *sizes.offset((i * dim + 1 as libc::c_int) as isize)
                         / 2 as libc::c_int as libc::c_double;
                 add_point(
@@ -3870,9 +3668,8 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 );
                 k = 0 as libc::c_int;
                 while k < nadded[1 as libc::c_int as usize] - 1 as libc::c_int {
-                    point[0 as libc::c_int
-                        as usize] = p0
-                        + (0.5f64 - drand()) * delta[0 as libc::c_int as usize];
+                    point[0 as libc::c_int as usize] =
+                        p0 + (0.5f64 - drand()) * delta[0 as libc::c_int as usize];
                     point[1 as libc::c_int as usize] += h[1 as libc::c_int as usize];
                     add_point(
                         &mut N,
@@ -3884,13 +3681,10 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                     );
                     k += 1;
                 }
-                point[0 as libc::c_int
-                    as usize] = *x.offset((i * dim) as isize)
-                    + *sizes.offset((i * dim) as isize)
-                        / 2 as libc::c_int as libc::c_double;
+                point[0 as libc::c_int as usize] = *x.offset((i * dim) as isize)
+                    + *sizes.offset((i * dim) as isize) / 2 as libc::c_int as libc::c_double;
                 p0 = point[0 as libc::c_int as usize];
-                point[1 as libc::c_int
-                    as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
+                point[1 as libc::c_int as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize)
                     + *sizes.offset((i * dim + 1 as libc::c_int) as isize)
                         / 2 as libc::c_int as libc::c_double;
                 add_point(
@@ -3903,9 +3697,8 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                 );
                 k = 0 as libc::c_int;
                 while k < nadded[1 as libc::c_int as usize] - 1 as libc::c_int {
-                    point[0 as libc::c_int
-                        as usize] = p0
-                        + (0.5f64 - drand()) * delta[0 as libc::c_int as usize];
+                    point[0 as libc::c_int as usize] =
+                        p0 + (0.5f64 - drand()) * delta[0 as libc::c_int as usize];
                     point[1 as libc::c_int as usize] -= h[1 as libc::c_int as usize];
                     add_point(
                         &mut N,
@@ -3952,7 +3745,8 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
             } else {
                 KB = (avgdist / edge_bridge_tol) as libc::c_int;
             }
-            if avgdist > 0 as libc::c_int as libc::c_double {} else {
+            if avgdist > 0 as libc::c_int as libc::c_double {
+            } else {
                 __assert_fail(
                     b"avgdist > 0\0" as *const u8 as *const libc::c_char,
                     b"make_map.c\0" as *const u8 as *const libc::c_char,
@@ -3973,28 +3767,23 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                     jj = *ja.offset(j as isize);
                     if !(jj <= i) {
                         dist = distance(x, dim, i, jj);
-                        nadded[0 as libc::c_int
-                            as usize] = ((2 as libc::c_int * KB) as libc::c_double * dist
-                            / avgdist) as libc::c_int;
-                        h[0 as libc::c_int
-                            as usize] = 0.5f64
-                            * (*x.offset((jj * dim) as isize)
-                                - *x.offset((i * dim) as isize))
+                        nadded[0 as libc::c_int as usize] =
+                            ((2 as libc::c_int * KB) as libc::c_double * dist / avgdist)
+                                as libc::c_int;
+                        h[0 as libc::c_int as usize] = 0.5f64
+                            * (*x.offset((jj * dim) as isize) - *x.offset((i * dim) as isize))
                             / nadded[0 as libc::c_int as usize] as libc::c_double;
-                        h[1 as libc::c_int
-                            as usize] = 0.5f64
+                        h[1 as libc::c_int as usize] = 0.5f64
                             * (*x.offset((jj * dim + 1 as libc::c_int) as isize)
                                 - *x.offset((i * dim + 1 as libc::c_int) as isize))
                             / nadded[0 as libc::c_int as usize] as libc::c_double;
                         point[0 as libc::c_int as usize] = *x.offset((i * dim) as isize);
-                        point[1 as libc::c_int
-                            as usize] = *x.offset((i * dim + 1 as libc::c_int) as isize);
+                        point[1 as libc::c_int as usize] =
+                            *x.offset((i * dim + 1 as libc::c_int) as isize);
                         k = 0 as libc::c_int;
                         while k < nadded[0 as libc::c_int as usize] - 1 as libc::c_int {
-                            point[0 as libc::c_int as usize]
-                                += h[0 as libc::c_int as usize];
-                            point[1 as libc::c_int as usize]
-                                += h[1 as libc::c_int as usize];
+                            point[0 as libc::c_int as usize] += h[0 as libc::c_int as usize];
+                            point[1 as libc::c_int as usize] += h[1 as libc::c_int as usize];
                             add_point(
                                 &mut N,
                                 *grouping.offset(i as isize),
@@ -4005,27 +3794,20 @@ pub unsafe extern "C" fn make_map_from_rectangle_groups(
                             );
                             k += 1;
                         }
-                        h[0 as libc::c_int
-                            as usize] = 0.5f64
-                            * (*x.offset((i * dim) as isize)
-                                - *x.offset((jj * dim) as isize))
+                        h[0 as libc::c_int as usize] = 0.5f64
+                            * (*x.offset((i * dim) as isize) - *x.offset((jj * dim) as isize))
                             / nadded[0 as libc::c_int as usize] as libc::c_double;
-                        h[1 as libc::c_int
-                            as usize] = 0.5f64
+                        h[1 as libc::c_int as usize] = 0.5f64
                             * (*x.offset((i * dim + 1 as libc::c_int) as isize)
                                 - *x.offset((jj * dim + 1 as libc::c_int) as isize))
                             / nadded[0 as libc::c_int as usize] as libc::c_double;
-                        point[0 as libc::c_int
-                            as usize] = *x.offset((jj * dim) as isize);
-                        point[1 as libc::c_int
-                            as usize] = *x
-                            .offset((jj * dim + 1 as libc::c_int) as isize);
+                        point[0 as libc::c_int as usize] = *x.offset((jj * dim) as isize);
+                        point[1 as libc::c_int as usize] =
+                            *x.offset((jj * dim + 1 as libc::c_int) as isize);
                         k = 0 as libc::c_int;
                         while k < nadded[0 as libc::c_int as usize] - 1 as libc::c_int {
-                            point[0 as libc::c_int as usize]
-                                += h[0 as libc::c_int as usize];
-                            point[1 as libc::c_int as usize]
-                                += h[1 as libc::c_int as usize];
+                            point[0 as libc::c_int as usize] += h[0 as libc::c_int as usize];
+                            point[1 as libc::c_int as usize] += h[1 as libc::c_int as usize];
                             add_point(
                                 &mut N,
                                 *grouping.offset(jj as isize),

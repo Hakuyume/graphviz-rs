@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -33,24 +41,16 @@ extern "C" {
         jcn: libc::c_int,
         val: *mut libc::c_void,
     ) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
     fn SparseMatrix_transpose(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_multiply_vector(
         A: SparseMatrix,
         v: *mut libc::c_double,
         res: *mut *mut libc::c_double,
     );
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_copy(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_set_entries_to_real_one(A: SparseMatrix) -> SparseMatrix;
 }
@@ -142,12 +142,13 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
     mut A: SparseMatrix,
     mut level: libc::c_int,
 ) -> Multilevel_Modularity_Clustering {
-    let mut grid: Multilevel_Modularity_Clustering = 0
-        as *mut Multilevel_Modularity_Clustering_struct;
+    let mut grid: Multilevel_Modularity_Clustering =
+        0 as *mut Multilevel_Modularity_Clustering_struct;
     let mut n: libc::c_int = (*A).n;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -161,7 +162,8 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
                 .as_ptr(),
         );
     }
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -178,7 +180,8 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
     if A.is_null() {
         return 0 as Multilevel_Modularity_Clustering;
     }
-    if (*A).m == n {} else {
+    if (*A).m == n {
+    } else {
         __assert_fail(
             b"A->m == n\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -192,9 +195,8 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
                 .as_ptr(),
         );
     }
-    grid = malloc(
-        ::std::mem::size_of::<Multilevel_Modularity_Clustering_struct>() as libc::c_ulong,
-    ) as Multilevel_Modularity_Clustering;
+    grid = malloc(::std::mem::size_of::<Multilevel_Modularity_Clustering_struct>() as libc::c_ulong)
+        as Multilevel_Modularity_Clustering;
     (*grid).level = level;
     (*grid).n = n;
     let ref mut fresh0 = (*grid).A;
@@ -210,8 +212,7 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
     (*grid).delete_top_level_A = 0 as libc::c_int;
     let ref mut fresh5 = (*grid).matching;
     *fresh5 = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_int;
     let ref mut fresh6 = (*grid).deg;
     *fresh6 = 0 as *mut libc::c_double;
@@ -256,10 +257,9 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_init(
         }
         i = 0 as libc::c_int;
         while i < n_0 {
-            modularity
-                += (*indeg.offset(i as isize)
-                    - *deg.offset(i as isize) * *deg.offset(i as isize) / deg_total)
-                    / deg_total;
+            modularity += (*indeg.offset(i as isize)
+                - *deg.offset(i as isize) * *deg.offset(i as isize) / deg_total)
+                / deg_total;
             i += 1;
         }
         (*grid).deg_total = deg_total;
@@ -321,23 +321,21 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
     let mut total_gain: libc::c_double = 0 as libc::c_int as libc::c_double;
     modularity = (*grid).modularity;
     deg_new = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     deg_inter = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     mask = malloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
         *mask.offset(i as isize) = -(1 as libc::c_int);
         i += 1;
     }
-    if n == (*A).n {} else {
+    if n == (*A).n {
+    } else {
         __assert_fail(
             b"n == A->n\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -384,21 +382,21 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                 if !(jj == i) {
                     jc = *matching.offset(jj as isize);
                     if jc == UNMATCHED as libc::c_int {
-                        gain = (2 as libc::c_int as libc::c_double
-                            * *a.offset(j as isize)
+                        gain = (2 as libc::c_int as libc::c_double * *a.offset(j as isize)
                             - 2 as libc::c_int as libc::c_double
-                                * *deg.offset(i as isize) * *deg.offset(jj as isize)
-                                * inv_deg_total) * inv_deg_total;
-                    } else if *deg_inter.offset(jc as isize)
-                            > 0 as libc::c_int as libc::c_double
-                        {
+                                * *deg.offset(i as isize)
+                                * *deg.offset(jj as isize)
+                                * inv_deg_total)
+                            * inv_deg_total;
+                    } else if *deg_inter.offset(jc as isize) > 0 as libc::c_int as libc::c_double {
                         gain = (2 as libc::c_int as libc::c_double
                             * *deg_inter.offset(jc as isize)
                             - 2 as libc::c_int as libc::c_double
-                                * *deg.offset(i as isize) * *deg_new.offset(jc as isize)
-                                * inv_deg_total) * inv_deg_total;
-                        *deg_inter
-                            .offset(jc as isize) = -(1 as libc::c_int) as libc::c_double;
+                                * *deg.offset(i as isize)
+                                * *deg_new.offset(jc as isize)
+                                * inv_deg_total)
+                            * inv_deg_total;
+                        *deg_inter.offset(jc as isize) = -(1 as libc::c_int) as libc::c_double;
                     } else {
                         gain = -(1 as libc::c_int) as libc::c_double;
                     }
@@ -409,26 +407,23 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                 }
                 j += 1;
             }
-            if maxgain > 0 as libc::c_int as libc::c_double
-                || (*grid).agglomerate_regardless != 0
-            {
+            if maxgain > 0 as libc::c_int as libc::c_double || (*grid).agglomerate_regardless != 0 {
                 total_gain += maxgain;
                 jc = *matching.offset(jmax as isize);
                 if jc == UNMATCHED as libc::c_int {
                     let ref mut fresh9 = *matching.offset(jmax as isize);
                     *fresh9 = nc;
                     *matching.offset(i as isize) = *fresh9;
-                    *deg_new
-                        .offset(
-                            nc as isize,
-                        ) = *deg.offset(i as isize) + *deg.offset(jmax as isize);
+                    *deg_new.offset(nc as isize) =
+                        *deg.offset(i as isize) + *deg.offset(jmax as isize);
                     nc += 1;
                 } else {
                     *deg_new.offset(jc as isize) += *deg.offset(i as isize);
                     *matching.offset(i as isize) = jc;
                 }
             } else {
-                if maxgain <= 0 as libc::c_int as libc::c_double {} else {
+                if maxgain <= 0 as libc::c_int as libc::c_double {
+                } else {
                     __assert_fail(
                         b"maxgain <= 0\0" as *const u8 as *const libc::c_char,
                         b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -469,8 +464,7 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
             } else if n - ncluster_target <= ncluster_target - nc {
                 fprintf(
                     stderr,
-                    b"ncluster_target = %d, close to n=%d\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"ncluster_target = %d, close to n=%d\n\0" as *const u8 as *const libc::c_char,
                     ncluster_target,
                     n,
                 );
@@ -485,7 +479,10 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                 current_block = 10261677128829721533;
             }
         } else if n < ncluster_target {
-            fprintf(stderr, b"n < target\n\0" as *const u8 as *const libc::c_char);
+            fprintf(
+                stderr,
+                b"n < target\n\0" as *const u8 as *const libc::c_char,
+            );
             i = 0 as libc::c_int;
             while i < n {
                 *matching.offset(i as isize) = i;
@@ -501,8 +498,7 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
     }
     match current_block {
         10261677128829721533 => {
-            if nc >= 1 as libc::c_int
-                && (total_gain > 0 as libc::c_int as libc::c_double || nc < n)
+            if nc >= 1 as libc::c_int && (total_gain > 0 as libc::c_int as libc::c_double || nc < n)
             {
                 let mut P: SparseMatrix = 0 as *mut SparseMatrix_struct;
                 let mut R: SparseMatrix = 0 as *mut SparseMatrix_struct;
@@ -510,8 +506,8 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                 let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
                 let mut cA: SparseMatrix = 0 as *mut SparseMatrix_struct;
                 let mut one: libc::c_double = 1.0f64;
-                let mut cgrid: Multilevel_Modularity_Clustering = 0
-                    as *mut Multilevel_Modularity_Clustering_struct;
+                let mut cgrid: Multilevel_Modularity_Clustering =
+                    0 as *mut Multilevel_Modularity_Clustering_struct;
                 R0 = SparseMatrix_new(
                     nc,
                     n,
@@ -550,19 +546,15 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                         cgrid = Multilevel_Modularity_Clustering_init(cA, level);
                         deg_new = realloc(
                             deg_new as *mut libc::c_void,
-                            (nc as libc::c_ulong)
-                                .wrapping_mul(
-                                    ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                                ),
+                            (nc as libc::c_ulong).wrapping_mul(
+                                ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+                            ),
                         ) as *mut libc::c_double;
                         let ref mut fresh12 = (*cgrid).deg;
                         *fresh12 = deg_new;
                         (*cgrid).modularity = (*grid).modularity + total_gain;
                         (*cgrid).deg_total = (*grid).deg_total;
-                        cgrid = Multilevel_Modularity_Clustering_establish(
-                            cgrid,
-                            ncluster_target,
-                        );
+                        cgrid = Multilevel_Modularity_Clustering_establish(cgrid, ncluster_target);
                         let ref mut fresh13 = (*grid).next;
                         *fresh13 = cgrid;
                         let ref mut fresh14 = (*cgrid).prev;
@@ -570,17 +562,15 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_establish(
                     }
                 }
             } else {
-                if ncluster_target > 0 as libc::c_int && nc > ncluster_target
+                if ncluster_target > 0 as libc::c_int
+                    && nc > ncluster_target
                     && (*grid).agglomerate_regardless == 0
                 {
                     (*grid).agglomerate_regardless = 1 as libc::c_int;
                     free(deg_inter as *mut libc::c_void);
                     free(mask as *mut libc::c_void);
                     free(deg_new as *mut libc::c_void);
-                    return Multilevel_Modularity_Clustering_establish(
-                        grid,
-                        ncluster_target,
-                    );
+                    return Multilevel_Modularity_Clustering_establish(grid, ncluster_target);
                 }
                 i = 0 as libc::c_int;
                 while i < n {
@@ -600,8 +590,8 @@ unsafe extern "C" fn Multilevel_Modularity_Clustering_new(
     mut A0: SparseMatrix,
     mut ncluster_target: libc::c_int,
 ) -> Multilevel_Modularity_Clustering {
-    let mut grid: Multilevel_Modularity_Clustering = 0
-        as *mut Multilevel_Modularity_Clustering_struct;
+    let mut grid: Multilevel_Modularity_Clustering =
+        0 as *mut Multilevel_Modularity_Clustering_struct;
     let mut A: SparseMatrix = A0;
     if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) == 0
         || (*A).type_0 != MATRIX_TYPE_REAL as libc::c_int
@@ -623,15 +613,16 @@ unsafe extern "C" fn hierachical_modularity_clustering(
     mut modularity: *mut libc::c_double,
     mut flag: *mut libc::c_int,
 ) {
-    let mut grid: Multilevel_Modularity_Clustering = 0
-        as *mut Multilevel_Modularity_Clustering_struct;
-    let mut cgrid: Multilevel_Modularity_Clustering = 0
-        as *mut Multilevel_Modularity_Clustering_struct;
+    let mut grid: Multilevel_Modularity_Clustering =
+        0 as *mut Multilevel_Modularity_Clustering_struct;
+    let mut cgrid: Multilevel_Modularity_Clustering =
+        0 as *mut Multilevel_Modularity_Clustering_struct;
     let mut matching: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut i: libc::c_int = 0;
     let mut P: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut u: *mut libc::c_double = 0 as *mut libc::c_double;
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -658,10 +649,7 @@ unsafe extern "C" fn hierachical_modularity_clustering(
     ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < (*cgrid).n {
-        *u
-            .offset(
-                i as isize,
-            ) = *((*cgrid).matching).offset(i as isize) as libc::c_double;
+        *u.offset(i as isize) = *((*cgrid).matching).offset(i as isize) as libc::c_double;
         i += 1;
     }
     *nclusters = (*cgrid).n;
@@ -704,7 +692,8 @@ pub unsafe extern "C" fn modularity_clustering(
 ) {
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     *flag = 0 as libc::c_int;
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"clustering.c\0" as *const u8 as *const libc::c_char,
@@ -726,14 +715,7 @@ pub unsafe extern "C" fn modularity_clustering(
     if (*B).type_0 != MATRIX_TYPE_REAL as libc::c_int || use_value == 0 {
         B = SparseMatrix_set_entries_to_real_one(B);
     }
-    hierachical_modularity_clustering(
-        B,
-        ncluster_target,
-        nclusters,
-        assignment,
-        modularity,
-        flag,
-    );
+    hierachical_modularity_clustering(B, ncluster_target, nclusters, assignment, modularity, flag);
     if B != A {
         SparseMatrix_delete(B);
     }

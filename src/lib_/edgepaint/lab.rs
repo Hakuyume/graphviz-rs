@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -114,7 +122,11 @@ pub unsafe extern "C" fn color_rgb_init(
     mut g: libc::c_double,
     mut b: libc::c_double,
 ) -> color_rgb {
-    let mut rgb: color_rgb = color_rgb { r: 0., g: 0., b: 0. };
+    let mut rgb: color_rgb = color_rgb {
+        r: 0.,
+        g: 0.,
+        b: 0.,
+    };
     rgb.r = r;
     rgb.g = g;
     rgb.b = b;
@@ -126,7 +138,11 @@ pub unsafe extern "C" fn color_xyz_init(
     mut y: libc::c_double,
     mut z: libc::c_double,
 ) -> color_xyz {
-    let mut xyz: color_xyz = color_xyz { x: 0., y: 0., z: 0. };
+    let mut xyz: color_xyz = color_xyz {
+        x: 0.,
+        y: 0.,
+        z: 0.,
+    };
     xyz.x = x;
     xyz.y = y;
     xyz.z = z;
@@ -157,8 +173,7 @@ unsafe extern "C" fn PivotXYZ(mut n: libc::c_double) -> libc::c_double {
 }
 unsafe extern "C" fn PivotRgb(mut n: libc::c_double) -> libc::c_double {
     if n > 0.04045f64 {
-        return 100 as libc::c_int as libc::c_double
-            * pow((n + 0.055f64) / 1.055f64, 2.4f64);
+        return 100 as libc::c_int as libc::c_double * pow((n + 0.055f64) / 1.055f64, 2.4f64);
     }
     return 100 as libc::c_int as libc::c_double * n / 12.92f64;
 }
@@ -193,33 +208,31 @@ pub unsafe extern "C" fn RGB2LAB(mut color: color_rgb) -> color_lab {
 }
 #[no_mangle]
 pub unsafe extern "C" fn LAB2RGB_real_01(mut color: *mut libc::c_double) {
-    let mut rgb: color_rgb = color_rgb { r: 0., g: 0., b: 0. };
+    let mut rgb: color_rgb = color_rgb {
+        r: 0.,
+        g: 0.,
+        b: 0.,
+    };
     let mut lab: color_lab = color_lab { l: 0, a: 0, b: 0 };
     lab.l = *color.offset(0 as libc::c_int as isize) as libc::c_schar;
     lab.a = *color.offset(1 as libc::c_int as isize) as libc::c_schar;
     lab.b = *color.offset(2 as libc::c_int as isize) as libc::c_schar;
     rgb = LAB2RGB(lab);
-    *color
-        .offset(
-            0 as libc::c_int as isize,
-        ) = rgb.r / 255 as libc::c_int as libc::c_double;
-    *color
-        .offset(
-            1 as libc::c_int as isize,
-        ) = rgb.g / 255 as libc::c_int as libc::c_double;
-    *color
-        .offset(
-            2 as libc::c_int as isize,
-        ) = rgb.b / 255 as libc::c_int as libc::c_double;
+    *color.offset(0 as libc::c_int as isize) = rgb.r / 255 as libc::c_int as libc::c_double;
+    *color.offset(1 as libc::c_int as isize) = rgb.g / 255 as libc::c_int as libc::c_double;
+    *color.offset(2 as libc::c_int as isize) = rgb.b / 255 as libc::c_int as libc::c_double;
 }
 #[no_mangle]
 pub unsafe extern "C" fn LAB2RGB(mut color: color_lab) -> color_rgb {
-    let mut y: libc::c_double = (color.l as libc::c_int as libc::c_double + 16.0f64)
-        / 116.0f64;
+    let mut y: libc::c_double = (color.l as libc::c_int as libc::c_double + 16.0f64) / 116.0f64;
     let mut x: libc::c_double = color.a as libc::c_int as libc::c_double / 500.0f64 + y;
     let mut z: libc::c_double = y - color.b as libc::c_int as libc::c_double / 200.0f64;
     let mut white: color_xyz = color_xyz_init(95.047f64, 100.000f64, 108.883f64);
-    let mut xyz: color_xyz = color_xyz { x: 0., y: 0., z: 0. };
+    let mut xyz: color_xyz = color_xyz {
+        x: 0.,
+        y: 0.,
+        z: 0.,
+    };
     let mut t1: libc::c_double = 0.;
     let mut t2: libc::c_double = 0.;
     let mut t3: libc::c_double = 0.;
@@ -272,9 +285,7 @@ pub unsafe extern "C" fn XYZ2RGB(mut color: color_xyz) -> color_rgb {
     } else {
         r
     };
-    r = if (255 as libc::c_int as libc::c_double)
-        < r * 255 as libc::c_int as libc::c_double
-    {
+    r = if (255 as libc::c_int as libc::c_double) < r * 255 as libc::c_int as libc::c_double {
         255 as libc::c_int as libc::c_double
     } else {
         r * 255 as libc::c_int as libc::c_double
@@ -284,9 +295,7 @@ pub unsafe extern "C" fn XYZ2RGB(mut color: color_xyz) -> color_rgb {
     } else {
         g
     };
-    g = if (255 as libc::c_int as libc::c_double)
-        < g * 255 as libc::c_int as libc::c_double
-    {
+    g = if (255 as libc::c_int as libc::c_double) < g * 255 as libc::c_int as libc::c_double {
         255 as libc::c_int as libc::c_double
     } else {
         g * 255 as libc::c_int as libc::c_double
@@ -296,9 +305,7 @@ pub unsafe extern "C" fn XYZ2RGB(mut color: color_xyz) -> color_rgb {
     } else {
         b
     };
-    b = if (255 as libc::c_int as libc::c_double)
-        < b * 255 as libc::c_int as libc::c_double
-    {
+    b = if (255 as libc::c_int as libc::c_double) < b * 255 as libc::c_int as libc::c_double {
         255 as libc::c_int as libc::c_double
     } else {
         b * 255 as libc::c_int as libc::c_double
@@ -356,9 +363,8 @@ pub unsafe extern "C" fn lab_gamut(
         .wrapping_mul(256 as libc::c_int as libc::c_ulong)
         .wrapping_mul(256 as libc::c_int as libc::c_ulong)
         .wrapping_mul(3 as libc::c_int as libc::c_ulong);
-    x = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(m),
-    ) as *mut libc::c_double;
+    x = malloc((::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(m))
+        as *mut libc::c_double;
     xx = x;
     *n = 0 as libc::c_int;
     let mut i: size_t = 0 as libc::c_int as size_t;
@@ -376,14 +382,9 @@ pub unsafe extern "C" fn lab_gamut(
                 as libc::c_int;
             let mut b: libc::c_int = b_lower;
             while b <= b_upper {
-                *xx
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ) = *lab_gamut_data.as_ptr().offset(i as isize) as libc::c_double;
-                *xx
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ) = *lab_gamut_data
+                *xx.offset(0 as libc::c_int as isize) =
+                    *lab_gamut_data.as_ptr().offset(i as isize) as libc::c_double;
+                *xx.offset(1 as libc::c_int as isize) = *lab_gamut_data
                     .as_ptr()
                     .offset(i.wrapping_add(1 as libc::c_int as libc::c_ulong) as isize)
                     as libc::c_double;
@@ -393,8 +394,8 @@ pub unsafe extern "C" fn lab_gamut(
                 b += 1;
             }
         }
-        i = (i as libc::c_ulong).wrapping_add(4 as libc::c_int as libc::c_ulong)
-            as size_t as size_t;
+        i = (i as libc::c_ulong).wrapping_add(4 as libc::c_int as libc::c_ulong) as size_t
+            as size_t;
     }
     return x;
 }
@@ -416,12 +417,10 @@ pub unsafe extern "C" fn lab_gamut_quadtree(
 }
 unsafe extern "C" fn lab_dist(mut x: color_lab, mut y: color_lab) -> libc::c_double {
     return sqrt(
-        ((x.l as libc::c_int - y.l as libc::c_int)
-            * (x.l as libc::c_int - y.l as libc::c_int)
-            + (x.a as libc::c_int - y.a as libc::c_int)
-                * (x.a as libc::c_int - y.a as libc::c_int)
-            + (x.b as libc::c_int - y.b as libc::c_int)
-                * (x.b as libc::c_int - y.b as libc::c_int)) as libc::c_double,
+        ((x.l as libc::c_int - y.l as libc::c_int) * (x.l as libc::c_int - y.l as libc::c_int)
+            + (x.a as libc::c_int - y.a as libc::c_int) * (x.a as libc::c_int - y.a as libc::c_int)
+            + (x.b as libc::c_int - y.b as libc::c_int) * (x.b as libc::c_int - y.b as libc::c_int))
+            as libc::c_double,
     );
 }
 unsafe extern "C" fn lab_interpolate(
@@ -430,20 +429,11 @@ unsafe extern "C" fn lab_interpolate(
     mut t: libc::c_double,
     mut colors: *mut libc::c_double,
 ) {
-    *colors
-        .offset(
-            0 as libc::c_int as isize,
-        ) = lab1.l as libc::c_int as libc::c_double
+    *colors.offset(0 as libc::c_int as isize) = lab1.l as libc::c_int as libc::c_double
         + t * (lab2.l as libc::c_int - lab1.l as libc::c_int) as libc::c_double;
-    *colors
-        .offset(
-            1 as libc::c_int as isize,
-        ) = lab1.a as libc::c_int as libc::c_double
+    *colors.offset(1 as libc::c_int as isize) = lab1.a as libc::c_int as libc::c_double
         + t * (lab2.a as libc::c_int - lab1.a as libc::c_int) as libc::c_double;
-    *colors
-        .offset(
-            2 as libc::c_int as isize,
-        ) = lab1.b as libc::c_int as libc::c_double
+    *colors.offset(2 as libc::c_int as isize) = lab1.b as libc::c_int as libc::c_double
         + t * (lab2.b as libc::c_int - lab1.b as libc::c_int) as libc::c_double;
 }
 #[no_mangle]
@@ -462,7 +452,11 @@ pub unsafe extern "C" fn color_blend_rgb2lab(
     let mut cdim: libc::c_int = 3 as libc::c_int;
     let mut cl: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut lab: *mut color_lab = 0 as *mut color_lab;
-    let mut rgb: color_rgb = color_rgb { r: 0., g: 0., b: 0. };
+    let mut rgb: color_rgb = color_rgb {
+        r: 0.,
+        g: 0.,
+        b: 0.,
+    };
     let mut dists: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut step: libc::c_double = 0.;
     let mut dist_current: libc::c_double = 0.;
@@ -485,11 +479,13 @@ pub unsafe extern "C" fn color_blend_rgb2lab(
         nc += 1;
     }
     lab = malloc(
-        (::std::mem::size_of::<color_lab>() as libc::c_ulong)
-            .wrapping_mul(
-                (if nc > 1 as libc::c_int { nc } else { 1 as libc::c_int })
-                    as libc::c_ulong,
-            ),
+        (::std::mem::size_of::<color_lab>() as libc::c_ulong).wrapping_mul(
+            (if nc > 1 as libc::c_int {
+                nc
+            } else {
+                1 as libc::c_int
+            }) as libc::c_ulong,
+        ),
     ) as *mut color_lab;
     cl = color_list.offset(-(1 as libc::c_int as isize));
     nc = 0 as libc::c_int;
@@ -517,19 +513,18 @@ pub unsafe extern "C" fn color_blend_rgb2lab(
         }
     }
     dists = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(
-                (if 1 as libc::c_int > nc { 1 as libc::c_int } else { nc })
-                    as libc::c_ulong,
-            ),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(
+            (if 1 as libc::c_int > nc {
+                1 as libc::c_int
+            } else {
+                nc
+            }) as libc::c_ulong,
+        ),
     ) as *mut libc::c_double;
     *dists.offset(0 as libc::c_int as isize) = 0 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < nc - 1 as libc::c_int {
-        *dists
-            .offset(
-                (i + 1 as libc::c_int) as isize,
-            ) = lab_dist(
+        *dists.offset((i + 1 as libc::c_int) as isize) = lab_dist(
             *lab.offset(i as isize),
             *lab.offset((i + 1 as libc::c_int) as isize),
         );
@@ -556,18 +551,12 @@ pub unsafe extern "C" fn color_blend_rgb2lab(
     }
     colors = *colors0;
     if maxpoints == 1 as libc::c_int {
-        *colors
-            .offset(
-                0 as libc::c_int as isize,
-            ) = (*lab.offset(0 as libc::c_int as isize)).l as libc::c_double;
-        *colors
-            .offset(
-                1 as libc::c_int as isize,
-            ) = (*lab.offset(0 as libc::c_int as isize)).a as libc::c_double;
-        *colors
-            .offset(
-                2 as libc::c_int as isize,
-            ) = (*lab.offset(0 as libc::c_int as isize)).b as libc::c_double;
+        *colors.offset(0 as libc::c_int as isize) =
+            (*lab.offset(0 as libc::c_int as isize)).l as libc::c_double;
+        *colors.offset(1 as libc::c_int as isize) =
+            (*lab.offset(0 as libc::c_int as isize)).a as libc::c_double;
+        *colors.offset(2 as libc::c_int as isize) =
+            (*lab.offset(0 as libc::c_int as isize)).b as libc::c_double;
     } else {
         step = *dists.offset((nc - 1 as libc::c_int) as isize)
             / (maxpoints - 1 as libc::c_int) as libc::c_double;
@@ -583,9 +572,7 @@ pub unsafe extern "C" fn color_blend_rgb2lab(
                 *lab.offset(ii as isize),
                 *lab.offset(jj as isize),
                 (dist_current - *dists.offset(ii as isize))
-                    / (if 0.001f64
-                        > *dists.offset(jj as isize) - *dists.offset(ii as isize)
-                    {
+                    / (if 0.001f64 > *dists.offset(jj as isize) - *dists.offset(ii as isize) {
                         0.001f64
                     } else {
                         *dists.offset(jj as isize) - *dists.offset(ii as isize)

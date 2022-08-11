@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, register_tool)]
 extern "C" {
@@ -7,11 +15,7 @@ extern "C" {
     pub type _IO_marker;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn vfprintf(
-        _: *mut FILE,
-        _: *const libc::c_char,
-        _: ::std::ffi::VaList,
-    ) -> libc::c_int;
+    fn vfprintf(_: *mut FILE, _: *const libc::c_char, _: ::std::ffi::VaList) -> libc::c_int;
     fn exit(_: libc::c_int) -> !;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn __errno_location() -> *mut libc::c_int;
@@ -95,10 +99,7 @@ pub unsafe extern "C" fn setErrorLine(mut line: libc::c_int) {
     _err_info.line = line;
 }
 #[no_mangle]
-pub unsafe extern "C" fn setErrorFileLine(
-    mut src: *mut libc::c_char,
-    mut line: libc::c_int,
-) {
+pub unsafe extern "C" fn setErrorFileLine(mut src: *mut libc::c_char, mut line: libc::c_int) {
     _err_info.file = src;
     _err_info.line = line;
 }
@@ -136,20 +137,25 @@ pub unsafe extern "C" fn _err_msgv(
         level &= 0xff as libc::c_int;
     }
     let mut prefix: *const libc::c_char = 0 as *const libc::c_char;
-    if level != 0
-        && {
-            prefix = _err_info.id;
+    if level != 0 && {
+        prefix = _err_info.id;
+        !prefix.is_null() || {
+            prefix = id;
             !prefix.is_null()
-                || {
-                    prefix = id;
-                    !prefix.is_null()
-                }
         }
-    {
+    } {
         if flags & 0x800 as libc::c_int != 0 {
-            fprintf(stderr, b"Usage: %s \0" as *const u8 as *const libc::c_char, prefix);
+            fprintf(
+                stderr,
+                b"Usage: %s \0" as *const u8 as *const libc::c_char,
+                prefix,
+            );
         } else {
-            fprintf(stderr, b"%s: \0" as *const u8 as *const libc::c_char, prefix);
+            fprintf(
+                stderr,
+                b"%s: \0" as *const u8 as *const libc::c_char,
+                prefix,
+            );
         }
     }
     if !(flags & 0x800 as libc::c_int != 0) {
@@ -160,7 +166,11 @@ pub unsafe extern "C" fn _err_msgv(
                 fprintf(stderr, b"  \0" as *const u8 as *const libc::c_char);
                 i += 1;
             }
-            fprintf(stderr, b"debug%d: \0" as *const u8 as *const libc::c_char, level);
+            fprintf(
+                stderr,
+                b"debug%d: \0" as *const u8 as *const libc::c_char,
+                level,
+            );
         } else if level != 0 {
             if level == 1 as libc::c_int {
                 fprintf(stderr, b"warning: \0" as *const u8 as *const libc::c_char);

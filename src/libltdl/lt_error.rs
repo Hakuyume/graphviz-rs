@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -36,108 +44,86 @@ pub const LT_ERROR_UNKNOWN: C2RustUnnamed = 0;
 static mut last_error: *const libc::c_char = 0 as *const libc::c_char;
 static mut error_strings: [[libc::c_char; 42]; 20] = unsafe {
     [
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"unknown error\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"dlopen support not available\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"invalid loader\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"loader initialization failed\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"loader removal failed\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"file not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"dependency library not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"no symbols defined\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"can't open the module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"can't close the module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"symbol not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"not enough memory\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"invalid module handle\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"internal buffer overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"invalid errorcode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"library already shutdown\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"can't close resident module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"internal error (code withdrawn)\0\0\0\0\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"invalid search path insert position\0\0\0\0\0\0\0"),
-        *::std::mem::transmute::<
-            &[u8; 42],
-            &[libc::c_char; 42],
-        >(b"symbol visibility can be global or local\0\0"),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"unknown error\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"dlopen support not available\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"invalid loader\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"loader initialization failed\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"loader removal failed\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"file not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"dependency library not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"no symbols defined\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"can't open the module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"can't close the module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"symbol not found\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"not enough memory\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"invalid module handle\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"internal buffer overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"invalid errorcode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"library already shutdown\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"can't close resident module\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"internal error (code withdrawn)\0\0\0\0\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"invalid search path insert position\0\0\0\0\0\0\0",
+        ),
+        *::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+            b"symbol visibility can be global or local\0\0",
+        ),
     ]
 };
-static mut user_error_strings: *mut *const libc::c_char = 0 as *const *const libc::c_char
-    as *mut *const libc::c_char;
+static mut user_error_strings: *mut *const libc::c_char =
+    0 as *const *const libc::c_char as *mut *const libc::c_char;
 static mut errorcount: libc::c_int = LT_ERROR_MAX as libc::c_int;
 #[no_mangle]
-pub unsafe extern "C" fn lt_dladderror(
-    mut diagnostic: *const libc::c_char,
-) -> libc::c_int {
+pub unsafe extern "C" fn lt_dladderror(mut diagnostic: *const libc::c_char) -> libc::c_int {
     let mut errindex: libc::c_int = 0 as libc::c_int;
     let mut result: libc::c_int = -(1 as libc::c_int);
     let mut temp: *mut *const libc::c_char = 0 as *mut *const libc::c_char;
-    if !diagnostic.is_null() {} else {
+    if !diagnostic.is_null() {
+    } else {
         __assert_fail(
             b"diagnostic\0" as *const u8 as *const libc::c_char,
             b"lt_error.c\0" as *const u8 as *const libc::c_char,
             53 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 32],
-                &[libc::c_char; 32],
-            >(b"int lt_dladderror(const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 32], &[libc::c_char; 32]>(
+                b"int lt_dladderror(const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     errindex = errorcount - LT_ERROR_MAX as libc::c_int;
@@ -172,31 +158,29 @@ pub unsafe extern "C" fn lt_dlseterror(mut errindex: libc::c_int) -> libc::c_int
     return errors;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt__error_string(
-    mut errorcode: libc::c_int,
-) -> *const libc::c_char {
-    if errorcode >= 0 as libc::c_int {} else {
+pub unsafe extern "C" fn lt__error_string(mut errorcode: libc::c_int) -> *const libc::c_char {
+    if errorcode >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"errorcode >= 0\0" as *const u8 as *const libc::c_char,
             b"lt_error.c\0" as *const u8 as *const libc::c_char,
             95 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 34],
-                &[libc::c_char; 34],
-            >(b"const char *lt__error_string(int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 34], &[libc::c_char; 34]>(
+                b"const char *lt__error_string(int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if errorcode < LT_ERROR_MAX as libc::c_int {} else {
+    if errorcode < LT_ERROR_MAX as libc::c_int {
+    } else {
         __assert_fail(
             b"errorcode < LT_ERROR_MAX\0" as *const u8 as *const libc::c_char,
             b"lt_error.c\0" as *const u8 as *const libc::c_char,
             96 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 34],
-                &[libc::c_char; 34],
-            >(b"const char *lt__error_string(int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 34], &[libc::c_char; 34]>(
+                b"const char *lt__error_string(int)\0",
+            ))
+            .as_ptr(),
         );
     }
     return (error_strings[errorcode as usize]).as_ptr();

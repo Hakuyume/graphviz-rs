@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -17,9 +25,7 @@ extern "C" {
     fn xml_escape(
         s: *const libc::c_char,
         flags: xml_flags_t,
-        cb: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-        >,
+        cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
         state: *mut libc::c_void,
     ) -> libc::c_int;
     fn gvputs(job: *mut GVJ_t, s: *const libc::c_char) -> libc::c_int;
@@ -173,9 +179,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -189,25 +193,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -238,9 +235,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -272,32 +269,26 @@ pub type gvrender_engine_t = gvrender_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvrender_engine_s {
-    pub begin_job: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_job: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_graph: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_graph: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_layer: Option::<
-        unsafe extern "C" fn(
-            *mut GVJ_t,
-            *mut libc::c_char,
-            libc::c_int,
-            libc::c_int,
-        ) -> (),
-    >,
-    pub end_layer: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_page: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_page: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_cluster: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_cluster: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_nodes: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_nodes: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_edges: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_edges: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_node: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_node: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_edge: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_edge: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_anchor: Option::<
+    pub begin_job: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_job: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_graph: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_graph: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_layer:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char, libc::c_int, libc::c_int) -> ()>,
+    pub end_layer: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_page: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_page: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_cluster: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_cluster: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_nodes: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_nodes: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_edges: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_edges: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_node: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_node: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_edge: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_edge: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_anchor: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut libc::c_char,
@@ -306,20 +297,15 @@ pub struct gvrender_engine_s {
             *mut libc::c_char,
         ) -> (),
     >,
-    pub end_anchor: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_label: Option::<unsafe extern "C" fn(*mut GVJ_t, label_type) -> ()>,
-    pub end_label: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub textspan: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> (),
-    >,
-    pub resolve_color: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut gvcolor_t) -> ()>,
-    pub ellipse: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
-    >,
-    pub polygon: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int, libc::c_int) -> (),
-    >,
-    pub beziercurve: Option::<
+    pub end_anchor: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_label: Option<unsafe extern "C" fn(*mut GVJ_t, label_type) -> ()>,
+    pub end_label: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub textspan: Option<unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> ()>,
+    pub resolve_color: Option<unsafe extern "C" fn(*mut GVJ_t, *mut gvcolor_t) -> ()>,
+    pub ellipse: Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> ()>,
+    pub polygon:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int, libc::c_int) -> ()>,
+    pub beziercurve: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut pointf,
@@ -329,11 +315,9 @@ pub struct gvrender_engine_s {
             libc::c_int,
         ) -> (),
     >,
-    pub polyline: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
-    >,
-    pub comment: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> ()>,
-    pub library_shape: Option::<
+    pub polyline: Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> ()>,
+    pub comment: Option<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> ()>,
+    pub library_shape: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut libc::c_char,
@@ -367,7 +351,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -450,7 +434,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -593,16 +578,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -618,18 +597,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -637,16 +610,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -688,9 +654,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -720,13 +685,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -759,26 +719,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -787,29 +739,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -817,8 +761,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -852,7 +796,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -907,24 +851,11 @@ unsafe extern "C" fn xml_url_puts(mut job: *mut GVJ_t, mut s: *const libc::c_cha
         s,
         flags,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int,
-            >,
-            Option::<
-                unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                ) -> libc::c_int,
-            >,
-        >(
-            Some(
-                gvputs
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *const libc::c_char,
-                    ) -> libc::c_int,
-            ),
-        ),
+            Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int>,
+            Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+        >(Some(
+            gvputs as unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int,
+        )),
         job as *mut libc::c_void,
     );
 }
@@ -942,39 +873,36 @@ unsafe extern "C" fn map_output_shape(
     if AF.is_null() || nump == 0 {
         return;
     }
-    if (*job).render.id == FORMAT_IMAP as libc::c_int && !url.is_null()
+    if (*job).render.id == FORMAT_IMAP as libc::c_int
+        && !url.is_null()
         && *url.offset(0 as libc::c_int as isize) as libc::c_int != 0
     {
         match map_shape as libc::c_uint {
             0 => {
                 let mut A: point = point { x: 0, y: 0 };
                 let mut B: point = point { x: 0, y: 0 };
-                A
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).y - 0.5f64) as libc::c_int
                 });
-                B
-                    .x = (if (*AF.offset(1 as libc::c_int as isize)).x
+                B.x = (if (*AF.offset(1 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(1 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                B
-                    .y = (if (*AF.offset(1 as libc::c_int as isize)).y
+                B.y = (if (*AF.offset(1 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -994,32 +922,28 @@ unsafe extern "C" fn map_output_shape(
             1 => {
                 let mut A_0: point = point { x: 0, y: 0 };
                 let mut B_0: point = point { x: 0, y: 0 };
-                A_0
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A_0.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A_0
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A_0.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).y - 0.5f64) as libc::c_int
                 });
-                B_0
-                    .x = (if (*AF.offset(1 as libc::c_int as isize)).x
+                B_0.x = (if (*AF.offset(1 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(1 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                B_0
-                    .y = (if (*AF.offset(1 as libc::c_int as isize)).y
+                B_0.y = (if (*AF.offset(1 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -1040,18 +964,12 @@ unsafe extern "C" fn map_output_shape(
                 i = 0 as libc::c_int;
                 while i < nump {
                     let mut A_1: point = point { x: 0, y: 0 };
-                    A_1
-                        .x = (if (*AF.offset(i as isize)).x
-                        >= 0 as libc::c_int as libc::c_double
-                    {
+                    A_1.x = (if (*AF.offset(i as isize)).x >= 0 as libc::c_int as libc::c_double {
                         ((*AF.offset(i as isize)).x + 0.5f64) as libc::c_int
                     } else {
                         ((*AF.offset(i as isize)).x - 0.5f64) as libc::c_int
                     });
-                    A_1
-                        .y = (if (*AF.offset(i as isize)).y
-                        >= 0 as libc::c_int as libc::c_double
-                    {
+                    A_1.y = (if (*AF.offset(i as isize)).y >= 0 as libc::c_int as libc::c_double {
                         ((*AF.offset(i as isize)).y + 0.5f64) as libc::c_int
                     } else {
                         ((*AF.offset(i as isize)).y - 0.5f64) as libc::c_int
@@ -1081,39 +999,36 @@ unsafe extern "C" fn map_output_shape(
                 );
             }
         }
-    } else if (*job).render.id == FORMAT_ISMAP as libc::c_int && !url.is_null()
-            && *url.offset(0 as libc::c_int as isize) as libc::c_int != 0
-        {
+    } else if (*job).render.id == FORMAT_ISMAP as libc::c_int
+        && !url.is_null()
+        && *url.offset(0 as libc::c_int as isize) as libc::c_int != 0
+    {
         match map_shape as libc::c_uint {
             0 => {
                 let mut A_2: point = point { x: 0, y: 0 };
                 let mut B_1: point = point { x: 0, y: 0 };
-                A_2
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A_2.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A_2
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A_2.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).y - 0.5f64) as libc::c_int
                 });
-                B_1
-                    .x = (if (*AF.offset(1 as libc::c_int as isize)).x
+                B_1.x = (if (*AF.offset(1 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(1 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                B_1
-                    .y = (if (*AF.offset(1 as libc::c_int as isize)).y
+                B_1.y = (if (*AF.offset(1 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -1122,8 +1037,7 @@ unsafe extern "C" fn map_output_shape(
                 });
                 gvprintf(
                     job,
-                    b"rectangle (%d,%d) (%d,%d) %s %s\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"rectangle (%d,%d) (%d,%d) %s %s\n\0" as *const u8 as *const libc::c_char,
                     A_2.x,
                     B_1.y,
                     B_1.x,
@@ -1148,8 +1062,8 @@ unsafe extern "C" fn map_output_shape(
             }
         }
     } else if (*job).render.id == FORMAT_CMAP as libc::c_int
-            || (*job).render.id == FORMAT_CMAPX as libc::c_int
-        {
+        || (*job).render.id == FORMAT_CMAPX as libc::c_int
+    {
         match map_shape as libc::c_uint {
             1 => {
                 gvputs(
@@ -1194,16 +1108,12 @@ unsafe extern "C" fn map_output_shape(
             xml_url_puts(job, url);
             gvputs(job, b"\"\0" as *const u8 as *const libc::c_char);
         }
-        if !target.is_null()
-            && *target.offset(0 as libc::c_int as isize) as libc::c_int != 0
-        {
+        if !target.is_null() && *target.offset(0 as libc::c_int as isize) as libc::c_int != 0 {
             gvputs(job, b" target=\"\0" as *const u8 as *const libc::c_char);
             gvputs_xml(job, target);
             gvputs(job, b"\"\0" as *const u8 as *const libc::c_char);
         }
-        if !tooltip.is_null()
-            && *tooltip.offset(0 as libc::c_int as isize) as libc::c_int != 0
-        {
+        if !tooltip.is_null() && *tooltip.offset(0 as libc::c_int as isize) as libc::c_int != 0 {
             gvputs(job, b" title=\"\0" as *const u8 as *const libc::c_char);
             gvputs_xml(job, tooltip);
             gvputs(job, b"\"\0" as *const u8 as *const libc::c_char);
@@ -1214,32 +1124,28 @@ unsafe extern "C" fn map_output_shape(
             1 => {
                 let mut A_3: point = point { x: 0, y: 0 };
                 let mut B_2: point = point { x: 0, y: 0 };
-                A_3
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A_3.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A_3
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A_3.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).y - 0.5f64) as libc::c_int
                 });
-                B_2
-                    .x = (if (*AF.offset(1 as libc::c_int as isize)).x
+                B_2.x = (if (*AF.offset(1 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(1 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                B_2
-                    .y = (if (*AF.offset(1 as libc::c_int as isize)).y
+                B_2.y = (if (*AF.offset(1 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -1257,32 +1163,28 @@ unsafe extern "C" fn map_output_shape(
             0 => {
                 let mut A_4: point = point { x: 0, y: 0 };
                 let mut B_3: point = point { x: 0, y: 0 };
-                A_4
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A_4.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A_4
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A_4.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).y - 0.5f64) as libc::c_int
                 });
-                B_3
-                    .x = (if (*AF.offset(1 as libc::c_int as isize)).x
+                B_3.x = (if (*AF.offset(1 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(1 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                B_3
-                    .y = (if (*AF.offset(1 as libc::c_int as isize)).y
+                B_3.y = (if (*AF.offset(1 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(1 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -1300,16 +1202,14 @@ unsafe extern "C" fn map_output_shape(
             }
             2 => {
                 let mut A_5: point = point { x: 0, y: 0 };
-                A_5
-                    .x = (if (*AF.offset(0 as libc::c_int as isize)).x
+                A_5.x = (if (*AF.offset(0 as libc::c_int as isize)).x
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).x + 0.5f64) as libc::c_int
                 } else {
                     ((*AF.offset(0 as libc::c_int as isize)).x - 0.5f64) as libc::c_int
                 });
-                A_5
-                    .y = (if (*AF.offset(0 as libc::c_int as isize)).y
+                A_5.y = (if (*AF.offset(0 as libc::c_int as isize)).y
                     >= 0 as libc::c_int as libc::c_double
                 {
                     ((*AF.offset(0 as libc::c_int as isize)).y + 0.5f64) as libc::c_int
@@ -1324,18 +1224,12 @@ unsafe extern "C" fn map_output_shape(
                 );
                 i = 1 as libc::c_int;
                 while i < nump {
-                    A_5
-                        .x = (if (*AF.offset(i as isize)).x
-                        >= 0 as libc::c_int as libc::c_double
-                    {
+                    A_5.x = (if (*AF.offset(i as isize)).x >= 0 as libc::c_int as libc::c_double {
                         ((*AF.offset(i as isize)).x + 0.5f64) as libc::c_int
                     } else {
                         ((*AF.offset(i as isize)).x - 0.5f64) as libc::c_int
                     });
-                    A_5
-                        .y = (if (*AF.offset(i as isize)).y
-                        >= 0 as libc::c_int as libc::c_double
-                    {
+                    A_5.y = (if (*AF.offset(i as isize)).y >= 0 as libc::c_int as libc::c_double {
                         ((*AF.offset(i as isize)).y + 0.5f64) as libc::c_int
                     } else {
                         ((*AF.offset(i as isize)).y - 0.5f64) as libc::c_int
@@ -1506,18 +1400,26 @@ static mut render_features_map: gvrender_features_t = {
 };
 static mut device_features_map: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
-        flags: (1 as libc::c_int) << 18 as libc::c_int
-            | (1 as libc::c_int) << 19 as libc::c_int,
+        flags: (1 as libc::c_int) << 18 as libc::c_int | (1 as libc::c_int) << 19 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_pagesize: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 96.0f64, y: 96.0f64 };
+            let mut init = pointf_s {
+                x: 96.0f64,
+                y: 96.0f64,
+            };
             init
         },
     };
@@ -1527,15 +1429,24 @@ static mut device_features_map_nopoly: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
         flags: 0 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_pagesize: {
-            let mut init = pointf_s { x: 0.0f64, y: 0.0f64 };
+            let mut init = pointf_s {
+                x: 0.0f64,
+                y: 0.0f64,
+            };
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 96.0f64, y: 96.0f64 };
+            let mut init = pointf_s {
+                x: 96.0f64,
+                y: 96.0f64,
+            };
             init
         },
     };

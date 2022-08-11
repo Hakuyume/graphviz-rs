@@ -1,6 +1,6 @@
-pub mod parse;
 pub mod actions;
-pub mod gvpr;
-pub mod gprstate;
 pub mod compile;
+pub mod gprstate;
+pub mod gvpr;
+pub mod parse;
 pub mod queue;

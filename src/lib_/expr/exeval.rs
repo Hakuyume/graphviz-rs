@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -32,22 +40,11 @@ extern "C" {
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    fn strncpy(
-        _: *mut libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_char;
+    fn strncpy(_: *mut libc::c_char, _: *const libc::c_char, _: libc::c_ulong)
+        -> *mut libc::c_char;
     static mut sfstdout: *mut Sfio_t;
     fn sfnew(
         _: *mut Sfio_t,
@@ -62,11 +59,7 @@ extern "C" {
     fn sfscanf(_: *mut Sfio_t, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn sfsscanf(_: *const libc::c_char, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn _sfflsbuf(_: *mut Sfio_t, _: libc::c_int) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strcoll(__s1: *const libc::c_char, __s2: *const libc::c_char) -> libc::c_int;
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strcspn(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_ulong;
@@ -113,11 +106,7 @@ extern "C" {
     fn __ctype_tolower_loc() -> *mut *const __int32_t;
     static mut expr: Exstate_t;
     fn vmalloc(vm: *mut Vmalloc_t, size: size_t) -> *mut libc::c_void;
-    fn vmresize(
-        vm: *mut Vmalloc_t,
-        data: *mut libc::c_void,
-        size: size_t,
-    ) -> *mut libc::c_void;
+    fn vmresize(vm: *mut Vmalloc_t, data: *mut libc::c_void, size: size_t) -> *mut libc::c_void;
     fn vmfree(vm: *mut Vmalloc_t, data: *mut libc::c_void);
     fn vmstrdup(_: *mut Vmalloc_t, _: *const libc::c_char) -> *mut libc::c_char;
     fn exop(id: size_t) -> *const libc::c_char;
@@ -206,7 +195,7 @@ pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,
     pub eventf: Sffmtevent_f,
     pub form: *mut libc::c_char,
-    pub args: ::std::ffi::VaListImpl::<'a>,
+    pub args: ::std::ffi::VaListImpl<'a>,
     pub fmt: libc::c_int,
     pub size: ssize_t,
     pub flags: libc::c_int,
@@ -216,18 +205,11 @@ pub struct _sffmt_s<'a> {
     pub t_str: *mut libc::c_char,
     pub n_str: ssize_t,
 }
-pub type Sffmtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sffmt_t,
-    ) -> libc::c_int,
+pub type Sffmtevent_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
 pub type Sffmt_t = _sffmt_s;
-pub type Sffmtext_f = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
->;
+pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Exinput_s {
@@ -320,16 +302,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -345,18 +321,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -364,16 +334,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -521,15 +484,9 @@ pub struct C2RustUnnamed_11 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_12 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 pub type intmax_t = __intmax_t;
 #[derive(Copy, Clone)]
@@ -549,7 +506,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -560,7 +517,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -570,7 +527,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -580,27 +537,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -611,7 +555,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -622,7 +566,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -634,7 +578,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -649,9 +593,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -681,7 +623,7 @@ pub struct Expr_s {
     pub loopop: libc::c_int,
     pub nesting: libc::c_int,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -799,17 +741,16 @@ unsafe extern "C" fn exprintf(
     );
     if len >= 0 as libc::c_int
         && !(b"invalid vsnprintf call\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"len >= 0 && \"invalid vsnprintf call\"\0" as *const u8
-                as *const libc::c_char,
+            b"len >= 0 && \"invalid vsnprintf call\"\0" as *const u8 as *const libc::c_char,
             b"../../lib/expr/expr.h\0" as *const u8 as *const libc::c_char,
             321 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"char *exprintf(Vmalloc_t *, const char *, ...)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"char *exprintf(Vmalloc_t *, const char *, ...)\0",
+            ))
+            .as_ptr(),
         );
     }
     len += 1;
@@ -836,10 +777,7 @@ unsafe extern "C" fn tolower(mut __c: libc::c_int) -> libc::c_int {
         __c
     };
 }
-unsafe extern "C" fn lexname(
-    mut op: libc::c_int,
-    mut subop: libc::c_int,
-) -> *const libc::c_char {
+unsafe extern "C" fn lexname(mut op: libc::c_int, mut subop: libc::c_int) -> *const libc::c_char {
     let mut b: *mut libc::c_char = 0 as *mut libc::c_char;
     static mut n: libc::c_int = 0;
     static mut buf: [[libc::c_char; 23]; 4] = [[0; 23]; 4];
@@ -914,15 +852,12 @@ unsafe extern "C" fn evaldyn(
     };
     let mut keyname: *mut libc::c_char = 0 as *mut libc::c_char;
     v = eval(ex, (*exnode).data.variable.index, env);
-    if (*(*exnode).data.variable.symbol).index_type == 259 as libc::c_int as libc::c_long
-    {
+    if (*(*exnode).data.variable.symbol).index_type == 259 as libc::c_int as libc::c_long {
         b = (Some(
             ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                 .expect("non-null function pointer"),
         ))
-            .expect(
-                "non-null function pointer",
-            )(
+        .expect("non-null function pointer")(
             (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
             &mut v as *mut Extype_t as *mut libc::c_void,
             0o1000 as libc::c_int,
@@ -935,7 +870,9 @@ unsafe extern "C" fn evaldyn(
         if type_0 != 263 as libc::c_int {
             if !(type_0 > 258 as libc::c_int) {
                 key = (Some(((*(*ex).disc).keyf).expect("non-null function pointer")))
-                    .expect("non-null function pointer")(ex, v, type_0, (*ex).disc);
+                    .expect("non-null function pointer")(
+                    ex, v, type_0, (*ex).disc
+                );
             } else {
                 key.integer = v.integer;
             }
@@ -953,9 +890,7 @@ unsafe extern "C" fn evaldyn(
             ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                 .expect("non-null function pointer"),
         ))
-            .expect(
-                "non-null function pointer",
-            )(
+        .expect("non-null function pointer")(
             (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
             keyname as *mut libc::c_void,
             0o1000 as libc::c_int,
@@ -969,9 +904,7 @@ unsafe extern "C" fn evaldyn(
             ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                 .expect("non-null function pointer"),
         ))
-            .expect(
-                "non-null function pointer",
-            )(
+        .expect("non-null function pointer")(
             (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
             b as *mut libc::c_void,
             0o2 as libc::c_int,
@@ -997,17 +930,12 @@ unsafe extern "C" fn getdyn(
         let mut buf: [libc::c_char; 17] = [0; 17];
         let mut keyname: *mut libc::c_char = 0 as *mut libc::c_char;
         v = eval(ex, (*exnode).data.variable.index, env);
-        if (*(*exnode).data.variable.symbol).index_type
-            == 259 as libc::c_int as libc::c_long
-        {
+        if (*(*exnode).data.variable.symbol).index_type == 259 as libc::c_int as libc::c_long {
             b = (Some(
-                ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t))
-                    .searchf)
+                ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                     .expect("non-null function pointer"),
             ))
-                .expect(
-                    "non-null function pointer",
-                )(
+            .expect("non-null function pointer")(
                 (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
                 &mut v as *mut Extype_t as *mut libc::c_void,
                 0o1000 as libc::c_int,
@@ -1033,13 +961,10 @@ unsafe extern "C" fn getdyn(
                 }
                 (*b).key = v;
                 (Some(
-                    ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t))
-                        .searchf)
+                    ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                         .expect("non-null function pointer"),
                 ))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                .expect("non-null function pointer")(
                     (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
                     b as *mut libc::c_void,
                     0o1 as libc::c_int,
@@ -1049,10 +974,10 @@ unsafe extern "C" fn getdyn(
             let mut type_0: libc::c_int = (*(*exnode).data.variable.index).type_0;
             if type_0 != 263 as libc::c_int {
                 if !(type_0 > 258 as libc::c_int) {
-                    key = (Some(
-                        ((*(*ex).disc).keyf).expect("non-null function pointer"),
-                    ))
-                        .expect("non-null function pointer")(ex, v, type_0, (*ex).disc);
+                    key = (Some(((*(*ex).disc).keyf).expect("non-null function pointer")))
+                        .expect("non-null function pointer")(
+                        ex, v, type_0, (*ex).disc
+                    );
                 } else {
                     key.integer = v.integer;
                 }
@@ -1067,13 +992,10 @@ unsafe extern "C" fn getdyn(
                 keyname = v.string;
             }
             b = (Some(
-                ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t))
-                    .searchf)
+                ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                     .expect("non-null function pointer"),
             ))
-                .expect(
-                    "non-null function pointer",
-                )(
+            .expect("non-null function pointer")(
                 (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
                 keyname as *mut libc::c_void,
                 0o1000 as libc::c_int,
@@ -1100,13 +1022,10 @@ unsafe extern "C" fn getdyn(
                 strcpy(((*b).name).as_mut_ptr(), keyname);
                 (*b).key = v;
                 (Some(
-                    ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t))
-                        .searchf)
+                    ((*((*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                         .expect("non-null function pointer"),
                 ))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                .expect("non-null function pointer")(
                     (*(*exnode).data.variable.symbol).local.pointer as *mut Dt_t,
                     b as *mut libc::c_void,
                     0o1 as libc::c_int,
@@ -1115,13 +1034,10 @@ unsafe extern "C" fn getdyn(
         }
         *assoc = b;
         if !b.is_null() {
-            if (*(*exnode).data.variable.symbol).type_0
-                == 263 as libc::c_int as libc::c_long && ((*b).value.string).is_null()
+            if (*(*exnode).data.variable.symbol).type_0 == 263 as libc::c_int as libc::c_long
+                && ((*b).value.string).is_null()
             {
-                (*b)
-                    .value = exzero(
-                    (*(*exnode).data.variable.symbol).type_0 as libc::c_int,
-                );
+                (*b).value = exzero((*(*exnode).data.variable.symbol).type_0 as libc::c_int);
             }
             return (*b).value;
         }
@@ -1129,7 +1045,10 @@ unsafe extern "C" fn getdyn(
         return v;
     }
     *assoc = 0 as *mut Exassoc_t;
-    return (*(*(*exnode).data.variable.symbol).value).data.constant.value;
+    return (*(*(*exnode).data.variable.symbol).value)
+        .data
+        .constant
+        .value;
 }
 unsafe extern "C" fn streqn(
     mut s1: *const libc::c_char,
@@ -1138,10 +1057,7 @@ unsafe extern "C" fn streqn(
 ) -> bool {
     return strlen(s2) == n && strncmp(s1, s2, n) == 0 as libc::c_int;
 }
-unsafe extern "C" fn prformat(
-    mut vp: *mut libc::c_void,
-    mut dp: *mut Sffmt_t,
-) -> libc::c_int {
+unsafe extern "C" fn prformat(mut vp: *mut libc::c_void, mut dp: *mut Sffmt_t) -> libc::c_int {
     let mut fmt: *mut Fmt_t = dp as *mut Fmt_t;
     let mut node: *mut Exnode_t = 0 as *mut Exnode_t;
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -1166,9 +1082,7 @@ unsafe extern "C" fn prformat(
         let ref mut fresh0 = (*fmt).actuals;
         *fresh0 = (*(*fmt).actuals).data.operand.right;
         if (*fresh0).is_null() {
-            exerror(
-                b"printf: not enough arguments\0" as *const u8 as *const libc::c_char,
-            );
+            exerror(b"printf: not enough arguments\0" as *const u8 as *const libc::c_char);
         } else {
             node = (*(*fmt).actuals).data.operand.left;
             from = (*node).type_0;
@@ -1179,27 +1093,19 @@ unsafe extern "C" fn prformat(
                 115 => {
                     to = 263 as libc::c_int;
                 }
-                _ => {
-                    match from {
-                        259 | 260 => {
-                            to = from;
-                        }
-                        _ => {
-                            to = 259 as libc::c_int;
-                        }
+                _ => match from {
+                    259 | 260 => {
+                        to = from;
                     }
-                }
+                    _ => {
+                        to = 259 as libc::c_int;
+                    }
+                },
             }
             if to == from {
                 (*fmt).value = exeval((*fmt).expr, node, (*fmt).env);
             } else {
-                node = excast(
-                    (*fmt).expr,
-                    node,
-                    to,
-                    0 as *mut Exnode_t,
-                    0 as libc::c_int,
-                );
+                node = excast((*fmt).expr, node, to, 0 as *mut Exnode_t, 0 as libc::c_int);
                 (*fmt).value = exeval((*fmt).expr, node, (*fmt).env);
                 let ref mut fresh1 = (*node).data.operand.left;
                 *fresh1 = 0 as *mut Exnode_t;
@@ -1215,17 +1121,13 @@ unsafe extern "C" fn prformat(
                                 n.wrapping_add(1 as libc::c_int as libc::c_ulong),
                             );
                         }
-                        vmfree(
-                            (*(*fmt).expr).vm,
-                            (*fmt).value.string as *mut libc::c_void,
-                        );
+                        vmfree((*(*fmt).expr).vm, (*fmt).value.string as *mut libc::c_void);
                         let ref mut fresh2 = (*fmt).value.string;
                         *fresh2 = s;
                     }
                     if ((*fmt).value.string).is_null() {
                         let ref mut fresh3 = (*fmt).value.string;
-                        *fresh3 = b"\0" as *const u8 as *const libc::c_char
-                            as *mut libc::c_char;
+                        *fresh3 = b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                     }
                 }
             }
@@ -1239,16 +1141,11 @@ unsafe extern "C" fn prformat(
         }
         262 => {
             *(vp as *mut libc::c_double) = (*fmt).value.floating;
-            (*fmt)
-                .fmt
-                .size = ::std::mem::size_of::<libc::c_double>() as libc::c_ulong
-                as ssize_t;
+            (*fmt).fmt.size = ::std::mem::size_of::<libc::c_double>() as libc::c_ulong as ssize_t;
         }
         _ => {
             *(vp as *mut libc::c_longlong) = (*fmt).value.integer;
-            (*dp)
-                .size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong
-                as ssize_t;
+            (*dp).size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong as ssize_t;
         }
     }
     let mut txt: *const libc::c_char = 0 as *const libc::c_char;
@@ -1281,8 +1178,7 @@ unsafe extern "C" fn prformat(
                     txt_len,
                 ) {
                     if *s as libc::c_int != 0
-                        && *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                            as libc::c_int
+                        && *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
                             & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
                             == 0
                     {
@@ -1291,8 +1187,7 @@ unsafe extern "C" fn prformat(
                         *fresh6 = '_' as i32 as libc::c_char;
                     }
                     while *s != 0 {
-                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                            as libc::c_int
+                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
                             & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
                             == 0
                         {
@@ -1301,13 +1196,12 @@ unsafe extern "C" fn prformat(
                         s = s.offset(1);
                     }
                 } else if streqn(
-                        txt,
-                        b"invert\0" as *const u8 as *const libc::c_char,
-                        txt_len,
-                    ) {
+                    txt,
+                    b"invert\0" as *const u8 as *const libc::c_char,
+                    txt_len,
+                ) {
                     while *s != 0 {
-                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                            as libc::c_int
+                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
                             & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
                             != 0
                         {
@@ -1335,80 +1229,6 @@ unsafe extern "C" fn prformat(
                                 __res
                             }) as libc::c_char;
                         } else if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                                as libc::c_int
-                                & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
-                                != 0
-                            {
-                            *s = ({
-                                let mut __res: libc::c_int = 0;
-                                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                                    > 1 as libc::c_int as libc::c_ulong
-                                {
-                                    if 0 != 0 {
-                                        let mut __c: libc::c_int = *s as libc::c_int;
-                                        __res = if __c < -(128 as libc::c_int)
-                                            || __c > 255 as libc::c_int
-                                        {
-                                            __c
-                                        } else {
-                                            *(*__ctype_toupper_loc()).offset(__c as isize)
-                                        };
-                                    } else {
-                                        __res = toupper(*s as libc::c_int);
-                                    }
-                                } else {
-                                    __res = *(*__ctype_toupper_loc())
-                                        .offset(*s as libc::c_int as isize);
-                                }
-                                __res
-                            }) as libc::c_char;
-                        }
-                        s = s.offset(1);
-                    }
-                } else if streqn(
-                        txt,
-                        b"lower\0" as *const u8 as *const libc::c_char,
-                        txt_len,
-                    ) {
-                    while *s != 0 {
-                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                            as libc::c_int
-                            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
-                            != 0
-                        {
-                            *s = ({
-                                let mut __res: libc::c_int = 0;
-                                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                                    > 1 as libc::c_int as libc::c_ulong
-                                {
-                                    if 0 != 0 {
-                                        let mut __c: libc::c_int = *s as libc::c_int;
-                                        __res = if __c < -(128 as libc::c_int)
-                                            || __c > 255 as libc::c_int
-                                        {
-                                            __c
-                                        } else {
-                                            *(*__ctype_tolower_loc()).offset(__c as isize)
-                                        };
-                                    } else {
-                                        __res = tolower(*s as libc::c_int);
-                                    }
-                                } else {
-                                    __res = *(*__ctype_tolower_loc())
-                                        .offset(*s as libc::c_int as isize);
-                                }
-                                __res
-                            }) as libc::c_char;
-                        }
-                        s = s.offset(1);
-                    }
-                } else if streqn(
-                        txt,
-                        b"upper\0" as *const u8 as *const libc::c_char,
-                        txt_len,
-                    ) {
-                    while *s != 0 {
-                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
                             as libc::c_int
                             & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
                             != 0
@@ -1439,16 +1259,80 @@ unsafe extern "C" fn prformat(
                         }
                         s = s.offset(1);
                     }
-                } else if streqn(
-                        txt,
-                        b"variable\0" as *const u8 as *const libc::c_char,
-                        txt_len,
-                    ) {
+                } else if streqn(txt, b"lower\0" as *const u8 as *const libc::c_char, txt_len) {
                     while *s != 0 {
-                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize)
-                            as libc::c_int
+                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
+                            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                            != 0
+                        {
+                            *s = ({
+                                let mut __res: libc::c_int = 0;
+                                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
+                                    > 1 as libc::c_int as libc::c_ulong
+                                {
+                                    if 0 != 0 {
+                                        let mut __c: libc::c_int = *s as libc::c_int;
+                                        __res = if __c < -(128 as libc::c_int)
+                                            || __c > 255 as libc::c_int
+                                        {
+                                            __c
+                                        } else {
+                                            *(*__ctype_tolower_loc()).offset(__c as isize)
+                                        };
+                                    } else {
+                                        __res = tolower(*s as libc::c_int);
+                                    }
+                                } else {
+                                    __res = *(*__ctype_tolower_loc())
+                                        .offset(*s as libc::c_int as isize);
+                                }
+                                __res
+                            }) as libc::c_char;
+                        }
+                        s = s.offset(1);
+                    }
+                } else if streqn(txt, b"upper\0" as *const u8 as *const libc::c_char, txt_len) {
+                    while *s != 0 {
+                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
+                            & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
+                            != 0
+                        {
+                            *s = ({
+                                let mut __res: libc::c_int = 0;
+                                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
+                                    > 1 as libc::c_int as libc::c_ulong
+                                {
+                                    if 0 != 0 {
+                                        let mut __c: libc::c_int = *s as libc::c_int;
+                                        __res = if __c < -(128 as libc::c_int)
+                                            || __c > 255 as libc::c_int
+                                        {
+                                            __c
+                                        } else {
+                                            *(*__ctype_toupper_loc()).offset(__c as isize)
+                                        };
+                                    } else {
+                                        __res = toupper(*s as libc::c_int);
+                                    }
+                                } else {
+                                    __res = *(*__ctype_toupper_loc())
+                                        .offset(*s as libc::c_int as isize);
+                                }
+                                __res
+                            }) as libc::c_char;
+                        }
+                        s = s.offset(1);
+                    }
+                } else if streqn(
+                    txt,
+                    b"variable\0" as *const u8 as *const libc::c_char,
+                    txt_len,
+                ) {
+                    while *s != 0 {
+                        if *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
                             & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
-                            == 0 && *s as libc::c_int != '_' as i32
+                            == 0
+                            && *s as libc::c_int != '_' as i32
                         {
                             *s = '.' as i32 as libc::c_char;
                         }
@@ -1465,23 +1349,16 @@ unsafe extern "C" fn prformat(
                 tm = time(0 as *mut time_t);
             }
             if txt.is_null() {
-                exerror(
-                    b"printf: no time format provided\0" as *const u8
-                        as *const libc::c_char,
-                );
+                exerror(b"printf: no time format provided\0" as *const u8 as *const libc::c_char);
             } else {
                 s = fmtbuf(80 as libc::c_int as size_t);
                 stm = localtime(&mut tm);
                 let mut format: *mut libc::c_char = malloc(
                     (::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-                        .wrapping_mul(
-                            txt_len.wrapping_add(1 as libc::c_int as libc::c_ulong),
-                        ),
+                        .wrapping_mul(txt_len.wrapping_add(1 as libc::c_int as libc::c_ulong)),
                 ) as *mut libc::c_char;
                 if format.is_null() {
-                    exerror(
-                        b"printf: out of memory\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"printf: out of memory\0" as *const u8 as *const libc::c_char);
                 } else {
                     strncpy(format, txt, txt_len);
                     *format.offset(txt_len as isize) = '\0' as i32 as libc::c_char;
@@ -1566,19 +1443,18 @@ unsafe extern "C" fn print(
                     as libc::c_ulonglong
             || {
                 sp = (*ex).file[v.integer as usize];
-                sp.is_null()
-                    && {
-                        let ref mut fresh10 = (*ex).file[v.integer as usize];
-                        *fresh10 = sfnew(
-                            0 as *mut Sfio_t,
-                            0 as *mut libc::c_void,
-                            18446744073709551615 as libc::c_ulong,
-                            v.integer as libc::c_int,
-                            0o1 as libc::c_int | 0o2 as libc::c_int,
-                        );
-                        sp = *fresh10;
-                        sp.is_null()
-                    }
+                sp.is_null() && {
+                    let ref mut fresh10 = (*ex).file[v.integer as usize];
+                    *fresh10 = sfnew(
+                        0 as *mut Sfio_t,
+                        0 as *mut libc::c_void,
+                        18446744073709551615 as libc::c_ulong,
+                        v.integer as libc::c_int,
+                        0o1 as libc::c_int | 0o2 as libc::c_int,
+                    );
+                    sp = *fresh10;
+                    sp.is_null()
+                }
             }
         {
             exerror(
@@ -1593,11 +1469,8 @@ unsafe extern "C" fn print(
         0 as libc::c_int,
         ::std::mem::size_of::<Fmt_t>() as libc::c_ulong,
     );
-    fmt
-        .fmt
-        .extf = Some(
-        prformat as unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
-    );
+    fmt.fmt.extf =
+        Some(prformat as unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int);
     fmt.expr = ex;
     fmt.env = env;
     x = (*exnode).data.print.args;
@@ -1630,18 +1503,14 @@ unsafe extern "C" fn print(
         );
         if !((*fmt.actuals).data.operand.right).is_null() {
             exerror(
-                b"(s)printf: \"%s\": too many arguments\0" as *const u8
-                    as *const libc::c_char,
+                b"(s)printf: \"%s\": too many arguments\0" as *const u8 as *const libc::c_char,
                 fmt.fmt.form,
             );
         }
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn scformat(
-    mut vp: *mut libc::c_void,
-    mut dp: *mut Sffmt_t,
-) -> libc::c_int {
+unsafe extern "C" fn scformat(mut vp: *mut libc::c_void, mut dp: *mut Sffmt_t) -> libc::c_int {
     let mut fmt: *mut Fmt_t = dp as *mut Fmt_t;
     let mut node: *mut Exnode_t = 0 as *mut Exnode_t;
     if ((*fmt).actuals).is_null() {
@@ -1653,16 +1522,13 @@ unsafe extern "C" fn scformat(
         102 | 103 => {
             if (*node).type_0 != 262 as libc::c_int {
                 exerror(
-                    b"scanf: %s: floating variable address argument expected\0"
-                        as *const u8 as *const libc::c_char,
+                    b"scanf: %s: floating variable address argument expected\0" as *const u8
+                        as *const libc::c_char,
                     ((*(*node).data.variable.symbol).name).as_mut_ptr(),
                 );
                 return -(1 as libc::c_int);
             }
-            (*fmt)
-                .fmt
-                .size = ::std::mem::size_of::<libc::c_double>() as libc::c_ulong
-                as ssize_t;
+            (*fmt).fmt.size = ::std::mem::size_of::<libc::c_double>() as libc::c_ulong as ssize_t;
             let ref mut fresh11 = *(vp as *mut *mut libc::c_void);
             *fresh11 = &mut (*(*(*node).data.variable.symbol).value).data.constant.value
                 as *mut Extype_t as *mut libc::c_void;
@@ -1670,13 +1536,17 @@ unsafe extern "C" fn scformat(
         115 | 91 => {
             if (*node).type_0 != 263 as libc::c_int {
                 exerror(
-                    b"scanf: %s: string variable address argument expected\0"
-                        as *const u8 as *const libc::c_char,
+                    b"scanf: %s: string variable address argument expected\0" as *const u8
+                        as *const libc::c_char,
                     ((*(*node).data.variable.symbol).name).as_mut_ptr(),
                 );
                 return -(1 as libc::c_int);
             }
-            if (*(*(*node).data.variable.symbol).value).data.constant.value.string
+            if (*(*(*node).data.variable.symbol).value)
+                .data
+                .constant
+                .value
+                .string
                 == (expr.nullstring).as_mut_ptr()
             {
                 let ref mut fresh12 = (*(*(*node).data.variable.symbol).value)
@@ -1722,28 +1592,21 @@ unsafe extern "C" fn scformat(
                 );
                 return -(1 as libc::c_int);
             }
-            (*fmt)
-                .fmt
-                .size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong
-                as ssize_t;
+            (*fmt).fmt.size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong as ssize_t;
             let ref mut fresh15 = *(vp as *mut *mut libc::c_void);
             *fresh15 = &mut (*(*(*node).data.variable.symbol).value).data.constant.value
                 as *mut Extype_t as *mut libc::c_void;
         }
         _ => {
-            if (*node).type_0 != 259 as libc::c_int
-                && (*node).type_0 != 260 as libc::c_int
-            {
+            if (*node).type_0 != 259 as libc::c_int && (*node).type_0 != 260 as libc::c_int {
                 exerror(
-                    b"scanf: %s: integer variable address argument expected\0"
-                        as *const u8 as *const libc::c_char,
+                    b"scanf: %s: integer variable address argument expected\0" as *const u8
+                        as *const libc::c_char,
                     ((*(*node).data.variable.symbol).name).as_mut_ptr(),
                 );
                 return -(1 as libc::c_int);
             }
-            (*dp)
-                .size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong
-                as ssize_t;
+            (*dp).size = ::std::mem::size_of::<libc::c_longlong>() as libc::c_ulong as ssize_t;
             let ref mut fresh16 = *(vp as *mut *mut libc::c_void);
             *fresh16 = &mut (*(*(*node).data.variable.symbol).value).data.constant.value
                 as *mut Extype_t as *mut libc::c_void;
@@ -1809,29 +1672,26 @@ unsafe extern "C" fn scan(
                 if v.integer < 0 as libc::c_int as libc::c_longlong
                     || v.integer as libc::c_ulonglong
                         >= (::std::mem::size_of::<[*mut Sfio_t; 10]>() as libc::c_ulong)
-                            .wrapping_div(
-                                ::std::mem::size_of::<*mut Sfio_t>() as libc::c_ulong,
-                            ) as libc::c_ulonglong
+                            .wrapping_div(::std::mem::size_of::<*mut Sfio_t>() as libc::c_ulong)
+                            as libc::c_ulonglong
                     || {
                         sp = (*ex).file[v.integer as usize];
-                        sp.is_null()
-                            && {
-                                let ref mut fresh18 = (*ex).file[v.integer as usize];
-                                *fresh18 = sfnew(
-                                    0 as *mut Sfio_t,
-                                    0 as *mut libc::c_void,
-                                    18446744073709551615 as libc::c_ulong,
-                                    v.integer as libc::c_int,
-                                    0o1 as libc::c_int | 0o2 as libc::c_int,
-                                );
-                                sp = *fresh18;
-                                sp.is_null()
-                            }
+                        sp.is_null() && {
+                            let ref mut fresh18 = (*ex).file[v.integer as usize];
+                            *fresh18 = sfnew(
+                                0 as *mut Sfio_t,
+                                0 as *mut libc::c_void,
+                                18446744073709551615 as libc::c_ulong,
+                                v.integer as libc::c_int,
+                                0o1 as libc::c_int | 0o2 as libc::c_int,
+                            );
+                            sp = *fresh18;
+                            sp.is_null()
+                        }
                     }
                 {
                     exerror(
-                        b"scanf: %ld: invalid descriptor\0" as *const u8
-                            as *const libc::c_char,
+                        b"scanf: %ld: invalid descriptor\0" as *const u8 as *const libc::c_char,
                         v.integer as intmax_t,
                     );
                     return 0 as libc::c_int;
@@ -1844,18 +1704,19 @@ unsafe extern "C" fn scan(
         0 as libc::c_int,
         ::std::mem::size_of::<Fmt_t>() as libc::c_ulong,
     );
-    fmt
-        .fmt
-        .extf = Some(
-        scformat as unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
-    );
+    fmt.fmt.extf =
+        Some(scformat as unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int);
     fmt.expr = ex;
     fmt.env = env;
     u = eval(ex, (*expr_0).data.scan.format, env);
     fmt.fmt.form = u.string;
     fmt.actuals = (*expr_0).data.scan.args;
     n = if !sp.is_null() {
-        sfscanf(sp, b"%!\0" as *const u8 as *const libc::c_char, &mut fmt as *mut Fmt_t)
+        sfscanf(
+            sp,
+            b"%!\0" as *const u8 as *const libc::c_char,
+            &mut fmt as *mut Fmt_t,
+        )
     } else {
         sfsscanf(
             v.string,
@@ -1866,8 +1727,7 @@ unsafe extern "C" fn scan(
     if !(fmt.actuals).is_null() && *fmt.fmt.form == 0 {
         exerror(
             b"scanf: %s: too many arguments\0" as *const u8 as *const libc::c_char,
-            ((*(*(*fmt.actuals).data.operand.left).data.variable.symbol).name)
-                .as_mut_ptr(),
+            ((*(*(*fmt.actuals).data.operand.left).data.variable.symbol).name).as_mut_ptr(),
         );
     }
     return n;
@@ -1903,8 +1763,7 @@ unsafe extern "C" fn str_ior(
     let mut p_0: *const libc::c_char = r;
     while *p_0 as libc::c_int != '\0' as i32 {
         if (strchr(l, *p_0 as libc::c_int)).is_null()
-            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int))
-                .is_null()
+            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int)).is_null()
         {
             len = len.wrapping_add(1);
         }
@@ -1917,23 +1776,22 @@ unsafe extern "C" fn str_ior(
     let mut i: size_t = 0 as libc::c_int as size_t;
     let mut p_1: *const libc::c_char = l;
     while *p_1 as libc::c_int != '\0' as i32 {
-        if (strchr(p_1.offset(1 as libc::c_int as isize), *p_1 as libc::c_int)).is_null()
-        {
+        if (strchr(p_1.offset(1 as libc::c_int as isize), *p_1 as libc::c_int)).is_null() {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     589 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_ior(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_ior(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_1;
@@ -1944,24 +1802,23 @@ unsafe extern "C" fn str_ior(
     let mut p_2: *const libc::c_char = r;
     while *p_2 as libc::c_int != '\0' as i32 {
         if (strchr(l, *p_2 as libc::c_int)).is_null()
-            && (strchr(p_2.offset(1 as libc::c_int as isize), *p_2 as libc::c_int))
-                .is_null()
+            && (strchr(p_2.offset(1 as libc::c_int as isize), *p_2 as libc::c_int)).is_null()
         {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     596 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_ior(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_ior(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_2;
@@ -1970,20 +1827,19 @@ unsafe extern "C" fn str_ior(
         p_2 = p_2.offset(1);
     }
     if i.wrapping_add(1 as libc::c_int as libc::c_ulong) == len
-        && !(b"incorrect preceding length computation\0" as *const u8
-            as *const libc::c_char)
+        && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"i + 1 == len && \"incorrect preceding length computation\"\0" as *const u8
                 as *const libc::c_char,
             b"exeval.c\0" as *const u8 as *const libc::c_char,
             601 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"char *str_ior(Expr_t *, const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"char *str_ior(Expr_t *, const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *result.offset(i as isize) = '\0' as i32 as libc::c_char;
@@ -2012,24 +1868,23 @@ unsafe extern "C" fn str_and(
     let mut p_0: *const libc::c_char = l;
     while *p_0 as libc::c_int != '\0' as i32 {
         if !(strchr(r, *p_0 as libc::c_int)).is_null()
-            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int))
-                .is_null()
+            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int)).is_null()
         {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     631 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_and(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_and(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_0;
@@ -2038,20 +1893,19 @@ unsafe extern "C" fn str_and(
         p_0 = p_0.offset(1);
     }
     if i.wrapping_add(1 as libc::c_int as libc::c_ulong) == len
-        && !(b"incorrect preceding length computation\0" as *const u8
-            as *const libc::c_char)
+        && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"i + 1 == len && \"incorrect preceding length computation\"\0" as *const u8
                 as *const libc::c_char,
             b"exeval.c\0" as *const u8 as *const libc::c_char,
             636 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"char *str_and(Expr_t *, const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"char *str_and(Expr_t *, const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *result.offset(i as isize) = '\0' as i32 as libc::c_char;
@@ -2075,8 +1929,7 @@ unsafe extern "C" fn str_xor(
     let mut p_0: *const libc::c_char = r;
     while *p_0 as libc::c_int != '\0' as i32 {
         if (strchr(l, *p_0 as libc::c_int)).is_null()
-            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int))
-                .is_null()
+            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int)).is_null()
         {
             len = len.wrapping_add(1);
         }
@@ -2090,24 +1943,23 @@ unsafe extern "C" fn str_xor(
     let mut p_1: *const libc::c_char = l;
     while *p_1 as libc::c_int != '\0' as i32 {
         if (strchr(r, *p_1 as libc::c_int)).is_null()
-            && (strchr(p_1.offset(1 as libc::c_int as isize), *p_1 as libc::c_int))
-                .is_null()
+            && (strchr(p_1.offset(1 as libc::c_int as isize), *p_1 as libc::c_int)).is_null()
         {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     671 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_xor(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_xor(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_1;
@@ -2118,24 +1970,23 @@ unsafe extern "C" fn str_xor(
     let mut p_2: *const libc::c_char = r;
     while *p_2 as libc::c_int != '\0' as i32 {
         if (strchr(l, *p_2 as libc::c_int)).is_null()
-            && (strchr(p_2.offset(1 as libc::c_int as isize), *p_2 as libc::c_int))
-                .is_null()
+            && (strchr(p_2.offset(1 as libc::c_int as isize), *p_2 as libc::c_int)).is_null()
         {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     678 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_xor(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_xor(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_2;
@@ -2144,20 +1995,19 @@ unsafe extern "C" fn str_xor(
         p_2 = p_2.offset(1);
     }
     if i.wrapping_add(1 as libc::c_int as libc::c_ulong) == len
-        && !(b"incorrect preceding length computation\0" as *const u8
-            as *const libc::c_char)
+        && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"i + 1 == len && \"incorrect preceding length computation\"\0" as *const u8
                 as *const libc::c_char,
             b"exeval.c\0" as *const u8 as *const libc::c_char,
             683 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"char *str_xor(Expr_t *, const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"char *str_xor(Expr_t *, const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *result.offset(i as isize) = '\0' as i32 as libc::c_char;
@@ -2186,24 +2036,23 @@ unsafe extern "C" fn str_mod(
     let mut p_0: *const libc::c_char = l;
     while *p_0 as libc::c_int != '\0' as i32 {
         if (strchr(r, *p_0 as libc::c_int)).is_null()
-            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int))
-                .is_null()
+            && (strchr(p_0.offset(1 as libc::c_int as isize), *p_0 as libc::c_int)).is_null()
         {
             if i < len
                 && !(b"incorrect preceding length computation\0" as *const u8
                     as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"i < len && \"incorrect preceding length computation\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"i < len && \"incorrect preceding length computation\"\0" as *const u8
+                        as *const libc::c_char,
                     b"exeval.c\0" as *const u8 as *const libc::c_char,
                     713 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 52],
-                        &[libc::c_char; 52],
-                    >(b"char *str_mod(Expr_t *, const char *, const char *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                        b"char *str_mod(Expr_t *, const char *, const char *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             *result.offset(i as isize) = *p_0;
@@ -2212,20 +2061,19 @@ unsafe extern "C" fn str_mod(
         p_0 = p_0.offset(1);
     }
     if i.wrapping_add(1 as libc::c_int as libc::c_ulong) == len
-        && !(b"incorrect preceding length computation\0" as *const u8
-            as *const libc::c_char)
+        && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"i + 1 == len && \"incorrect preceding length computation\"\0" as *const u8
                 as *const libc::c_char,
             b"exeval.c\0" as *const u8 as *const libc::c_char,
             718 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"char *str_mod(Expr_t *, const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"char *str_mod(Expr_t *, const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *result.offset(i as isize) = '\0' as i32 as libc::c_char;
@@ -2251,49 +2099,43 @@ unsafe extern "C" fn str_mpy(
         && *r.offset(i as isize) as libc::c_int != '\0' as i32
     {
         if i < len
-            && !(b"incorrect preceding length computation\0" as *const u8
-                as *const libc::c_char)
+            && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
                 .is_null()
-        {} else {
+        {
+        } else {
             __assert_fail(
                 b"i < len && \"incorrect preceding length computation\"\0" as *const u8
                     as *const libc::c_char,
                 b"exeval.c\0" as *const u8 as *const libc::c_char,
                 749 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 52],
-                    &[libc::c_char; 52],
-                >(b"char *str_mpy(Expr_t *, const char *, const char *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                    b"char *str_mpy(Expr_t *, const char *, const char *)\0",
+                ))
+                .as_ptr(),
             );
         }
-        *result
-            .offset(
-                i as isize,
-            ) = (if *l.offset(i as isize) as libc::c_int
-            == *r.offset(i as isize) as libc::c_int
-        {
-            *l.offset(i as isize) as libc::c_int
-        } else {
-            ' ' as i32
-        }) as libc::c_char;
+        *result.offset(i as isize) =
+            (if *l.offset(i as isize) as libc::c_int == *r.offset(i as isize) as libc::c_int {
+                *l.offset(i as isize) as libc::c_int
+            } else {
+                ' ' as i32
+            }) as libc::c_char;
         i = i.wrapping_add(1);
     }
     if i.wrapping_add(1 as libc::c_int as libc::c_ulong) == len
-        && !(b"incorrect preceding length computation\0" as *const u8
-            as *const libc::c_char)
+        && !(b"incorrect preceding length computation\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"i + 1 == len && \"incorrect preceding length computation\"\0" as *const u8
                 as *const libc::c_char,
             b"exeval.c\0" as *const u8 as *const libc::c_char,
             752 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"char *str_mpy(Expr_t *, const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"char *str_mpy(Expr_t *, const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *result.offset(i as isize) = '\0' as i32 as libc::c_char;
@@ -2304,26 +2146,20 @@ unsafe extern "C" fn buffer_append(
     mut s: *const libc::c_char,
     mut len: size_t,
 ) -> libc::c_int {
-    if ((*b).capacity).wrapping_sub((*b).size)
-        < len.wrapping_add(1 as libc::c_int as libc::c_ulong)
+    if ((*b).capacity).wrapping_sub((*b).size) < len.wrapping_add(1 as libc::c_int as libc::c_ulong)
     {
         let mut c: size_t = if (*b).capacity == 0 as libc::c_int as libc::c_ulong {
             8192 as libc::c_int as libc::c_ulong
         } else {
             ((*b).capacity).wrapping_mul(2 as libc::c_int as libc::c_ulong)
         };
-        if c.wrapping_sub((*b).size)
-            < len.wrapping_add(1 as libc::c_int as libc::c_ulong)
-        {
+        if c.wrapping_sub((*b).size) < len.wrapping_add(1 as libc::c_int as libc::c_ulong) {
             c = ((*b).size)
                 .wrapping_add(len)
                 .wrapping_add(1 as libc::c_int as libc::c_ulong);
         }
-        let mut p: *mut libc::c_char = vmresize(
-            (*b).allocator,
-            (*b).base as *mut libc::c_void,
-            c,
-        ) as *mut libc::c_char;
+        let mut p: *mut libc::c_char =
+            vmresize((*b).allocator, (*b).base as *mut libc::c_void, c) as *mut libc::c_char;
         if p.is_null() {
             return -(1 as libc::c_int);
         }
@@ -2336,7 +2172,8 @@ unsafe extern "C" fn buffer_append(
         && !(b"incorrect logic in buffer expansion; still no room for appended string\0"
             as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"b->capacity - b->size >= len + 1 && \"incorrect logic in buffer expansion; still no room for appended \" \"string\"\0"
                 as *const u8 as *const libc::c_char,
@@ -2376,7 +2213,8 @@ unsafe extern "C" fn replace(
             c = *repl;
             if c as libc::c_int != 0
                 && *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-                    & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                    & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                    != 0
             {
                 idx = c as libc::c_int - '0' as i32;
                 if idx < ng {
@@ -2384,9 +2222,8 @@ unsafe extern "C" fn replace(
                     if buffer_append(
                         s,
                         base.offset(offset as isize),
-                        (*sub
-                            .offset((2 as libc::c_int * idx + 1 as libc::c_int) as isize)
-                            - offset) as size_t,
+                        (*sub.offset((2 as libc::c_int * idx + 1 as libc::c_int) as isize) - offset)
+                            as size_t,
                     ) != 0 as libc::c_int
                     {
                         return -(1 as libc::c_int);
@@ -2394,32 +2231,27 @@ unsafe extern "C" fn replace(
                 }
                 repl = repl.offset(1);
             } else if buffer_append(
-                    s,
-                    b"\\\0" as *const u8 as *const libc::c_char,
-                    1 as libc::c_int as size_t,
-                ) != 0 as libc::c_int
-                {
-                return -(1 as libc::c_int)
-            }
-        } else if buffer_append(s, &mut c, 1 as libc::c_int as size_t)
-                != 0 as libc::c_int
+                s,
+                b"\\\0" as *const u8 as *const libc::c_char,
+                1 as libc::c_int as size_t,
+            ) != 0 as libc::c_int
             {
-            return -(1 as libc::c_int)
+                return -(1 as libc::c_int);
+            }
+        } else if buffer_append(s, &mut c, 1 as libc::c_int as size_t) != 0 as libc::c_int {
+            return -(1 as libc::c_int);
         }
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn addItem(
-    mut arr: *mut Dt_t,
-    mut v: Extype_t,
-    mut tok: *mut libc::c_char,
-) {
+unsafe extern "C" fn addItem(mut arr: *mut Dt_t, mut v: Extype_t, mut tok: *mut libc::c_char) {
     let mut b: *mut Exassoc_t = 0 as *mut Exassoc_t;
     b = (Some(((*arr).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(arr, &mut v as *mut Extype_t as *mut libc::c_void, 0o1000 as libc::c_int)
-        as *mut Exassoc_t;
+        .expect("non-null function pointer")(
+        arr,
+        &mut v as *mut Extype_t as *mut libc::c_void,
+        0o1000 as libc::c_int,
+    ) as *mut Exassoc_t;
     if b.is_null() {
         b = if 0 as libc::c_int != 0 {
             realloc(
@@ -2441,9 +2273,9 @@ unsafe extern "C" fn addItem(
         }
         (*b).key = v;
         (Some(((*arr).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )(arr, b as *mut libc::c_void, 0o1 as libc::c_int);
+            .expect("non-null function pointer")(
+            arr, b as *mut libc::c_void, 0o1 as libc::c_int
+        );
     }
     let ref mut fresh22 = (*b).value.string;
     *fresh22 = tok;
@@ -2543,16 +2375,16 @@ unsafe extern "C" fn extokens(
             break;
         }
         sz = strcspn(str, seps);
-        if sz != 0 {} else {
+        if sz != 0 {
+        } else {
             __assert_fail(
                 b"sz\0" as *const u8 as *const libc::c_char,
                 b"exeval.c\0" as *const u8 as *const libc::c_char,
                 933 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 48],
-                    &[libc::c_char; 48],
-                >(b"Extype_t extokens(Expr_t *, Exnode_t *, void *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 48], &[libc::c_char; 48]>(
+                    b"Extype_t extokens(Expr_t *, Exnode_t *, void *)\0",
+                ))
+                .as_ptr(),
             );
         }
         tok = vmalloc((*ex).vm, sz.wrapping_add(1 as libc::c_int as libc::c_ulong))
@@ -2606,9 +2438,7 @@ unsafe extern "C" fn exsub(
             p = p.offset(-1);
         }
         if *p as libc::c_int == '$' as i32 {
-            if p > pat
-                && *p.offset(-(1 as libc::c_int) as isize) as libc::c_int == '\\' as i32
-            {
+            if p > pat && *p.offset(-(1 as libc::c_int) as isize) as libc::c_int == '\\' as i32 {
                 let fresh23 = p;
                 p = p.offset(-1);
                 *fresh23 = '\0' as i32 as libc::c_char;
@@ -2627,11 +2457,10 @@ unsafe extern "C" fn exsub(
         str,
         pat,
         sub.as_mut_ptr(),
-        (::std::mem::size_of::<[libc::c_int; 20]>() as libc::c_ulong)
-            .wrapping_div(
-                (2 as libc::c_int as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
-            ) as libc::c_int,
+        (::std::mem::size_of::<[libc::c_int; 20]>() as libc::c_ulong).wrapping_div(
+            (2 as libc::c_int as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        ) as libc::c_int,
         flags,
     );
     if ng == 0 as libc::c_int {
@@ -2640,8 +2469,8 @@ unsafe extern "C" fn exsub(
     }
     if sub[0 as libc::c_int as usize] == sub[1 as libc::c_int as usize] {
         exwarn(
-            b"pattern match of empty string - ill-specified pattern \"%s\"?\0"
-                as *const u8 as *const libc::c_char,
+            b"pattern match of empty string - ill-specified pattern \"%s\"?\0" as *const u8
+                as *const libc::c_char,
             pat,
         );
         v.string = vmstrdup((*ex).ve, str);
@@ -2656,8 +2485,7 @@ unsafe extern "C" fn exsub(
         };
         init
     };
-    if buffer_append(&mut buffer, str, sub[0 as libc::c_int as usize] as size_t)
-        != 0 as libc::c_int
+    if buffer_append(&mut buffer, str, sub[0 as libc::c_int as usize] as size_t) != 0 as libc::c_int
     {
         v.string = exnospace();
         return v;
@@ -2675,13 +2503,10 @@ unsafe extern "C" fn exsub(
                 s,
                 pat,
                 sub.as_mut_ptr(),
-                (::std::mem::size_of::<[libc::c_int; 20]>() as libc::c_ulong)
-                    .wrapping_div(
-                        (2 as libc::c_int as libc::c_ulong)
-                            .wrapping_mul(
-                                ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                            ),
-                    ) as libc::c_int,
+                (::std::mem::size_of::<[libc::c_int; 20]>() as libc::c_ulong).wrapping_div(
+                    (2 as libc::c_int as libc::c_ulong)
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+                ) as libc::c_int,
                 flags,
             );
             if !(ng != 0) {
@@ -2694,9 +2519,7 @@ unsafe extern "C" fn exsub(
                 return v;
             }
             if !repl.is_null() {
-                if replace(&mut buffer, s, repl, ng, sub.as_mut_ptr())
-                    != 0 as libc::c_int
-                {
+                if replace(&mut buffer, s, repl, ng, sub.as_mut_ptr()) != 0 as libc::c_int {
                     v.string = exnospace();
                     return v;
                 }
@@ -2732,12 +2555,9 @@ unsafe extern "C" fn exsubstr(
     s = eval(ex, (*expr_0).data.string.base, env);
     len = strlen(s.string) as libc::c_int;
     i = eval(ex, (*expr_0).data.string.pat, env);
-    if i.integer < 0 as libc::c_int as libc::c_longlong
-        || (len as libc::c_longlong) < i.integer
-    {
+    if i.integer < 0 as libc::c_int as libc::c_longlong || (len as libc::c_longlong) < i.integer {
         exerror(
-            b"illegal start index in substr(%s,%ld)\0" as *const u8
-                as *const libc::c_char,
+            b"illegal start index in substr(%s,%ld)\0" as *const u8 as *const libc::c_char,
             s.string,
             i.integer as intmax_t,
         );
@@ -2748,8 +2568,7 @@ unsafe extern "C" fn exsubstr(
             || len as libc::c_longlong - i.integer < l.integer
         {
             exerror(
-                b"illegal length in substr(%s,%ld,%ld)\0" as *const u8
-                    as *const libc::c_char,
+                b"illegal length in substr(%s,%ld,%ld)\0" as *const u8 as *const libc::c_char,
                 s.string,
                 i.integer as intmax_t,
                 l.integer as intmax_t,
@@ -2758,8 +2577,7 @@ unsafe extern "C" fn exsubstr(
     } else {
         l.integer = len as libc::c_longlong - i.integer;
     }
-    v
-        .string = vmalloc(
+    v.string = vmalloc(
         (*ex).ve,
         (l.integer + 1 as libc::c_int as libc::c_longlong) as size_t,
     ) as *mut libc::c_char;
@@ -2784,10 +2602,7 @@ unsafe extern "C" fn xConvert(
 ) {
     *tmp = *(*expr_0).data.operand.left;
     (*tmp).data.constant.value = v;
-    if ((*(*ex).disc).convertf)
-        .expect(
-            "non-null function pointer",
-        )(
+    if ((*(*ex).disc).convertf).expect("non-null function pointer")(
         ex,
         tmp,
         type_0,
@@ -2818,11 +2633,11 @@ unsafe extern "C" fn xPrint(
     *tmp = *(*expr_0).data.operand.left;
     (*tmp).data.constant.value = v;
     if (Some(((*(*ex).disc).stringof).expect("non-null function pointer")))
-        .expect("non-null function pointer")(ex, tmp, 0 as libc::c_int, (*ex).disc) != 0
+        .expect("non-null function pointer")(ex, tmp, 0 as libc::c_int, (*ex).disc)
+        != 0
     {
         exerror(
-            b"%s: no string representation of %s value\0" as *const u8
-                as *const libc::c_char,
+            b"%s: no string representation of %s value\0" as *const u8 as *const libc::c_char,
             ((*(*(*expr_0).data.operand.left).data.variable.symbol).name).as_mut_ptr(),
             extypename(ex, (*(*expr_0).data.operand.left).type_0),
         );
@@ -2936,10 +2751,11 @@ unsafe extern "C" fn eval(
         277 => {
             v = eval(ex, x, env);
             if ((*(*ex).disc).exitf).is_some() {
-                ((*(*ex).disc).exitf)
-                    .expect(
-                        "non-null function pointer",
-                    )(ex, env as *mut Exdisc_t, v.integer as libc::c_int);
+                ((*(*ex).disc).exitf).expect("non-null function pointer")(
+                    ex,
+                    env as *mut Exdisc_t,
+                    v.integer as libc::c_int,
+                );
             } else {
                 graphviz_exit(v.integer as libc::c_int);
             }
@@ -2966,14 +2782,11 @@ unsafe extern "C" fn eval(
                 }
                 if !((*expr_0).data.operand.right).is_null() {
                     eval(ex, (*expr_0).data.operand.right, env);
-                    if (*ex).loopcount > 0 as libc::c_int
-                        && {
-                            let ref mut fresh24 = (*ex).loopcount;
-                            *fresh24 -= 1;
-                            *fresh24 > 0 as libc::c_int
-                                || (*ex).loopop != 272 as libc::c_int
-                        }
-                    {
+                    if (*ex).loopcount > 0 as libc::c_int && {
+                        let ref mut fresh24 = (*ex).loopcount;
+                        *fresh24 -= 1;
+                        *fresh24 > 0 as libc::c_int || (*ex).loopop != 272 as libc::c_int
+                    } {
                         v.integer = 0 as libc::c_int as libc::c_longlong;
                         return v;
                     }
@@ -3014,10 +2827,7 @@ unsafe extern "C" fn eval(
                                     >= 19981111 as libc::c_long as libc::c_ulong
                                     && ((*(*ex).disc).matchf).is_some()
                                 {
-                                    ((*(*ex).disc).matchf)
-                                        .expect(
-                                            "non-null function pointer",
-                                        )(
+                                    ((*(*ex).disc).matchf).expect("non-null function pointer")(
                                         ex,
                                         x,
                                         (**t).string,
@@ -3085,8 +2895,8 @@ unsafe extern "C" fn eval(
         281 => {
             v.integer = 0 as libc::c_int as libc::c_longlong;
             if (*(*expr_0).data.generate.array).op == 275 as libc::c_int {
-                n = ((*(*expr_0).data.generate.index).type_0
-                    == 263 as libc::c_int as libc::c_long) as libc::c_int;
+                n = ((*(*expr_0).data.generate.index).type_0 == 263 as libc::c_int as libc::c_long)
+                    as libc::c_int;
                 assoc = (Some(
                     ((*((*(*(*expr_0).data.generate.array).data.variable.symbol)
                         .local
@@ -3094,9 +2904,7 @@ unsafe extern "C" fn eval(
                         .searchf)
                         .expect("non-null function pointer"),
                 ))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                .expect("non-null function pointer")(
                     (*(*(*expr_0).data.generate.array).data.variable.symbol)
                         .local
                         .pointer as *mut Dt_t,
@@ -3119,14 +2927,11 @@ unsafe extern "C" fn eval(
                             .value = (*assoc).key;
                     }
                     eval(ex, (*expr_0).data.generate.statement, env);
-                    if (*ex).loopcount > 0 as libc::c_int
-                        && {
-                            let ref mut fresh28 = (*ex).loopcount;
-                            *fresh28 -= 1;
-                            *fresh28 > 0 as libc::c_int
-                                || (*ex).loopop != 272 as libc::c_int
-                        }
-                    {
+                    if (*ex).loopcount > 0 as libc::c_int && {
+                        let ref mut fresh28 = (*ex).loopcount;
+                        *fresh28 -= 1;
+                        *fresh28 > 0 as libc::c_int || (*ex).loopop != 272 as libc::c_int
+                    } {
                         v.integer = 0 as libc::c_int as libc::c_longlong;
                         break;
                     } else {
@@ -3137,9 +2942,7 @@ unsafe extern "C" fn eval(
                                 .searchf)
                                 .expect("non-null function pointer"),
                         ))
-                            .expect(
-                                "non-null function pointer",
-                            )(
+                        .expect("non-null function pointer")(
                             (*(*(*expr_0).data.generate.array).data.variable.symbol)
                                 .local
                                 .pointer as *mut Dt_t,
@@ -3149,10 +2952,7 @@ unsafe extern "C" fn eval(
                     }
                 }
             } else {
-                r = ((*(*ex).disc).getf)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                r = ((*(*ex).disc).getf).expect("non-null function pointer")(
                     ex,
                     expr_0,
                     (*(*expr_0).data.generate.array).data.variable.symbol,
@@ -3169,14 +2969,11 @@ unsafe extern "C" fn eval(
                         .value
                         .integer = v.integer;
                     eval(ex, (*expr_0).data.generate.statement, env);
-                    if (*ex).loopcount > 0 as libc::c_int
-                        && {
-                            let ref mut fresh29 = (*ex).loopcount;
-                            *fresh29 -= 1;
-                            *fresh29 > 0 as libc::c_int
-                                || (*ex).loopop != 272 as libc::c_int
-                        }
-                    {
+                    if (*ex).loopcount > 0 as libc::c_int && {
+                        let ref mut fresh29 = (*ex).loopcount;
+                        *fresh29 -= 1;
+                        *fresh29 > 0 as libc::c_int || (*ex).loopop != 272 as libc::c_int
+                    } {
                         v.integer = 0 as libc::c_int as libc::c_longlong;
                         break;
                     } else {
@@ -3189,8 +2986,8 @@ unsafe extern "C" fn eval(
         282 => {
             v.integer = 0 as libc::c_int as libc::c_longlong;
             if (*(*expr_0).data.generate.array).op == 275 as libc::c_int {
-                n = ((*(*expr_0).data.generate.index).type_0
-                    == 263 as libc::c_int as libc::c_long) as libc::c_int;
+                n = ((*(*expr_0).data.generate.index).type_0 == 263 as libc::c_int as libc::c_long)
+                    as libc::c_int;
                 assoc = (Some(
                     ((*((*(*(*expr_0).data.generate.array).data.variable.symbol)
                         .local
@@ -3198,9 +2995,7 @@ unsafe extern "C" fn eval(
                         .searchf)
                         .expect("non-null function pointer"),
                 ))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                .expect("non-null function pointer")(
                     (*(*(*expr_0).data.generate.array).data.variable.symbol)
                         .local
                         .pointer as *mut Dt_t,
@@ -3223,14 +3018,11 @@ unsafe extern "C" fn eval(
                             .value = (*assoc).key;
                     }
                     eval(ex, (*expr_0).data.generate.statement, env);
-                    if (*ex).loopcount > 0 as libc::c_int
-                        && {
-                            let ref mut fresh31 = (*ex).loopcount;
-                            *fresh31 -= 1;
-                            *fresh31 > 0 as libc::c_int
-                                || (*ex).loopop != 272 as libc::c_int
-                        }
-                    {
+                    if (*ex).loopcount > 0 as libc::c_int && {
+                        let ref mut fresh31 = (*ex).loopcount;
+                        *fresh31 -= 1;
+                        *fresh31 > 0 as libc::c_int || (*ex).loopop != 272 as libc::c_int
+                    } {
                         v.integer = 0 as libc::c_int as libc::c_longlong;
                         break;
                     } else {
@@ -3241,9 +3033,7 @@ unsafe extern "C" fn eval(
                                 .searchf)
                                 .expect("non-null function pointer"),
                         ))
-                            .expect(
-                                "non-null function pointer",
-                            )(
+                        .expect("non-null function pointer")(
                             (*(*(*expr_0).data.generate.array).data.variable.symbol)
                                 .local
                                 .pointer as *mut Dt_t,
@@ -3253,10 +3043,7 @@ unsafe extern "C" fn eval(
                     }
                 }
             } else {
-                r = ((*(*ex).disc).getf)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                r = ((*(*ex).disc).getf).expect("non-null function pointer")(
                     ex,
                     expr_0,
                     (*(*expr_0).data.generate.array).data.variable.symbol,
@@ -3273,14 +3060,11 @@ unsafe extern "C" fn eval(
                         .value
                         .integer = v.integer;
                     eval(ex, (*expr_0).data.generate.statement, env);
-                    if (*ex).loopcount > 0 as libc::c_int
-                        && {
-                            let ref mut fresh32 = (*ex).loopcount;
-                            *fresh32 -= 1;
-                            *fresh32 > 0 as libc::c_int
-                                || (*ex).loopop != 272 as libc::c_int
-                        }
-                    {
+                    if (*ex).loopcount > 0 as libc::c_int && {
+                        let ref mut fresh32 = (*ex).loopcount;
+                        *fresh32 -= 1;
+                        *fresh32 > 0 as libc::c_int || (*ex).loopop != 272 as libc::c_int
+                    } {
                         v.integer = 0 as libc::c_int as libc::c_longlong;
                         break;
                     } else {
@@ -3291,10 +3075,8 @@ unsafe extern "C" fn eval(
             return v;
         }
         35 => {
-            v
-                .integer = dtsize(
-                (*(*expr_0).data.variable.symbol).local.pointer as *mut Dt_t,
-            ) as libc::c_longlong;
+            v.integer = dtsize((*(*expr_0).data.variable.symbol).local.pointer as *mut Dt_t)
+                as libc::c_longlong;
             return v;
         }
         331 => {
@@ -3303,18 +3085,13 @@ unsafe extern "C" fn eval(
         }
         306 => {
             if !((*expr_0).data.variable.index).is_null() {
-                v
-                    .integer = evaldyn(ex, expr_0, env, 1 as libc::c_int)
-                    as libc::c_longlong;
+                v.integer = evaldyn(ex, expr_0, env, 1 as libc::c_int) as libc::c_longlong;
             } else {
                 (Some(
-                    ((*((*(*expr_0).data.variable.symbol).local.pointer as *mut Dt_t))
-                        .searchf)
+                    ((*((*(*expr_0).data.variable.symbol).local.pointer as *mut Dt_t)).searchf)
                         .expect("non-null function pointer"),
                 ))
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                .expect("non-null function pointer")(
                     (*(*expr_0).data.variable.symbol).local.pointer as *mut Dt_t,
                     0 as *mut libc::c_void,
                     0o100 as libc::c_int,
@@ -3326,15 +3103,16 @@ unsafe extern "C" fn eval(
         269 => {
             x = (*expr_0).data.call.args;
             n = 0 as libc::c_int;
-            a = (*(*(*expr_0).data.call.procedure).value).data.procedure.args;
+            a = (*(*(*expr_0).data.call.procedure).value)
+                .data
+                .procedure
+                .args;
             while !a.is_null() && !x.is_null() {
                 if (n as libc::c_ulong)
                     < (::std::mem::size_of::<[Extype_t; 65]>() as libc::c_ulong)
                         .wrapping_div(::std::mem::size_of::<Extype_t>() as libc::c_ulong)
                 {
-                    save[n
-                        as usize] = (*(*(*(*a).data.operand.left).data.variable.symbol)
-                        .value)
+                    save[n as usize] = (*(*(*(*a).data.operand.left).data.variable.symbol).value)
                         .data
                         .constant
                         .value;
@@ -3351,7 +3129,10 @@ unsafe extern "C" fn eval(
                 a = (*a).data.operand.right;
             }
             n = 0 as libc::c_int;
-            a = (*(*(*expr_0).data.call.procedure).value).data.procedure.args;
+            a = (*(*(*expr_0).data.call.procedure).value)
+                .data
+                .procedure
+                .args;
             while !a.is_null()
                 && (n as libc::c_ulong)
                     < (::std::mem::size_of::<[Extype_t; 64]>() as libc::c_ulong)
@@ -3372,11 +3153,17 @@ unsafe extern "C" fn eval(
             }
             v = exeval(
                 ex,
-                (*(*(*expr_0).data.call.procedure).value).data.procedure.body,
+                (*(*(*expr_0).data.call.procedure).value)
+                    .data
+                    .procedure
+                    .body,
                 env,
             );
             n = 0 as libc::c_int;
-            a = (*(*(*expr_0).data.call.procedure).value).data.procedure.args;
+            a = (*(*(*expr_0).data.call.procedure).value)
+                .data
+                .procedure
+                .args;
             while !a.is_null()
                 && (n as libc::c_ulong)
                     < (::std::mem::size_of::<[Extype_t; 64]>() as libc::c_ulong)
@@ -3405,10 +3192,7 @@ unsafe extern "C" fn eval(
                 args[fresh36 as usize] = eval(ex, (*x).data.operand.left, env);
                 x = (*x).data.operand.right;
             }
-            return ((*(*ex).disc).getf)
-                .expect(
-                    "non-null function pointer",
-                )(
+            return ((*(*ex).disc).getf).expect("non-null function pointer")(
                 ex,
                 (*expr_0).data.operand.left,
                 (*(*expr_0).data.operand.left).data.variable.symbol,
@@ -3434,10 +3218,7 @@ unsafe extern "C" fn eval(
                 args[fresh38 as usize] = eval(ex, (*x).data.operand.left, env);
                 x = (*x).data.operand.right;
             }
-            return ((*(*ex).disc).getf)
-                .expect(
-                    "non-null function pointer",
-                )(
+            return ((*(*ex).disc).getf).expect("non-null function pointer")(
                 ex,
                 (*expr_0).data.operand.left,
                 (*(*expr_0).data.operand.left).data.variable.symbol,
@@ -3463,10 +3244,7 @@ unsafe extern "C" fn eval(
                     .constant
                     .value = locv_1;
             }
-            return ((*(*ex).disc).getf)
-                .expect(
-                    "non-null function pointer",
-                )(
+            return ((*(*ex).disc).getf).expect("non-null function pointer")(
                 ex,
                 expr_0,
                 (*expr_0).data.variable.symbol,
@@ -3540,10 +3318,7 @@ unsafe extern "C" fn eval(
                             .constant
                             .value = locv_2;
                     }
-                    v = ((*(*ex).disc).getf)
-                        .expect(
-                            "non-null function pointer",
-                        )(
+                    v = ((*(*ex).disc).getf).expect("non-null function pointer")(
                         ex,
                         x,
                         (*x).data.variable.symbol,
@@ -3557,3871 +3332,3943 @@ unsafe extern "C" fn eval(
                     262 => {
                         current_block = 13787714106568798477;
                         match current_block {
-                            13787714106568798477 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 11538870999030207062;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                            13787714106568798477 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 11538870999030207062;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 13236682061463366761;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3790561273297268167;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 18315435834437996746;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 7381876040995060082;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 14575275458752860498;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 8323211640247371006;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 11091651100383110420;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 15385998965109782319;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 15395163328284184564;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            11515888952988033665 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 13034768034686864816;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                45 => {
+                                    current_block = 13236682061463366761;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 3632332525568699835;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3119644467204629641;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 4155040754965348757;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 16153603300287884505;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 12154886366113648751;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 14747310749158537291;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 8869653012208538513;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 14539215783803676789;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 17916663512757813856;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            _ => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 3636433389734256616;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                42 => {
+                                    current_block = 3790561273297268167;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 6388602163840042976;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 516796709286287865;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    94 => {
-                                        current_block = 14728029199942657210;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 11002239204738513371;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 8050654829899665499;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
                                     }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
+                                47 => {
+                                    current_block = 18315435834437996746;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 7381876040995060082;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 14575275458752860498;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 8323211640247371006;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 11091651100383110420;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 15385998965109782319;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 15395163328284184564;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            11515888952988033665 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 13034768034686864816;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                45 => {
+                                    current_block = 3632332525568699835;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 3119644467204629641;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                47 => {
+                                    current_block = 4155040754965348757;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 16153603300287884505;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 12154886366113648751;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 14747310749158537291;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 8869653012208538513;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 14539215783803676789;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 17916663512757813856;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            _ => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 3636433389734256616;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 6388602163840042976;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 516796709286287865;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 14728029199942657210;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 11002239204738513371;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 8050654829899665499;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
                         }
                     }
                     259 | 260 => {
                         current_block = 11515888952988033665;
                         match current_block {
-                            13787714106568798477 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 11538870999030207062;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                            13787714106568798477 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 11538870999030207062;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 13236682061463366761;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3790561273297268167;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 18315435834437996746;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 7381876040995060082;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 14575275458752860498;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 8323211640247371006;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 11091651100383110420;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 15385998965109782319;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 15395163328284184564;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            11515888952988033665 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 13034768034686864816;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                45 => {
+                                    current_block = 13236682061463366761;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 3632332525568699835;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3119644467204629641;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 4155040754965348757;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 16153603300287884505;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 12154886366113648751;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 14747310749158537291;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 8869653012208538513;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 14539215783803676789;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 17916663512757813856;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            _ => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 3636433389734256616;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                42 => {
+                                    current_block = 3790561273297268167;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 6388602163840042976;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 516796709286287865;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    94 => {
-                                        current_block = 14728029199942657210;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 11002239204738513371;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 8050654829899665499;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
                                     }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
+                                47 => {
+                                    current_block = 18315435834437996746;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 7381876040995060082;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 14575275458752860498;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 8323211640247371006;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 11091651100383110420;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 15385998965109782319;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 15395163328284184564;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            11515888952988033665 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 13034768034686864816;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                45 => {
+                                    current_block = 3632332525568699835;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 3119644467204629641;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                47 => {
+                                    current_block = 4155040754965348757;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 16153603300287884505;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 12154886366113648751;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 14747310749158537291;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 8869653012208538513;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 14539215783803676789;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 17916663512757813856;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            _ => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 3636433389734256616;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 6388602163840042976;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 516796709286287865;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 14728029199942657210;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 11002239204738513371;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 8050654829899665499;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
                         }
                     }
                     263 => {
                         current_block = 11238760380257417228;
                         match current_block {
-                            13787714106568798477 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 11538870999030207062;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                            13787714106568798477 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 11538870999030207062;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 13236682061463366761;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3790561273297268167;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 18315435834437996746;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 7381876040995060082;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 14575275458752860498;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 8323211640247371006;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 11091651100383110420;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 15385998965109782319;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 15395163328284184564;
-                                        match current_block {
-                                            15395163328284184564 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_ulonglong
-                                                    >> r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            13236682061463366761 => {
-                                                v.floating -= r.floating;
-                                            }
-                                            3790561273297268167 => {
-                                                v.floating *= r.floating;
-                                            }
-                                            18315435834437996746 => {
-                                                if r.floating == 0.0f64 {
-                                                    exerror(
-                                                        b"floating divide by 0\0" as *const u8
-                                                            as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.floating /= r.floating;
-                                                }
-                                            }
-                                            7381876040995060082 => {
-                                                r.integer = r.floating as libc::c_longlong;
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v
-                                                        .floating = (v.floating as libc::c_longlong % r.integer)
-                                                        as libc::c_double;
-                                                }
-                                            }
-                                            14575275458752860498 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    & r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            8323211640247371006 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    | r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            11091651100383110420 => {
-                                                v
-                                                    .floating = (v.floating as libc::c_longlong
-                                                    ^ r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            15385998965109782319 => {
-                                                v
-                                                    .floating = ((v.floating as libc::c_longlong)
-                                                    << r.floating as libc::c_longlong) as libc::c_double;
-                                            }
-                                            _ => {
-                                                v.floating += r.floating;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            11515888952988033665 => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 13034768034686864816;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                45 => {
+                                    current_block = 13236682061463366761;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    45 => {
-                                        current_block = 3632332525568699835;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 3119644467204629641;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    47 => {
-                                        current_block = 4155040754965348757;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 16153603300287884505;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 12154886366113648751;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 14747310749158537291;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
+                                        _ => {
+                                            v.floating += r.floating;
                                         }
-                                        current_block = 7499465236084769340;
                                     }
-                                    94 => {
-                                        current_block = 8869653012208538513;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    329 => {
-                                        current_block = 14539215783803676789;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    330 => {
-                                        current_block = 17916663512757813856;
-                                        match current_block {
-                                            17916663512757813856 => {
-                                                v
-                                                    .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                                    as libc::c_longlong;
-                                            }
-                                            3632332525568699835 => {
-                                                v.integer -= r.integer;
-                                            }
-                                            3119644467204629641 => {
-                                                v.integer *= r.integer;
-                                            }
-                                            4155040754965348757 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer divide by 0\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer /= r.integer;
-                                                }
-                                            }
-                                            16153603300287884505 => {
-                                                if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                                    exerror(
-                                                        b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                                    );
-                                                } else {
-                                                    v.integer %= r.integer;
-                                                }
-                                            }
-                                            12154886366113648751 => {
-                                                v.integer &= r.integer;
-                                            }
-                                            14747310749158537291 => {
-                                                v.integer |= r.integer;
-                                            }
-                                            8869653012208538513 => {
-                                                v.integer ^= r.integer;
-                                            }
-                                            14539215783803676789 => {
-                                                v.integer <<= r.integer;
-                                            }
-                                            _ => {
-                                                v.integer += r.integer;
-                                            }
-                                        }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
-                            _ => {
-                                match (*expr_0).subop {
-                                    43 => {
-                                        current_block = 3636433389734256616;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                42 => {
+                                    current_block = 3790561273297268167;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    124 => {
-                                        current_block = 6388602163840042976;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
                                             }
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    38 => {
-                                        current_block = 516796709286287865;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    94 => {
-                                        current_block = 14728029199942657210;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    37 => {
-                                        current_block = 11002239204738513371;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
-                                    }
-                                    42 => {
-                                        current_block = 8050654829899665499;
-                                        match current_block {
-                                            8050654829899665499 => {
-                                                v.string = str_mpy(ex, v.string, r.string);
-                                            }
-                                            6388602163840042976 => {
-                                                v.string = str_ior(ex, v.string, r.string);
-                                            }
-                                            516796709286287865 => {
-                                                v.string = str_and(ex, v.string, r.string);
-                                            }
-                                            14728029199942657210 => {
-                                                v.string = str_xor(ex, v.string, r.string);
-                                            }
-                                            11002239204738513371 => {
-                                                v.string = str_mod(ex, v.string, r.string);
-                                            }
-                                            _ => {
-                                                v.string = str_add(ex, v.string, r.string);
-                                            }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
                                         }
-                                        current_block = 7499465236084769340;
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
                                     }
-                                    _ => {
-                                        current_block = 2805727839212370108;
-                                    }
+                                    current_block = 7499465236084769340;
                                 }
-                            }
+                                47 => {
+                                    current_block = 18315435834437996746;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 7381876040995060082;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 14575275458752860498;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 8323211640247371006;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 11091651100383110420;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 15385998965109782319;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 15395163328284184564;
+                                    match current_block {
+                                        15395163328284184564 => {
+                                            v.floating = (v.floating as libc::c_ulonglong
+                                                >> r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        13236682061463366761 => {
+                                            v.floating -= r.floating;
+                                        }
+                                        3790561273297268167 => {
+                                            v.floating *= r.floating;
+                                        }
+                                        18315435834437996746 => {
+                                            if r.floating == 0.0f64 {
+                                                exerror(
+                                                    b"floating divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating /= r.floating;
+                                            }
+                                        }
+                                        7381876040995060082 => {
+                                            r.integer = r.floating as libc::c_longlong;
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"floating 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.floating = (v.floating as libc::c_longlong
+                                                    % r.integer)
+                                                    as libc::c_double;
+                                            }
+                                        }
+                                        14575275458752860498 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                & r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        8323211640247371006 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                | r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        11091651100383110420 => {
+                                            v.floating = (v.floating as libc::c_longlong
+                                                ^ r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        15385998965109782319 => {
+                                            v.floating = ((v.floating as libc::c_longlong)
+                                                << r.floating as libc::c_longlong)
+                                                as libc::c_double;
+                                        }
+                                        _ => {
+                                            v.floating += r.floating;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            11515888952988033665 => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 13034768034686864816;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                45 => {
+                                    current_block = 3632332525568699835;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 3119644467204629641;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                47 => {
+                                    current_block = 4155040754965348757;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 16153603300287884505;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 12154886366113648751;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 14747310749158537291;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 8869653012208538513;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                329 => {
+                                    current_block = 14539215783803676789;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                330 => {
+                                    current_block = 17916663512757813856;
+                                    match current_block {
+                                        17916663512757813856 => {
+                                            v.integer = (v.integer as libc::c_ulonglong
+                                                >> r.integer)
+                                                as libc::c_longlong;
+                                        }
+                                        3632332525568699835 => {
+                                            v.integer -= r.integer;
+                                        }
+                                        3119644467204629641 => {
+                                            v.integer *= r.integer;
+                                        }
+                                        4155040754965348757 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer divide by 0\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer /= r.integer;
+                                            }
+                                        }
+                                        16153603300287884505 => {
+                                            if r.integer == 0 as libc::c_int as libc::c_longlong {
+                                                exerror(
+                                                    b"integer 0 modulus\0" as *const u8
+                                                        as *const libc::c_char,
+                                                );
+                                            } else {
+                                                v.integer %= r.integer;
+                                            }
+                                        }
+                                        12154886366113648751 => {
+                                            v.integer &= r.integer;
+                                        }
+                                        14747310749158537291 => {
+                                            v.integer |= r.integer;
+                                        }
+                                        8869653012208538513 => {
+                                            v.integer ^= r.integer;
+                                        }
+                                        14539215783803676789 => {
+                                            v.integer <<= r.integer;
+                                        }
+                                        _ => {
+                                            v.integer += r.integer;
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
+                            _ => match (*expr_0).subop {
+                                43 => {
+                                    current_block = 3636433389734256616;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                124 => {
+                                    current_block = 6388602163840042976;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                38 => {
+                                    current_block = 516796709286287865;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                94 => {
+                                    current_block = 14728029199942657210;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                37 => {
+                                    current_block = 11002239204738513371;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                42 => {
+                                    current_block = 8050654829899665499;
+                                    match current_block {
+                                        8050654829899665499 => {
+                                            v.string = str_mpy(ex, v.string, r.string);
+                                        }
+                                        6388602163840042976 => {
+                                            v.string = str_ior(ex, v.string, r.string);
+                                        }
+                                        516796709286287865 => {
+                                            v.string = str_and(ex, v.string, r.string);
+                                        }
+                                        14728029199942657210 => {
+                                            v.string = str_xor(ex, v.string, r.string);
+                                        }
+                                        11002239204738513371 => {
+                                            v.string = str_mod(ex, v.string, r.string);
+                                        }
+                                        _ => {
+                                            v.string = str_add(ex, v.string, r.string);
+                                        }
+                                    }
+                                    current_block = 7499465236084769340;
+                                }
+                                _ => {
+                                    current_block = 2805727839212370108;
+                                }
+                            },
                         }
                     }
                     _ => {
@@ -7458,7 +7305,11 @@ unsafe extern "C" fn eval(
                     return v;
                 }
             }
-            return if !expr_0.is_null() { eval(ex, expr_0, env) } else { v };
+            return if !expr_0.is_null() {
+                eval(ex, expr_0, env)
+            } else {
+                v
+            };
         }
         63 => {
             v = eval(ex, x, env);
@@ -7494,11 +7345,14 @@ unsafe extern "C" fn eval(
                     tmp.data.constant.value = v;
                     rtmp = *x;
                     rtmp.data.constant.value = r;
-                    if ((*(*ex).disc).binaryf)
-                        .expect(
-                            "non-null function pointer",
-                        )(ex, &mut tmp, expr_0, &mut rtmp, 0 as libc::c_int, (*ex).disc)
-                        == 0
+                    if ((*(*ex).disc).binaryf).expect("non-null function pointer")(
+                        ex,
+                        &mut tmp,
+                        expr_0,
+                        &mut rtmp,
+                        0 as libc::c_int,
+                        (*ex).disc,
+                    ) == 0
                     {
                         return tmp.data.constant.value;
                     }
@@ -7517,36 +7371,25 @@ unsafe extern "C" fn eval(
                             if (*(*expr_0).data.operand.left).op != 275 as libc::c_int
                                 && (*(*expr_0).data.operand.left).op != 283 as libc::c_int
                             {
-                                tmp
-                                    .data
-                                    .constant
-                                    .value
-                                    .string = exprintf(
+                                tmp.data.constant.value.string = exprintf(
                                     (*ex).ve,
                                     b"%g\0" as *const u8 as *const libc::c_char,
                                     v.floating,
                                 );
-                            } else if ((*(*ex).disc).convertf)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
-                                    ex,
-                                    &mut tmp,
-                                    263 as libc::c_int,
-                                    if !((*expr_0).data.operand.right).is_null() {
-                                        (*(*expr_0).data.operand.right).data.variable.symbol
-                                    } else {
-                                        0 as *mut Exid_t
-                                    },
-                                    0 as libc::c_int,
-                                    (*ex).disc,
-                                ) != 0
-                                {
-                                tmp
-                                    .data
-                                    .constant
-                                    .value
-                                    .string = exprintf(
+                            } else if ((*(*ex).disc).convertf).expect("non-null function pointer")(
+                                ex,
+                                &mut tmp,
+                                263 as libc::c_int,
+                                if !((*expr_0).data.operand.right).is_null() {
+                                    (*(*expr_0).data.operand.right).data.variable.symbol
+                                } else {
+                                    0 as *mut Exid_t
+                                },
+                                0 as libc::c_int,
+                                (*ex).disc,
+                            ) != 0
+                            {
+                                tmp.data.constant.value.string = exprintf(
                                     (*ex).ve,
                                     b"%g\0" as *const u8 as *const libc::c_char,
                                     v.floating,
@@ -7558,10 +7401,7 @@ unsafe extern "C" fn eval(
                         315 => {
                             tmp = *(*expr_0).data.operand.left;
                             tmp.data.constant.value = v;
-                            if ((*(*ex).disc).convertf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            if ((*(*ex).disc).convertf).expect("non-null function pointer")(
                                 ex,
                                 &mut tmp,
                                 (*expr_0).type_0,
@@ -7575,8 +7415,8 @@ unsafe extern "C" fn eval(
                             ) != 0
                             {
                                 exerror(
-                                    b"%s: cannot convert floating value to external\0"
-                                        as *const u8 as *const libc::c_char,
+                                    b"%s: cannot convert floating value to external\0" as *const u8
+                                        as *const libc::c_char,
                                     ((*tmp.data.variable.symbol).name).as_mut_ptr(),
                                 );
                             }
@@ -7584,15 +7424,12 @@ unsafe extern "C" fn eval(
                             return tmp.data.constant.value;
                         }
                         33 => {
-                            v
-                                .floating = (v.floating as libc::c_longlong == 0)
-                                as libc::c_int as libc::c_double;
+                            v.floating = (v.floating as libc::c_longlong == 0) as libc::c_int
+                                as libc::c_double;
                             return v;
                         }
                         126 => {
-                            v
-                                .floating = !(v.floating as libc::c_longlong)
-                                as libc::c_double;
+                            v.floating = !(v.floating as libc::c_longlong) as libc::c_double;
                             return v;
                         }
                         45 => {
@@ -7608,21 +7445,21 @@ unsafe extern "C" fn eval(
                             return v;
                         }
                         38 => {
-                            v
-                                .floating = (v.floating as libc::c_longlong
-                                & r.floating as libc::c_longlong) as libc::c_double;
+                            v.floating = (v.floating as libc::c_longlong
+                                & r.floating as libc::c_longlong)
+                                as libc::c_double;
                             return v;
                         }
                         124 => {
-                            v
-                                .floating = (v.floating as libc::c_longlong
-                                | r.floating as libc::c_longlong) as libc::c_double;
+                            v.floating = (v.floating as libc::c_longlong
+                                | r.floating as libc::c_longlong)
+                                as libc::c_double;
                             return v;
                         }
                         94 => {
-                            v
-                                .floating = (v.floating as libc::c_longlong
-                                ^ r.floating as libc::c_longlong) as libc::c_double;
+                            v.floating = (v.floating as libc::c_longlong
+                                ^ r.floating as libc::c_longlong)
+                                as libc::c_double;
                             return v;
                         }
                         42 => {
@@ -7632,8 +7469,7 @@ unsafe extern "C" fn eval(
                         47 => {
                             if r.floating == 0.0f64 {
                                 exerror(
-                                    b"floating divide by 0\0" as *const u8
-                                        as *const libc::c_char,
+                                    b"floating divide by 0\0" as *const u8 as *const libc::c_char,
                                 );
                             } else {
                                 v.floating /= r.floating;
@@ -7647,58 +7483,51 @@ unsafe extern "C" fn eval(
                                     b"floating 0 modulus\0" as *const u8 as *const libc::c_char,
                                 );
                             } else {
-                                v
-                                    .floating = (v.floating as libc::c_longlong % r.integer)
-                                    as libc::c_double;
+                                v.floating =
+                                    (v.floating as libc::c_longlong % r.integer) as libc::c_double;
                             }
                             return v;
                         }
                         60 => {
-                            v
-                                .integer = (v.floating < r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating < r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         327 => {
-                            v
-                                .integer = (v.floating <= r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating <= r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         325 => {
-                            v
-                                .integer = (v.floating == r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating == r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         326 => {
-                            v
-                                .integer = (v.floating != r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating != r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         328 => {
-                            v
-                                .integer = (v.floating >= r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating >= r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         62 => {
-                            v
-                                .integer = (v.floating > r.floating) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.floating > r.floating) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         329 => {
-                            v
-                                .integer = ((v.floating as libc::c_ulonglong)
-                                << r.floating as libc::c_longlong) as libc::c_longlong;
+                            v.integer = ((v.floating as libc::c_ulonglong)
+                                << r.floating as libc::c_longlong)
+                                as libc::c_longlong;
                             return v;
                         }
                         330 => {
-                            v
-                                .integer = (v.floating as libc::c_ulonglong
-                                >> r.floating as libc::c_longlong) as libc::c_longlong;
+                            v.integer = (v.floating as libc::c_ulonglong
+                                >> r.floating as libc::c_longlong)
+                                as libc::c_longlong;
                             return v;
                         }
                         _ => {}
@@ -7708,30 +7537,30 @@ unsafe extern "C" fn eval(
                 260 => {
                     match (*expr_0).op {
                         60 => {
-                            v
-                                .integer = ((v.integer as libc::c_ulonglong)
-                                < r.integer as libc::c_ulonglong) as libc::c_int
+                            v.integer = ((v.integer as libc::c_ulonglong)
+                                < r.integer as libc::c_ulonglong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         327 => {
-                            v
-                                .integer = (v.integer as libc::c_ulonglong
-                                <= r.integer as libc::c_ulonglong) as libc::c_int
+                            v.integer = (v.integer as libc::c_ulonglong
+                                <= r.integer as libc::c_ulonglong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         328 => {
-                            v
-                                .integer = (v.integer as libc::c_ulonglong
-                                >= r.integer as libc::c_ulonglong) as libc::c_int
+                            v.integer = (v.integer as libc::c_ulonglong
+                                >= r.integer as libc::c_ulonglong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         62 => {
-                            v
-                                .integer = (v.integer as libc::c_ulonglong
-                                > r.integer as libc::c_ulonglong) as libc::c_int
+                            v.integer = (v.integer as libc::c_ulonglong
+                                > r.integer as libc::c_ulonglong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
@@ -7745,18 +7574,15 @@ unsafe extern "C" fn eval(
                 263 => {
                     match (*expr_0).op {
                         312 => {
-                            v
-                                .integer = (*v.string as libc::c_int != 0 as libc::c_int)
-                                as libc::c_int as libc::c_longlong;
+                            v.integer = (*v.string as libc::c_int != 0 as libc::c_int)
+                                as libc::c_int
+                                as libc::c_longlong;
                             return v;
                         }
                         313 => {
                             tmp = *(*expr_0).data.operand.left;
                             tmp.data.constant.value = v;
-                            if ((*(*ex).disc).convertf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            if ((*(*ex).disc).convertf).expect("non-null function pointer")(
                                 ex,
                                 &mut tmp,
                                 262 as libc::c_int,
@@ -7771,12 +7597,10 @@ unsafe extern "C" fn eval(
                             {
                                 tmp.data.constant.value.floating = strtod(v.string, &mut e);
                                 if *e != 0 {
-                                    tmp
-                                        .data
-                                        .constant
-                                        .value
-                                        .floating = (*v.string as libc::c_int != 0 as libc::c_int)
-                                        as libc::c_int as libc::c_double;
+                                    tmp.data.constant.value.floating = (*v.string as libc::c_int
+                                        != 0 as libc::c_int)
+                                        as libc::c_int
+                                        as libc::c_double;
                                 }
                             }
                             tmp.type_0 = 262 as libc::c_int;
@@ -7785,10 +7609,7 @@ unsafe extern "C" fn eval(
                         314 => {
                             tmp = *(*expr_0).data.operand.left;
                             tmp.data.constant.value = v;
-                            if ((*(*ex).disc).convertf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            if ((*(*ex).disc).convertf).expect("non-null function pointer")(
                                 ex,
                                 &mut tmp,
                                 259 as libc::c_int,
@@ -7802,25 +7623,17 @@ unsafe extern "C" fn eval(
                             ) != 0
                             {
                                 if !(v.string).is_null() {
-                                    tmp
-                                        .data
-                                        .constant
-                                        .value
-                                        .integer = strtoll(v.string, &mut e, 0 as libc::c_int);
+                                    tmp.data.constant.value.integer =
+                                        strtoll(v.string, &mut e, 0 as libc::c_int);
                                     if *e != 0 {
-                                        tmp
-                                            .data
-                                            .constant
-                                            .value
-                                            .integer = (*v.string as libc::c_int != 0 as libc::c_int)
-                                            as libc::c_int as libc::c_longlong;
+                                        tmp.data.constant.value.integer = (*v.string as libc::c_int
+                                            != 0 as libc::c_int)
+                                            as libc::c_int
+                                            as libc::c_longlong;
                                     }
                                 } else {
-                                    tmp
-                                        .data
-                                        .constant
-                                        .value
-                                        .integer = 0 as libc::c_int as libc::c_longlong;
+                                    tmp.data.constant.value.integer =
+                                        0 as libc::c_int as libc::c_longlong;
                                 }
                             }
                             tmp.type_0 = 259 as libc::c_int;
@@ -7829,10 +7642,7 @@ unsafe extern "C" fn eval(
                         317 => {
                             tmp = *(*expr_0).data.operand.left;
                             tmp.data.constant.value = v;
-                            if ((*(*ex).disc).convertf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            if ((*(*ex).disc).convertf).expect("non-null function pointer")(
                                 ex,
                                 &mut tmp,
                                 (*expr_0).type_0,
@@ -7846,8 +7656,8 @@ unsafe extern "C" fn eval(
                             ) != 0
                             {
                                 exerror(
-                                    b"%s: cannot convert string value to external\0"
-                                        as *const u8 as *const libc::c_char,
+                                    b"%s: cannot convert string value to external\0" as *const u8
+                                        as *const libc::c_char,
                                     ((*tmp.data.variable.symbol).name).as_mut_ptr(),
                                 );
                             }
@@ -7855,18 +7665,12 @@ unsafe extern "C" fn eval(
                             return tmp.data.constant.value;
                         }
                         325 | 326 => {
-                            v
-                                .integer = ((if !(v.string).is_null()
-                                && !(r.string).is_null()
-                            {
+                            v.integer = ((if !(v.string).is_null() && !(r.string).is_null() {
                                 (if (*(*ex).disc).version
                                     >= 19981111 as libc::c_long as libc::c_ulong
                                     && ((*(*ex).disc).matchf).is_some()
                                 {
-                                    ((*(*ex).disc).matchf)
-                                        .expect(
-                                            "non-null function pointer",
-                                        )(
+                                    ((*(*ex).disc).matchf).expect("non-null function pointer")(
                                         ex,
                                         (*expr_0).data.operand.left,
                                         v.string,
@@ -7881,7 +7685,8 @@ unsafe extern "C" fn eval(
                             } else {
                                 (v.string == r.string) as libc::c_int
                             }) == ((*expr_0).op == 325 as libc::c_int) as libc::c_int)
-                                as libc::c_int as libc::c_longlong;
+                                as libc::c_int
+                                as libc::c_longlong;
                             return v;
                         }
                         43 => {
@@ -7913,30 +7718,26 @@ unsafe extern "C" fn eval(
                     v.integer = strcoll(v.string, r.string) as libc::c_longlong;
                     match (*expr_0).op {
                         60 => {
-                            v
-                                .integer = (v.integer
-                                < 0 as libc::c_int as libc::c_longlong) as libc::c_int
+                            v.integer = (v.integer < 0 as libc::c_int as libc::c_longlong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         327 => {
-                            v
-                                .integer = (v.integer
-                                <= 0 as libc::c_int as libc::c_longlong) as libc::c_int
+                            v.integer = (v.integer <= 0 as libc::c_int as libc::c_longlong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         328 => {
-                            v
-                                .integer = (v.integer
-                                >= 0 as libc::c_int as libc::c_longlong) as libc::c_int
+                            v.integer = (v.integer >= 0 as libc::c_int as libc::c_longlong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
                         62 => {
-                            v
-                                .integer = (v.integer
-                                > 0 as libc::c_int as libc::c_longlong) as libc::c_int
+                            v.integer = (v.integer > 0 as libc::c_int as libc::c_longlong)
+                                as libc::c_int
                                 as libc::c_longlong;
                             return v;
                         }
@@ -7976,11 +7777,14 @@ unsafe extern "C" fn eval(
                             } else {
                                 rp = 0 as *mut Exnode_t;
                             }
-                            if ((*(*ex).disc).binaryf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(ex, &mut tmp, expr_0, rp, 0 as libc::c_int, (*ex).disc)
-                                == 0
+                            if ((*(*ex).disc).binaryf).expect("non-null function pointer")(
+                                ex,
+                                &mut tmp,
+                                expr_0,
+                                rp,
+                                0 as libc::c_int,
+                                (*ex).disc,
+                            ) == 0
                             {
                                 return tmp.data.constant.value;
                             }
@@ -7995,9 +7799,7 @@ unsafe extern "C" fn eval(
                     match (*expr_0).op {
                         310 => {
                             if (*expr_0).type_0 == 260 as libc::c_int {
-                                v
-                                    .floating = v.integer as libc::c_ulonglong
-                                    as libc::c_double;
+                                v.floating = v.integer as libc::c_ulonglong as libc::c_double;
                             } else {
                                 v.floating = v.integer as libc::c_double;
                             }
@@ -8010,9 +7812,7 @@ unsafe extern "C" fn eval(
                                 && (*(*expr_0).data.operand.left).op != 283 as libc::c_int
                             {
                                 let mut str: *mut libc::c_char = 0 as *mut libc::c_char;
-                                if (*(*expr_0).data.operand.left).type_0
-                                    == 260 as libc::c_int
-                                {
+                                if (*(*expr_0).data.operand.left).type_0 == 260 as libc::c_int {
                                     str = exprintf(
                                         (*ex).ve,
                                         b"%llu\0" as *const u8 as *const libc::c_char,
@@ -8026,26 +7826,21 @@ unsafe extern "C" fn eval(
                                     );
                                 }
                                 tmp.data.constant.value.string = str;
-                            } else if ((*(*ex).disc).convertf)
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
-                                    ex,
-                                    &mut tmp,
-                                    263 as libc::c_int,
-                                    if !((*expr_0).data.operand.right).is_null() {
-                                        (*(*expr_0).data.operand.right).data.variable.symbol
-                                    } else {
-                                        0 as *mut Exid_t
-                                    },
-                                    0 as libc::c_int,
-                                    (*ex).disc,
-                                ) != 0
-                                {
+                            } else if ((*(*ex).disc).convertf).expect("non-null function pointer")(
+                                ex,
+                                &mut tmp,
+                                263 as libc::c_int,
+                                if !((*expr_0).data.operand.right).is_null() {
+                                    (*(*expr_0).data.operand.right).data.variable.symbol
+                                } else {
+                                    0 as *mut Exid_t
+                                },
+                                0 as libc::c_int,
+                                (*ex).disc,
+                            ) != 0
+                            {
                                 let mut str_0: *mut libc::c_char = 0 as *mut libc::c_char;
-                                if (*(*expr_0).data.operand.left).type_0
-                                    == 260 as libc::c_int
-                                {
+                                if (*(*expr_0).data.operand.left).type_0 == 260 as libc::c_int {
                                     str_0 = exprintf(
                                         (*ex).ve,
                                         b"%llu\0" as *const u8 as *const libc::c_char,
@@ -8066,10 +7861,7 @@ unsafe extern "C" fn eval(
                         316 => {
                             tmp = *(*expr_0).data.operand.left;
                             tmp.data.constant.value = v;
-                            if ((*(*ex).disc).convertf)
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            if ((*(*ex).disc).convertf).expect("non-null function pointer")(
                                 ex,
                                 &mut tmp,
                                 (*expr_0).type_0,
@@ -8083,8 +7875,8 @@ unsafe extern "C" fn eval(
                             ) != 0
                             {
                                 exerror(
-                                    b"%s: cannot convert integer value to external\0"
-                                        as *const u8 as *const libc::c_char,
+                                    b"%s: cannot convert integer value to external\0" as *const u8
+                                        as *const libc::c_char,
                                     ((*tmp.data.variable.symbol).name).as_mut_ptr(),
                                 );
                             }
@@ -8092,9 +7884,7 @@ unsafe extern "C" fn eval(
                             return tmp.data.constant.value;
                         }
                         33 => {
-                            v
-                                .integer = (v.integer == 0) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer == 0) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         126 => {
@@ -8141,24 +7931,18 @@ unsafe extern "C" fn eval(
                         }
                         37 => {
                             if r.integer == 0 as libc::c_int as libc::c_longlong {
-                                exerror(
-                                    b"integer 0 modulus\0" as *const u8 as *const libc::c_char,
-                                );
+                                exerror(b"integer 0 modulus\0" as *const u8 as *const libc::c_char);
                             } else {
                                 v.integer %= r.integer;
                             }
                             return v;
                         }
                         325 => {
-                            v
-                                .integer = (v.integer == r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer == r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         326 => {
-                            v
-                                .integer = (v.integer != r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer != r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         329 => {
@@ -8166,33 +7950,24 @@ unsafe extern "C" fn eval(
                             return v;
                         }
                         330 => {
-                            v
-                                .integer = (v.integer as libc::c_ulonglong >> r.integer)
-                                as libc::c_longlong;
+                            v.integer =
+                                (v.integer as libc::c_ulonglong >> r.integer) as libc::c_longlong;
                             return v;
                         }
                         60 => {
-                            v
-                                .integer = (v.integer < r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer < r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         327 => {
-                            v
-                                .integer = (v.integer <= r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer <= r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         328 => {
-                            v
-                                .integer = (v.integer >= r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer >= r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         62 => {
-                            v
-                                .integer = (v.integer > r.integer) as libc::c_int
-                                as libc::c_longlong;
+                            v.integer = (v.integer > r.integer) as libc::c_int as libc::c_longlong;
                             return v;
                         }
                         _ => {}
@@ -8222,10 +7997,7 @@ unsafe extern "C" fn eval(
                         .constant
                         .value = locv;
                 }
-                r = ((*(*ex).disc).getf)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                r = ((*(*ex).disc).getf).expect("non-null function pointer")(
                     ex,
                     x,
                     (*x).data.variable.symbol,
@@ -8272,23 +8044,18 @@ unsafe extern "C" fn eval(
         2805727839212370108 => {
             if (*expr_0).binary != 0 {
                 exerror(
-                    b"operator %s %s %s not implemented\0" as *const u8
-                        as *const libc::c_char,
+                    b"operator %s %s %s not implemented\0" as *const u8 as *const libc::c_char,
                     lexname((*(*expr_0).data.operand.left).type_0, -(1 as libc::c_int)),
                     lexname((*expr_0).op, (*expr_0).subop),
                     if !((*expr_0).data.operand.right).is_null() {
-                        lexname(
-                            (*(*expr_0).data.operand.right).type_0,
-                            -(1 as libc::c_int),
-                        )
+                        lexname((*(*expr_0).data.operand.right).type_0, -(1 as libc::c_int))
                     } else {
                         b"UNARY\0" as *const u8 as *const libc::c_char
                     },
                 );
             } else {
                 exerror(
-                    b"operator %s %s not implemented\0" as *const u8
-                        as *const libc::c_char,
+                    b"operator %s %s not implemented\0" as *const u8 as *const libc::c_char,
                     lexname((*expr_0).op, (*expr_0).subop),
                     lexname((*(*expr_0).data.operand.left).type_0, -(1 as libc::c_int)),
                 );
@@ -8302,7 +8069,11 @@ unsafe extern "C" fn eval(
                     e = if !assoc.is_null() {
                         (*assoc).value.string
                     } else {
-                        (*(*(*x).data.variable.symbol).value).data.constant.value.string
+                        (*(*(*x).data.variable.symbol).value)
+                            .data
+                            .constant
+                            .value
+                            .string
                     };
                     if !e.is_null() {
                         vmfree((*ex).vm, e as *mut libc::c_void);
@@ -8329,10 +8100,7 @@ unsafe extern "C" fn eval(
                         .constant
                         .value = locv_0;
                 }
-                if ((*(*ex).disc).setf)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                if ((*(*ex).disc).setf).expect("non-null function pointer")(
                     ex,
                     x,
                     (*x).data.variable.symbol,
@@ -8368,19 +8136,19 @@ pub unsafe extern "C" fn exeval(
     if ((*expr_0).compiled.integer).is_some() {
         match (*expr_0).type_0 {
             262 => {
-                v
-                    .floating = ((*expr_0).compiled.floating)
-                    .expect("non-null function pointer")((*(*ex).disc).data);
+                v.floating = ((*expr_0).compiled.floating).expect("non-null function pointer")(
+                    (*(*ex).disc).data,
+                );
             }
             263 => {
-                v
-                    .string = ((*expr_0).compiled.string)
-                    .expect("non-null function pointer")((*(*ex).disc).data);
+                v.string = ((*expr_0).compiled.string).expect("non-null function pointer")(
+                    (*(*ex).disc).data,
+                );
             }
             _ => {
-                v
-                    .integer = ((*expr_0).compiled.integer)
-                    .expect("non-null function pointer")((*(*ex).disc).data);
+                v.integer = ((*expr_0).compiled.integer).expect("non-null function pointer")(
+                    (*(*ex).disc).data,
+                );
             }
         }
     } else {
@@ -8402,9 +8170,6 @@ pub unsafe extern "C" fn exstring(
     return vmstrdup((*ex).ve, s);
 }
 #[no_mangle]
-pub unsafe extern "C" fn exstralloc(
-    mut ex: *mut Expr_t,
-    mut sz: size_t,
-) -> *mut libc::c_void {
+pub unsafe extern "C" fn exstralloc(mut ex: *mut Expr_t, mut sz: size_t) -> *mut libc::c_void {
     return vmalloc((*ex).ve, sz);
 }

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -30,11 +38,7 @@ extern "C" {
         _: libc::c_ulong,
         _: *mut FILE,
     ) -> libc::c_ulong;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcat(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
@@ -135,13 +139,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -166,16 +165,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -195,10 +188,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -206,16 +198,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type agerrlevel_t = libc::c_uint;
 pub const AGPREV: agerrlevel_t = 3;
 pub const AGMAX: agerrlevel_t = 2;
@@ -272,10 +257,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -290,10 +278,11 @@ unsafe extern "C" fn gv_realloc(
 #[inline]
 unsafe extern "C" fn gv_strdup(mut original: *const libc::c_char) -> *mut libc::c_char {
     let mut copy: *mut libc::c_char = strdup(original);
-    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int
-        as libc::c_long != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (copy == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return copy;
@@ -311,58 +300,44 @@ pub unsafe extern "C" fn initgmlscan(mut ifile: *mut FILE) {
 }
 static mut Sbuf: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 unsafe extern "C" fn beginstr() {
-    if Sbuf.is_null()
-        && !(b"leaking memory\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    if Sbuf.is_null() && !(b"leaking memory\0" as *const u8 as *const libc::c_char).is_null() {
+    } else {
         __assert_fail(
             b"Sbuf == NULL && \"leaking memory\"\0" as *const u8 as *const libc::c_char,
             b"../../cmd/tools/gmlscan.l\0" as *const u8 as *const libc::c_char,
             43 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 20],
-                &[libc::c_char; 20],
-            >(b"void beginstr(void)\0"))
+            (*::std::mem::transmute::<&[u8; 20], &[libc::c_char; 20]>(b"void beginstr(void)\0"))
                 .as_ptr(),
         );
     }
     Sbuf = gv_strdup(b"\0" as *const u8 as *const libc::c_char);
 }
 unsafe extern "C" fn addstr(mut src: *const libc::c_char) {
-    if !Sbuf.is_null()
-        && !(b"missing beginstr()\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    if !Sbuf.is_null() && !(b"missing beginstr()\0" as *const u8 as *const libc::c_char).is_null() {
+    } else {
         __assert_fail(
-            b"Sbuf != NULL && \"missing beginstr()\"\0" as *const u8
-                as *const libc::c_char,
+            b"Sbuf != NULL && \"missing beginstr()\"\0" as *const u8 as *const libc::c_char,
             b"../../cmd/tools/gmlscan.l\0" as *const u8 as *const libc::c_char,
             48 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 26],
-                &[libc::c_char; 26],
-            >(b"void addstr(const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 26], &[libc::c_char; 26]>(
+                b"void addstr(const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    let mut old_size: size_t = (strlen(Sbuf))
-        .wrapping_add(1 as libc::c_int as libc::c_ulong);
+    let mut old_size: size_t = (strlen(Sbuf)).wrapping_add(1 as libc::c_int as libc::c_ulong);
     let mut new_size: size_t = old_size.wrapping_add(strlen(src));
-    Sbuf = gv_realloc(Sbuf as *mut libc::c_void, old_size, new_size)
-        as *mut libc::c_char;
+    Sbuf = gv_realloc(Sbuf as *mut libc::c_void, old_size, new_size) as *mut libc::c_char;
     strcat(Sbuf, src);
 }
 unsafe extern "C" fn endstr() {
-    if !Sbuf.is_null()
-        && !(b"missing beginstr()\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    if !Sbuf.is_null() && !(b"missing beginstr()\0" as *const u8 as *const libc::c_char).is_null() {
+    } else {
         __assert_fail(
-            b"Sbuf != NULL && \"missing beginstr()\"\0" as *const u8
-                as *const libc::c_char,
+            b"Sbuf != NULL && \"missing beginstr()\"\0" as *const u8 as *const libc::c_char,
             b"../../cmd/tools/gmlscan.l\0" as *const u8 as *const libc::c_char,
             61 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 18],
-                &[libc::c_char; 18],
-            >(b"void endstr(void)\0"))
+            (*::std::mem::transmute::<&[u8; 18], &[libc::c_char; 18]>(b"void endstr(void)\0"))
                 .as_ptr(),
         );
     }
@@ -397,8 +372,8 @@ pub unsafe extern "C" fn gmlwrap() -> libc::c_int {
 }
 static mut yy_buffer_stack_top: size_t = 0 as libc::c_int as size_t;
 static mut yy_buffer_stack_max: size_t = 0 as libc::c_int as size_t;
-static mut yy_buffer_stack: *mut YY_BUFFER_STATE = 0 as *const YY_BUFFER_STATE
-    as *mut YY_BUFFER_STATE;
+static mut yy_buffer_stack: *mut YY_BUFFER_STATE =
+    0 as *const YY_BUFFER_STATE as *mut YY_BUFFER_STATE;
 static mut yy_hold_char: libc::c_char = 0;
 static mut yy_n_chars: libc::c_int = 0;
 #[no_mangle]
@@ -1888,13 +1863,12 @@ static mut yy_chk: [flex_int16_t; 356] = [
     142 as libc::c_int as flex_int16_t,
 ];
 static mut yy_last_accepting_state: yy_state_type = 0;
-static mut yy_last_accepting_cpos: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+static mut yy_last_accepting_cpos: *mut libc::c_char =
+    0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub static mut gml_flex_debug: libc::c_int = 0 as libc::c_int;
 #[no_mangle]
-pub static mut gmltext: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut gmltext: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub unsafe extern "C" fn gmllex() -> libc::c_int {
     let mut yy_amount_of_matched_text: libc::c_int = 0;
@@ -1920,7 +1894,7 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
         } else {
             0 as YY_BUFFER_STATE
         }
-            .is_null()
+        .is_null()
         {
             gmlensure_buffer_stack();
             let ref mut fresh0 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
@@ -1933,8 +1907,7 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
         *yy_cp = yy_hold_char;
         yy_bp = yy_cp;
         yy_current_state = yy_start;
-        yy_current_state
-            += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
+        yy_current_state += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
         'c_8770: loop {
             loop {
                 let mut yy_c: YY_CHAR = yy_ec[*yy_cp as YY_CHAR as usize];
@@ -1943,19 +1916,19 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                     yy_last_accepting_cpos = yy_cp;
                 }
                 while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-                    + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+                    + yy_c as libc::c_int) as usize] as libc::c_int
+                    != yy_current_state
                 {
                     yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
                     if yy_current_state >= 143 as libc::c_int {
                         yy_c = yy_meta[yy_c as usize];
                     }
                 }
-                yy_current_state = yy_nxt[(yy_base[yy_current_state as usize]
-                    as libc::c_int + yy_c as libc::c_int) as usize] as yy_state_type;
+                yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
+                    + yy_c as libc::c_int) as usize]
+                    as yy_state_type;
                 yy_cp = yy_cp.offset(1);
-                if !(yy_base[yy_current_state as usize] as libc::c_int
-                    != 301 as libc::c_int)
-                {
+                if !(yy_base[yy_current_state as usize] as libc::c_int != 301 as libc::c_int) {
                     break;
                 }
             }
@@ -1984,7 +1957,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return -(1 as libc::c_int);
                         }
@@ -1993,7 +1968,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             line_num += 1;
                             break 'c_8770;
@@ -2003,7 +1980,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8770;
                         }
@@ -2012,7 +1991,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8770;
                         }
@@ -2021,7 +2002,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 258 as libc::c_int;
                         }
@@ -2030,7 +2013,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 259 as libc::c_int;
                         }
@@ -2039,7 +2024,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 260 as libc::c_int;
                         }
@@ -2048,7 +2035,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 261 as libc::c_int;
                         }
@@ -2057,7 +2046,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 287 as libc::c_int;
                         }
@@ -2066,7 +2057,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 262 as libc::c_int;
                         }
@@ -2075,7 +2068,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 263 as libc::c_int;
                         }
@@ -2084,7 +2079,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 264 as libc::c_int;
                         }
@@ -2093,7 +2090,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 265 as libc::c_int;
                         }
@@ -2102,7 +2101,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 266 as libc::c_int;
                         }
@@ -2111,7 +2112,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 267 as libc::c_int;
                         }
@@ -2120,7 +2123,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 268 as libc::c_int;
                         }
@@ -2129,7 +2134,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 269 as libc::c_int;
                         }
@@ -2138,7 +2145,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 270 as libc::c_int;
                         }
@@ -2147,7 +2156,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 271 as libc::c_int;
                         }
@@ -2156,7 +2167,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 272 as libc::c_int;
                         }
@@ -2165,7 +2178,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 273 as libc::c_int;
                         }
@@ -2174,7 +2189,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 274 as libc::c_int;
                         }
@@ -2183,7 +2200,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 275 as libc::c_int;
                         }
@@ -2192,7 +2211,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 276 as libc::c_int;
                         }
@@ -2201,7 +2222,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 277 as libc::c_int;
                         }
@@ -2210,7 +2233,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 278 as libc::c_int;
                         }
@@ -2219,7 +2244,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 279 as libc::c_int;
                         }
@@ -2228,7 +2255,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 280 as libc::c_int;
                         }
@@ -2237,7 +2266,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 281 as libc::c_int;
                         }
@@ -2246,7 +2277,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 282 as libc::c_int;
                         }
@@ -2255,7 +2288,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 283 as libc::c_int;
                         }
@@ -2264,7 +2299,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             gmllval.str_0 = strdup(gmltext);
                             return 284 as libc::c_int;
@@ -2274,7 +2311,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             gmllval.str_0 = strdup(gmltext);
                             return 285 as libc::c_int;
@@ -2284,7 +2323,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             gmllval.str_0 = strdup(gmltext);
                             return 288 as libc::c_int;
@@ -2294,10 +2335,11 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 1 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 1 as libc::c_int;
                             beginstr();
                             break 'c_8770;
                         }
@@ -2306,10 +2348,11 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 0 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 0 as libc::c_int;
                             endstr();
                             return 286 as libc::c_int;
                         }
@@ -2318,7 +2361,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(gmltext);
                             break 'c_8770;
@@ -2328,17 +2373,20 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            return *gmltext.offset(0 as libc::c_int as isize)
-                                as libc::c_int;
+                            return *gmltext.offset(0 as libc::c_int as isize) as libc::c_int;
                         }
                         39 => {
                             if gmlleng > 0 as libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*gmltext
                                     .offset((gmlleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             fwrite(
                                 gmltext as *const libc::c_void,
@@ -2350,31 +2398,32 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                         }
                         41 | 42 => return 0 as libc::c_int,
                         40 => {
-                            yy_amount_of_matched_text = yy_cp.offset_from(gmltext)
-                                as libc::c_long as libc::c_int - 1 as libc::c_int;
+                            yy_amount_of_matched_text = yy_cp.offset_from(gmltext) as libc::c_long
+                                as libc::c_int
+                                - 1 as libc::c_int;
                             *yy_cp = yy_hold_char;
                             if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                                .yy_buffer_status == 0 as libc::c_int
+                                .yy_buffer_status
+                                == 0 as libc::c_int
                             {
                                 yy_n_chars = (**yy_buffer_stack
                                     .offset(yy_buffer_stack_top as isize))
-                                    .yy_n_chars;
+                                .yy_n_chars;
                                 let ref mut fresh1 = (**yy_buffer_stack
                                     .offset(yy_buffer_stack_top as isize))
-                                    .yy_input_file;
+                                .yy_input_file;
                                 *fresh1 = gmlin;
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_buffer_status = 1 as libc::c_int;
                             }
                             if yy_c_buf_p
-                                <= &mut *((**yy_buffer_stack
-                                    .offset(yy_buffer_stack_top as isize))
+                                <= &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_ch_buf)
-                                    .offset(yy_n_chars as isize) as *mut libc::c_char
+                                    .offset(yy_n_chars as isize)
+                                    as *mut libc::c_char
                             {
                                 yy_next_state = 0;
-                                yy_c_buf_p = gmltext
-                                    .offset(yy_amount_of_matched_text as isize);
+                                yy_c_buf_p = gmltext.offset(yy_amount_of_matched_text as isize);
                                 yy_current_state = yy_get_previous_state();
                                 yy_next_state = yy_try_NUL_trans(yy_current_state);
                                 yy_bp = gmltext.offset(0 as libc::c_int as isize);
@@ -2402,8 +2451,8 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                         }
                                     }
                                     0 => {
-                                        yy_c_buf_p = gmltext
-                                            .offset(yy_amount_of_matched_text as isize);
+                                        yy_c_buf_p =
+                                            gmltext.offset(yy_amount_of_matched_text as isize);
                                         yy_current_state = yy_get_previous_state();
                                         yy_cp = yy_c_buf_p;
                                         yy_bp = gmltext.offset(0 as libc::c_int as isize);
@@ -2412,8 +2461,9 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                                     2 => {
                                         yy_c_buf_p = &mut *((**yy_buffer_stack
                                             .offset(yy_buffer_stack_top as isize))
-                                            .yy_ch_buf)
-                                            .offset(yy_n_chars as isize) as *mut libc::c_char;
+                                        .yy_ch_buf)
+                                            .offset(yy_n_chars as isize)
+                                            as *mut libc::c_char;
                                         yy_current_state = yy_get_previous_state();
                                         yy_cp = yy_c_buf_p;
                                         yy_bp = gmltext.offset(0 as libc::c_int as isize);
@@ -2427,8 +2477,8 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                         }
                         _ => {
                             yy_fatal_error(
-                                b"fatal flex scanner internal error--no action found\0"
-                                    as *const u8 as *const libc::c_char,
+                                b"fatal flex scanner internal error--no action found\0" as *const u8
+                                    as *const libc::c_char,
                             );
                         }
                     }
@@ -2446,12 +2496,11 @@ pub unsafe extern "C" fn gmllex() -> libc::c_int {
                 }
             }
         }
-    };
+    }
 }
 unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
-    let mut dest: *mut libc::c_char = (**yy_buffer_stack
-        .offset(yy_buffer_stack_top as isize))
-        .yy_ch_buf;
+    let mut dest: *mut libc::c_char =
+        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf;
     let mut source: *mut libc::c_char = gmltext;
     let mut number_to_move: libc::c_int = 0;
     let mut i: libc::c_int = 0;
@@ -2465,15 +2514,13 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
                 as *const libc::c_char,
         );
     }
-    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_fill_buffer
-        == 0 as libc::c_int
-    {
-        if yy_c_buf_p.offset_from(gmltext) as libc::c_long
-            - 0 as libc::c_int as libc::c_long == 1 as libc::c_int as libc::c_long
+    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_fill_buffer == 0 as libc::c_int {
+        if yy_c_buf_p.offset_from(gmltext) as libc::c_long - 0 as libc::c_int as libc::c_long
+            == 1 as libc::c_int as libc::c_long
         {
-            return 1 as libc::c_int
+            return 1 as libc::c_int;
         } else {
-            return 2 as libc::c_int
+            return 2 as libc::c_int;
         }
     }
     number_to_move = (yy_c_buf_p.offset_from(gmltext) as libc::c_long
@@ -2487,20 +2534,19 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
         *fresh3 = *fresh2;
         i += 1;
     }
-    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status
-        == 2 as libc::c_int
+    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status == 2 as libc::c_int
     {
         yy_n_chars = 0 as libc::c_int;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     } else {
-        let mut num_to_read: libc::c_int = (**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_buf_size - number_to_move - 1 as libc::c_int;
+        let mut num_to_read: libc::c_int = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
+            .yy_buf_size
+            - number_to_move
+            - 1 as libc::c_int;
         while num_to_read <= 0 as libc::c_int {
-            let mut b: YY_BUFFER_STATE = *yy_buffer_stack
-                .offset(yy_buffer_stack_top as isize);
-            let mut yy_c_buf_p_offset: libc::c_int = yy_c_buf_p
-                .offset_from((*b).yy_ch_buf) as libc::c_long as libc::c_int;
+            let mut b: YY_BUFFER_STATE = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
+            let mut yy_c_buf_p_offset: libc::c_int =
+                yy_c_buf_p.offset_from((*b).yy_ch_buf) as libc::c_long as libc::c_int;
             if (*b).yy_is_our_buffer != 0 {
                 let mut new_size: libc::c_int = (*b).yy_buf_size * 2 as libc::c_int;
                 if new_size <= 0 as libc::c_int {
@@ -2523,10 +2569,11 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
                         as *const libc::c_char,
                 );
             }
-            yy_c_buf_p = &mut *((*b).yy_ch_buf).offset(yy_c_buf_p_offset as isize)
-                as *mut libc::c_char;
-            num_to_read = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                .yy_buf_size - number_to_move - 1 as libc::c_int;
+            yy_c_buf_p =
+                &mut *((*b).yy_ch_buf).offset(yy_c_buf_p_offset as isize) as *mut libc::c_char;
+            num_to_read = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
+                - number_to_move
+                - 1 as libc::c_int;
         }
         if num_to_read > 8192 as libc::c_int {
             num_to_read = 8192 as libc::c_int;
@@ -2540,9 +2587,7 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
             Ifile,
         ) as libc::c_int;
         if yy_n_chars < 0 as libc::c_int {
-            yy_fatal_error(
-                b"input in flex scanner failed\0" as *const u8 as *const libc::c_char,
-            );
+            yy_fatal_error(b"input in flex scanner failed\0" as *const u8 as *const libc::c_char);
         }
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -2552,8 +2597,8 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
             gmlrestart(gmlin);
         } else {
             ret_val = 2 as libc::c_int;
-            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                .yy_buffer_status = 2 as libc::c_int;
+            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status =
+                2 as libc::c_int;
         }
     } else {
         ret_val = 0 as libc::c_int;
@@ -2561,32 +2606,27 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
     if yy_n_chars + number_to_move
         > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
     {
-        let mut new_size_0: libc::c_int = yy_n_chars + number_to_move
-            + (yy_n_chars >> 1 as libc::c_int);
-        let ref mut fresh6 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf;
+        let mut new_size_0: libc::c_int =
+            yy_n_chars + number_to_move + (yy_n_chars >> 1 as libc::c_int);
+        let ref mut fresh6 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf;
         *fresh6 = gmlrealloc(
-            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf
-                as *mut libc::c_void,
+            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf as *mut libc::c_void,
             new_size_0 as yy_size_t,
         ) as *mut libc::c_char;
-        if ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).is_null()
-        {
+        if ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).is_null() {
             yy_fatal_error(
                 b"out of dynamic memory in yy_get_next_buffer()\0" as *const u8
                     as *const libc::c_char,
             );
         }
-        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_size = new_size_0 - 2 as libc::c_int;
+        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size =
+            new_size_0 - 2 as libc::c_int;
     }
     yy_n_chars += number_to_move;
     *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
         .offset(yy_n_chars as isize) = 0 as libc::c_int as libc::c_char;
     *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
-        .offset(
-            (yy_n_chars + 1 as libc::c_int) as isize,
-        ) = 0 as libc::c_int as libc::c_char;
+        .offset((yy_n_chars + 1 as libc::c_int) as isize) = 0 as libc::c_int as libc::c_char;
     gmltext = &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
         .offset(0 as libc::c_int as isize) as *mut libc::c_char;
     return ret_val;
@@ -2595,8 +2635,7 @@ unsafe extern "C" fn yy_get_previous_state() -> yy_state_type {
     let mut yy_current_state: yy_state_type = 0;
     let mut yy_cp: *mut libc::c_char = 0 as *mut libc::c_char;
     yy_current_state = yy_start;
-    yy_current_state
-        += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
+    yy_current_state += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
     yy_cp = gmltext.offset(0 as libc::c_int as isize);
     while yy_cp < yy_c_buf_p {
         let mut yy_c: YY_CHAR = (if *yy_cp as libc::c_int != 0 {
@@ -2608,23 +2647,24 @@ unsafe extern "C" fn yy_get_previous_state() -> yy_state_type {
             yy_last_accepting_state = yy_current_state;
             yy_last_accepting_cpos = yy_cp;
         }
-        while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-            + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+        while yy_chk
+            [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+            as libc::c_int
+            != yy_current_state
         {
             yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
             if yy_current_state >= 143 as libc::c_int {
                 yy_c = yy_meta[yy_c as usize];
             }
         }
-        yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
-            + yy_c as libc::c_int) as usize] as yy_state_type;
+        yy_current_state = yy_nxt
+            [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+            as yy_state_type;
         yy_cp = yy_cp.offset(1);
     }
     return yy_current_state;
 }
-unsafe extern "C" fn yy_try_NUL_trans(
-    mut yy_current_state: yy_state_type,
-) -> yy_state_type {
+unsafe extern "C" fn yy_try_NUL_trans(mut yy_current_state: yy_state_type) -> yy_state_type {
     let mut yy_is_jam: libc::c_int = 0;
     let mut yy_cp: *mut libc::c_char = yy_c_buf_p;
     let mut yy_c: YY_CHAR = 1 as libc::c_int as YY_CHAR;
@@ -2632,18 +2672,24 @@ unsafe extern "C" fn yy_try_NUL_trans(
         yy_last_accepting_state = yy_current_state;
         yy_last_accepting_cpos = yy_cp;
     }
-    while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-        + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+    while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+        as libc::c_int
+        != yy_current_state
     {
         yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
         if yy_current_state >= 143 as libc::c_int {
             yy_c = yy_meta[yy_c as usize];
         }
     }
-    yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
-        + yy_c as libc::c_int) as usize] as yy_state_type;
+    yy_current_state = yy_nxt
+        [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+        as yy_state_type;
     yy_is_jam = (yy_current_state == 142 as libc::c_int) as libc::c_int;
-    return if yy_is_jam != 0 { 0 as libc::c_int } else { yy_current_state };
+    return if yy_is_jam != 0 {
+        0 as libc::c_int
+    } else {
+        yy_current_state
+    };
 }
 unsafe extern "C" fn yyunput(mut c: libc::c_int, mut yy_bp: *mut libc::c_char) {
     let mut yy_cp: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -2654,29 +2700,22 @@ unsafe extern "C" fn yyunput(mut c: libc::c_int, mut yy_bp: *mut libc::c_char) {
             .offset(2 as libc::c_int as isize)
     {
         let mut number_to_move: libc::c_int = yy_n_chars + 2 as libc::c_int;
-        let mut dest: *mut libc::c_char = &mut *((**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf)
-            .offset(
+        let mut dest: *mut libc::c_char =
+            &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).offset(
                 ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
                     + 2 as libc::c_int) as isize,
             ) as *mut libc::c_char;
-        let mut source: *mut libc::c_char = &mut *((**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf)
-            .offset(number_to_move as isize) as *mut libc::c_char;
-        while source > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf
-        {
+        let mut source: *mut libc::c_char =
+            &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
+                .offset(number_to_move as isize) as *mut libc::c_char;
+        while source > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf {
             source = source.offset(-1);
             dest = dest.offset(-1);
             *dest = *source;
         }
-        yy_cp = yy_cp
-            .offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
-        yy_bp = yy_bp
-            .offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
-        yy_n_chars = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_size;
+        yy_cp = yy_cp.offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
+        yy_bp = yy_bp.offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
+        yy_n_chars = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
         if yy_cp
             < ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
@@ -2700,7 +2739,7 @@ pub unsafe extern "C" fn gmlrestart(mut input_file: *mut FILE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         gmlensure_buffer_stack();
         let ref mut fresh7 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
@@ -2732,11 +2771,10 @@ pub unsafe extern "C" fn gml_switch_to_buffer(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         *yy_c_buf_p = yy_hold_char;
-        let ref mut fresh8 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_pos;
+        let ref mut fresh8 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_pos;
         *fresh8 = yy_c_buf_p;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -2758,22 +2796,18 @@ pub unsafe extern "C" fn gml_create_buffer(
     mut size: libc::c_int,
 ) -> YY_BUFFER_STATE {
     let mut b: YY_BUFFER_STATE = 0 as *mut yy_buffer_state;
-    b = gmlalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong)
-        as YY_BUFFER_STATE;
+    b = gmlalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong) as YY_BUFFER_STATE;
     if b.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_create_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_create_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
     (*b).yy_buf_size = size;
     let ref mut fresh10 = (*b).yy_ch_buf;
-    *fresh10 = gmlalloc(((*b).yy_buf_size + 2 as libc::c_int) as yy_size_t)
-        as *mut libc::c_char;
+    *fresh10 = gmlalloc(((*b).yy_buf_size + 2 as libc::c_int) as yy_size_t) as *mut libc::c_char;
     if ((*b).yy_ch_buf).is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_create_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_create_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
     (*b).yy_is_our_buffer = 1 as libc::c_int;
@@ -2785,13 +2819,11 @@ pub unsafe extern "C" fn gml_delete_buffer(mut b: YY_BUFFER_STATE) {
     if b.is_null() {
         return;
     }
-    if b
-        == (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b == (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         let ref mut fresh11 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
         *fresh11 = 0 as YY_BUFFER_STATE;
     }
@@ -2806,18 +2838,15 @@ unsafe extern "C" fn gml_init_buffer(mut b: YY_BUFFER_STATE, mut file: *mut FILE
     let ref mut fresh12 = (*b).yy_input_file;
     *fresh12 = file;
     (*b).yy_fill_buffer = 1 as libc::c_int;
-    if b
-        != (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b != (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         (*b).yy_bs_lineno = 1 as libc::c_int;
         (*b).yy_bs_column = 0 as libc::c_int;
     }
-    (*b)
-        .yy_is_interactive = if !file.is_null() {
+    (*b).yy_is_interactive = if !file.is_null() {
         (isatty(fileno(file)) > 0 as libc::c_int) as libc::c_int
     } else {
         0 as libc::c_int
@@ -2830,22 +2859,17 @@ pub unsafe extern "C" fn gml_flush_buffer(mut b: YY_BUFFER_STATE) {
         return;
     }
     (*b).yy_n_chars = 0 as libc::c_int;
-    *((*b).yy_ch_buf)
-        .offset(0 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
-    *((*b).yy_ch_buf)
-        .offset(1 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
+    *((*b).yy_ch_buf).offset(0 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
+    *((*b).yy_ch_buf).offset(1 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
     let ref mut fresh13 = (*b).yy_buf_pos;
-    *fresh13 = &mut *((*b).yy_ch_buf).offset(0 as libc::c_int as isize)
-        as *mut libc::c_char;
+    *fresh13 = &mut *((*b).yy_ch_buf).offset(0 as libc::c_int as isize) as *mut libc::c_char;
     (*b).yy_at_bol = 1 as libc::c_int;
     (*b).yy_buffer_status = 0 as libc::c_int;
-    if b
-        == (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b == (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         gml_load_buffer_state();
     }
 }
@@ -2860,11 +2884,10 @@ pub unsafe extern "C" fn gmlpush_buffer_state(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         *yy_c_buf_p = yy_hold_char;
-        let ref mut fresh14 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_pos;
+        let ref mut fresh14 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_pos;
         *fresh14 = yy_c_buf_p;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -2873,7 +2896,7 @@ pub unsafe extern "C" fn gmlpush_buffer_state(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         yy_buffer_stack_top = yy_buffer_stack_top.wrapping_add(1);
     }
@@ -2889,17 +2912,15 @@ pub unsafe extern "C" fn gmlpop_buffer_state() {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         return;
     }
-    gml_delete_buffer(
-        if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        },
-    );
+    gml_delete_buffer(if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    });
     let ref mut fresh16 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
     *fresh16 = 0 as YY_BUFFER_STATE;
     if yy_buffer_stack_top > 0 as libc::c_int as libc::c_ulong {
@@ -2910,7 +2931,7 @@ pub unsafe extern "C" fn gmlpop_buffer_state() {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         gml_load_buffer_state();
         yy_did_buffer_switch_on_eof = 1 as libc::c_int;
@@ -2922,9 +2943,7 @@ unsafe extern "C" fn gmlensure_buffer_stack() {
         num_to_alloc = 1 as libc::c_int as yy_size_t;
         yy_buffer_stack = gmlalloc(
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         ) as *mut *mut yy_buffer_state;
         if yy_buffer_stack.is_null() {
             yy_fatal_error(
@@ -2936,25 +2955,19 @@ unsafe extern "C" fn gmlensure_buffer_stack() {
             yy_buffer_stack as *mut libc::c_void,
             0 as libc::c_int,
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         );
         yy_buffer_stack_max = num_to_alloc;
         yy_buffer_stack_top = 0 as libc::c_int as size_t;
         return;
     }
-    if yy_buffer_stack_top
-        >= yy_buffer_stack_max.wrapping_sub(1 as libc::c_int as libc::c_ulong)
-    {
+    if yy_buffer_stack_top >= yy_buffer_stack_max.wrapping_sub(1 as libc::c_int as libc::c_ulong) {
         let mut grow_size: yy_size_t = 8 as libc::c_int as yy_size_t;
         num_to_alloc = yy_buffer_stack_max.wrapping_add(grow_size);
         yy_buffer_stack = gmlrealloc(
             yy_buffer_stack as *mut libc::c_void,
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         ) as *mut *mut yy_buffer_state;
         if yy_buffer_stack.is_null() {
             yy_fatal_error(
@@ -2965,10 +2978,7 @@ unsafe extern "C" fn gmlensure_buffer_stack() {
         memset(
             yy_buffer_stack.offset(yy_buffer_stack_max as isize) as *mut libc::c_void,
             0 as libc::c_int,
-            grow_size
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+            grow_size.wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         );
         yy_buffer_stack_max = num_to_alloc;
     }
@@ -2981,23 +2991,21 @@ pub unsafe extern "C" fn gml_scan_buffer(
     let mut b: YY_BUFFER_STATE = 0 as *mut yy_buffer_state;
     if size < 2 as libc::c_int as libc::c_ulong
         || *base.offset(size.wrapping_sub(2 as libc::c_int as libc::c_ulong) as isize)
-            as libc::c_int != 0 as libc::c_int
+            as libc::c_int
+            != 0 as libc::c_int
         || *base.offset(size.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize)
-            as libc::c_int != 0 as libc::c_int
+            as libc::c_int
+            != 0 as libc::c_int
     {
         return 0 as YY_BUFFER_STATE;
     }
-    b = gmlalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong)
-        as YY_BUFFER_STATE;
+    b = gmlalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong) as YY_BUFFER_STATE;
     if b.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_scan_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_scan_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
-    (*b)
-        .yy_buf_size = size.wrapping_sub(2 as libc::c_int as libc::c_ulong)
-        as libc::c_int;
+    (*b).yy_buf_size = size.wrapping_sub(2 as libc::c_int as libc::c_ulong) as libc::c_int;
     let ref mut fresh17 = (*b).yy_ch_buf;
     *fresh17 = base;
     let ref mut fresh18 = (*b).yy_buf_pos;
@@ -3014,9 +3022,7 @@ pub unsafe extern "C" fn gml_scan_buffer(
     return b;
 }
 #[no_mangle]
-pub unsafe extern "C" fn gml_scan_string(
-    mut yystr: *const libc::c_char,
-) -> YY_BUFFER_STATE {
+pub unsafe extern "C" fn gml_scan_string(mut yystr: *const libc::c_char) -> YY_BUFFER_STATE {
     return gml_scan_bytes(yystr, strlen(yystr) as libc::c_int);
 }
 #[no_mangle]
@@ -3032,8 +3038,7 @@ pub unsafe extern "C" fn gml_scan_bytes(
     buf = gmlalloc(n) as *mut libc::c_char;
     if buf.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_scan_bytes()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_scan_bytes()\0" as *const u8 as *const libc::c_char,
         );
     }
     i = 0 as libc::c_int;
@@ -3046,9 +3051,7 @@ pub unsafe extern "C" fn gml_scan_bytes(
     *buf.offset(_yybytes_len as isize) = *fresh20;
     b = gml_scan_buffer(buf, n);
     if b.is_null() {
-        yy_fatal_error(
-            b"bad buffer in yy_scan_bytes()\0" as *const u8 as *const libc::c_char,
-        );
+        yy_fatal_error(b"bad buffer in yy_scan_bytes()\0" as *const u8 as *const libc::c_char);
     }
     (*b).yy_is_our_buffer = 1 as libc::c_int;
     return b;
@@ -3115,15 +3118,13 @@ pub unsafe extern "C" fn gmllex_destroy() -> libc::c_int {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
-        gml_delete_buffer(
-            if !yy_buffer_stack.is_null() {
-                *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-            } else {
-                0 as YY_BUFFER_STATE
-            },
-        );
+        gml_delete_buffer(if !yy_buffer_stack.is_null() {
+            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+        } else {
+            0 as YY_BUFFER_STATE
+        });
         let ref mut fresh21 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
         *fresh21 = 0 as YY_BUFFER_STATE;
         gmlpop_buffer_state();

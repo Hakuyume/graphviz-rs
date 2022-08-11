@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -10,12 +18,7 @@ extern "C" {
         _: libc::c_int,
     ) -> libc::c_int;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
-    fn quicksort_place(
-        _: *mut libc::c_double,
-        _: *mut libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-    );
+    fn quicksort_place(_: *mut libc::c_double, _: *mut libc::c_int, _: libc::c_int, _: libc::c_int);
 }
 pub type size_t = libc::c_ulong;
 #[derive(Copy, Clone)]
@@ -90,21 +93,16 @@ pub unsafe extern "C" fn compute_hierarchy(
             if use_given_levels != 0 {
                 i = 0 as libc::c_int;
                 while i < n {
-                    *y
-                        .offset(
-                            i as isize,
-                        ) = *given_levels.offset(i as isize) as libc::c_double;
+                    *y.offset(i as isize) = *given_levels.offset(i as isize) as libc::c_double;
                     *ordering.offset(i as isize) = i;
                     i += 1;
                 }
                 quicksort_place(y, ordering, 0 as libc::c_int, n - 1 as libc::c_int);
             }
-            hierarchy_span = *y
-                .offset(*ordering.offset((n - 1 as libc::c_int) as isize) as isize)
+            hierarchy_span = *y.offset(*ordering.offset((n - 1 as libc::c_int) as isize) as isize)
                 - *y.offset(*ordering.offset(0 as libc::c_int as isize) as isize);
             tol = if abs_tol
-                > relative_tol * hierarchy_span
-                    / (n - 1 as libc::c_int) as libc::c_double
+                > relative_tol * hierarchy_span / (n - 1 as libc::c_int) as libc::c_double
             {
                 abs_tol
             } else {
@@ -114,10 +112,8 @@ pub unsafe extern "C" fn compute_hierarchy(
             i = 1 as libc::c_int;
             while i < n {
                 if *y.offset(*ordering.offset(i as isize) as isize)
-                    - *y
-                        .offset(
-                            *ordering.offset((i - 1 as libc::c_int) as isize) as isize,
-                        ) > tol
+                    - *y.offset(*ordering.offset((i - 1 as libc::c_int) as isize) as isize)
+                    > tol
                 {
                     num_levels += 1;
                 }
@@ -141,10 +137,8 @@ pub unsafe extern "C" fn compute_hierarchy(
                 i = 1 as libc::c_int;
                 while i < n {
                     if *y.offset(*ordering.offset(i as isize) as isize)
-                        - *y
-                            .offset(
-                                *ordering.offset((i - 1 as libc::c_int) as isize) as isize,
-                            ) > tol
+                        - *y.offset(*ordering.offset((i - 1 as libc::c_int) as isize) as isize)
+                        > tol
                     {
                         let fresh0 = count;
                         count = count + 1;

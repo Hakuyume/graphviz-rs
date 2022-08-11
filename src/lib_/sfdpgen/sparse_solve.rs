@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -11,11 +19,7 @@ extern "C" {
         __line: libc::c_uint,
         __function: *const libc::c_char,
     ) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn sqrt(_: libc::c_double) -> libc::c_double;
     fn fabs(_: libc::c_double) -> libc::c_double;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
@@ -118,7 +122,7 @@ pub const SOLVE_METHOD_CG: C2RustUnnamed_0 = 0;
 #[repr(C)]
 pub struct Operator_struct {
     pub data: *mut libc::c_void,
-    pub Operator_apply: Option::<
+    pub Operator_apply: Option<
         unsafe extern "C" fn(
             Operator,
             *mut libc::c_double,
@@ -138,8 +142,7 @@ unsafe extern "C" fn Operator_uniform_stress_matmul_apply(
     mut x: *mut libc::c_double,
     mut y: *mut libc::c_double,
 ) -> *mut libc::c_double {
-    let mut d: *mut uniform_stress_matmul_data = (*o).data
-        as *mut uniform_stress_matmul_data;
+    let mut d: *mut uniform_stress_matmul_data = (*o).data as *mut uniform_stress_matmul_data;
     let mut A: SparseMatrix = (*d).A;
     let mut alpha: libc::c_double = (*d).alpha;
     let mut xsum: libc::c_double = 0.0f64;
@@ -153,8 +156,7 @@ unsafe extern "C" fn Operator_uniform_stress_matmul_apply(
     }
     i = 0 as libc::c_int;
     while i < m {
-        *y.offset(i as isize)
-            += alpha * (m as libc::c_double * *x.offset(i as isize) - xsum);
+        *y.offset(i as isize) += alpha * (m as libc::c_double * *x.offset(i as isize) - xsum);
         i += 1;
     }
     return y;
@@ -196,8 +198,7 @@ unsafe extern "C" fn Operator_matmul_apply(
 }
 unsafe extern "C" fn Operator_matmul_new(mut A: SparseMatrix) -> Operator {
     let mut o: Operator = 0 as *mut Operator_struct;
-    o = gmalloc(::std::mem::size_of::<Operator_struct>() as libc::c_ulong)
-        as *mut Operator_struct;
+    o = gmalloc(::std::mem::size_of::<Operator_struct>() as libc::c_ulong) as *mut Operator_struct;
     let ref mut fresh3 = (*o).data;
     *fresh3 = A as *mut libc::c_void;
     let ref mut fresh4 = (*o).Operator_apply;
@@ -244,32 +245,28 @@ pub unsafe extern "C" fn Operator_uniform_stress_diag_precon_new(
     let mut ia: *mut libc::c_int = (*A).ia;
     let mut ja: *mut libc::c_int = (*A).ja;
     let mut a: *mut libc::c_double = (*A).a as *mut libc::c_double;
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
             98 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 71],
-                &[libc::c_char; 71],
-            >(
+            (*::std::mem::transmute::<&[u8; 71], &[libc::c_char; 71]>(
                 b"Operator Operator_uniform_stress_diag_precon_new(SparseMatrix, double)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if !a.is_null() {} else {
+    if !a.is_null() {
+    } else {
         __assert_fail(
             b"a\0" as *const u8 as *const libc::c_char,
             b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
             100 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 71],
-                &[libc::c_char; 71],
-            >(
+            (*::std::mem::transmute::<&[u8; 71], &[libc::c_char; 71]>(
                 b"Operator Operator_uniform_stress_diag_precon_new(SparseMatrix, double)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     o = gmalloc(::std::mem::size_of::<Operator_struct>() as libc::c_ulong) as Operator;
@@ -289,12 +286,8 @@ pub unsafe extern "C" fn Operator_uniform_stress_diag_precon_new(
             if i == *ja.offset(j as isize)
                 && fabs(*a.offset(j as isize)) > 0 as libc::c_int as libc::c_double
             {
-                *diag
-                    .offset(
-                        i as isize,
-                    ) = 1.0f64
-                    / ((m - 1 as libc::c_int) as libc::c_double * alpha
-                        + *a.offset(j as isize));
+                *diag.offset(i as isize) = 1.0f64
+                    / ((m - 1 as libc::c_int) as libc::c_double * alpha + *a.offset(j as isize));
             }
             j += 1;
         }
@@ -320,28 +313,28 @@ unsafe extern "C" fn Operator_diag_precon_new(mut A: SparseMatrix) -> Operator {
     let mut ia: *mut libc::c_int = (*A).ia;
     let mut ja: *mut libc::c_int = (*A).ja;
     let mut a: *mut libc::c_double = (*A).a as *mut libc::c_double;
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
             127 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 48],
-                &[libc::c_char; 48],
-            >(b"Operator Operator_diag_precon_new(SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 48], &[libc::c_char; 48]>(
+                b"Operator Operator_diag_precon_new(SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !a.is_null() {} else {
+    if !a.is_null() {
+    } else {
         __assert_fail(
             b"a\0" as *const u8 as *const libc::c_char,
             b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
             129 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 48],
-                &[libc::c_char; 48],
-            >(b"Operator Operator_diag_precon_new(SparseMatrix)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 48], &[libc::c_char; 48]>(
+                b"Operator Operator_diag_precon_new(SparseMatrix)\0",
+            ))
+            .as_ptr(),
         );
     }
     o = gcalloc(
@@ -404,14 +397,14 @@ unsafe extern "C" fn conjugate_gradient(
     let mut rho_old: libc::c_double = 1 as libc::c_int as libc::c_double;
     let mut res0: libc::c_double = 0.;
     let mut beta: libc::c_double = 0.;
-    let mut Ax: Option::<
+    let mut Ax: Option<
         unsafe extern "C" fn(
             Operator,
             *mut libc::c_double,
             *mut libc::c_double,
         ) -> *mut libc::c_double,
     > = (*A).Operator_apply;
-    let mut Minvx: Option::<
+    let mut Minvx: Option<
         unsafe extern "C" fn(
             Operator,
             *mut libc::c_double,
@@ -419,14 +412,22 @@ unsafe extern "C" fn conjugate_gradient(
         ) -> *mut libc::c_double,
     > = (*precon).Operator_apply;
     let mut iter: libc::c_int = 0 as libc::c_int;
-    z = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    r = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    p = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    q = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    z = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    r = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    p = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    q = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     r = Ax.expect("non-null function pointer")(A, x, r);
     r = vector_subtract_to(n, rhs, r);
     res = sqrt(vector_product(n, r, r)) / n as libc::c_double;
@@ -479,10 +480,14 @@ pub unsafe extern "C" fn cg(
     let mut res: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut k: libc::c_int = 0;
     let mut i: libc::c_int = 0;
-    x = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    b = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    x = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    b = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     k = 0 as libc::c_int;
     while k < dim {
         i = 0 as libc::c_int;
@@ -525,27 +530,24 @@ unsafe extern "C" fn jacobi(
     let mut ja: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut iter: libc::c_int = 0;
     x = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     y = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     b = gmalloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
             247 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 66],
-                &[libc::c_char; 66],
-            >(b"double *jacobi(SparseMatrix, int, double *, double *, int, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 66], &[libc::c_char; 66]>(
+                b"double *jacobi(SparseMatrix, int, double *, double *, int, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     ia = (*A).ia;
@@ -568,9 +570,7 @@ unsafe extern "C" fn jacobi(
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if *ja.offset(j as isize) != i {
-                        sum
-                            += *a.offset(j as isize)
-                                * *x.offset(*ja.offset(j as isize) as isize);
+                        sum += *a.offset(j as isize) * *x.offset(*ja.offset(j as isize) as isize);
                     } else {
                         diag = *a.offset(j as isize);
                     }
@@ -580,22 +580,19 @@ unsafe extern "C" fn jacobi(
                     fprintf(
                         stderr,
                         b"neighb=%d\n\0" as *const u8 as *const libc::c_char,
-                        *ia.offset((i + 1 as libc::c_int) as isize)
-                            - *ia.offset(i as isize),
+                        *ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize),
                     );
                 }
-                if diag != 0 as libc::c_int as libc::c_double {} else {
+                if diag != 0 as libc::c_int as libc::c_double {
+                } else {
                     __assert_fail(
                         b"diag != 0\0" as *const u8 as *const libc::c_char,
                         b"sparse_solve.c\0" as *const u8 as *const libc::c_char,
                         269 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 66],
-                            &[libc::c_char; 66],
-                        >(
+                        (*::std::mem::transmute::<&[u8; 66], &[libc::c_char; 66]>(
                             b"double *jacobi(SparseMatrix, int, double *, double *, int, int *)\0",
                         ))
-                            .as_ptr(),
+                        .as_ptr(),
                     );
                 }
                 *y.offset(i as isize) = (*b.offset(i as isize) - sum) / diag;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 #[no_mangle]
@@ -42935,8 +42943,7 @@ pub static mut lab_gamut_data: [libc::c_schar; 42928] = [
 #[no_mangle]
 pub static mut lab_gamut_data_size: libc::c_int = 0;
 unsafe extern "C" fn run_static_initializers() {
-    lab_gamut_data_size = (::std::mem::size_of::<[libc::c_schar; 42928]>()
-        as libc::c_ulong)
+    lab_gamut_data_size = (::std::mem::size_of::<[libc::c_schar; 42928]>() as libc::c_ulong)
         .wrapping_div(::std::mem::size_of::<libc::c_schar>() as libc::c_ulong)
         as libc::c_int;
 }

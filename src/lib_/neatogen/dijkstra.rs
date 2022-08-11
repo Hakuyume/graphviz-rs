@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -16,11 +24,7 @@ extern "C" {
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn bfs_bounded(
         _: libc::c_int,
@@ -133,28 +137,28 @@ unsafe extern "C" fn bitarray_new(
     mut self_0: *mut bitarray_t,
     mut size_bits: size_t,
 ) -> libc::c_int {
-    if !self_0.is_null() {} else {
+    if !self_0.is_null() {
+    } else {
         __assert_fail(
             b"self != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/bitarray.h\0" as *const u8 as *const libc::c_char,
             49 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"int bitarray_new(bitarray_t *, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"int bitarray_new(bitarray_t *, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*self_0).size_bits == 0 as libc::c_int as libc::c_ulong {} else {
+    if (*self_0).size_bits == 0 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"self->size_bits == 0\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/bitarray.h\0" as *const u8 as *const libc::c_char,
             50 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"int bitarray_new(bitarray_t *, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"int bitarray_new(bitarray_t *, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if size_bits
@@ -178,13 +182,9 @@ unsafe extern "C" fn bitarray_new(
                     1 as libc::c_int
                 }) as libc::c_ulong,
             );
-        let mut base: *mut uint8_t = calloc(
-            capacity,
-            ::std::mem::size_of::<uint8_t>() as libc::c_ulong,
-        ) as *mut uint8_t;
-        if (base == 0 as *mut libc::c_void as *mut uint8_t) as libc::c_int
-            as libc::c_long != 0
-        {
+        let mut base: *mut uint8_t =
+            calloc(capacity, ::std::mem::size_of::<uint8_t>() as libc::c_ulong) as *mut uint8_t;
+        if (base == 0 as *mut libc::c_void as *mut uint8_t) as libc::c_int as libc::c_long != 0 {
             return 12 as libc::c_int;
         }
         let ref mut fresh0 = (*self_0).c2rust_unnamed.base;
@@ -206,7 +206,10 @@ unsafe extern "C" fn bitarray_new_or_exit(mut size_bits: size_t) -> bitarray_t {
     );
     let mut error: libc::c_int = bitarray_new(&mut ba, size_bits);
     if (error != 0 as libc::c_int) as libc::c_int as libc::c_long != 0 {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         exit(1 as libc::c_int);
     }
     return ba;
@@ -215,17 +218,17 @@ unsafe extern "C" fn bitarray_new_or_exit(mut size_bits: size_t) -> bitarray_t {
 unsafe extern "C" fn bitarray_get(mut self_0: bitarray_t, mut index: size_t) -> bool {
     if index < self_0.size_bits
         && !(b"out of bounds access\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"index < self.size_bits && \"out of bounds access\"\0" as *const u8
                 as *const libc::c_char,
             b"../../lib/cgraph/bitarray.h\0" as *const u8 as *const libc::c_char,
             88 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"_Bool bitarray_get(bitarray_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"_Bool bitarray_get(bitarray_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut base: *const uint8_t = 0 as *const uint8_t;
@@ -238,28 +241,26 @@ unsafe extern "C" fn bitarray_get(mut self_0: bitarray_t, mut index: size_t) -> 
         base = self_0.c2rust_unnamed.base;
     }
     return *base.offset(index.wrapping_div(8 as libc::c_int as libc::c_ulong) as isize)
-        as libc::c_int >> index.wrapping_rem(8 as libc::c_int as libc::c_ulong)
-        & 1 as libc::c_int != 0;
+        as libc::c_int
+        >> index.wrapping_rem(8 as libc::c_int as libc::c_ulong)
+        & 1 as libc::c_int
+        != 0;
 }
 #[inline]
-unsafe extern "C" fn bitarray_set(
-    mut self_0: *mut bitarray_t,
-    mut index: size_t,
-    mut value: bool,
-) {
+unsafe extern "C" fn bitarray_set(mut self_0: *mut bitarray_t, mut index: size_t, mut value: bool) {
     if index < (*self_0).size_bits
         && !(b"out of bounds access\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"index < self->size_bits && \"out of bounds access\"\0" as *const u8
                 as *const libc::c_char,
             b"../../lib/cgraph/bitarray.h\0" as *const u8 as *const libc::c_char,
             103 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"void bitarray_set(bitarray_t *, size_t, _Bool)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"void bitarray_set(bitarray_t *, size_t, _Bool)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut base: *mut uint8_t = 0 as *mut uint8_t;
@@ -272,33 +273,31 @@ unsafe extern "C" fn bitarray_set(
         base = (*self_0).c2rust_unnamed.base;
     }
     if value {
-        let ref mut fresh1 = *base
-            .offset(index.wrapping_div(8 as libc::c_int as libc::c_ulong) as isize);
+        let ref mut fresh1 =
+            *base.offset(index.wrapping_div(8 as libc::c_int as libc::c_ulong) as isize);
         *fresh1 = (*fresh1 as libc::c_int
-            | ((1 as libc::c_int)
-                << index.wrapping_rem(8 as libc::c_int as libc::c_ulong)) as uint8_t
-                as libc::c_int) as uint8_t;
+            | ((1 as libc::c_int) << index.wrapping_rem(8 as libc::c_int as libc::c_ulong))
+                as uint8_t as libc::c_int) as uint8_t;
     } else {
-        let ref mut fresh2 = *base
-            .offset(index.wrapping_div(8 as libc::c_int as libc::c_ulong) as isize);
+        let ref mut fresh2 =
+            *base.offset(index.wrapping_div(8 as libc::c_int as libc::c_ulong) as isize);
         *fresh2 = (*fresh2 as libc::c_int
-            & !((1 as libc::c_int)
-                << index.wrapping_rem(8 as libc::c_int as libc::c_ulong)) as uint8_t
-                as libc::c_int) as uint8_t;
+            & !((1 as libc::c_int) << index.wrapping_rem(8 as libc::c_int as libc::c_ulong))
+                as uint8_t as libc::c_int) as uint8_t;
     };
 }
 #[inline]
 unsafe extern "C" fn bitarray_reset(mut self_0: *mut bitarray_t) {
-    if !self_0.is_null() {} else {
+    if !self_0.is_null() {
+    } else {
         __assert_fail(
             b"self != NULL\0" as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/bitarray.h\0" as *const u8 as *const libc::c_char,
             122 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 34],
-                &[libc::c_char; 34],
-            >(b"void bitarray_reset(bitarray_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 34], &[libc::c_char; 34]>(
+                b"void bitarray_reset(bitarray_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*self_0).size_bits
@@ -349,7 +348,7 @@ unsafe extern "C" fn heapify(
         *index.offset(*((*h).data).offset(largest as isize) as isize) = largest;
         *index.offset(*((*h).data).offset(i as isize) as isize) = i;
         i = largest;
-    };
+    }
 }
 unsafe extern "C" fn freeHeap(mut h: *mut heap) {
     free((*h).data as *mut libc::c_void);
@@ -401,14 +400,9 @@ unsafe extern "C" fn extractMax(
         return 0 as libc::c_int != 0;
     }
     *max = *((*h).data).offset(0 as libc::c_int as isize);
-    *((*h).data)
-        .offset(
-            0 as libc::c_int as isize,
-        ) = *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
-    *index
-        .offset(
-            *((*h).data).offset(0 as libc::c_int as isize) as isize,
-        ) = 0 as libc::c_int;
+    *((*h).data).offset(0 as libc::c_int as isize) =
+        *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
+    *index.offset(*((*h).data).offset(0 as libc::c_int as isize) as isize) = 0 as libc::c_int;
     let ref mut fresh5 = (*h).heapSize;
     *fresh5 -= 1;
     heapify(h, 0 as libc::c_int, index, dist);
@@ -430,11 +424,9 @@ unsafe extern "C" fn increaseKey(
     *dist.offset(increasedVertex as isize) = newDist;
     i = placeInHeap;
     while i > 0 as libc::c_int
-        && *dist.offset(*((*h).data).offset((i / 2 as libc::c_int) as isize) as isize)
-            > newDist
+        && *dist.offset(*((*h).data).offset((i / 2 as libc::c_int) as isize) as isize) > newDist
     {
-        *((*h).data)
-            .offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
+        *((*h).data).offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
         *index.offset(*((*h).data).offset(i as isize) as isize) = i;
         i = i / 2 as libc::c_int;
     }
@@ -469,10 +461,8 @@ pub unsafe extern "C" fn dijkstra(
     *dist.offset(vertex as isize) = 0 as libc::c_int;
     i = 1 as libc::c_int;
     while i < (*graph.offset(vertex as isize)).nedges {
-        *dist
-            .offset(
-                *((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize,
-            ) = *((*graph.offset(vertex as isize)).ewgts).offset(i as isize) as DistType;
+        *dist.offset(*((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize) =
+            *((*graph.offset(vertex as isize)).ewgts).offset(i as isize) as DistType;
         i += 1;
     }
     initHeap(&mut H, vertex, index, dist, n);
@@ -483,8 +473,7 @@ pub unsafe extern "C" fn dijkstra(
         }
         i = 1 as libc::c_int;
         while i < (*graph.offset(closestVertex as isize)).nedges {
-            neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                .offset(i as isize);
+            neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
             increaseKey(
                 &mut H,
                 neighbor,
@@ -539,15 +528,7 @@ pub unsafe extern "C" fn dijkstra_bounded(
         *dist.offset(i as isize) = -(1 as libc::c_int);
         i += 1;
     }
-    num_visited_nodes = bfs_bounded(
-        vertex,
-        graph,
-        n,
-        dist,
-        &mut Q,
-        bound,
-        visited_nodes,
-    );
+    num_visited_nodes = bfs_bounded(vertex, graph, n, dist, &mut Q, bound, visited_nodes);
     let mut node_in_neighborhood: bitarray_t = bitarray_new_or_exit(n as size_t);
     i = 0 as libc::c_int;
     while i < num_visited_nodes {
@@ -570,10 +551,8 @@ pub unsafe extern "C" fn dijkstra_bounded(
     *dist.offset(vertex as isize) = 0 as libc::c_int;
     i = 1 as libc::c_int;
     while i < (*graph.offset(vertex as isize)).nedges {
-        *dist
-            .offset(
-                *((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize,
-            ) = *((*graph.offset(vertex as isize)).ewgts).offset(i as isize) as DistType;
+        *dist.offset(*((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize) =
+            *((*graph.offset(vertex as isize)).ewgts).offset(i as isize) as DistType;
         i += 1;
     }
     initHeap(&mut H, vertex, index, dist, n);
@@ -589,8 +568,7 @@ pub unsafe extern "C" fn dijkstra_bounded(
         }
         i = 1 as libc::c_int;
         while i < (*graph.offset(closestVertex as isize)).nedges {
-            neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                .offset(i as isize);
+            neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
             increaseKey(
                 &mut H,
                 neighbor,
@@ -645,7 +623,7 @@ unsafe extern "C" fn heapify_f(
         *index.offset(*((*h).data).offset(largest as isize) as isize) = largest;
         *index.offset(*((*h).data).offset(i as isize) as isize) = i;
         i = largest;
-    };
+    }
 }
 unsafe extern "C" fn initHeap_f(
     mut h: *mut heap,
@@ -689,14 +667,9 @@ unsafe extern "C" fn extractMax_f(
         return 0 as libc::c_int != 0;
     }
     *max = *((*h).data).offset(0 as libc::c_int as isize);
-    *((*h).data)
-        .offset(
-            0 as libc::c_int as isize,
-        ) = *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
-    *index
-        .offset(
-            *((*h).data).offset(0 as libc::c_int as isize) as isize,
-        ) = 0 as libc::c_int;
+    *((*h).data).offset(0 as libc::c_int as isize) =
+        *((*h).data).offset(((*h).heapSize - 1 as libc::c_int) as isize);
+    *index.offset(*((*h).data).offset(0 as libc::c_int as isize) as isize) = 0 as libc::c_int;
     let ref mut fresh7 = (*h).heapSize;
     *fresh7 -= 1;
     heapify_f(h, 0 as libc::c_int, index, dist);
@@ -718,11 +691,9 @@ unsafe extern "C" fn increaseKey_f(
     *dist.offset(increasedVertex as isize) = newDist;
     i = placeInHeap;
     while i > 0 as libc::c_int
-        && *dist.offset(*((*h).data).offset((i / 2 as libc::c_int) as isize) as isize)
-            > newDist
+        && *dist.offset(*((*h).data).offset((i / 2 as libc::c_int) as isize) as isize) > newDist
     {
-        *((*h).data)
-            .offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
+        *((*h).data).offset(i as isize) = *((*h).data).offset((i / 2 as libc::c_int) as isize);
         *index.offset(*((*h).data).offset(i as isize) as isize) = i;
         i = i / 2 as libc::c_int;
     }
@@ -745,8 +716,10 @@ pub unsafe extern "C" fn dijkstra_f(
     let mut neighbor: libc::c_int = 0;
     let mut closestDist: libc::c_float = 0.;
     let mut index: *mut libc::c_int = 0 as *mut libc::c_int;
-    index = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    index = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
         *dist.offset(i as isize) = 3.40282347e+38f32;
@@ -755,10 +728,8 @@ pub unsafe extern "C" fn dijkstra_f(
     *dist.offset(vertex as isize) = 0 as libc::c_int as libc::c_float;
     i = 1 as libc::c_int;
     while i < (*graph.offset(vertex as isize)).nedges {
-        *dist
-            .offset(
-                *((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize,
-            ) = *((*graph.offset(vertex as isize)).ewgts).offset(i as isize);
+        *dist.offset(*((*graph.offset(vertex as isize)).edges).offset(i as isize) as isize) =
+            *((*graph.offset(vertex as isize)).ewgts).offset(i as isize);
         i += 1;
     }
     initHeap_f(&mut H, vertex, index, dist, n);
@@ -769,14 +740,11 @@ pub unsafe extern "C" fn dijkstra_f(
         }
         i = 1 as libc::c_int;
         while i < (*graph.offset(closestVertex as isize)).nedges {
-            neighbor = *((*graph.offset(closestVertex as isize)).edges)
-                .offset(i as isize);
+            neighbor = *((*graph.offset(closestVertex as isize)).edges).offset(i as isize);
             increaseKey_f(
                 &mut H,
                 neighbor,
-                closestDist
-                    + *((*graph.offset(closestVertex as isize)).ewgts)
-                        .offset(i as isize),
+                closestDist + *((*graph.offset(closestVertex as isize)).ewgts).offset(i as isize),
                 index,
                 dist,
             );
@@ -816,16 +784,16 @@ pub unsafe extern "C" fn dijkstra_sgd(
         *dists.offset(target as isize) = *((*graph).weights).offset(i_0 as isize);
         i_0 = i_0.wrapping_add(1);
     }
-    if (*graph).n <= 2147483647 as libc::c_int as libc::c_ulong {} else {
+    if (*graph).n <= 2147483647 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"graph->n <= INT_MAX\0" as *const u8 as *const libc::c_char,
             b"dijkstra.c\0" as *const u8 as *const libc::c_char,
             372 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"int dijkstra_sgd(graph_sgd *, int, term_sgd *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"int dijkstra_sgd(graph_sgd *, int, term_sgd *)\0",
+            ))
+            .as_ptr(),
         );
     }
     initHeap_f(&mut h, source, indices, dists, (*graph).n as libc::c_int);
@@ -836,30 +804,28 @@ pub unsafe extern "C" fn dijkstra_sgd(
         if d == 3.40282347e+38f32 {
             break;
         }
-        if bitarray_get((*graph).pinneds, closest as size_t) as libc::c_int != 0
-            || closest < source
+        if bitarray_get((*graph).pinneds, closest as size_t) as libc::c_int != 0 || closest < source
         {
             (*terms.offset(offset as isize)).i = source;
             (*terms.offset(offset as isize)).j = closest;
             (*terms.offset(offset as isize)).d = d;
-            (*terms.offset(offset as isize))
-                .w = 1 as libc::c_int as libc::c_float / (d * d);
+            (*terms.offset(offset as isize)).w = 1 as libc::c_int as libc::c_float / (d * d);
             offset += 1;
         }
         let mut i_1: size_t = *((*graph).sources).offset(closest as isize);
         while i_1 < *((*graph).sources).offset((closest + 1 as libc::c_int) as isize) {
             let mut target_0: size_t = *((*graph).targets).offset(i_1 as isize);
             let mut weight: libc::c_float = *((*graph).weights).offset(i_1 as isize);
-            if target_0 <= 2147483647 as libc::c_int as size_t {} else {
+            if target_0 <= 2147483647 as libc::c_int as size_t {
+            } else {
                 __assert_fail(
                     b"target <= (size_t)INT_MAX\0" as *const u8 as *const libc::c_char,
                     b"dijkstra.c\0" as *const u8 as *const libc::c_char,
                     394 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 47],
-                        &[libc::c_char; 47],
-                    >(b"int dijkstra_sgd(graph_sgd *, int, term_sgd *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                        b"int dijkstra_sgd(graph_sgd *, int, term_sgd *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             increaseKey_f(&mut h, target_0 as libc::c_int, d + weight, indices, dists);

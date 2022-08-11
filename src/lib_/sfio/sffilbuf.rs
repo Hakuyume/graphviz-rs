@@ -1,18 +1,17 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
-    fn sfrd(
-        _: *mut Sfio_t,
-        _: *mut libc::c_void,
-        _: size_t,
-        _: *mut Sfdisc_t,
-    ) -> ssize_t;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn sfrd(_: *mut Sfio_t, _: *mut libc::c_void, _: size_t, _: *mut Sfdisc_t) -> ssize_t;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn _sfmode(_: *mut Sfio_t, _: libc::c_int, _: libc::c_int) -> libc::c_int;
 }
 pub type __ssize_t = libc::c_long;
@@ -84,15 +83,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -100,27 +94,13 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[no_mangle]
-pub unsafe extern "C" fn _sffilbuf(
-    mut f: *mut Sfio_t,
-    mut n: libc::c_int,
-) -> libc::c_int {
+pub unsafe extern "C" fn _sffilbuf(mut f: *mut Sfio_t, mut n: libc::c_int) -> libc::c_int {
     let mut r: ssize_t = 0;
     let mut first: libc::c_int = 0;
     let mut local: libc::c_int = 0;
@@ -132,23 +112,24 @@ pub unsafe extern "C" fn _sffilbuf(
     }
     local = ((*f).mode & 0o100000 as libc::c_uint) as libc::c_int;
     (*f).mode &= !(0o100000 as libc::c_uint);
-    rcrv = ((*f).mode
-        & (0o10 as libc::c_uint | 0o20 as libc::c_uint | 0o40 as libc::c_uint))
+    rcrv = ((*f).mode & (0o10 as libc::c_uint | 0o20 as libc::c_uint | 0o40 as libc::c_uint))
         as libc::c_int;
     rc = (*f).getr as libc::c_int;
     justseek = (*f).bits as libc::c_int & 0o40 as libc::c_int;
     let ref mut fresh0 = (*f).bits;
-    *fresh0 = (*fresh0 as libc::c_int
-        & !(0o40 as libc::c_int) as libc::c_ushort as libc::c_int) as libc::c_ushort;
+    *fresh0 = (*fresh0 as libc::c_int & !(0o40 as libc::c_int) as libc::c_ushort as libc::c_int)
+        as libc::c_ushort;
     first = 1 as libc::c_int;
     loop {
         if (*f).mode
-            & !(0o20 as libc::c_uint | 0o10 as libc::c_uint
+            & !(0o20 as libc::c_uint
+                | 0o10 as libc::c_uint
                 | (if local != 0 {
                     0o40 as libc::c_uint
                 } else {
                     0 as libc::c_int as libc::c_uint
-                })) != 0o1 as libc::c_int as libc::c_uint
+                }))
+            != 0o1 as libc::c_int as libc::c_uint
             && _sfmode(f, 0o1 as libc::c_int, local) < 0 as libc::c_int
         {
             return -(1 as libc::c_int);
@@ -182,8 +163,8 @@ pub unsafe extern "C" fn _sffilbuf(
                 *fresh4 = ((*f).data).offset(r as isize);
             }
         } else if (*f).flags as libc::c_int & 0o4 as libc::c_int == 0
-                && (*f).bits as libc::c_int & 0o1 as libc::c_int == 0
-            {
+            && (*f).bits as libc::c_int & 0o1 as libc::c_int == 0
+        {
             let ref mut fresh5 = (*f).endr;
             *fresh5 = (*f).data;
             let ref mut fresh6 = (*f).endb;
@@ -192,7 +173,11 @@ pub unsafe extern "C" fn _sffilbuf(
             *fresh7 = *fresh6;
         }
         if (*f).bits as libc::c_int & 0o1 as libc::c_int != 0 {
-            r = if n > 0 as libc::c_int { n as libc::c_long } else { (*f).size };
+            r = if n > 0 as libc::c_int {
+                n as libc::c_long
+            } else {
+                (*f).size
+            };
         } else if (*f).flags as libc::c_int & 0o4 as libc::c_int == 0 {
             r = (*f).size - ((*f).endb).offset_from((*f).data) as libc::c_long;
             if n > 0 as libc::c_int {
@@ -201,9 +186,10 @@ pub unsafe extern "C" fn _sffilbuf(
                     && (*f).flags as libc::c_int & 0o100 as libc::c_int != 0
                 {
                     r = n as ssize_t;
-                } else if justseek != 0 && n as size_t <= (*f).iosz
-                        && (*f).iosz <= (*f).size as libc::c_ulong
-                    {
+                } else if justseek != 0
+                    && n as size_t <= (*f).iosz
+                    && (*f).iosz <= (*f).size as libc::c_ulong
+                {
                     r = (*f).iosz as ssize_t;
                 }
             }
@@ -220,9 +206,9 @@ pub unsafe extern "C" fn _sffilbuf(
             (*f).mode &= !(0o40 as libc::c_uint);
         }
     }
-    if local != 0 {} else {
-        (*f).mode
-            &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
+    if local != 0 {
+    } else {
+        (*f).mode &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
         if (*f).mode == 0o1 as libc::c_int as libc::c_uint {
             let ref mut fresh8 = (*f).endr;
             *fresh8 = (*f).endb;

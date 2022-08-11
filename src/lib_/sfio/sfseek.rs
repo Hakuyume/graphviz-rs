@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -10,17 +18,8 @@ extern "C" {
         _: libc::c_int,
         _: *mut Sfdisc_t,
     ) -> libc::c_longlong;
-    fn sfrd(
-        _: *mut Sfio_t,
-        _: *mut libc::c_void,
-        _: size_t,
-        _: *mut Sfdisc_t,
-    ) -> ssize_t;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn sfrd(_: *mut Sfio_t, _: *mut libc::c_void, _: size_t, _: *mut Sfdisc_t) -> ssize_t;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     static mut _Sfextern: Sfextern_t;
     fn __errno_location() -> *mut libc::c_int;
     fn _sfmode(_: *mut Sfio_t, _: libc::c_int, _: libc::c_int) -> libc::c_int;
@@ -94,15 +93,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -110,40 +104,23 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 pub type Sfextern_t = _sfextern_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _sfextern_s {
     pub sf_page: ssize_t,
     pub sf_pool: _sfpool_s,
-    pub sf_pmove: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int,
-    >,
-    pub sf_stack: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t,
-    >,
-    pub sf_notify: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> (),
-    >,
-    pub sf_stdsync: Option::<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
+    pub sf_pmove: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int>,
+    pub sf_stack: Option<unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t>,
+    pub sf_notify: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> ()>,
+    pub sf_stdsync: Option<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
     pub sf_udisc: _sfdisc_s,
-    pub sf_cleanup: Option::<unsafe extern "C" fn() -> ()>,
+    pub sf_cleanup: Option<unsafe extern "C" fn() -> ()>,
     pub sf_exiting: libc::c_int,
     pub sf_done: libc::c_int,
 }
@@ -188,29 +165,28 @@ pub unsafe extern "C" fn sfseek(
     }
     local = ((*f).mode & 0o100000 as libc::c_uint) as libc::c_int;
     (*f).mode &= !(0o100000 as libc::c_uint);
-    hardseek = (type_0 | (*f).flags as libc::c_int)
-        & (0o100 as libc::c_int | 0o4000 as libc::c_int);
-    if hardseek != 0
-        && (*f).mode == 0o1 as libc::c_int as libc::c_uint | 0o4000 as libc::c_uint
-    {
+    hardseek =
+        (type_0 | (*f).flags as libc::c_int) & (0o100 as libc::c_int | 0o4000 as libc::c_int);
+    if hardseek != 0 && (*f).mode == 0o1 as libc::c_int as libc::c_uint | 0o4000 as libc::c_uint {
         newpos(f, (*f).here);
         (*f).mode = 0o1 as libc::c_int as libc::c_uint;
     }
-    mode = ((*f).mode & (0o1 as libc::c_int | 0o2 as libc::c_int) as libc::c_uint)
-        as libc::c_int;
+    mode = ((*f).mode & (0o1 as libc::c_int | 0o2 as libc::c_int) as libc::c_uint) as libc::c_int;
     if ((*f).mode
-        & !(0o20 as libc::c_uint | 0o10 as libc::c_uint
+        & !(0o20 as libc::c_uint
+            | 0o10 as libc::c_uint
             | (if local != 0 {
                 0o40 as libc::c_uint
             } else {
                 0 as libc::c_int as libc::c_uint
-            }))) as libc::c_int != mode
+            }))) as libc::c_int
+        != mode
     {
         let mut flags: libc::c_ushort = (*f).flags;
         if hardseek & 0o4000 as libc::c_int != 0 {
             let ref mut fresh5 = (*f).flags;
-            *fresh5 = (*fresh5 as libc::c_int
-                | (0o100 as libc::c_int | 0o4000 as libc::c_int)) as libc::c_ushort;
+            *fresh5 = (*fresh5 as libc::c_int | (0o100 as libc::c_int | 0o4000 as libc::c_int))
+                as libc::c_ushort;
         }
         mode = _sfmode(f, mode, local);
         if hardseek & 0o4000 as libc::c_int != 0 {
@@ -220,25 +196,30 @@ pub unsafe extern "C" fn sfseek(
             return -(1 as libc::c_int) as libc::c_longlong;
         }
     }
-    mustsync = (type_0 & 0o100 as libc::c_int != 0 && type_0 & 0o4000 as libc::c_int == 0
+    mustsync = (type_0 & 0o100 as libc::c_int != 0
+        && type_0 & 0o4000 as libc::c_int == 0
         && (*f).mode & 0o1 as libc::c_int as libc::c_uint != 0
         && (*f).flags as libc::c_int & 0o4 as libc::c_int == 0) as libc::c_int;
     type_0 &= 0 as libc::c_int | 1 as libc::c_int | 2 as libc::c_int;
-    if type_0 != 0 as libc::c_int && type_0 != 1 as libc::c_int
-        && type_0 != 2 as libc::c_int
-    {
+    if type_0 != 0 as libc::c_int && type_0 != 1 as libc::c_int && type_0 != 2 as libc::c_int {
         *__errno_location() = 22 as libc::c_int;
         return -(1 as libc::c_int) as libc::c_longlong;
     }
     if (*f).extent < 0 as libc::c_int as libc::c_longlong {
         (*f).mode |= 0o100000 as libc::c_uint;
-        sfsk(f, 0 as libc::c_int as libc::c_longlong, 1 as libc::c_int, (*f).disc);
+        sfsk(
+            f,
+            0 as libc::c_int as libc::c_longlong,
+            1 as libc::c_int,
+            (*f).disc,
+        );
         return -(1 as libc::c_int) as libc::c_longlong;
     }
     if (*f).disc == &mut _Sfextern.sf_udisc as *mut _sfdisc_s {
-        sfclose(
-            (_Sfextern.sf_stack).expect("non-null function pointer")(f, 0 as *mut Sfio_t),
-        );
+        sfclose((_Sfextern.sf_stack).expect("non-null function pointer")(
+            f,
+            0 as *mut Sfio_t,
+        ));
     }
     (*f).mode |= 0o40 as libc::c_uint;
     let ref mut fresh6 = (*f).endw;
@@ -247,15 +228,15 @@ pub unsafe extern "C" fn sfseek(
     *fresh7 = *fresh6;
     let ref mut fresh8 = (*f).flags;
     *fresh8 = (*fresh8 as libc::c_int
-        & !(0o200 as libc::c_int | 0o400 as libc::c_int) as libc::c_ushort
-            as libc::c_int) as libc::c_ushort;
+        & !(0o200 as libc::c_int | 0o400 as libc::c_int) as libc::c_ushort as libc::c_int)
+        as libc::c_ushort;
     loop {
         if !((*f).flags as libc::c_int & 0o4 as libc::c_int != 0) {
             current_block = 9859671972921157070;
             break;
         }
-        let mut s_0: libc::c_longlong = ((*f).next).offset_from((*f).data)
-            as libc::c_long as libc::c_longlong;
+        let mut s_0: libc::c_longlong =
+            ((*f).next).offset_from((*f).data) as libc::c_long as libc::c_longlong;
         if s_0 > (*f).here {
             (*f).here = s_0;
             if s_0 > (*f).extent {
@@ -263,16 +244,13 @@ pub unsafe extern "C" fn sfseek(
             }
         }
         if type_0 == 1 as libc::c_int {
-            r = p
-                + ((*f).next).offset_from((*f).data) as libc::c_long as libc::c_longlong;
+            r = p + ((*f).next).offset_from((*f).data) as libc::c_long as libc::c_longlong;
         } else if type_0 == 2 as libc::c_int {
             r = p + (*f).extent;
         } else {
             r = p;
         }
-        if r >= 0 as libc::c_int as libc::c_longlong
-            && r <= (*f).size as libc::c_longlong
-        {
+        if r >= 0 as libc::c_int as libc::c_longlong && r <= (*f).size as libc::c_longlong {
             p = r;
             let ref mut fresh9 = (*f).next;
             *fresh9 = ((*f).data).offset(p as isize);
@@ -305,12 +283,12 @@ pub unsafe extern "C" fn sfseek(
     match current_block {
         9859671972921157070 => {
             if (*f).mode & 0o2 as libc::c_int as libc::c_uint != 0 {
-                if hardseek == 0 && type_0 < 2 as libc::c_int
+                if hardseek == 0
+                    && type_0 < 2 as libc::c_int
                     && (*f).flags as libc::c_int & 0o10 as libc::c_int == 0
                 {
                     s = (*f).here
-                        + ((*f).next).offset_from((*f).data) as libc::c_long
-                            as libc::c_longlong;
+                        + ((*f).next).offset_from((*f).data) as libc::c_long as libc::c_longlong;
                     r = p
                         + (if type_0 == 0 as libc::c_int {
                             0 as libc::c_int as libc::c_longlong
@@ -329,12 +307,10 @@ pub unsafe extern "C" fn sfseek(
                 match current_block {
                     12782143740587617951 => {}
                     _ => {
-                        if (*f).next > (*f).data
-                            && {
-                                (*f).mode |= 0o100000 as libc::c_uint;
-                                sfsync(f) < 0 as libc::c_int
-                            }
-                        {
+                        if (*f).next > (*f).data && {
+                            (*f).mode |= 0o100000 as libc::c_uint;
+                            sfsync(f) < 0 as libc::c_int
+                        } {
                             p = -(1 as libc::c_int) as libc::c_longlong;
                             current_block = 12782143740587617951;
                         } else {
@@ -351,9 +327,7 @@ pub unsafe extern "C" fn sfseek(
                     if type_0 == 2 as libc::c_int
                         || (*f).mode & 0o2 as libc::c_int as libc::c_uint != 0
                     {
-                        if hardseek & 0o4000 as libc::c_int != 0
-                            || type_0 == 2 as libc::c_int
-                        {
+                        if hardseek & 0o4000 as libc::c_int != 0 || type_0 == 2 as libc::c_int {
                             (*f).mode |= 0o100000 as libc::c_uint;
                             p = sfsk(f, p, type_0, (*f).disc);
                         } else {
@@ -384,10 +358,9 @@ pub unsafe extern "C" fn sfseek(
                                 0 as libc::c_int as libc::c_longlong
                             });
                         if r <= (*f).here
-                            && r
-                                >= (*f).here
-                                    - ((*f).endb).offset_from((*f).data) as libc::c_long
-                                        as libc::c_longlong
+                            && r >= (*f).here
+                                - ((*f).endb).offset_from((*f).data) as libc::c_long
+                                    as libc::c_longlong
                         {
                             if hardseek != 0
                                 || type_0 == 1 as libc::c_int
@@ -437,12 +410,11 @@ pub unsafe extern "C" fn sfseek(
                         match current_block {
                             12782143740587617951 => {}
                             _ => {
-                                p
-                                    += (if type_0 == 1 as libc::c_int {
-                                        s
-                                    } else {
-                                        0 as libc::c_int as libc::c_longlong
-                                    });
+                                p += (if type_0 == 1 as libc::c_int {
+                                    s
+                                } else {
+                                    0 as libc::c_int as libc::c_longlong
+                                });
                                 if !(p < 0 as libc::c_int as libc::c_longlong) {
                                     b = ((*f).endb).offset_from((*f).data) as libc::c_long
                                         as size_t;
@@ -453,14 +425,16 @@ pub unsafe extern "C" fn sfseek(
                                             (*f).iosz = 1024 as libc::c_int as size_t;
                                         } else {
                                             c = (c as libc::c_ulong)
-                                                .wrapping_mul(2 as libc::c_int as libc::c_ulong) as size_t
+                                                .wrapping_mul(2 as libc::c_int as libc::c_ulong)
+                                                as size_t
                                                 as size_t;
-                                            a = c
-                                                .wrapping_add(
-                                                    (3 as libc::c_int as libc::c_ulong)
-                                                        .wrapping_mul(b.wrapping_sub(c))
-                                                        .wrapping_div(4 as libc::c_int as libc::c_ulong),
-                                                );
+                                            a = c.wrapping_add(
+                                                (3 as libc::c_int as libc::c_ulong)
+                                                    .wrapping_mul(b.wrapping_sub(c))
+                                                    .wrapping_div(
+                                                        4 as libc::c_int as libc::c_ulong,
+                                                    ),
+                                            );
                                             a = a
                                                 .wrapping_add(1024 as libc::c_int as libc::c_ulong)
                                                 .wrapping_sub(1 as libc::c_int as libc::c_ulong)
@@ -471,12 +445,11 @@ pub unsafe extern "C" fn sfseek(
                                                 .wrapping_sub(1 as libc::c_int as libc::c_ulong)
                                                 .wrapping_div(1024 as libc::c_int as libc::c_ulong)
                                                 .wrapping_mul(1024 as libc::c_int as libc::c_ulong);
-                                            (*f)
-                                                .iosz = if a < b {
+                                            (*f).iosz = if a < b {
                                                 a
-                                            } else if c
-                                                    < b.wrapping_div(2 as libc::c_int as libc::c_ulong)
-                                                {
+                                            } else if c < b
+                                                .wrapping_div(2 as libc::c_int as libc::c_ulong)
+                                            {
                                                 b.wrapping_div(2 as libc::c_int as libc::c_ulong)
                                             } else {
                                                 b
@@ -507,18 +480,17 @@ pub unsafe extern "C" fn sfseek(
                                                 || p < (*f).lpos - (*f).size as libc::c_longlong)
                                         {
                                             let ref mut fresh14 = (*f).bits;
-                                            *fresh14 = (*fresh14 as libc::c_int | 0o40 as libc::c_int)
+                                            *fresh14 = (*fresh14 as libc::c_int
+                                                | 0o40 as libc::c_int)
                                                 as libc::c_ushort;
                                         }
                                     }
-                                    if (hardseek != 0 || r != (*f).here)
-                                        && {
-                                            (*f).mode |= 0o100000 as libc::c_uint;
-                                            let ref mut fresh15 = (*f).here;
-                                            *fresh15 = sfsk(f, r, 0 as libc::c_int, (*f).disc);
-                                            *fresh15 != r
-                                        }
-                                    {
+                                    if (hardseek != 0 || r != (*f).here) && {
+                                        (*f).mode |= 0o100000 as libc::c_uint;
+                                        let ref mut fresh15 = (*f).here;
+                                        *fresh15 = sfsk(f, r, 0 as libc::c_int, (*f).disc);
+                                        *fresh15 != r
+                                    } {
                                         if r < p {
                                             (*f).mode |= 0o100000 as libc::c_uint;
                                             (*f).here = sfsk(f, p, 0 as libc::c_int, (*f).disc);
@@ -535,10 +507,9 @@ pub unsafe extern "C" fn sfseek(
                                             (*f).disc,
                                         );
                                         if p <= (*f).here
-                                            && p
-                                                >= (*f).here
-                                                    - ((*f).endb).offset_from((*f).data) as libc::c_long
-                                                        as libc::c_longlong
+                                            && p >= (*f).here
+                                                - ((*f).endb).offset_from((*f).data) as libc::c_long
+                                                    as libc::c_longlong
                                         {
                                             let ref mut fresh16 = (*f).next;
                                             *fresh16 = ((*f).endb)
@@ -570,9 +541,9 @@ pub unsafe extern "C" fn sfseek(
         (*f).here = 0 as libc::c_int as libc::c_longlong;
     }
     (*f).lpos = p;
-    if local != 0 {} else {
-        (*f).mode
-            &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
+    if local != 0 {
+    } else {
+        (*f).mode &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
         if (*f).mode == 0o1 as libc::c_int as libc::c_uint {
             let ref mut fresh20 = (*f).endr;
             *fresh20 = (*f).endb;

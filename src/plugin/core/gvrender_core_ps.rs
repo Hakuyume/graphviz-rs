@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -170,9 +178,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -186,25 +192,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -235,9 +234,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -269,32 +268,26 @@ pub type gvrender_engine_t = gvrender_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvrender_engine_s {
-    pub begin_job: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_job: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_graph: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_graph: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_layer: Option::<
-        unsafe extern "C" fn(
-            *mut GVJ_t,
-            *mut libc::c_char,
-            libc::c_int,
-            libc::c_int,
-        ) -> (),
-    >,
-    pub end_layer: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_page: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_page: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_cluster: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_cluster: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_nodes: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_nodes: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_edges: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_edges: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_node: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_node: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_edge: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub end_edge: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_anchor: Option::<
+    pub begin_job: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_job: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_graph: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_graph: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_layer:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char, libc::c_int, libc::c_int) -> ()>,
+    pub end_layer: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_page: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_page: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_cluster: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_cluster: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_nodes: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_nodes: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_edges: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_edges: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_node: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_node: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_edge: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub end_edge: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_anchor: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut libc::c_char,
@@ -303,20 +296,15 @@ pub struct gvrender_engine_s {
             *mut libc::c_char,
         ) -> (),
     >,
-    pub end_anchor: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub begin_label: Option::<unsafe extern "C" fn(*mut GVJ_t, label_type) -> ()>,
-    pub end_label: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub textspan: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> (),
-    >,
-    pub resolve_color: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut gvcolor_t) -> ()>,
-    pub ellipse: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
-    >,
-    pub polygon: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int, libc::c_int) -> (),
-    >,
-    pub beziercurve: Option::<
+    pub end_anchor: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub begin_label: Option<unsafe extern "C" fn(*mut GVJ_t, label_type) -> ()>,
+    pub end_label: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub textspan: Option<unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> ()>,
+    pub resolve_color: Option<unsafe extern "C" fn(*mut GVJ_t, *mut gvcolor_t) -> ()>,
+    pub ellipse: Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> ()>,
+    pub polygon:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int, libc::c_int) -> ()>,
+    pub beziercurve: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut pointf,
@@ -326,11 +314,9 @@ pub struct gvrender_engine_s {
             libc::c_int,
         ) -> (),
     >,
-    pub polyline: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
-    >,
-    pub comment: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> ()>,
-    pub library_shape: Option::<
+    pub polyline: Option<unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> ()>,
+    pub comment: Option<unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> ()>,
+    pub library_shape: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             *mut libc::c_char,
@@ -364,7 +350,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -447,7 +433,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -590,16 +577,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -615,18 +596,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -634,16 +609,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -685,9 +653,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -717,13 +684,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -756,26 +718,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -784,29 +738,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -814,8 +760,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -849,7 +795,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -966,7 +912,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1076,7 +1022,10 @@ unsafe extern "C" fn psgen_begin_graph(mut job: *mut GVJ_t) {
             agnameof((*obj).u.g as *mut libc::c_void),
         );
         if (*job).render.id != FORMAT_EPS as libc::c_int {
-            gvputs(job, b"%%Pages: (atend)\n\0" as *const u8 as *const libc::c_char);
+            gvputs(
+                job,
+                b"%%Pages: (atend)\n\0" as *const u8 as *const libc::c_char,
+            );
         } else {
             gvputs(job, b"%%Pages: 1\n\0" as *const u8 as *const libc::c_char);
         }
@@ -1089,8 +1038,7 @@ unsafe extern "C" fn psgen_begin_graph(mut job: *mut GVJ_t) {
             } else {
                 gvprintf(
                     job,
-                    b"%%%%BoundingBox: %d %d %d %d\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"%%%%BoundingBox: %d %d %d %d\n\0" as *const u8 as *const libc::c_char,
                     (*job).pageBoundingBox.LL.x,
                     (*job).pageBoundingBox.LL.y,
                     (*job).pageBoundingBox.UR.x,
@@ -1098,20 +1046,23 @@ unsafe extern "C" fn psgen_begin_graph(mut job: *mut GVJ_t) {
                 );
             }
         }
-        gvputs(job, b"%%EndComments\nsave\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b"%%EndComments\nsave\n\0" as *const u8 as *const libc::c_char,
+        );
         cat_libfile(job, (*(*job).common).lib, ps_txt.as_mut_ptr());
         epsf_define(job);
         if !((*(*job).common).show_boxes).is_null() {
             let mut args: [*const libc::c_char; 2] = [0 as *const libc::c_char; 2];
-            args[0 as libc::c_int
-                as usize] = *((*(*job).common).show_boxes)
-                .offset(0 as libc::c_int as isize);
+            args[0 as libc::c_int as usize] =
+                *((*(*job).common).show_boxes).offset(0 as libc::c_int as isize);
             args[1 as libc::c_int as usize] = 0 as *const libc::c_char;
             cat_libfile(job, 0 as *mut *const libc::c_char, args.as_mut_ptr());
         }
     }
     isLatin1 = if (*((*((*obj).u.g as *mut Agobj_t)).data as *mut Agraphinfo_t)).charset
-        as libc::c_int == 1 as libc::c_int
+        as libc::c_int
+        == 1 as libc::c_int
     {
         1 as libc::c_int
     } else {
@@ -1173,8 +1124,7 @@ unsafe extern "C" fn psgen_begin_page(mut job: *mut GVJ_t) {
     if (*job).render.id == FORMAT_PS2 as libc::c_int {
         gvprintf(
             job,
-            b"<< /PageSize [%d %d] >> setpagedevice\n\0" as *const u8
-                as *const libc::c_char,
+            b"<< /PageSize [%d %d] >> setpagedevice\n\0" as *const u8 as *const libc::c_char,
             pbr.UR.x,
             pbr.UR.y,
         );
@@ -1189,8 +1139,7 @@ unsafe extern "C" fn psgen_begin_page(mut job: *mut GVJ_t) {
     if ((*(*job).common).show_boxes).is_null() {
         gvprintf(
             job,
-            b"gsave\n%d %d %d %d boxprim clip newpath\n\0" as *const u8
-                as *const libc::c_char,
+            b"gsave\n%d %d %d %d boxprim clip newpath\n\0" as *const u8 as *const libc::c_char,
             pbr.LL.x,
             pbr.LL.y,
             pbr.UR.x - pbr.LL.x,
@@ -1199,8 +1148,7 @@ unsafe extern "C" fn psgen_begin_page(mut job: *mut GVJ_t) {
     }
     gvprintf(
         job,
-        b"%g %g set_scale %d rotate %g %g translate\n\0" as *const u8
-            as *const libc::c_char,
+        b"%g %g set_scale %d rotate %g %g translate\n\0" as *const u8 as *const libc::c_char,
         (*job).scale.x,
         (*job).scale.y,
         (*job).rotation,
@@ -1222,8 +1170,7 @@ unsafe extern "C" fn psgen_begin_page(mut job: *mut GVJ_t) {
         }
         gvprintf(
             job,
-            b"[ /CropBox [%d %d %d %d] /PAGES pdfmark\n\0" as *const u8
-                as *const libc::c_char,
+            b"[ /CropBox [%d %d %d %d] /PAGES pdfmark\n\0" as *const u8 as *const libc::c_char,
             pbr.LL.x,
             pbr.LL.y,
             pbr.UR.x,
@@ -1233,15 +1180,24 @@ unsafe extern "C" fn psgen_begin_page(mut job: *mut GVJ_t) {
 }
 unsafe extern "C" fn psgen_end_page(mut job: *mut GVJ_t) {
     if !((*(*job).common).show_boxes).is_null() {
-        gvputs(job, b"0 0 0 edgecolor\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b"0 0 0 edgecolor\n\0" as *const u8 as *const libc::c_char,
+        );
         cat_libfile(
             job,
             0 as *mut *const libc::c_char,
             ((*(*job).common).show_boxes).offset(1 as libc::c_int as isize),
         );
     }
-    gvputs(job, b"endpage\nshowpage\ngrestore\n\0" as *const u8 as *const libc::c_char);
-    gvputs(job, b"%%PageTrailer\n\0" as *const u8 as *const libc::c_char);
+    gvputs(
+        job,
+        b"endpage\nshowpage\ngrestore\n\0" as *const u8 as *const libc::c_char,
+    );
+    gvputs(
+        job,
+        b"%%PageTrailer\n\0" as *const u8 as *const libc::c_char,
+    );
     gvprintf(
         job,
         b"%%%%EndPage: %d\n\0" as *const u8 as *const libc::c_char,
@@ -1298,19 +1254,18 @@ unsafe extern "C" fn ps_set_pen_style(mut job: *mut GVJ_t) {
     let mut line: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut s: *mut *mut libc::c_char = (*(*job).obj).rawstyle;
     gvprintdouble(job, penwidth);
-    gvputs(job, b" setlinewidth\n\0" as *const u8 as *const libc::c_char);
-    while !s.is_null()
-        && {
-            let fresh0 = s;
-            s = s.offset(1);
-            line = *fresh0;
-            p = line;
-            !p.is_null()
-        }
-    {
-        if strcmp(line, b"setlinewidth\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    gvputs(
+        job,
+        b" setlinewidth\n\0" as *const u8 as *const libc::c_char,
+    );
+    while !s.is_null() && {
+        let fresh0 = s;
+        s = s.offset(1);
+        line = *fresh0;
+        p = line;
+        !p.is_null()
+    } {
+        if strcmp(line, b"setlinewidth\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
             continue;
         }
         while *p != 0 {
@@ -1324,9 +1279,7 @@ unsafe extern "C" fn ps_set_pen_style(mut job: *mut GVJ_t) {
             }
             p = p.offset(1);
         }
-        if strcmp(line, b"invis\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+        if strcmp(line, b"invis\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
             (*(*job).obj).penwidth = 0 as libc::c_int as libc::c_double;
         }
         gvprintf(job, b"%s\n\0" as *const u8 as *const libc::c_char, line);
@@ -1337,20 +1290,16 @@ unsafe extern "C" fn ps_set_color(mut job: *mut GVJ_t, mut color: *mut gvcolor_t
     if !color.is_null() {
         match (*(*job).obj).type_0 as libc::c_uint {
             0 | 1 => {
-                objtype = b"graph\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char;
+                objtype = b"graph\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             }
             2 => {
-                objtype = b"node\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char;
+                objtype = b"node\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             }
             3 => {
-                objtype = b"edge\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char;
+                objtype = b"edge\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             }
             _ => {
-                objtype = b"sethsb\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char;
+                objtype = b"sethsb\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             }
         }
         gvprintf(
@@ -1363,11 +1312,7 @@ unsafe extern "C" fn ps_set_color(mut job: *mut GVJ_t, mut color: *mut gvcolor_t
         );
     }
 }
-unsafe extern "C" fn psgen_textspan(
-    mut job: *mut GVJ_t,
-    mut p: pointf,
-    mut span: *mut textspan_t,
-) {
+unsafe extern "C" fn psgen_textspan(mut job: *mut GVJ_t, mut p: pointf, mut span: *mut textspan_t) {
     let mut str: *mut libc::c_char = 0 as *mut libc::c_char;
     if (*(*job).obj).pencolor.u.HSVA[3 as libc::c_int as usize] < 0.5f64 {
         return;
@@ -1395,7 +1340,11 @@ unsafe extern "C" fn psgen_textspan(
     gvprintpointf(job, p);
     gvputs(job, b" moveto \0" as *const u8 as *const libc::c_char);
     gvprintdouble(job, (*span).size.x);
-    gvprintf(job, b" %s alignedtext\n\0" as *const u8 as *const libc::c_char, str);
+    gvprintf(
+        job,
+        b" %s alignedtext\n\0" as *const u8 as *const libc::c_char,
+        str,
+    );
 }
 unsafe extern "C" fn psgen_ellipse(
     mut job: *mut GVJ_t,
@@ -1404,23 +1353,26 @@ unsafe extern "C" fn psgen_ellipse(
 ) {
     let mut AA: [pointf; 2] = [pointf { x: 0., y: 0. }; 2];
     AA[0 as libc::c_int as usize] = *A.offset(0 as libc::c_int as isize);
-    AA[1 as libc::c_int as usize]
-        .x = (*A.offset(1 as libc::c_int as isize)).x
-        - (*A.offset(0 as libc::c_int as isize)).x;
-    AA[1 as libc::c_int as usize]
-        .y = (*A.offset(1 as libc::c_int as isize)).y
-        - (*A.offset(0 as libc::c_int as isize)).y;
-    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64
-    {
+    AA[1 as libc::c_int as usize].x =
+        (*A.offset(1 as libc::c_int as isize)).x - (*A.offset(0 as libc::c_int as isize)).x;
+    AA[1 as libc::c_int as usize].y =
+        (*A.offset(1 as libc::c_int as isize)).y - (*A.offset(0 as libc::c_int as isize)).y;
+    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_color(job, &mut (*(*job).obj).fillcolor);
         gvprintpointflist(job, AA.as_mut_ptr(), 2 as libc::c_int);
-        gvputs(job, b" ellipse_path fill\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b" ellipse_path fill\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     if (*(*job).obj).pencolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_pen_style(job);
         ps_set_color(job, &mut (*(*job).obj).pencolor);
         gvprintpointflist(job, AA.as_mut_ptr(), 2 as libc::c_int);
-        gvputs(job, b" ellipse_path stroke\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b" ellipse_path stroke\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
 unsafe extern "C" fn psgen_bezier(
@@ -1432,8 +1384,7 @@ unsafe extern "C" fn psgen_bezier(
     mut filled: libc::c_int,
 ) {
     let mut j: libc::c_int = 0;
-    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64
-    {
+    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_color(job, &mut (*(*job).obj).fillcolor);
         gvputs(job, b"newpath \0" as *const u8 as *const libc::c_char);
         gvprintpointf(job, *A.offset(0 as libc::c_int as isize));
@@ -1444,7 +1395,10 @@ unsafe extern "C" fn psgen_bezier(
             gvputs(job, b" curveto\n\0" as *const u8 as *const libc::c_char);
             j += 3 as libc::c_int;
         }
-        gvputs(job, b"closepath fill\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b"closepath fill\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     if (*(*job).obj).pencolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_pen_style(job);
@@ -1468,8 +1422,7 @@ unsafe extern "C" fn psgen_polygon(
     mut filled: libc::c_int,
 ) {
     let mut j: libc::c_int = 0;
-    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64
-    {
+    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_color(job, &mut (*(*job).obj).fillcolor);
         gvputs(job, b"newpath \0" as *const u8 as *const libc::c_char);
         gvprintpointf(job, *A.offset(0 as libc::c_int as isize));
@@ -1480,7 +1433,10 @@ unsafe extern "C" fn psgen_polygon(
             gvputs(job, b" lineto\n\0" as *const u8 as *const libc::c_char);
             j += 1;
         }
-        gvputs(job, b"closepath fill\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b"closepath fill\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     if (*(*job).obj).pencolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_pen_style(job);
@@ -1494,14 +1450,13 @@ unsafe extern "C" fn psgen_polygon(
             gvputs(job, b" lineto\n\0" as *const u8 as *const libc::c_char);
             j += 1;
         }
-        gvputs(job, b"closepath stroke\n\0" as *const u8 as *const libc::c_char);
+        gvputs(
+            job,
+            b"closepath stroke\n\0" as *const u8 as *const libc::c_char,
+        );
     }
 }
-unsafe extern "C" fn psgen_polyline(
-    mut job: *mut GVJ_t,
-    mut A: *mut pointf,
-    mut n: libc::c_int,
-) {
+unsafe extern "C" fn psgen_polyline(mut job: *mut GVJ_t, mut A: *mut pointf, mut n: libc::c_int) {
     let mut j: libc::c_int = 0;
     if (*(*job).obj).pencolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_pen_style(job);
@@ -1530,8 +1485,7 @@ unsafe extern "C" fn psgen_library_shape(
     mut n: libc::c_int,
     mut filled: libc::c_int,
 ) {
-    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64
-    {
+    if filled != 0 && (*(*job).obj).fillcolor.u.HSVA[3 as libc::c_int as usize] > 0.5f64 {
         ps_set_color(job, &mut (*(*job).obj).fillcolor);
         gvputs(job, b"[ \0" as *const u8 as *const libc::c_char);
         gvprintpointflist(job, A, n);
@@ -1564,9 +1518,7 @@ static mut psgen_engine: gvrender_engine_t = unsafe {
         let mut init = gvrender_engine_s {
             begin_job: Some(psgen_begin_job as unsafe extern "C" fn(*mut GVJ_t) -> ()),
             end_job: Some(psgen_end_job as unsafe extern "C" fn(*mut GVJ_t) -> ()),
-            begin_graph: Some(
-                psgen_begin_graph as unsafe extern "C" fn(*mut GVJ_t) -> (),
-            ),
+            begin_graph: Some(psgen_begin_graph as unsafe extern "C" fn(*mut GVJ_t) -> ()),
             end_graph: None,
             begin_layer: Some(
                 psgen_begin_layer
@@ -1580,12 +1532,8 @@ static mut psgen_engine: gvrender_engine_t = unsafe {
             end_layer: None,
             begin_page: Some(psgen_begin_page as unsafe extern "C" fn(*mut GVJ_t) -> ()),
             end_page: Some(psgen_end_page as unsafe extern "C" fn(*mut GVJ_t) -> ()),
-            begin_cluster: Some(
-                psgen_begin_cluster as unsafe extern "C" fn(*mut GVJ_t) -> (),
-            ),
-            end_cluster: Some(
-                psgen_end_cluster as unsafe extern "C" fn(*mut GVJ_t) -> (),
-            ),
+            begin_cluster: Some(psgen_begin_cluster as unsafe extern "C" fn(*mut GVJ_t) -> ()),
+            end_cluster: Some(psgen_end_cluster as unsafe extern "C" fn(*mut GVJ_t) -> ()),
             begin_nodes: None,
             end_nodes: None,
             begin_edges: None,
@@ -1608,13 +1556,11 @@ static mut psgen_engine: gvrender_engine_t = unsafe {
             begin_label: None,
             end_label: None,
             textspan: Some(
-                psgen_textspan
-                    as unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> (),
+                psgen_textspan as unsafe extern "C" fn(*mut GVJ_t, pointf, *mut textspan_t) -> (),
             ),
             resolve_color: None,
             ellipse: Some(
-                psgen_ellipse
-                    as unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
+                psgen_ellipse as unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
             ),
             polygon: Some(
                 psgen_polygon
@@ -1637,12 +1583,10 @@ static mut psgen_engine: gvrender_engine_t = unsafe {
                     ) -> (),
             ),
             polyline: Some(
-                psgen_polyline
-                    as unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
+                psgen_polyline as unsafe extern "C" fn(*mut GVJ_t, *mut pointf, libc::c_int) -> (),
             ),
             comment: Some(
-                psgen_comment
-                    as unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> (),
+                psgen_comment as unsafe extern "C" fn(*mut GVJ_t, *mut libc::c_char) -> (),
             ),
             library_shape: Some(
                 psgen_library_shape
@@ -1673,10 +1617,12 @@ static mut render_features_ps: gvrender_features_t = {
 };
 static mut device_features_ps: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
-        flags: (1 as libc::c_int) << 5 as libc::c_int
-            | (1 as libc::c_int) << 6 as libc::c_int,
+        flags: (1 as libc::c_int) << 5 as libc::c_int | (1 as libc::c_int) << 6 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 36.0f64, y: 36.0f64 };
+            let mut init = pointf_s {
+                x: 36.0f64,
+                y: 36.0f64,
+            };
             init
         },
         default_pagesize: {
@@ -1687,7 +1633,10 @@ static mut device_features_ps: gvdevice_features_t = {
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 72.0f64, y: 72.0f64 };
+            let mut init = pointf_s {
+                x: 72.0f64,
+                y: 72.0f64,
+            };
             init
         },
     };
@@ -1697,7 +1646,10 @@ static mut device_features_eps: gvdevice_features_t = {
     let mut init = gvdevice_features_t {
         flags: 0 as libc::c_int,
         default_margin: {
-            let mut init = pointf_s { x: 36.0f64, y: 36.0f64 };
+            let mut init = pointf_s {
+                x: 36.0f64,
+                y: 36.0f64,
+            };
             init
         },
         default_pagesize: {
@@ -1708,7 +1660,10 @@ static mut device_features_eps: gvdevice_features_t = {
             init
         },
         default_dpi: {
-            let mut init = pointf_s { x: 72.0f64, y: 72.0f64 };
+            let mut init = pointf_s {
+                x: 72.0f64,
+                y: 72.0f64,
+            };
             init
         },
     };
@@ -1722,8 +1677,8 @@ pub static mut gvrender_ps_types: [gvplugin_installed_t; 2] = unsafe {
                 id: FORMAT_PS as libc::c_int,
                 type_0: b"ps\0" as *const u8 as *const libc::c_char,
                 quality: 1 as libc::c_int,
-                engine: &psgen_engine as *const gvrender_engine_t
-                    as *mut gvrender_engine_t as *mut libc::c_void,
+                engine: &psgen_engine as *const gvrender_engine_t as *mut gvrender_engine_t
+                    as *mut libc::c_void,
                 features: &render_features_ps as *const gvrender_features_t
                     as *mut gvrender_features_t as *mut libc::c_void,
             };

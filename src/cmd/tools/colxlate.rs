@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -52,9 +60,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type C2RustUnnamed = libc::c_uint;
 pub const _ISalnum: C2RustUnnamed = 8;
 pub const _ISpunct: C2RustUnnamed = 4;
@@ -92,7 +99,9 @@ unsafe extern "C" fn bsearch(
     __l = 0 as libc::c_int as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l.wrapping_add(__u).wrapping_div(2 as libc::c_int as libc::c_ulong);
+        __idx = __l
+            .wrapping_add(__u)
+            .wrapping_div(2 as libc::c_int as libc::c_ulong);
         __p = (__base as *const libc::c_char).offset(__idx.wrapping_mul(__size) as isize)
             as *const libc::c_void;
         __comparison = (Some(__compar.expect("non-null function pointer")))
@@ -102,7 +111,7 @@ unsafe extern "C" fn bsearch(
         } else if __comparison > 0 as libc::c_int {
             __l = __idx.wrapping_add(1 as libc::c_int as libc::c_ulong);
         } else {
-            return __p as *mut libc::c_void
+            return __p as *mut libc::c_void;
         }
     }
     return 0 as *mut libc::c_void;
@@ -119,8 +128,7 @@ unsafe extern "C" fn tolower(mut __c: libc::c_int) -> libc::c_int {
 pub static mut color_lib: [hsbcolor_t; 652] = [
     {
         let mut init = hsbcolor_t {
-            name: b"aliceblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aliceblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -129,8 +137,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"antiquewhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             b: 250 as libc::c_int as libc::c_uchar,
@@ -139,8 +146,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"antiquewhite1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -149,8 +155,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"antiquewhite2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -159,8 +164,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"antiquewhite3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 36 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -169,8 +173,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"antiquewhite4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"antiquewhite4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 24 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -179,8 +182,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"aquamarine\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -189,8 +191,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"aquamarine1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -199,8 +200,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"aquamarine2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -209,8 +209,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"aquamarine3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -219,8 +218,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"aquamarine4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"aquamarine4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -337,8 +335,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"blanchedalmond\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"blanchedalmond\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -392,8 +389,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"blueviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"blueviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 192 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             b: 226 as libc::c_int as libc::c_uchar,
@@ -447,8 +443,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"burlywood\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             b: 222 as libc::c_int as libc::c_uchar,
@@ -457,8 +452,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"burlywood1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -467,8 +461,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"burlywood2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -477,8 +470,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"burlywood3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -487,8 +479,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"burlywood4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"burlywood4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 99 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -497,8 +488,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cadetblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 160 as libc::c_int as libc::c_uchar,
@@ -507,8 +497,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cadetblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -517,8 +506,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cadetblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -527,8 +515,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cadetblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -537,8 +524,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cadetblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cadetblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 131 as libc::c_int as libc::c_uchar,
             s: 102 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -547,8 +533,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chartreuse\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -557,8 +542,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chartreuse1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -567,8 +551,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chartreuse2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -577,8 +560,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chartreuse3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -587,8 +569,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chartreuse4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chartreuse4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 63 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -597,8 +578,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chocolate\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 210 as libc::c_int as libc::c_uchar,
@@ -607,8 +587,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chocolate1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 219 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -617,8 +596,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chocolate2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 219 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -627,8 +605,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chocolate3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -637,8 +614,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"chocolate4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"chocolate4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -692,8 +668,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cornflowerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornflowerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 154 as libc::c_int as libc::c_uchar,
             s: 147 as libc::c_int as libc::c_uchar,
             b: 237 as libc::c_int as libc::c_uchar,
@@ -711,8 +686,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cornsilk1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 33 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -721,8 +695,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cornsilk2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 35 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -731,8 +704,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cornsilk3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 34 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -741,8 +713,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"cornsilk4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"cornsilk4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 34 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -805,8 +776,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 239 as libc::c_int as libc::c_uchar,
             b: 184 as libc::c_int as libc::c_uchar,
@@ -815,8 +785,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgoldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -825,8 +794,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgoldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -835,8 +803,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgoldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -845,8 +812,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgoldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgoldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 240 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -855,8 +821,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 100 as libc::c_int as libc::c_uchar,
@@ -865,8 +830,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkkhaki\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkkhaki\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 39 as libc::c_int as libc::c_uchar,
             s: 110 as libc::c_int as libc::c_uchar,
             b: 189 as libc::c_int as libc::c_uchar,
@@ -875,8 +839,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkolivegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 142 as libc::c_int as libc::c_uchar,
             b: 107 as libc::c_int as libc::c_uchar,
@@ -885,8 +848,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkolivegreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -895,8 +857,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkolivegreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -905,8 +866,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkolivegreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -915,8 +875,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkolivegreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkolivegreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 58 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -925,8 +884,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorange\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 23 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -935,8 +893,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorange1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -945,8 +902,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorange2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -955,8 +911,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorange3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -965,8 +920,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorange4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorange4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 21 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -975,8 +929,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 204 as libc::c_int as libc::c_uchar,
@@ -985,8 +938,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorchid1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -995,8 +947,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorchid2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1005,8 +956,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorchid3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1015,8 +965,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkorchid4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkorchid4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 198 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1025,8 +974,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darksalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darksalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 10 as libc::c_int as libc::c_uchar,
             s: 121 as libc::c_int as libc::c_uchar,
             b: 233 as libc::c_int as libc::c_uchar,
@@ -1035,8 +983,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             b: 188 as libc::c_int as libc::c_uchar,
@@ -1045,8 +992,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkseagreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1055,8 +1001,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkseagreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1065,8 +1010,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkseagreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1075,8 +1019,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkseagreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkseagreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1085,8 +1028,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1095,8 +1037,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 79 as libc::c_int as libc::c_uchar,
@@ -1105,8 +1046,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategray1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1115,8 +1055,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategray2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1125,8 +1064,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategray3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1135,8 +1073,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategray4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategray4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 104 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1145,8 +1082,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 103 as libc::c_int as libc::c_uchar,
             b: 79 as libc::c_int as libc::c_uchar,
@@ -1155,8 +1091,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 128 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 209 as libc::c_int as libc::c_uchar,
@@ -1165,8 +1100,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"darkviolet\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"darkviolet\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 199 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 211 as libc::c_int as libc::c_uchar,
@@ -1184,8 +1118,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deeppink1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1194,8 +1127,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deeppink2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1204,8 +1136,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deeppink3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 232 as libc::c_int as libc::c_uchar,
             s: 235 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1214,8 +1145,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deeppink4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deeppink4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 231 as libc::c_int as libc::c_uchar,
             s: 236 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1224,8 +1154,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deepskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1234,8 +1163,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deepskyblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1244,8 +1172,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deepskyblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1254,8 +1181,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deepskyblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1264,8 +1190,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"deepskyblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"deepskyblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1292,8 +1217,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"dodgerblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1302,8 +1226,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"dodgerblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1312,8 +1235,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"dodgerblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1322,8 +1244,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"dodgerblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1332,8 +1253,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"dodgerblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"dodgerblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 225 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1342,8 +1262,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"firebrick\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 206 as libc::c_int as libc::c_uchar,
             b: 178 as libc::c_int as libc::c_uchar,
@@ -1352,8 +1271,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"firebrick1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1362,8 +1280,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"firebrick2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1372,8 +1289,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"firebrick3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1382,8 +1298,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"firebrick4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"firebrick4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 207 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1392,8 +1307,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"floralwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"floralwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 28 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1402,8 +1316,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"forestgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"forestgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -1412,8 +1325,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"gainsboro\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"gainsboro\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             b: 220 as libc::c_int as libc::c_uchar,
@@ -1422,8 +1334,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"ghostwhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"ghostwhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 7 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1477,8 +1388,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"goldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 217 as libc::c_int as libc::c_uchar,
             b: 218 as libc::c_int as libc::c_uchar,
@@ -1487,8 +1397,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"goldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -1497,8 +1406,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"goldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -1507,8 +1415,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"goldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -1517,8 +1424,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"goldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"goldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 30 as libc::c_int as libc::c_uchar,
             s: 218 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -2490,8 +2396,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"greenyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"greenyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 59 as libc::c_int as libc::c_uchar,
             s: 208 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3427,8 +3332,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"honeydew1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3437,8 +3341,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"honeydew2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3447,8 +3350,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"honeydew3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3457,8 +3359,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"honeydew4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"honeydew4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3512,8 +3413,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"indianred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 140 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3522,8 +3422,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"indianred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3532,8 +3431,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"indianred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3542,8 +3440,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"indianred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 149 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3552,8 +3449,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"indianred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"indianred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 148 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3670,8 +3566,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lavenderblush\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3680,8 +3575,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lavenderblush1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3690,8 +3584,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lavenderblush2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 239 as libc::c_int as libc::c_uchar,
             s: 15 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3700,8 +3593,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lavenderblush3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 240 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3710,8 +3602,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lavenderblush4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lavenderblush4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 239 as libc::c_int as libc::c_uchar,
             s: 14 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3720,8 +3611,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lawngreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lawngreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 64 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 252 as libc::c_int as libc::c_uchar,
@@ -3730,8 +3620,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lemonchiffon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3740,8 +3629,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lemonchiffon1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3750,8 +3638,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lemonchiffon2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 37 as libc::c_int as libc::c_uchar,
             s: 50 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3760,8 +3647,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lemonchiffon3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3770,8 +3656,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lemonchiffon4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lemonchiffon4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 39 as libc::c_int as libc::c_uchar,
             s: 49 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3780,8 +3665,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 137 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             b: 230 as libc::c_int as libc::c_uchar,
@@ -3790,8 +3674,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3800,8 +3683,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3810,8 +3692,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 138 as libc::c_int as libc::c_uchar,
             s: 63 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3820,8 +3701,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 137 as libc::c_int as libc::c_uchar,
             s: 64 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3830,8 +3710,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcoral\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcoral\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 119 as libc::c_int as libc::c_uchar,
             b: 240 as libc::c_int as libc::c_uchar,
@@ -3840,8 +3719,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcyan\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3850,8 +3728,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcyan1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3860,8 +3737,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcyan2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3870,8 +3746,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcyan3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3880,8 +3755,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightcyan4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightcyan4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3890,8 +3764,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3900,8 +3773,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgoldenrod1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 116 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3910,8 +3782,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgoldenrod2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -3920,8 +3791,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgoldenrod3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -3930,8 +3800,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgoldenrod4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgoldenrod4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 35 as libc::c_int as libc::c_uchar,
             s: 115 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -3950,8 +3819,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             b: 211 as libc::c_int as libc::c_uchar,
@@ -3960,8 +3828,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightgrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightgrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             b: 211 as libc::c_int as libc::c_uchar,
@@ -3970,8 +3837,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightpink\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 248 as libc::c_int as libc::c_uchar,
             s: 73 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3980,8 +3846,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightpink1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -3990,8 +3855,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightpink2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 248 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4000,8 +3864,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightpink3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 80 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4010,8 +3873,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightpink4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightpink4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 249 as libc::c_int as libc::c_uchar,
             s: 80 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4020,8 +3882,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsalmon\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4030,8 +3891,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsalmon1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4040,8 +3900,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsalmon2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 132 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4050,8 +3909,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsalmon3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 133 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4060,8 +3918,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsalmon4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsalmon4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 12 as libc::c_int as libc::c_uchar,
             s: 133 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4070,8 +3927,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 125 as libc::c_int as libc::c_uchar,
             s: 209 as libc::c_int as libc::c_uchar,
             b: 178 as libc::c_int as libc::c_uchar,
@@ -4080,8 +3936,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightskyblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 117 as libc::c_int as libc::c_uchar,
             b: 250 as libc::c_int as libc::c_uchar,
@@ -4090,8 +3945,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightskyblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4100,8 +3954,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightskyblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4110,8 +3963,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightskyblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 142 as libc::c_int as libc::c_uchar,
             s: 79 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4120,8 +3972,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightskyblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightskyblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 143 as libc::c_int as libc::c_uchar,
             s: 78 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4130,8 +3981,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4140,8 +3990,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightslategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 153 as libc::c_int as libc::c_uchar,
@@ -4150,8 +3999,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightslategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightslategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 153 as libc::c_int as libc::c_uchar,
@@ -4160,8 +4008,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsteelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 52 as libc::c_int as libc::c_uchar,
             b: 222 as libc::c_int as libc::c_uchar,
@@ -4170,8 +4017,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsteelblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4180,8 +4026,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsteelblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4190,8 +4035,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsteelblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 151 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4200,8 +4044,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightsteelblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightsteelblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 150 as libc::c_int as libc::c_uchar,
             s: 53 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4210,8 +4053,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightyellow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4220,8 +4062,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightyellow1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4230,8 +4071,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightyellow2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4240,8 +4080,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightyellow3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4250,8 +4089,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"lightyellow4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"lightyellow4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 42 as libc::c_int as libc::c_uchar,
             s: 31 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4260,8 +4098,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"limegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"limegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4369,8 +4206,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumaquamarine\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumaquamarine\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 113 as libc::c_int as libc::c_uchar,
             s: 128 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4379,8 +4215,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4389,8 +4224,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumorchid\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 204 as libc::c_int as libc::c_uchar,
             s: 152 as libc::c_int as libc::c_uchar,
             b: 211 as libc::c_int as libc::c_uchar,
@@ -4399,8 +4233,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumorchid1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4409,8 +4242,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumorchid2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4419,8 +4251,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumorchid3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 153 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4429,8 +4260,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumorchid4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumorchid4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 203 as libc::c_int as libc::c_uchar,
             s: 154 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4439,8 +4269,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumpurple\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             b: 219 as libc::c_int as libc::c_uchar,
@@ -4449,8 +4278,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumpurple1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4459,8 +4287,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumpurple2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4469,8 +4296,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumpurple3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4479,8 +4305,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumpurple4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumpurple4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 183 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4489,8 +4314,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumseagreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumseagreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 169 as libc::c_int as libc::c_uchar,
             b: 179 as libc::c_int as libc::c_uchar,
@@ -4499,8 +4323,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumslateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumslateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 176 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4509,8 +4332,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumspringgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumspringgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 111 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 250 as libc::c_int as libc::c_uchar,
@@ -4519,8 +4341,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 125 as libc::c_int as libc::c_uchar,
             s: 167 as libc::c_int as libc::c_uchar,
             b: 209 as libc::c_int as libc::c_uchar,
@@ -4529,8 +4350,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mediumvioletred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mediumvioletred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 228 as libc::c_int as libc::c_uchar,
             s: 228 as libc::c_int as libc::c_uchar,
             b: 199 as libc::c_int as libc::c_uchar,
@@ -4539,8 +4359,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"midnightblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"midnightblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 170 as libc::c_int as libc::c_uchar,
             s: 198 as libc::c_int as libc::c_uchar,
             b: 112 as libc::c_int as libc::c_uchar,
@@ -4549,8 +4368,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mintcream\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mintcream\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 9 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4559,8 +4377,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mistyrose\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4569,8 +4386,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mistyrose1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4579,8 +4395,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mistyrose2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 4 as libc::c_int as libc::c_uchar,
             s: 30 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4589,8 +4404,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mistyrose3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 3 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4599,8 +4413,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"mistyrose4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"mistyrose4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 5 as libc::c_int as libc::c_uchar,
             s: 29 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4618,8 +4431,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"navajowhite\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4628,8 +4440,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"navajowhite1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 81 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4638,8 +4449,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"navajowhite2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4648,8 +4458,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"navajowhite3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4658,8 +4467,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"navajowhite4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"navajowhite4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 25 as libc::c_int as libc::c_uchar,
             s: 82 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4695,8 +4503,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"olivedrab\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 142 as libc::c_int as libc::c_uchar,
@@ -4705,8 +4512,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"olivedrab1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4715,8 +4521,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"olivedrab2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4725,8 +4530,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"olivedrab3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4735,8 +4539,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"olivedrab4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"olivedrab4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4790,8 +4593,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"orangered\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4800,8 +4602,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"orangered1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4810,8 +4611,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"orangered2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4820,8 +4620,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"orangered3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4830,8 +4629,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"orangered4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"orangered4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 11 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4885,8 +4683,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegoldenrod\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegoldenrod\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 38 as libc::c_int as libc::c_uchar,
             s: 72 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4895,8 +4692,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             b: 251 as libc::c_int as libc::c_uchar,
@@ -4905,8 +4701,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 101 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4915,8 +4710,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4925,8 +4719,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4935,8 +4728,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palegreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palegreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 85 as libc::c_int as libc::c_uchar,
             s: 100 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4945,8 +4737,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"paleturquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4955,8 +4746,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"paleturquoise1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -4965,8 +4755,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"paleturquoise2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -4975,8 +4764,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"paleturquoise3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 68 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -4985,8 +4773,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"paleturquoise4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"paleturquoise4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 127 as libc::c_int as libc::c_uchar,
             s: 67 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -4995,8 +4782,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palevioletred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             b: 219 as libc::c_int as libc::c_uchar,
@@ -5005,8 +4791,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palevioletred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5015,8 +4800,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palevioletred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5025,8 +4809,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palevioletred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 125 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5035,8 +4818,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"palevioletred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"palevioletred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 241 as libc::c_int as libc::c_uchar,
             s: 124 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5045,8 +4827,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"papayawhip\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"papayawhip\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 26 as libc::c_int as libc::c_uchar,
             s: 41 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5055,8 +4836,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"peachpuff\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5065,8 +4845,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"peachpuff1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 70 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5075,8 +4854,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"peachpuff2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5085,8 +4863,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"peachpuff3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5095,8 +4872,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"peachpuff4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"peachpuff4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 20 as libc::c_int as libc::c_uchar,
             s: 69 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5204,8 +4980,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"powderblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"powderblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 132 as libc::c_int as libc::c_uchar,
             s: 59 as libc::c_int as libc::c_uchar,
             b: 230 as libc::c_int as libc::c_uchar,
@@ -5304,8 +5079,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"rosybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 61 as libc::c_int as libc::c_uchar,
             b: 188 as libc::c_int as libc::c_uchar,
@@ -5314,8 +5088,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"rosybrown1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5324,8 +5097,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"rosybrown2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5334,8 +5106,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"rosybrown3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5344,8 +5115,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"rosybrown4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"rosybrown4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 62 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5354,8 +5124,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"royalblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 181 as libc::c_int as libc::c_uchar,
             b: 225 as libc::c_int as libc::c_uchar,
@@ -5364,8 +5133,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"royalblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5374,8 +5142,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"royalblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5384,8 +5151,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"royalblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 182 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5394,8 +5160,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"royalblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"royalblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 159 as libc::c_int as libc::c_uchar,
             s: 183 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5404,8 +5169,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"saddlebrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"saddlebrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 220 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5459,8 +5223,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"sandybrown\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"sandybrown\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 19 as libc::c_int as libc::c_uchar,
             s: 154 as libc::c_int as libc::c_uchar,
             b: 244 as libc::c_int as libc::c_uchar,
@@ -5478,8 +5241,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seagreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5488,8 +5250,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seagreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5498,8 +5259,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seagreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 171 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5508,8 +5268,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seagreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seagreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 103 as libc::c_int as libc::c_uchar,
             s: 170 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5527,8 +5286,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seashell1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 17 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5537,8 +5295,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seashell2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 17 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5547,8 +5304,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seashell3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 17 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5557,8 +5313,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"seashell4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"seashell4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 18 as libc::c_int as libc::c_uchar,
             s: 16 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5657,8 +5412,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slateblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 143 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5667,8 +5421,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slateblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5677,8 +5430,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slateblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5687,8 +5439,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slateblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5697,8 +5448,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slateblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slateblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 175 as libc::c_int as libc::c_uchar,
             s: 144 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5707,8 +5457,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategray\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 144 as libc::c_int as libc::c_uchar,
@@ -5717,8 +5466,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategray1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5727,8 +5475,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategray2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5737,8 +5484,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategray3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 57 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5747,8 +5493,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategray4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategray4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 149 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5757,8 +5502,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"slategrey\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"slategrey\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 148 as libc::c_int as libc::c_uchar,
             s: 56 as libc::c_int as libc::c_uchar,
             b: 144 as libc::c_int as libc::c_uchar,
@@ -5812,8 +5556,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"springgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5822,8 +5565,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"springgreen1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5832,8 +5574,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"springgreen2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5842,8 +5583,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"springgreen3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5852,8 +5592,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"springgreen4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"springgreen4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 106 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -5862,8 +5601,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"steelblue\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             b: 180 as libc::c_int as libc::c_uchar,
@@ -5872,8 +5610,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"steelblue1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -5882,8 +5619,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"steelblue2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -5892,8 +5628,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"steelblue3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 146 as libc::c_int as libc::c_uchar,
             s: 156 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -5902,8 +5637,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"steelblue4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"steelblue4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 147 as libc::c_int as libc::c_uchar,
             s: 155 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -6047,8 +5781,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"turquoise\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 123 as libc::c_int as libc::c_uchar,
             s: 182 as libc::c_int as libc::c_uchar,
             b: 224 as libc::c_int as libc::c_uchar,
@@ -6057,8 +5790,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"turquoise1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -6067,8 +5799,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"turquoise2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -6077,8 +5808,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"turquoise3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -6087,8 +5817,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"turquoise4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"turquoise4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 129 as libc::c_int as libc::c_uchar,
             s: 255 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -6106,8 +5835,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"violetred\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 227 as libc::c_int as libc::c_uchar,
             s: 215 as libc::c_int as libc::c_uchar,
             b: 208 as libc::c_int as libc::c_uchar,
@@ -6116,8 +5844,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"violetred1\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred1\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 193 as libc::c_int as libc::c_uchar,
             b: 255 as libc::c_int as libc::c_uchar,
@@ -6126,8 +5853,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"violetred2\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred2\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 238 as libc::c_int as libc::c_uchar,
@@ -6136,8 +5862,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"violetred3\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred3\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -6146,8 +5871,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"violetred4\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"violetred4\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 235 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 139 as libc::c_int as libc::c_uchar,
@@ -6210,8 +5934,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"whitesmoke\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"whitesmoke\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 0 as libc::c_int as libc::c_uchar,
             s: 0 as libc::c_int as libc::c_uchar,
             b: 245 as libc::c_int as libc::c_uchar,
@@ -6265,8 +5988,7 @@ pub static mut color_lib: [hsbcolor_t; 652] = [
     },
     {
         let mut init = hsbcolor_t {
-            name: b"yellowgreen\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"yellowgreen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             h: 56 as libc::c_int as libc::c_uchar,
             s: 192 as libc::c_int as libc::c_uchar,
             b: 205 as libc::c_int as libc::c_uchar,
@@ -6288,12 +6010,14 @@ unsafe extern "C" fn canoncolor(
             break;
         }
         if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int == 0
+            & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
+            == 0
         {
             continue;
         }
         if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int != 0
+            & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
         {
             c = ({
                 let mut __res: libc::c_int = 0;
@@ -6302,9 +6026,7 @@ unsafe extern "C" fn canoncolor(
                 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = c as libc::c_int;
-                        __res = if __c < -(128 as libc::c_int)
-                            || __c > 255 as libc::c_int
-                        {
+                        __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                             __c
                         } else {
                             *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -6365,15 +6087,14 @@ pub unsafe extern "C" fn colorxlate(
         ) as *mut hsbcolor_t;
     }
     if last.is_null() {
-        if *(*__ctype_b_loc())
-            .offset(canon[0 as libc::c_int as usize] as libc::c_int as isize)
-            as libc::c_int & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+        if *(*__ctype_b_loc()).offset(canon[0 as libc::c_int as usize] as libc::c_int as isize)
+            as libc::c_int
+            & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
             == 0
         {
             fprintf(
                 stderr,
-                b"warning: %s is not a known color\n\0" as *const u8
-                    as *const libc::c_char,
+                b"warning: %s is not a known color\n\0" as *const u8 as *const libc::c_char,
                 str,
             );
             strcpy(buf, str);

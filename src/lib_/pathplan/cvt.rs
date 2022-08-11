@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -84,8 +92,7 @@ pub unsafe extern "C" fn Pobsopen(
     }
     let ref mut fresh0 = (*rv).P;
     *fresh0 = mymalloc(
-        (n as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<Ppoint_t>() as libc::c_ulong),
+        (n as libc::c_ulong).wrapping_mul(::std::mem::size_of::<Ppoint_t>() as libc::c_ulong),
     ) as *mut Ppoint_t;
     let ref mut fresh1 = (*rv).start;
     *fresh1 = mymalloc(
@@ -94,13 +101,11 @@ pub unsafe extern "C" fn Pobsopen(
     ) as *mut libc::c_int;
     let ref mut fresh2 = (*rv).next;
     *fresh2 = mymalloc(
-        (n as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (n as libc::c_ulong).wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
     ) as *mut libc::c_int;
     let ref mut fresh3 = (*rv).prev;
     *fresh3 = mymalloc(
-        (n as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (n as libc::c_ulong).wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
     ) as *mut libc::c_int;
     (*rv).N = n;
     (*rv).Npoly = n_obs;
@@ -112,10 +117,8 @@ pub unsafe extern "C" fn Pobsopen(
         end = start + (**obs.offset(poly_i as isize)).pn - 1 as libc::c_int;
         pt_i = 0 as libc::c_int;
         while pt_i < (**obs.offset(poly_i as isize)).pn {
-            *((*rv).P)
-                .offset(
-                    i as isize,
-                ) = *((**obs.offset(poly_i as isize)).ps).offset(pt_i as isize);
+            *((*rv).P).offset(i as isize) =
+                *((**obs.offset(poly_i as isize)).ps).offset(pt_i as isize);
             *((*rv).next).offset(i as isize) = i + 1 as libc::c_int;
             *((*rv).prev).offset(i as isize) = i - 1 as libc::c_int;
             i += 1;
@@ -180,18 +183,16 @@ pub unsafe extern "C" fn Pobspath(
         i = *dad.offset(i as isize);
     }
     *ops.offset(j as isize) = p0;
-    if j == 0 as libc::c_int as libc::c_ulong {} else {
+    if j == 0 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"j == 0\0" as *const u8 as *const libc::c_char,
             b"cvt.c\0" as *const u8 as *const libc::c_char,
             128 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 71],
-                &[libc::c_char; 71],
-            >(
+            (*::std::mem::transmute::<&[u8; 71], &[libc::c_char; 71]>(
                 b"int Pobspath(vconfig_t *, Ppoint_t, int, Ppoint_t, int, Ppolyline_t *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     free(ptvis0 as *mut libc::c_void);

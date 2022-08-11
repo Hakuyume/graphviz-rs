@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -124,10 +132,7 @@ extern "C" {
         _: libc::c_float,
     ) -> libc::c_int;
     fn deleteCMajEnv(e: *mut CMajEnv);
-    fn unpackMatrix(
-        packedMat: *mut libc::c_float,
-        n: libc::c_int,
-    ) -> *mut *mut libc::c_float;
+    fn unpackMatrix(packedMat: *mut libc::c_float, n: libc::c_int) -> *mut *mut libc::c_float;
 }
 pub type __uint64_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -254,16 +259,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -279,18 +278,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -298,16 +291,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -349,9 +335,8 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -380,13 +365,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -419,26 +399,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -447,29 +419,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -477,8 +441,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -588,23 +552,15 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
             while j < (*graph.offset(i as isize)).nedges {
                 directionalityExist = (directionalityExist as libc::c_int
                     | (*((*graph.offset(i as isize)).edists).offset(j as isize)
-                        != 0 as libc::c_int as libc::c_float) as libc::c_int) as bool;
+                        != 0 as libc::c_int as libc::c_float) as libc::c_int)
+                    as bool;
                 j += 1;
             }
             i += 1;
         }
     }
     if !directionalityExist {
-        return stress_majorization_kD_mkernel(
-            graph,
-            n,
-            d_coords,
-            nodes,
-            dim,
-            opts,
-            model,
-            maxi,
-        );
+        return stress_majorization_kD_mkernel(graph, n, d_coords, nodes, dim, opts, model, maxi);
     }
     if smart_ini != 0 {
         let mut x: *mut libc::c_double = 0 as *mut libc::c_double;
@@ -625,11 +581,8 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
             }
             i = 0 as libc::c_int;
             while i < n {
-                *(*d_coords.offset((dim - 1 as libc::c_int) as isize))
-                    .offset(
-                        i as isize,
-                    ) = *(*d_coords.offset(1 as libc::c_int as isize))
-                    .offset(i as isize);
+                *(*d_coords.offset((dim - 1 as libc::c_int) as isize)).offset(i as isize) =
+                    *(*d_coords.offset(1 as libc::c_int as isize)).offset(i as isize);
                 i += 1;
             }
         }
@@ -639,69 +592,48 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
             iterations = -(1 as libc::c_int);
             current_block = 13361066454504989531;
         } else if compute_hierarchy(
-                graph,
-                n,
-                abs_tol,
-                relative_tol,
-                y,
-                &mut ordering,
-                &mut levels,
-                &mut num_levels,
-            ) != 0
-            {
+            graph,
+            n,
+            abs_tol,
+            relative_tol,
+            y,
+            &mut ordering,
+            &mut levels,
+            &mut num_levels,
+        ) != 0
+        {
             iterations = -(1 as libc::c_int);
             current_block = 13361066454504989531;
         } else {
             if num_levels < 1 as libc::c_int {
                 return stress_majorization_kD_mkernel(
-                    graph,
-                    n,
-                    d_coords,
-                    nodes,
-                    dim,
-                    opts,
-                    model,
-                    maxi,
+                    graph, n, d_coords, nodes, dim, opts, model, maxi,
                 );
             }
             if levels_gap > 0 as libc::c_int as libc::c_double {
-                let mut displacement: libc::c_double = 0 as libc::c_int
-                    as libc::c_double;
+                let mut displacement: libc::c_double = 0 as libc::c_int as libc::c_double;
                 let mut stop: libc::c_int = 0;
                 i = 0 as libc::c_int;
                 while i < num_levels {
-                    displacement
-                        += if 0 as libc::c_int as libc::c_double
-                            > levels_gap
-                                - (*y
-                                    .offset(
-                                        *ordering.offset(*levels.offset(i as isize) as isize)
-                                            as isize,
-                                    ) + displacement
-                                    - *y
-                                        .offset(
-                                            *ordering
-                                                .offset(
-                                                    (*levels.offset(i as isize) - 1 as libc::c_int) as isize,
-                                                ) as isize,
-                                        ))
-                        {
-                            0 as libc::c_int as libc::c_double
-                        } else {
-                            levels_gap
-                                - (*y
-                                    .offset(
-                                        *ordering.offset(*levels.offset(i as isize) as isize)
-                                            as isize,
-                                    ) + displacement
-                                    - *y
-                                        .offset(
-                                            *ordering
-                                                .offset(
-                                                    (*levels.offset(i as isize) - 1 as libc::c_int) as isize,
-                                                ) as isize,
-                                        ))
-                        };
+                    displacement += if 0 as libc::c_int as libc::c_double
+                        > levels_gap
+                            - (*y.offset(
+                                *ordering.offset(*levels.offset(i as isize) as isize) as isize
+                            ) + displacement
+                                - *y.offset(*ordering.offset(
+                                    (*levels.offset(i as isize) - 1 as libc::c_int) as isize,
+                                ) as isize))
+                    {
+                        0 as libc::c_int as libc::c_double
+                    } else {
+                        levels_gap
+                            - (*y.offset(
+                                *ordering.offset(*levels.offset(i as isize) as isize) as isize
+                            ) + displacement
+                                - *y.offset(*ordering.offset(
+                                    (*levels.offset(i as isize) - 1 as libc::c_int) as isize,
+                                ) as isize))
+                    };
                     stop = if i < num_levels - 1 as libc::c_int {
                         *levels.offset((i + 1 as libc::c_int) as isize)
                     } else {
@@ -773,13 +705,13 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 if Dij.is_null() {
                     agerr(
                         AGWARN,
-                        b"graph is disconnected. Hence, the circuit model\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"graph is disconnected. Hence, the circuit model\n\0" as *const u8
+                            as *const libc::c_char,
                     );
                     agerr(
                         AGPREV,
-                        b"is undefined. Reverting to the shortest path model.\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"is undefined. Reverting to the shortest path model.\n\0" as *const u8
+                            as *const libc::c_char,
                     );
                 }
             } else if model == 3 as libc::c_int {
@@ -795,8 +727,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 if Verbose != 0 {
                     fprintf(
                         stderr,
-                        b"Calculating shortest paths\0" as *const u8
-                            as *const libc::c_char,
+                        b"Calculating shortest paths\0" as *const u8 as *const libc::c_char,
                     );
                 }
                 Dij = compute_apsp_packed(graph, n);
@@ -828,11 +759,8 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 while i < dim {
                     j = 0 as libc::c_int;
                     while j < n {
-                        if fabs(*(*d_coords.offset(i as isize)).offset(j as isize)) > max
-                        {
-                            max = fabs(
-                                *(*d_coords.offset(i as isize)).offset(j as isize),
-                            );
+                        if fabs(*(*d_coords.offset(i as isize)).offset(j as isize)) > max {
+                            max = fabs(*(*d_coords.offset(i as isize)).offset(j as isize));
                         }
                         j += 1;
                     }
@@ -842,16 +770,15 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 while i < dim {
                     j = 0 as libc::c_int;
                     while j < n {
-                        *(*d_coords.offset(i as isize)).offset(j as isize)
-                            *= 10 as libc::c_int as libc::c_double / max;
+                        *(*d_coords.offset(i as isize)).offset(j as isize) *=
+                            10 as libc::c_int as libc::c_double / max;
                         j += 1;
                     }
                     i += 1;
                 }
             }
             if levels_gap > 0 as libc::c_int as libc::c_double {
-                let mut length_0: libc::c_int = n
-                    + n * (n - 1 as libc::c_int) / 2 as libc::c_int;
+                let mut length_0: libc::c_int = n + n * (n - 1 as libc::c_int) / 2 as libc::c_int;
                 let mut sum1: libc::c_double = 0.;
                 let mut sum2: libc::c_double = 0.;
                 let mut scale_ratio: libc::c_double = 0.;
@@ -865,9 +792,8 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                     count_0 += 1;
                     j = i + 1 as libc::c_int;
                     while j < n {
-                        sum2
-                            += distance_kD(d_coords, dim, i, j)
-                                / *Dij.offset(count_0 as isize) as libc::c_double;
+                        sum2 += distance_kD(d_coords, dim, i, j)
+                            / *Dij.offset(count_0 as isize) as libc::c_double;
                         j += 1;
                         count_0 += 1;
                     }
@@ -885,8 +811,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 orthog1(n, *d_coords.offset(i as isize));
                 i += 1;
             }
-            y_0 = *(*d_coords.offset(1 as libc::c_int as isize))
-                .offset(0 as libc::c_int as isize);
+            y_0 = *(*d_coords.offset(1 as libc::c_int as isize)).offset(0 as libc::c_int as isize);
             i = 0 as libc::c_int;
             while i < n {
                 *(*d_coords.offset(1 as libc::c_int as isize)).offset(i as isize) -= y_0;
@@ -906,17 +831,13 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 *fresh0 = f_storage.offset((i * n) as isize);
                 j = 0 as libc::c_int;
                 while j < n {
-                    *(*coords.offset(i as isize))
-                        .offset(
-                            j as isize,
-                        ) = *(*d_coords.offset(i as isize)).offset(j as isize)
-                        as libc::c_float;
+                    *(*coords.offset(i as isize)).offset(j as isize) =
+                        *(*d_coords.offset(i as isize)).offset(j as isize) as libc::c_float;
                     j += 1;
                 }
                 i += 1;
             }
-            constant_term = (n * (n - 1 as libc::c_int) / 2 as libc::c_int)
-                as libc::c_float;
+            constant_term = (n * (n - 1 as libc::c_int) / 2 as libc::c_int) as libc::c_float;
             if Verbose != 0 {
                 fprintf(
                     stderr,
@@ -953,10 +874,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
             count = 0 as libc::c_int;
             i = 0 as libc::c_int;
             while i < n {
-                *lap2
-                    .offset(
-                        count as isize,
-                    ) = *degrees.offset(i as isize) as libc::c_float;
+                *lap2.offset(count as isize) = *degrees.offset(i as isize) as libc::c_float;
                 i += 1;
                 count += step;
                 step -= 1;
@@ -973,8 +891,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
             k = 1 as libc::c_int;
             while k < dim {
                 let ref mut fresh2 = *b.offset(k as isize);
-                *fresh2 = (*b.offset(0 as libc::c_int as isize))
-                    .offset((k * n) as isize);
+                *fresh2 = (*b.offset(0 as libc::c_int as isize)).offset((k * n) as isize);
                 k += 1;
             }
             tmp_coords = gcalloc(
@@ -1005,11 +922,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 i = 0 as libc::c_int;
                 while i < n - 1 as libc::c_int {
                     len = n - i - 1 as libc::c_int;
-                    set_vector_valf(
-                        n,
-                        0 as libc::c_int as libc::c_float,
-                        dist_accumulator,
-                    );
+                    set_vector_valf(n, 0 as libc::c_int as libc::c_float, dist_accumulator);
                     k = 0 as libc::c_int;
                     while k < dim {
                         set_vector_valf(
@@ -1026,12 +939,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                                 .offset(1 as libc::c_int as isize),
                         );
                         square_vec(len, tmp_coords);
-                        vectors_additionf(
-                            len,
-                            tmp_coords,
-                            dist_accumulator,
-                            dist_accumulator,
-                        );
+                        vectors_additionf(len, tmp_coords, dist_accumulator, dist_accumulator);
                         k += 1;
                     }
                     invert_sqrt_vec(len, dist_accumulator);
@@ -1041,8 +949,8 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                             || *dist_accumulator.offset(j as isize)
                                 < 0 as libc::c_int as libc::c_float
                         {
-                            *dist_accumulator
-                                .offset(j as isize) = 0 as libc::c_int as libc::c_float;
+                            *dist_accumulator.offset(j as isize) =
+                                0 as libc::c_int as libc::c_float;
                         }
                         j += 1;
                     }
@@ -1054,8 +962,8 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                         *fresh3 *= *dist_accumulator.offset(j as isize);
                         val = *fresh3;
                         degree += val as libc::c_double;
-                        *degrees.offset((i + j + 1 as libc::c_int) as isize)
-                            -= val as libc::c_double;
+                        *degrees.offset((i + j + 1 as libc::c_int) as isize) -=
+                            val as libc::c_double;
                         j += 1;
                         count += 1;
                     }
@@ -1066,10 +974,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 count = 0 as libc::c_int;
                 i = 0 as libc::c_int;
                 while i < n {
-                    *lap1
-                        .offset(
-                            count as isize,
-                        ) = *degrees.offset(i as isize) as libc::c_float;
+                    *lap1.offset(count as isize) = *degrees.offset(i as isize) as libc::c_float;
                     i += 1;
                     count += step;
                     step -= 1;
@@ -1087,37 +992,25 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 new_stress = 0 as libc::c_int as libc::c_double;
                 k = 0 as libc::c_int;
                 while k < dim {
-                    new_stress
-                        += vectors_inner_productf(
-                            n,
-                            *coords.offset(k as isize),
-                            *b.offset(k as isize),
-                        );
+                    new_stress += vectors_inner_productf(
+                        n,
+                        *coords.offset(k as isize),
+                        *b.offset(k as isize),
+                    );
                     k += 1;
                 }
                 new_stress *= 2 as libc::c_int as libc::c_double;
                 new_stress += constant_term as libc::c_double;
                 k = 0 as libc::c_int;
                 while k < dim {
-                    right_mult_with_vector_ff(
-                        lap2,
-                        n,
-                        *coords.offset(k as isize),
-                        tmp_coords,
-                    );
-                    new_stress
-                        -= vectors_inner_productf(
-                            n,
-                            *coords.offset(k as isize),
-                            tmp_coords,
-                        );
+                    right_mult_with_vector_ff(lap2, n, *coords.offset(k as isize), tmp_coords);
+                    new_stress -= vectors_inner_productf(n, *coords.offset(k as isize), tmp_coords);
                     k += 1;
                 }
-                converged = fabs(new_stress - old_stress) / fabs(old_stress + 1e-10f64)
-                    < Epsilon;
+                converged = fabs(new_stress - old_stress) / fabs(old_stress + 1e-10f64) < Epsilon;
                 converged = (converged as libc::c_int
-                    | (iterations > 1 as libc::c_int && new_stress > old_stress)
-                        as libc::c_int) as bool;
+                    | (iterations > 1 as libc::c_int && new_stress > old_stress) as libc::c_int)
+                    as bool;
                 old_stress = new_stress;
                 k = 0 as libc::c_int;
                 while k < dim {
@@ -1133,14 +1026,14 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                             levels_gap as libc::c_float,
                         );
                     } else if conjugate_gradient_mkernel(
-                            lap2,
-                            *coords.offset(k as isize),
-                            *b.offset(k as isize),
-                            n,
-                            conj_tol,
-                            n,
-                        ) != 0
-                        {
+                        lap2,
+                        *coords.offset(k as isize),
+                        *b.offset(k as isize),
+                        n,
+                        conj_tol,
+                        n,
+                    ) != 0
+                    {
                         iterations = -(1 as libc::c_int);
                         current_block = 13361066454504989531;
                         break 's_997;
@@ -1159,19 +1052,14 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                         while i < dim {
                             j = 0 as libc::c_int;
                             while j < n {
-                                *(*d_coords.offset(i as isize))
-                                    .offset(
-                                        j as isize,
-                                    ) = *(*coords.offset(i as isize)).offset(j as isize)
-                                    as libc::c_double;
+                                *(*d_coords.offset(i as isize)).offset(j as isize) =
+                                    *(*coords.offset(i as isize)).offset(j as isize)
+                                        as libc::c_double;
                                 j += 1;
                             }
                             i += 1;
                         }
-                        free(
-                            *coords.offset(0 as libc::c_int as isize)
-                                as *mut libc::c_void,
-                        );
+                        free(*coords.offset(0 as libc::c_int as isize) as *mut libc::c_void);
                         free(coords as *mut libc::c_void);
                     }
                     if !b.is_null() {

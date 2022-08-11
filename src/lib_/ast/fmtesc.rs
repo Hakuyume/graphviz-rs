@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -74,9 +82,11 @@ pub unsafe extern "C" fn fmtquote(
         let mut c: libc::c_int = *fresh1 as libc::c_int;
         if flags & 0x2 as libc::c_int == 0
             && (*(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                & _IScntrl as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _IScntrl as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
                 || *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                    & _ISprint as libc::c_int as libc::c_ushort as libc::c_int == 0
+                    & _ISprint as libc::c_int as libc::c_ushort as libc::c_int
+                    == 0
                 || c == '\\' as i32)
         {
             escaped = 1 as libc::c_int;
@@ -113,13 +123,11 @@ pub unsafe extern "C" fn fmtquote(
                     if flags & 0x8 as libc::c_int == 0 || c & 0o200 as libc::c_int == 0 {
                         let fresh3 = b;
                         b = b.offset(1);
-                        *fresh3 = ('0' as i32
-                            + (c >> 6 as libc::c_int & 0o7 as libc::c_int))
+                        *fresh3 = ('0' as i32 + (c >> 6 as libc::c_int & 0o7 as libc::c_int))
                             as libc::c_char;
                         let fresh4 = b;
                         b = b.offset(1);
-                        *fresh4 = ('0' as i32
-                            + (c >> 3 as libc::c_int & 0o7 as libc::c_int))
+                        *fresh4 = ('0' as i32 + (c >> 3 as libc::c_int & 0o7 as libc::c_int))
                             as libc::c_char;
                         c = '0' as i32 + (c & 0o7 as libc::c_int);
                     } else {
@@ -138,32 +146,29 @@ pub unsafe extern "C" fn fmtquote(
                 c = *fresh6 as libc::c_int;
             }
         } else if !qe.is_null() && !(strchr(qe, c)).is_null()
-                || flags & 0x4 as libc::c_int != 0 && shell == 0
-                    && (c == '$' as i32 || c == '`' as i32)
-            {
+            || flags & 0x4 as libc::c_int != 0 && shell == 0 && (c == '$' as i32 || c == '`' as i32)
+        {
             escaped = 1 as libc::c_int;
             let fresh7 = b;
             b = b.offset(1);
             *fresh7 = '\\' as i32 as libc::c_char;
-        } else if spaced == 0 && escaped == 0
-                && (*(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                    & _ISspace as libc::c_int as libc::c_ushort as libc::c_int != 0
-                    || (flags & 0x4 as libc::c_int != 0 || shell != 0)
-                        && (!(strchr(
-                            b"\";~&|()<>[]*?\0" as *const u8 as *const libc::c_char,
-                            c,
-                        ))
-                            .is_null()
-                            || c == '#' as i32
-                                && (b == f
-                                    || *(*__ctype_b_loc())
-                                        .offset(
-                                            *b.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                                                as isize,
-                                        ) as libc::c_int
-                                        & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
-                                        != 0)))
-            {
+        } else if spaced == 0
+            && escaped == 0
+            && (*(*__ctype_b_loc()).offset(c as isize) as libc::c_int
+                & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
+                || (flags & 0x4 as libc::c_int != 0 || shell != 0)
+                    && (!(strchr(b"\";~&|()<>[]*?\0" as *const u8 as *const libc::c_char, c))
+                        .is_null()
+                        || c == '#' as i32
+                            && (b == f
+                                || *(*__ctype_b_loc())
+                                    .offset(*b.offset(-(1 as libc::c_int as isize)) as libc::c_int
+                                        as isize)
+                                    as libc::c_int
+                                    & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+                                    != 0)))
+        {
             spaced = 1 as libc::c_int;
         }
         let fresh8 = b;
@@ -194,7 +199,13 @@ pub unsafe extern "C" fn fmtesq(
     mut as_0: *const libc::c_char,
     mut qs: *const libc::c_char,
 ) -> *mut libc::c_char {
-    return fmtquote(as_0, 0 as *const libc::c_char, qs, strlen(as_0), 0 as libc::c_int);
+    return fmtquote(
+        as_0,
+        0 as *const libc::c_char,
+        qs,
+        strlen(as_0),
+        0 as libc::c_int,
+    );
 }
 #[no_mangle]
 pub unsafe extern "C" fn fmtesc(mut as_0: *const libc::c_char) -> *mut libc::c_char {

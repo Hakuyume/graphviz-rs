@@ -1,30 +1,27 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn free(_: *mut libc::c_void);
     fn fabs(_: libc::c_double) -> libc::c_double;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn gmalloc(_: size_t) -> *mut libc::c_void;
     fn orthog1f(n: libc::c_int, vec: *mut libc::c_float);
     fn set_vector_valf(n: libc::c_int, val: libc::c_float, result: *mut libc::c_float);
-    fn quicksort_placef(
-        _: *mut libc::c_float,
-        _: *mut libc::c_int,
-        _: libc::c_int,
-        _: libc::c_int,
-    );
+    fn quicksort_placef(_: *mut libc::c_float, _: *mut libc::c_int, _: libc::c_int, _: libc::c_int);
 }
 pub type size_t = libc::c_ulong;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct CMajEnv {
@@ -95,8 +92,8 @@ unsafe extern "C" fn ensureMonotonicOrdering(
 ) {
     let mut i: libc::c_int = 0;
     let mut node: libc::c_int = 0;
-    let mut lower_bound: libc::c_float = *place_0
-        .offset(*ordering.offset(0 as libc::c_int as isize) as isize);
+    let mut lower_bound: libc::c_float =
+        *place_0.offset(*ordering.offset(0 as libc::c_int as isize) as isize);
     i = 1 as libc::c_int;
     while i < n {
         node = *ordering.offset(i as isize);
@@ -132,8 +129,7 @@ unsafe extern "C" fn ensureMonotonicOrderingWithGaps(
                 max_in_level = *levels.offset(level as isize);
             }
             lower_bound = if i > 0 as libc::c_int {
-                *place_0
-                    .offset(*ordering.offset((i - 1 as libc::c_int) as isize) as isize)
+                *place_0.offset(*ordering.offset((i - 1 as libc::c_int) as isize) as isize)
                     + levels_gap
             } else {
                 -1e9f64 as libc::c_float
@@ -158,15 +154,9 @@ unsafe extern "C" fn computeHierarchyBoundaries(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < num_levels {
-        *hierarchy_boundaries
-            .offset(
-                i as isize,
-            ) = *place_0
-            .offset(
-                *ordering
-                    .offset((*levels.offset(i as isize) - 1 as libc::c_int) as isize)
-                    as isize,
-            );
+        *hierarchy_boundaries.offset(i as isize) = *place_0.offset(
+            *ordering.offset((*levels.offset(i as isize) - 1 as libc::c_int) as isize) as isize,
+        );
         i += 1;
     }
 }
@@ -260,9 +250,7 @@ pub unsafe extern "C" fn constrained_majorization_new(
             cur_place = *place_0.offset(*ordering.offset(left as isize) as isize);
             right = left + 1 as libc::c_int;
             while right < n {
-                if *place_0.offset(*ordering.offset(right as isize) as isize)
-                    != cur_place
-                {
+                if *place_0.offset(*ordering.offset(right as isize) as isize) != cur_place {
                     break;
                 }
                 right += 1;
@@ -275,16 +263,12 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 j = 0 as libc::c_int;
                 while j < n {
                     if !(j == node) {
-                        new_place_i
-                            += *lap_node.offset(j as isize)
-                                * *place_0.offset(j as isize);
+                        new_place_i += *lap_node.offset(j as isize) * *place_0.offset(j as isize);
                     }
                     j += 1;
                 }
-                *desired_place
-                    .offset(
-                        node as isize,
-                    ) = new_place_i / -*lap_node.offset(node as isize);
+                *desired_place.offset(node as isize) =
+                    new_place_i / -*lap_node.offset(node as isize);
                 i += 1;
             }
             block_len = 0 as libc::c_int;
@@ -341,17 +325,14 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 lap_node = *lap.offset(node as isize);
                 j = 0 as libc::c_int;
                 while j < i {
-                    toBlockConnectivity
-                        -= *lap_node.offset(*block.offset(j as isize) as isize);
+                    toBlockConnectivity -= *lap_node.offset(*block.offset(j as isize) as isize);
                     j += 1;
                 }
                 toBlockConnectivity *= 2 as libc::c_int as libc::c_float;
                 des_place_block = (block_deg * des_place_block
-                    + -*lap_node.offset(node as isize)
-                        * *desired_place.offset(node as isize)
+                    + -*lap_node.offset(node as isize) * *desired_place.offset(node as isize)
                     + toBlockConnectivity * cur_place)
-                    / (block_deg - *lap_node.offset(node as isize)
-                        + toBlockConnectivity);
+                    / (block_deg - *lap_node.offset(node as isize) + toBlockConnectivity);
                 *prefix_desired_place.offset(i as isize) = des_place_block;
                 block_deg += toBlockConnectivity - *lap_node.offset(node as isize);
                 i += 1;
@@ -365,17 +346,14 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 lap_node = *lap.offset(node as isize);
                 j = i + 1 as libc::c_int;
                 while j < block_len {
-                    toBlockConnectivity
-                        -= *lap_node.offset(*block.offset(j as isize) as isize);
+                    toBlockConnectivity -= *lap_node.offset(*block.offset(j as isize) as isize);
                     j += 1;
                 }
                 toBlockConnectivity *= 2 as libc::c_int as libc::c_float;
                 des_place_block = (block_deg * des_place_block
-                    + -*lap_node.offset(node as isize)
-                        * *desired_place.offset(node as isize)
+                    + -*lap_node.offset(node as isize) * *desired_place.offset(node as isize)
                     + toBlockConnectivity * cur_place)
-                    / (block_deg - *lap_node.offset(node as isize)
-                        + toBlockConnectivity);
+                    / (block_deg - *lap_node.offset(node as isize) + toBlockConnectivity);
                 *suffix_desired_place.offset(i as isize) = des_place_block;
                 block_deg += toBlockConnectivity - *lap_node.offset(node as isize);
                 i -= 1;
@@ -402,8 +380,7 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 }
                 movement = (block_len - i) as libc::c_double
                     * fabs((suffix_des_place - cur_place) as libc::c_double)
-                    + i as libc::c_double
-                        * fabs((prefix_des_place - cur_place) as libc::c_double);
+                    + i as libc::c_double * fabs((prefix_des_place - cur_place) as libc::c_double);
                 if movement > max_movement {
                     max_movement = movement;
                     best_i = i;
@@ -420,8 +397,7 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 if right >= n {
                     upper_bound = 1e9f64 as libc::c_float;
                 } else {
-                    upper_bound = *place_0
-                        .offset(*ordering.offset(right as isize) as isize);
+                    upper_bound = *place_0.offset(*ordering.offset(right as isize) as isize);
                 }
                 suffix_des_place = if suffix_des_place < upper_bound {
                     suffix_des_place
@@ -445,14 +421,12 @@ pub unsafe extern "C" fn constrained_majorization_new(
                 }
                 i = 0 as libc::c_int;
                 while i < best_i {
-                    *place_0
-                        .offset(*block.offset(i as isize) as isize) = prefix_des_place;
+                    *place_0.offset(*block.offset(i as isize) as isize) = prefix_des_place;
                     i += 1;
                 }
                 i = best_i;
                 while i < block_len {
-                    *place_0
-                        .offset(*block.offset(i as isize) as isize) = suffix_des_place;
+                    *place_0.offset(*block.offset(i as isize) as isize) = suffix_des_place;
                     i += 1;
                 }
                 lower_bound = suffix_des_place;
@@ -489,7 +463,7 @@ unsafe extern "C" fn compare_incr(
     if *place.offset(*(a as *const libc::c_int) as isize)
         > *place.offset(*(b as *const libc::c_int) as isize)
     {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
         if *place.offset(*(a as *const libc::c_int) as isize)
             < *place.offset(*(b as *const libc::c_int) as isize)
@@ -537,16 +511,12 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
         i = 0 as libc::c_int;
         while i < (*e).n {
             *old_place.offset(i as isize) = *place.offset(i as isize);
-            *g
-                .offset(
-                    i as isize,
-                ) = 2 as libc::c_int as libc::c_float * *b.offset(i as isize);
+            *g.offset(i as isize) = 2 as libc::c_int as libc::c_float * *b.offset(i as isize);
             j = 0 as libc::c_int;
             while j < (*e).n {
-                *g.offset(i as isize)
-                    -= 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *place.offset(j as isize);
+                *g.offset(i as isize) -= 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *place.offset(j as isize);
                 j += 1;
             }
             i += 1;
@@ -557,10 +527,9 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
             r = 0 as libc::c_int as libc::c_float;
             j = 0 as libc::c_int;
             while j < (*e).n {
-                r
-                    += 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *g.offset(j as isize);
+                r += 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *g.offset(j as isize);
                 j += 1;
             }
             denominator -= r * *g.offset(i as isize);
@@ -602,10 +571,8 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
             let mut u: libc::c_int = 0;
             let mut l: libc::c_int = 0;
             qsort(
-                ordering.offset(*levels.offset(i as isize) as isize)
-                    as *mut libc::c_void,
-                (endOfLevel as size_t)
-                    .wrapping_sub(*levels.offset(i as isize) as libc::c_ulong),
+                ordering.offset(*levels.offset(i as isize) as isize) as *mut libc::c_void,
+                (endOfLevel as size_t).wrapping_sub(*levels.offset(i as isize) as libc::c_ulong),
                 ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
                 Some(
                     compare_incr
@@ -624,11 +591,10 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
             ui = ui + 1;
             u = *ordering.offset(fresh7 as isize);
             if *place.offset(l as isize) + levels_gap > *place.offset(u as isize) {
-                let mut sum: libc::c_float = *place.offset(l as isize)
-                    + *place.offset(u as isize)
+                let mut sum: libc::c_float = *place.offset(l as isize) + *place.offset(u as isize)
                     - levels_gap
-                        * (*((*e).lev).offset(l as isize)
-                            + *((*e).lev).offset(u as isize)) as libc::c_float;
+                        * (*((*e).lev).offset(l as isize) + *((*e).lev).offset(u as isize))
+                            as libc::c_float;
                 let mut w: libc::c_float = 2 as libc::c_int as libc::c_float;
                 let mut avgPos: libc::c_float = sum / w;
                 let mut pos: libc::c_float = 0.;
@@ -638,8 +604,7 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
                     if ui < endOfLevel {
                         u = *ordering.offset(ui as isize);
                         pos = *place.offset(u as isize)
-                            - levels_gap
-                                * *((*e).lev).offset(u as isize) as libc::c_float;
+                            - levels_gap * *((*e).lev).offset(u as isize) as libc::c_float;
                         if pos < avgPos {
                             ui += 1;
                             w += 1.;
@@ -651,8 +616,7 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
                     if li >= 0 as libc::c_int {
                         l = *ordering.offset(li as isize);
                         pos = *place.offset(l as isize)
-                            - levels_gap
-                                * *((*e).lev).offset(l as isize) as libc::c_float;
+                            - levels_gap * *((*e).lev).offset(l as isize) as libc::c_float;
                         if pos > avgPos {
                             li -= 1;
                             w += 1.;
@@ -667,10 +631,7 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
                 }
                 j = li + 1 as libc::c_int;
                 while j < ui {
-                    *place
-                        .offset(
-                            *ordering.offset(j as isize) as isize,
-                        ) = avgPos
+                    *place.offset(*ordering.offset(j as isize) as isize) = avgPos
                         + levels_gap
                             * *((*e).lev).offset(*ordering.offset(j as isize) as isize)
                                 as libc::c_float;
@@ -681,10 +642,7 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
         }
         i = 0 as libc::c_int;
         while i < (*e).n {
-            *d
-                .offset(
-                    i as isize,
-                ) = *place.offset(i as isize) - *old_place.offset(i as isize);
+            *d.offset(i as isize) = *place.offset(i as isize) - *old_place.offset(i as isize);
             i += 1;
         }
         numerator = 0 as libc::c_int as libc::c_float;
@@ -695,10 +653,9 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
             r = 0 as libc::c_int as libc::c_float;
             j = 0 as libc::c_int;
             while j < (*e).n {
-                r
-                    += 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *d.offset(j as isize);
+                r += 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *d.offset(j as isize);
                 j += 1;
             }
             denominator += r * *d.offset(i as isize);
@@ -707,18 +664,13 @@ pub unsafe extern "C" fn constrained_majorization_gradient_projection(
         beta = numerator / denominator;
         i = 0 as libc::c_int;
         while i < (*e).n {
-            if beta > 0 as libc::c_int as libc::c_float
-                && (beta as libc::c_double) < 1.0f64
-            {
-                *place
-                    .offset(
-                        i as isize,
-                    ) = *old_place.offset(i as isize) + beta * *d.offset(i as isize);
+            if beta > 0 as libc::c_int as libc::c_float && (beta as libc::c_double) < 1.0f64 {
+                *place.offset(i as isize) =
+                    *old_place.offset(i as isize) + beta * *d.offset(i as isize);
             }
-            tmptest = fabs(
-                (*place.offset(i as isize) - *old_place.offset(i as isize))
-                    as libc::c_double,
-            ) as libc::c_float;
+            tmptest =
+                fabs((*place.offset(i as isize) - *old_place.offset(i as isize)) as libc::c_double)
+                    as libc::c_float;
             if test < tmptest {
                 test = tmptest;
             }
@@ -785,14 +737,7 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
     if max_iterations <= 0 as libc::c_int {
         return 0 as libc::c_int;
     }
-    ensureMonotonicOrderingWithGaps(
-        place_0,
-        n,
-        ordering,
-        levels,
-        num_levels,
-        levels_gap,
-    );
+    ensureMonotonicOrderingWithGaps(place_0, n, ordering, levels, num_levels, levels_gap);
     desired_place = (*e).fArray1;
     prefix_desired_place = (*e).fArray2;
     suffix_desired_place = (*e).fArray3;
@@ -826,21 +771,15 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
             let mut suffix_des_place: libc::c_float = 0.;
             cur_place = *place_0.offset(*ordering.offset(left as isize) as isize);
             target_place = cur_place;
-            *gap
-                .offset(
-                    *ordering.offset(left as isize) as isize,
-                ) = 0 as libc::c_int as libc::c_float;
+            *gap.offset(*ordering.offset(left as isize) as isize) =
+                0 as libc::c_int as libc::c_float;
             right = left + 1 as libc::c_int;
             while right < n {
-                if *lev.offset(right as isize)
-                    > *lev.offset((right - 1 as libc::c_int) as isize)
-                {
+                if *lev.offset(right as isize) > *lev.offset((right - 1 as libc::c_int) as isize) {
                     target_place += levels_gap;
                 }
                 node = *ordering.offset(right as isize);
-                if fabs(
-                    (*place_0.offset(node as isize) - target_place) as libc::c_double,
-                ) > 1e-9f64
+                if fabs((*place_0.offset(node as isize) - target_place) as libc::c_double) > 1e-9f64
                 {
                     break;
                 }
@@ -855,17 +794,12 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 j = 0 as libc::c_int;
                 while j < n {
                     if !(j == node) {
-                        new_place_i
-                            += *lap_node.offset(j as isize)
-                                * *place_0.offset(j as isize);
+                        new_place_i += *lap_node.offset(j as isize) * *place_0.offset(j as isize);
                     }
                     j += 1;
                 }
-                *desired_place
-                    .offset(
-                        node as isize,
-                    ) = new_place_i / -*lap_node.offset(node as isize)
-                    - *gap.offset(node as isize);
+                *desired_place.offset(node as isize) =
+                    new_place_i / -*lap_node.offset(node as isize) - *gap.offset(node as isize);
                 i += 1;
             }
             block_len = 0 as libc::c_int;
@@ -923,24 +857,20 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 lap_node = *lap.offset(node as isize);
                 j = 0 as libc::c_int;
                 while j < i {
-                    toBlockConnectivity
-                        -= *lap_node.offset(*block.offset(j as isize) as isize);
+                    toBlockConnectivity -= *lap_node.offset(*block.offset(j as isize) as isize);
                     j += 1;
                 }
                 toBlockConnectivity *= 2 as libc::c_int as libc::c_float;
                 des_place_block = (block_deg * des_place_block
-                    + -*lap_node.offset(node as isize)
-                        * *desired_place.offset(node as isize)
+                    + -*lap_node.offset(node as isize) * *desired_place.offset(node as isize)
                     + toBlockConnectivity * cur_place)
-                    / (block_deg - *lap_node.offset(node as isize)
-                        + toBlockConnectivity);
+                    / (block_deg - *lap_node.offset(node as isize) + toBlockConnectivity);
                 *prefix_desired_place.offset(i as isize) = des_place_block;
                 block_deg += toBlockConnectivity - *lap_node.offset(node as isize);
                 i += 1;
             }
             if block_len == n {
-                *prefix_desired_place
-                    .offset((n - 1 as libc::c_int) as isize) = cur_place;
+                *prefix_desired_place.offset((n - 1 as libc::c_int) as isize) = cur_place;
             }
             des_place_block = 0 as libc::c_int as libc::c_float;
             block_deg = 0 as libc::c_int as libc::c_float;
@@ -951,17 +881,14 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 lap_node = *lap.offset(node as isize);
                 j = i + 1 as libc::c_int;
                 while j < block_len {
-                    toBlockConnectivity
-                        -= *lap_node.offset(*block.offset(j as isize) as isize);
+                    toBlockConnectivity -= *lap_node.offset(*block.offset(j as isize) as isize);
                     j += 1;
                 }
                 toBlockConnectivity *= 2 as libc::c_int as libc::c_float;
                 des_place_block = (block_deg * des_place_block
-                    + -*lap_node.offset(node as isize)
-                        * *desired_place.offset(node as isize)
+                    + -*lap_node.offset(node as isize) * *desired_place.offset(node as isize)
                     + toBlockConnectivity * cur_place)
-                    / (block_deg - *lap_node.offset(node as isize)
-                        + toBlockConnectivity);
+                    / (block_deg - *lap_node.offset(node as isize) + toBlockConnectivity);
                 *suffix_desired_place.offset(i as isize) = des_place_block;
                 block_deg += toBlockConnectivity - *lap_node.offset(node as isize);
                 i -= 1;
@@ -991,8 +918,7 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 }
                 movement = (block_len - i) as libc::c_double
                     * fabs((suffix_des_place - cur_place) as libc::c_double)
-                    + i as libc::c_double
-                        * fabs((prefix_des_place - cur_place) as libc::c_double);
+                    + i as libc::c_double * fabs((prefix_des_place - cur_place) as libc::c_double);
                 if movement > max_movement {
                     max_movement = movement;
                     best_i = i;
@@ -1009,26 +935,19 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 if right >= n {
                     upper_bound = 1e9f64 as libc::c_float;
                 } else if *lev.offset(*ordering.offset(right as isize) as isize)
-                        > *lev
-                            .offset(
-                                *ordering.offset((right - 1 as libc::c_int) as isize)
-                                    as isize,
-                            )
-                    {
-                    upper_bound = *place_0
-                        .offset(*ordering.offset(right as isize) as isize) - levels_gap
-                        - *gap
-                            .offset(
-                                *block.offset((block_len - 1 as libc::c_int) as isize)
-                                    as isize,
+                    > *lev.offset(*ordering.offset((right - 1 as libc::c_int) as isize) as isize)
+                {
+                    upper_bound =
+                        *place_0.offset(*ordering.offset(right as isize) as isize)
+                            - levels_gap
+                            - *gap.offset(
+                                *block.offset((block_len - 1 as libc::c_int) as isize) as isize
                             );
                 } else {
-                    upper_bound = *place_0
-                        .offset(*ordering.offset(right as isize) as isize)
-                        - *gap
-                            .offset(
-                                *block.offset((block_len - 1 as libc::c_int) as isize)
-                                    as isize,
+                    upper_bound =
+                        *place_0.offset(*ordering.offset(right as isize) as isize)
+                            - *gap.offset(
+                                *block.offset((block_len - 1 as libc::c_int) as isize) as isize
                             );
                 }
                 suffix_des_place = if suffix_des_place < upper_bound {
@@ -1053,41 +972,27 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                 }
                 i = 0 as libc::c_int;
                 while i < best_i {
-                    *place_0
-                        .offset(
-                            *block.offset(i as isize) as isize,
-                        ) = prefix_des_place
-                        + *gap.offset(*block.offset(i as isize) as isize);
+                    *place_0.offset(*block.offset(i as isize) as isize) =
+                        prefix_des_place + *gap.offset(*block.offset(i as isize) as isize);
                     i += 1;
                 }
                 i = best_i;
                 while i < block_len {
-                    *place_0
-                        .offset(
-                            *block.offset(i as isize) as isize,
-                        ) = suffix_des_place
-                        + *gap.offset(*block.offset(i as isize) as isize);
+                    *place_0.offset(*block.offset(i as isize) as isize) =
+                        suffix_des_place + *gap.offset(*block.offset(i as isize) as isize);
                     i += 1;
                 }
                 if right < n
                     && *lev.offset(*ordering.offset(right as isize) as isize)
                         > *lev
-                            .offset(
-                                *ordering.offset((right - 1 as libc::c_int) as isize)
-                                    as isize,
-                            )
+                            .offset(*ordering.offset((right - 1 as libc::c_int) as isize) as isize)
                 {
                     lower_bound = *place_0
-                        .offset(
-                            *block.offset((block_len - 1 as libc::c_int) as isize)
-                                as isize,
-                        ) + levels_gap;
+                        .offset(*block.offset((block_len - 1 as libc::c_int) as isize) as isize)
+                        + levels_gap;
                 } else {
                     lower_bound = *place_0
-                        .offset(
-                            *block.offset((block_len - 1 as libc::c_int) as isize)
-                                as isize,
-                        );
+                        .offset(*block.offset((block_len - 1 as libc::c_int) as isize) as isize);
                 }
                 i = left;
                 while i < right {
@@ -1098,22 +1003,15 @@ pub unsafe extern "C" fn constrained_majorization_new_with_gaps(
                     && fabs((prefix_des_place - cur_place) as libc::c_double) < 1e-2f64
                     && fabs((suffix_des_place - cur_place) as libc::c_double) < 1e-2f64;
             } else if right < n
-                    && *lev.offset(*ordering.offset(right as isize) as isize)
-                        > *lev
-                            .offset(
-                                *ordering.offset((right - 1 as libc::c_int) as isize)
-                                    as isize,
-                            )
-                {
+                && *lev.offset(*ordering.offset(right as isize) as isize)
+                    > *lev.offset(*ordering.offset((right - 1 as libc::c_int) as isize) as isize)
+            {
                 lower_bound = *place_0
-                    .offset(
-                        *block.offset((block_len - 1 as libc::c_int) as isize) as isize,
-                    ) + levels_gap;
+                    .offset(*block.offset((block_len - 1 as libc::c_int) as isize) as isize)
+                    + levels_gap;
             } else {
                 lower_bound = *place_0
-                    .offset(
-                        *block.offset((block_len - 1 as libc::c_int) as isize) as isize,
-                    );
+                    .offset(*block.offset((block_len - 1 as libc::c_int) as isize) as isize);
             }
             left = right;
         }
@@ -1156,8 +1054,8 @@ pub unsafe extern "C" fn initConstrainedMajorization(
     let mut i: libc::c_int = 0;
     let mut level: libc::c_int = -(1 as libc::c_int);
     let mut start_of_level_above: libc::c_int = 0 as libc::c_int;
-    let mut e: *mut CMajEnv = gmalloc(::std::mem::size_of::<CMajEnv>() as libc::c_ulong)
-        as *mut CMajEnv;
+    let mut e: *mut CMajEnv =
+        gmalloc(::std::mem::size_of::<CMajEnv>() as libc::c_ulong) as *mut CMajEnv;
     let ref mut fresh11 = (*e).A;
     *fresh11 = 0 as *mut *mut libc::c_float;
     (*e).n = n;

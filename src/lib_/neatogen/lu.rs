@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -6,18 +14,13 @@ extern "C" {
     fn fabs(_: libc::c_double) -> libc::c_double;
     fn free(_: *mut libc::c_void);
     fn free_array(rv: *mut *mut libc::c_double);
-    fn new_array(
-        i: libc::c_int,
-        j: libc::c_int,
-        val: libc::c_double,
-    ) -> *mut *mut libc::c_double;
+    fn new_array(i: libc::c_int, j: libc::c_int, val: libc::c_double) -> *mut *mut libc::c_double;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
 }
 pub type size_t = libc::c_ulong;
-static mut scales: *mut libc::c_double = 0 as *const libc::c_double
-    as *mut libc::c_double;
-static mut lu: *mut *mut libc::c_double = 0 as *const *mut libc::c_double
-    as *mut *mut libc::c_double;
+static mut scales: *mut libc::c_double = 0 as *const libc::c_double as *mut libc::c_double;
+static mut lu: *mut *mut libc::c_double =
+    0 as *const *mut libc::c_double as *mut *mut libc::c_double;
 static mut ps: *mut libc::c_int = 0 as *const libc::c_int as *mut libc::c_int;
 #[no_mangle]
 pub unsafe extern "C" fn lu_decompose(
@@ -37,8 +40,10 @@ pub unsafe extern "C" fn lu_decompose(
     }
     lu = new_array(n, n, 0.0f64);
     free(ps as *mut libc::c_void);
-    ps = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    ps = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     free(scales as *mut libc::c_void);
     scales = gcalloc(
         n as size_t,
@@ -68,9 +73,8 @@ pub unsafe extern "C" fn lu_decompose(
         biggest = 0.0f64;
         i = k;
         while i < n {
-            tempf = fabs(
-                *(*lu.offset(*ps.offset(i as isize) as isize)).offset(k as isize),
-            ) * *scales.offset(*ps.offset(i as isize) as isize);
+            tempf = fabs(*(*lu.offset(*ps.offset(i as isize) as isize)).offset(k as isize))
+                * *scales.offset(*ps.offset(i as isize) as isize);
             if biggest < tempf {
                 biggest = tempf;
                 pivotindex = i;
@@ -88,15 +92,12 @@ pub unsafe extern "C" fn lu_decompose(
         pivot = *(*lu.offset(*ps.offset(k as isize) as isize)).offset(k as isize);
         i = k + 1 as libc::c_int;
         while i < n {
-            mult = *(*lu.offset(*ps.offset(i as isize) as isize)).offset(k as isize)
-                / pivot;
+            mult = *(*lu.offset(*ps.offset(i as isize) as isize)).offset(k as isize) / pivot;
             *(*lu.offset(*ps.offset(i as isize) as isize)).offset(k as isize) = mult;
             j = k + 1 as libc::c_int;
             while j < n {
-                *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize)
-                    -= mult
-                        * *(*lu.offset(*ps.offset(k as isize) as isize))
-                            .offset(j as isize);
+                *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize) -=
+                    mult * *(*lu.offset(*ps.offset(k as isize) as isize)).offset(j as isize);
                 j += 1;
             }
             i += 1;
@@ -104,7 +105,8 @@ pub unsafe extern "C" fn lu_decompose(
         k += 1;
     }
     if *(*lu.offset(*ps.offset((n - 1 as libc::c_int) as isize) as isize))
-        .offset((n - 1 as libc::c_int) as isize) == 0.0f64
+        .offset((n - 1 as libc::c_int) as isize)
+        == 0.0f64
     {
         return 0 as libc::c_int;
     }
@@ -124,9 +126,8 @@ pub unsafe extern "C" fn lu_solve(
         dot = 0.0f64;
         j = 0 as libc::c_int;
         while j < i {
-            dot
-                += *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize)
-                    * *x.offset(j as isize);
+            dot += *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize)
+                * *x.offset(j as isize);
             j += 1;
         }
         *x.offset(i as isize) = *b.offset(*ps.offset(i as isize) as isize) - dot;
@@ -137,15 +138,11 @@ pub unsafe extern "C" fn lu_solve(
         dot = 0.0f64;
         j = i + 1 as libc::c_int;
         while j < n {
-            dot
-                += *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize)
-                    * *x.offset(j as isize);
+            dot += *(*lu.offset(*ps.offset(i as isize) as isize)).offset(j as isize)
+                * *x.offset(j as isize);
             j += 1;
         }
-        *x
-            .offset(
-                i as isize,
-            ) = (*x.offset(i as isize) - dot)
+        *x.offset(i as isize) = (*x.offset(i as isize) - dot)
             / *(*lu.offset(*ps.offset(i as isize) as isize)).offset(i as isize);
         i -= 1;
     }

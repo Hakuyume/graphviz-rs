@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -14,12 +22,7 @@ extern "C" {
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn vmstrdup(_: *mut Vmalloc_t, _: *const libc::c_char) -> *mut libc::c_char;
     fn _err_msg(_: libc::c_int, _: *const libc::c_char, _: ...);
 }
@@ -69,13 +72,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -100,16 +98,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -129,10 +121,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -140,16 +131,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -230,17 +214,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -273,26 +251,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -301,29 +271,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -331,8 +293,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -379,9 +341,8 @@ pub struct Agedge_s {
     pub node: *mut Agnode_t,
 }
 pub type Agedge_t = Agedge_s;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _vmalloc_s {
@@ -491,15 +452,9 @@ pub struct C2RustUnnamed_5 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_6 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -510,7 +465,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -521,7 +476,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -531,7 +486,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -541,27 +496,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -572,7 +514,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -583,7 +525,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -595,7 +537,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -610,9 +552,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -624,7 +564,7 @@ pub struct Expr_s {
     pub file: [*mut Sfio_t; 10],
     pub vm: *mut Vmalloc_t,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -633,7 +573,7 @@ pub type Exerror_f = Option::<
         ...
     ) -> libc::c_int,
 >;
-pub type gvpruserfn = Option::<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
+pub type gvpruserfn = Option<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvprbinding {
@@ -707,7 +647,9 @@ unsafe extern "C" fn bsearch(
     __l = 0 as libc::c_int as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l.wrapping_add(__u).wrapping_div(2 as libc::c_int as libc::c_ulong);
+        __idx = __l
+            .wrapping_add(__u)
+            .wrapping_div(2 as libc::c_int as libc::c_ulong);
         __p = (__base as *const libc::c_char).offset(__idx.wrapping_mul(__size) as isize)
             as *const libc::c_void;
         __comparison = (Some(__compar.expect("non-null function pointer")))
@@ -717,7 +659,7 @@ unsafe extern "C" fn bsearch(
         } else if __comparison > 0 as libc::c_int {
             __l = __idx.wrapping_add(1 as libc::c_int as libc::c_ulong);
         } else {
-            return __p as *mut libc::c_void
+            return __p as *mut libc::c_void;
         }
     }
     return 0 as *mut libc::c_void;
@@ -725,8 +667,7 @@ unsafe extern "C" fn bsearch(
 static mut name_used: libc::c_int = 0;
 #[no_mangle]
 pub unsafe extern "C" fn validTVT(mut c: libc::c_int) -> libc::c_int {
-    return (TV_flat as libc::c_int <= c && c <= TV_prepostrev as libc::c_int)
-        as libc::c_int;
+    return (TV_flat as libc::c_int <= c && c <= TV_prepostrev as libc::c_int) as libc::c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn initGPRState(mut state: *mut Gpr_t, mut vm: *mut Vmalloc_t) {
@@ -754,8 +695,7 @@ pub unsafe extern "C" fn openGPRState(mut info: *mut gpr_info) -> *mut Gpr_t {
     if state.is_null() {
         _err_msg(
             2 as libc::c_int,
-            b"Could not create gvpr state: out of memory\0" as *const u8
-                as *const libc::c_char,
+            b"Could not create gvpr state: out of memory\0" as *const u8 as *const libc::c_char,
         );
         return state;
     }
@@ -835,10 +775,7 @@ pub unsafe extern "C" fn findBinding(
         ::std::mem::size_of::<gvprbinding>() as libc::c_ulong,
         Some(
             bindingcmpf
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     ) as *mut gvprbinding;
     if bp.is_null() {
@@ -851,10 +788,7 @@ pub unsafe extern "C" fn findBinding(
     return bp;
 }
 #[no_mangle]
-pub unsafe extern "C" fn addBindings(
-    mut state: *mut Gpr_t,
-    mut bindings: *mut gvprbinding,
-) {
+pub unsafe extern "C" fn addBindings(mut state: *mut Gpr_t, mut bindings: *mut gvprbinding) {
     let mut n: libc::c_int = 0 as libc::c_int;
     let mut bp: *mut gvprbinding = bindings;
     let mut buf: *mut gvprbinding = 0 as *mut gvprbinding;
@@ -898,10 +832,7 @@ pub unsafe extern "C" fn addBindings(
         ::std::mem::size_of::<gvprbinding>() as libc::c_ulong,
         Some(
             bindingcmpf
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
     let ref mut fresh8 = (*state).bindings;

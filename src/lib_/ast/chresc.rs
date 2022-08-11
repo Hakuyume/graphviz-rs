@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 #[no_mangle]
@@ -28,8 +36,7 @@ pub unsafe extern "C" fn chresc(
                             48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 => {
                                 let fresh2 = s;
                                 s = s.offset(1);
-                                c = (c << 3 as libc::c_int) + *fresh2 as libc::c_int
-                                    - '0' as i32;
+                                c = (c << 3 as libc::c_int) + *fresh2 as libc::c_int - '0' as i32;
                             }
                             _ => {
                                 q = s;
@@ -69,20 +76,19 @@ pub unsafe extern "C" fn chresc(
                             97 | 98 | 99 | 100 | 101 | 102 => {
                                 let fresh3 = s;
                                 s = s.offset(1);
-                                c = (c << 4 as libc::c_int) + *fresh3 as libc::c_int
-                                    - 'a' as i32 + 10 as libc::c_int;
+                                c = (c << 4 as libc::c_int) + *fresh3 as libc::c_int - 'a' as i32
+                                    + 10 as libc::c_int;
                             }
                             65 | 66 | 67 | 68 | 69 | 70 => {
                                 let fresh4 = s;
                                 s = s.offset(1);
-                                c = (c << 4 as libc::c_int) + *fresh4 as libc::c_int
-                                    - 'A' as i32 + 10 as libc::c_int;
+                                c = (c << 4 as libc::c_int) + *fresh4 as libc::c_int - 'A' as i32
+                                    + 10 as libc::c_int;
                             }
                             48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 => {
                                 let fresh5 = s;
                                 s = s.offset(1);
-                                c = (c << 4 as libc::c_int) + *fresh5 as libc::c_int
-                                    - '0' as i32;
+                                c = (c << 4 as libc::c_int) + *fresh5 as libc::c_int - '0' as i32;
                             }
                             _ => {
                                 q = 0 as *const libc::c_char;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -13,12 +21,8 @@ extern "C" {
     fn dtclose(_: *mut Dt_t) -> libc::c_int;
     fn dtwalk(
         _: *mut Dt_t,
-        _: Option::<
-            unsafe extern "C" fn(
-                *mut Dt_t,
-                *mut libc::c_void,
-                *mut libc::c_void,
-            ) -> libc::c_int,
+        _: Option<
+            unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut libc::c_void) -> libc::c_int,
         >,
         _: *mut libc::c_void,
     ) -> libc::c_int;
@@ -152,16 +156,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -177,18 +175,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -196,16 +188,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -247,9 +232,8 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -278,13 +262,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -317,26 +296,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -345,29 +316,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -375,8 +338,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -434,17 +397,18 @@ pub struct gridpt {
     pub j: libc::c_int,
 }
 pub type Grid = _grid;
-pub type walkfn_t = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut libc::c_void) -> libc::c_int,
->;
+pub type walkfn_t =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut libc::c_void) -> libc::c_int>;
 unsafe extern "C" fn newBlock(mut size: libc::c_int) -> *mut block_t {
     let mut newb: *mut block_t = 0 as *mut block_t;
     newb = gmalloc(::std::mem::size_of::<block_t>() as libc::c_ulong) as *mut block_t;
     let ref mut fresh0 = (*newb).next;
     *fresh0 = 0 as *mut _block;
     let ref mut fresh1 = (*newb).mem;
-    *fresh1 = gcalloc(size as size_t, ::std::mem::size_of::<cell>() as libc::c_ulong)
-        as *mut cell;
+    *fresh1 = gcalloc(
+        size as size_t,
+        ::std::mem::size_of::<cell>() as libc::c_ulong,
+    ) as *mut cell;
     let ref mut fresh2 = (*newb).endp;
     *fresh2 = ((*newb).mem).offset(size as isize);
     let ref mut fresh3 = (*newb).cur;
@@ -467,7 +431,8 @@ unsafe extern "C" fn getCell(mut g: *mut Grid) -> *mut cell {
             let ref mut fresh4 = (*bp).next;
             *fresh4 = newBlock(
                 (2 as libc::c_int as libc::c_long
-                    * ((*bp).endp).offset_from((*bp).mem) as libc::c_long) as libc::c_int,
+                    * ((*bp).endp).offset_from((*bp).mem) as libc::c_long)
+                    as libc::c_int,
             );
         }
         let ref mut fresh5 = (*g).cellCur;
@@ -490,7 +455,11 @@ unsafe extern "C" fn ijcmpf(
 ) -> libc::c_int {
     let mut diff: libc::c_int = 0;
     diff = (*p1).i - (*p2).i;
-    if diff != 0 { return diff } else { return (*p1).j - (*p2).j };
+    if diff != 0 {
+        return diff;
+    } else {
+        return (*p1).j - (*p2).j;
+    };
 }
 static mut _grid: *mut Grid = 0 as *const Grid as *mut Grid;
 unsafe extern "C" fn newCell(
@@ -530,7 +499,7 @@ static mut gridDisc: Dtdisc_t = unsafe {
             size: ::std::mem::size_of::<gridpt>() as libc::c_ulong as libc::c_int,
             link: 16 as libc::c_ulong as libc::c_int,
             makef: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut libc::c_void,
@@ -538,19 +507,17 @@ static mut gridDisc: Dtdisc_t = unsafe {
                     ) -> *mut libc::c_void,
                 >,
                 Dtmake_f,
-            >(
-                Some(
-                    newCell
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut libc::c_void,
-                            *mut Dtdisc_t,
-                        ) -> *mut libc::c_void,
-                ),
-            ),
+            >(Some(
+                newCell
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut libc::c_void,
+                        *mut Dtdisc_t,
+                    ) -> *mut libc::c_void,
+            )),
             freef: None,
             comparf: ::std::mem::transmute::<
-                Option::<
+                Option<
                     unsafe extern "C" fn(
                         *mut Dt_t,
                         *mut gridpt,
@@ -559,17 +526,15 @@ static mut gridDisc: Dtdisc_t = unsafe {
                     ) -> libc::c_int,
                 >,
                 Dtcompar_f,
-            >(
-                Some(
-                    ijcmpf
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut gridpt,
-                            *mut gridpt,
-                            *mut Dtdisc_t,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                ijcmpf
+                    as unsafe extern "C" fn(
+                        *mut Dt_t,
+                        *mut gridpt,
+                        *mut gridpt,
+                        *mut Dtdisc_t,
+                    ) -> libc::c_int,
+            )),
             hashf: None,
             memoryf: None,
             eventf: None,
@@ -614,9 +579,11 @@ pub unsafe extern "C" fn adjustGrid(mut g: *mut Grid, mut nnodes: libc::c_int) {
 #[no_mangle]
 pub unsafe extern "C" fn clearGrid(mut g: *mut Grid) {
     (Some(((*(*g).data).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).data, 0 as *mut libc::c_void, 0o100 as libc::c_int);
+        .expect("non-null function pointer")(
+        (*g).data,
+        0 as *mut libc::c_void,
+        0o100 as libc::c_int,
+    );
     let ref mut fresh18 = (*g).listCur;
     *fresh18 = (*g).listMem;
     let ref mut fresh19 = (*g).cellCur;
@@ -650,10 +617,11 @@ pub unsafe extern "C" fn addGrid(
     key.p.i = i;
     key.p.j = j;
     cellp = (Some(((*(*g).data).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).data, &mut key as *mut cell as *mut libc::c_void, 0o1 as libc::c_int)
-        as *mut cell;
+        .expect("non-null function pointer")(
+        (*g).data,
+        &mut key as *mut cell as *mut libc::c_void,
+        0o1 as libc::c_int,
+    ) as *mut cell;
     let ref mut fresh21 = (*cellp).nodes;
     *fresh21 = newNode(g, n, (*cellp).nodes);
     if Verbose as libc::c_int >= 3 as libc::c_int {
@@ -669,16 +637,12 @@ pub unsafe extern "C" fn addGrid(
 #[no_mangle]
 pub unsafe extern "C" fn walkGrid(
     mut g: *mut Grid,
-    mut walkf: Option::<
-        unsafe extern "C" fn(*mut Dt_t, *mut cell, *mut Grid) -> libc::c_int,
-    >,
+    mut walkf: Option<unsafe extern "C" fn(*mut Dt_t, *mut cell, *mut Grid) -> libc::c_int>,
 ) {
     dtwalk(
         (*g).data,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*mut Dt_t, *mut cell, *mut Grid) -> libc::c_int,
-            >,
+            Option<unsafe extern "C" fn(*mut Dt_t, *mut cell, *mut Grid) -> libc::c_int>,
             walkfn_t,
         >(walkf),
         g as *mut libc::c_void,
@@ -701,10 +665,11 @@ pub unsafe extern "C" fn findGrid(
     key.p.i = i;
     key.p.j = j;
     return (Some(((*(*g).data).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).data, &mut key as *mut cell as *mut libc::c_void, 0o4 as libc::c_int)
-        as *mut cell;
+        .expect("non-null function pointer")(
+        (*g).data,
+        &mut key as *mut cell as *mut libc::c_void,
+        0o4 as libc::c_int,
+    ) as *mut cell;
 }
 #[no_mangle]
 pub unsafe extern "C" fn gLength(mut p: *mut cell) -> libc::c_int {

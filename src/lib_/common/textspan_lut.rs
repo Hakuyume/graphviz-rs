@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -5892,18 +5900,16 @@ unsafe extern "C" fn font_name_equal_permissive(
     mut b: *const libc::c_char,
     b_length: size_t,
 ) -> bool {
-    if strlen(b) >= b_length {} else {
+    if strlen(b) >= b_length {
+    } else {
         __assert_fail(
             b"strlen(b) >= b_length\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             703 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 75],
-                &[libc::c_char; 75],
-            >(
+            (*::std::mem::transmute::<&[u8; 75], &[libc::c_char; 75]>(
                 b"_Bool font_name_equal_permissive(const char *, const char *, const size_t)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     let mut a_length: size_t = strlen(a);
@@ -5921,11 +5927,8 @@ unsafe extern "C" fn font_name_equal_permissive(
                     > 1 as libc::c_int as libc::c_ulong
                 {
                     if 0 != 0 {
-                        let mut __c: libc::c_int = *a.offset(a_pos as isize)
-                            as libc::c_int;
-                        __res = (if __c < -(128 as libc::c_int)
-                            || __c > 255 as libc::c_int
-                        {
+                        let mut __c: libc::c_int = *a.offset(a_pos as isize) as libc::c_int;
+                        __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                             __c
                         } else {
                             *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -5938,32 +5941,27 @@ unsafe extern "C" fn font_name_equal_permissive(
                         .offset(*a.offset(a_pos as isize) as libc::c_int as isize);
                 }
                 __res
-            })
-                != ({
-                    let mut __res: libc::c_int = 0;
-                    if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                        > 1 as libc::c_int as libc::c_ulong
-                    {
-                        if 0 != 0 {
-                            let mut __c: libc::c_int = *b.offset(b_pos as isize)
-                                as libc::c_int;
-                            __res = (if __c < -(128 as libc::c_int)
-                                || __c > 255 as libc::c_int
-                            {
-                                __c
-                            } else {
-                                *(*__ctype_tolower_loc()).offset(__c as isize)
-                            });
+            }) != ({
+                let mut __res: libc::c_int = 0;
+                if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
+                    > 1 as libc::c_int as libc::c_ulong
+                {
+                    if 0 != 0 {
+                        let mut __c: libc::c_int = *b.offset(b_pos as isize) as libc::c_int;
+                        __res = (if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
+                            __c
                         } else {
-                            __res = tolower(*b.offset(b_pos as isize) as libc::c_int);
-                        }
+                            *(*__ctype_tolower_loc()).offset(__c as isize)
+                        });
                     } else {
-                        __res = *(*__ctype_tolower_loc())
-                            .offset(*b.offset(b_pos as isize) as libc::c_int as isize);
+                        __res = tolower(*b.offset(b_pos as isize) as libc::c_int);
                     }
-                    __res
-                })
-            {
+                } else {
+                    __res = *(*__ctype_tolower_loc())
+                        .offset(*b.offset(b_pos as isize) as libc::c_int as isize);
+                }
+                __res
+            }) {
                 return 0 as libc::c_int != 0;
             }
             a_pos = a_pos.wrapping_add(1);
@@ -5988,28 +5986,28 @@ unsafe extern "C" fn font_in_list_permissive(
     mut value: *const libc::c_char,
     mut list: *const libc::c_char,
 ) -> bool {
-    if !value.is_null() && strlen(value) != 0 {} else {
+    if !value.is_null() && strlen(value) != 0 {
+    } else {
         __assert_fail(
             b"value && strlen(value)\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             743 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"_Bool font_in_list_permissive(const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"_Bool font_in_list_permissive(const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !list.is_null() && strlen(list) != 0 {} else {
+    if !list.is_null() && strlen(list) != 0 {
+    } else {
         __assert_fail(
             b"list && strlen(list)\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             744 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"_Bool font_in_list_permissive(const char *, const char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"_Bool font_in_list_permissive(const char *, const char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     loop {
@@ -6039,8 +6037,7 @@ unsafe extern "C" fn get_metrics_for_font_family(
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < all_font_metrics_len {
         if font_in_list_permissive(font_name, all_font_metrics[i as usize].font_name) {
-            return &*all_font_metrics.as_ptr().offset(i as isize)
-                as *const FontFamilyMetrics;
+            return &*all_font_metrics.as_ptr().offset(i as isize) as *const FontFamilyMetrics;
         }
         i = i.wrapping_add(1);
     }
@@ -6099,18 +6096,16 @@ unsafe extern "C" fn estimate_character_width_canonical(
         }
         width = 0 as libc::c_int as libc::c_short;
     }
-    if width as libc::c_int >= 0 as libc::c_int {} else {
+    if width as libc::c_int >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"width >= 0\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             815 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 79],
-                &[libc::c_char; 79],
-            >(
+            (*::std::mem::transmute::<&[u8; 79], &[libc::c_char; 79]>(
                 b"unsigned short estimate_character_width_canonical(const short *, unsigned int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     return width as libc::c_ushort;
@@ -6122,59 +6117,46 @@ pub unsafe extern "C" fn estimate_text_width_1pt(
     mut bold: bool,
     mut italic: bool,
 ) -> libc::c_double {
-    if !font_name.is_null() {} else {
+    if !font_name.is_null() {
+    } else {
         __assert_fail(
             b"font_name\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             821 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 73],
-                &[libc::c_char; 73],
-            >(
+            (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                 b"double estimate_text_width_1pt(const char *, const char *, _Bool, _Bool)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if !text.is_null() {} else {
+    if !text.is_null() {
+    } else {
         __assert_fail(
             b"text\0" as *const u8 as *const libc::c_char,
             b"textspan_lut.c\0" as *const u8 as *const libc::c_char,
             822 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 73],
-                &[libc::c_char; 73],
-            >(
+            (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                 b"double estimate_text_width_1pt(const char *, const char *, _Bool, _Bool)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    let mut family_metrics: *const FontFamilyMetrics = get_metrics_for_font_family(
-        font_name,
-    );
-    let mut variant_metrics: *const libc::c_short = get_metrics_for_font_variant(
-        family_metrics,
-        bold,
-        italic,
-    );
+    let mut family_metrics: *const FontFamilyMetrics = get_metrics_for_font_family(font_name);
+    let mut variant_metrics: *const libc::c_short =
+        get_metrics_for_font_variant(family_metrics, bold, italic);
     let mut text_width_canonical: libc::c_uint = 0 as libc::c_int as libc::c_uint;
     let mut c: *const libc::c_char = text;
     while *c as libc::c_int != '\0' as i32 {
-        text_width_canonical = text_width_canonical
-            .wrapping_add(
-                estimate_character_width_canonical(
-                    variant_metrics,
-                    *c as libc::c_uchar as libc::c_uint,
-                ) as libc::c_uint,
-            );
+        text_width_canonical = text_width_canonical.wrapping_add(
+            estimate_character_width_canonical(variant_metrics, *c as libc::c_uchar as libc::c_uint)
+                as libc::c_uint,
+        );
         c = c.offset(1);
     }
     return text_width_canonical as libc::c_double / (*family_metrics).units_per_em;
 }
 unsafe extern "C" fn run_static_initializers() {
-    all_font_metrics_len = (::std::mem::size_of::<[FontFamilyMetrics; 11]>()
-        as libc::c_ulong)
+    all_font_metrics_len = (::std::mem::size_of::<[FontFamilyMetrics; 11]>() as libc::c_ulong)
         .wrapping_div(::std::mem::size_of::<FontFamilyMetrics>() as libc::c_ulong);
 }
 #[used]

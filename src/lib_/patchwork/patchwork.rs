@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -20,12 +28,7 @@ extern "C" {
         _: ...
     ) -> libc::c_int;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn sqrt(_: libc::c_double) -> libc::c_double;
     static mut Verbose: libc::c_uchar;
     static mut N_fontsize: *mut Agsym_t;
@@ -50,22 +53,15 @@ extern "C" {
         value: *const libc::c_char,
     ) -> *mut Agsym_t;
     fn agxget(obj: *mut libc::c_void, sym: *mut Agsym_t) -> *mut libc::c_char;
-    fn agxset(
-        obj: *mut libc::c_void,
-        sym: *mut Agsym_t,
-        value: *const libc::c_char,
-    ) -> libc::c_int;
+    fn agxset(obj: *mut libc::c_void, sym: *mut Agsym_t, value: *const libc::c_char)
+        -> libc::c_int;
     fn rectangle_new(
         x: libc::c_double,
         y: libc::c_double,
         width: libc::c_double,
         height: libc::c_double,
     ) -> rectangle;
-    fn tree_map(
-        n: libc::c_int,
-        area: *mut libc::c_double,
-        fillrec: rectangle,
-    ) -> *mut rectangle;
+    fn tree_map(n: libc::c_int, area: *mut libc::c_double, fillrec: rectangle) -> *mut rectangle;
 }
 pub type size_t = libc::c_ulong;
 pub type __uint64_t = libc::c_ulong;
@@ -106,9 +102,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type uint64_t = __uint64_t;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -218,9 +213,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -234,25 +227,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -354,7 +340,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -515,16 +502,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -540,18 +521,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -559,16 +534,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -610,9 +578,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -641,13 +608,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -680,26 +642,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -708,29 +662,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -738,8 +684,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -773,7 +719,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -799,9 +745,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -927,15 +871,14 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
     pub just: libc::c_char,
 }
-pub type qsort_cmpf = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type qsort_cmpf =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type attrsym_t = Agsym_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1012,13 +955,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1027,7 +969,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1118,7 +1060,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1248,10 +1190,7 @@ pub struct rectangle_struct {
     pub x: [libc::c_double; 2],
     pub size: [libc::c_double; 2],
 }
-unsafe extern "C" fn fullArea(
-    mut p: *mut treenode_t,
-    mut mp: *mut attrsym_t,
-) -> libc::c_double {
+unsafe extern "C" fn fullArea(mut p: *mut treenode_t, mut mp: *mut attrsym_t) -> libc::c_double {
     let mut m: libc::c_double = late_double(
         (*p).u.subg as *mut libc::c_void,
         mp,
@@ -1261,29 +1200,17 @@ unsafe extern "C" fn fullArea(
     let mut wid: libc::c_double = 2.0f64 * m + sqrt((*p).child_area);
     return wid * wid;
 }
-unsafe extern "C" fn getArea(
-    mut obj: *mut libc::c_void,
-    mut ap: *mut attrsym_t,
-) -> libc::c_double {
-    let mut area: libc::c_double = late_double(
-        obj,
-        ap,
-        1.0f64,
-        0 as libc::c_int as libc::c_double,
-    );
+unsafe extern "C" fn getArea(mut obj: *mut libc::c_void, mut ap: *mut attrsym_t) -> libc::c_double {
+    let mut area: libc::c_double = late_double(obj, ap, 1.0f64, 0 as libc::c_int as libc::c_double);
     if area == 0 as libc::c_int as libc::c_double {
         area = 1.0f64;
     }
     area *= 1000.0f64;
     return area;
 }
-unsafe extern "C" fn mkTreeNode(
-    mut n: *mut Agnode_t,
-    mut ap: *mut attrsym_t,
-) -> *mut treenode_t {
-    let mut p: *mut treenode_t = zmalloc(
-        ::std::mem::size_of::<treenode_t>() as libc::c_ulong,
-    ) as *mut treenode_t;
+unsafe extern "C" fn mkTreeNode(mut n: *mut Agnode_t, mut ap: *mut attrsym_t) -> *mut treenode_t {
+    let mut p: *mut treenode_t =
+        zmalloc(::std::mem::size_of::<treenode_t>() as libc::c_ulong) as *mut treenode_t;
     (*p).area = getArea(n as *mut libc::c_void, ap);
     (*p).kind = 1 as libc::c_int;
     let ref mut fresh0 = (*p).u.n;
@@ -1296,9 +1223,8 @@ unsafe extern "C" fn mkTree(
     mut ap: *mut attrsym_t,
     mut mp: *mut attrsym_t,
 ) -> *mut treenode_t {
-    let mut p: *mut treenode_t = zmalloc(
-        ::std::mem::size_of::<treenode_t>() as libc::c_ulong,
-    ) as *mut treenode_t;
+    let mut p: *mut treenode_t =
+        zmalloc(::std::mem::size_of::<treenode_t>() as libc::c_ulong) as *mut treenode_t;
     let mut subg: *mut Agraph_t = 0 as *mut Agraph_t;
     let mut n: *mut Agnode_t = 0 as *mut Agnode_t;
     let mut cp: *mut treenode_t = 0 as *mut treenode_t;
@@ -1312,8 +1238,7 @@ unsafe extern "C" fn mkTree(
     *fresh1 = g;
     i = 1 as libc::c_int;
     while i <= (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).n_cluster {
-        subg = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust)
-            .offset(i as isize);
+        subg = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust).offset(i as isize);
         cp = mkTree(subg, gp, ap, mp);
         n_children += 1;
         area += (*cp).area;
@@ -1329,8 +1254,7 @@ unsafe extern "C" fn mkTree(
     }
     n = agfstnode(g);
     while !n.is_null() {
-        if ((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).alg as *mut rdata))
-            .parent)
+        if ((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).alg as *mut rdata)).parent)
             .is_null()
         {
             cp = mkTreeNode(n, ap);
@@ -1344,9 +1268,8 @@ unsafe extern "C" fn mkTree(
                 *fresh3 = cp;
             }
             prev = cp;
-            let ref mut fresh4 = (*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .alg as *mut rdata))
-                .parent;
+            let ref mut fresh4 =
+                (*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).alg as *mut rdata)).parent;
             *fresh4 = g;
         }
         n = agnxtnode(g, n);
@@ -1368,11 +1291,11 @@ unsafe extern "C" fn nodecmp(
 ) -> libc::c_int {
     let mut diff: libc::c_double = (**p0).area - (**p1).area;
     if diff < 0 as libc::c_int as libc::c_double {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else if diff > 0 as libc::c_int as libc::c_double {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn layoutTree(mut tree: *mut treenode_t) {
@@ -1403,22 +1326,12 @@ unsafe extern "C" fn layoutTree(mut tree: *mut treenode_t) {
         nc as size_t,
         ::std::mem::size_of::<*mut treenode_t>() as libc::c_ulong,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut *mut treenode_t,
-                    *mut *mut treenode_t,
-                ) -> libc::c_int,
-            >,
+            Option<unsafe extern "C" fn(*mut *mut treenode_t, *mut *mut treenode_t) -> libc::c_int>,
             qsort_cmpf,
-        >(
-            Some(
-                nodecmp
-                    as unsafe extern "C" fn(
-                        *mut *mut treenode_t,
-                        *mut *mut treenode_t,
-                    ) -> libc::c_int,
-            ),
-        ),
+        >(Some(
+            nodecmp
+                as unsafe extern "C" fn(*mut *mut treenode_t, *mut *mut treenode_t) -> libc::c_int,
+        )),
     );
     areas_sorted = gcalloc(
         nc as size_t,
@@ -1466,21 +1379,16 @@ unsafe extern "C" fn layoutTree(mut tree: *mut treenode_t) {
         if Verbose != 0 {
             fprintf(
                 stderr,
-                b"%f - %f %f %f %f = %f (%f %f %f %f)\n\0" as *const u8
-                    as *const libc::c_char,
+                b"%f - %f %f %f %f = %f (%f %f %f %f)\n\0" as *const u8 as *const libc::c_char,
                 *areas_sorted.offset(i as isize),
                 (*recs.offset(i as isize)).x[0 as libc::c_int as usize]
-                    - (*recs.offset(i as isize)).size[0 as libc::c_int as usize]
-                        * 0.5f64,
+                    - (*recs.offset(i as isize)).size[0 as libc::c_int as usize] * 0.5f64,
                 (*recs.offset(i as isize)).x[1 as libc::c_int as usize]
-                    - (*recs.offset(i as isize)).size[1 as libc::c_int as usize]
-                        * 0.5f64,
+                    - (*recs.offset(i as isize)).size[1 as libc::c_int as usize] * 0.5f64,
                 (*recs.offset(i as isize)).x[0 as libc::c_int as usize]
-                    + (*recs.offset(i as isize)).size[0 as libc::c_int as usize]
-                        * 0.5f64,
+                    + (*recs.offset(i as isize)).size[0 as libc::c_int as usize] * 0.5f64,
                 (*recs.offset(i as isize)).x[1 as libc::c_int as usize]
-                    + (*recs.offset(i as isize)).size[1 as libc::c_int as usize]
-                        * 0.5f64,
+                    + (*recs.offset(i as isize)).size[1 as libc::c_int as usize] * 0.5f64,
                 (*recs.offset(i as isize)).size[0 as libc::c_int as usize]
                     * (*recs.offset(i as isize)).size[1 as libc::c_int as usize],
                 (*recs.offset(i as isize)).x[0 as libc::c_int as usize],
@@ -1557,27 +1465,30 @@ unsafe extern "C" fn walkTree(mut tree: *mut treenode_t) {
         center.y = rr.x[1 as libc::c_int as usize];
         n = (*tree).u.n;
         (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord = center;
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .width = rr.size[0 as libc::c_int as usize]
-            / 72 as libc::c_int as libc::c_double;
-        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .height = rr.size[1 as libc::c_int as usize]
-            / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width =
+            rr.size[0 as libc::c_int as usize] / 72 as libc::c_int as libc::c_double;
+        (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height =
+            rr.size[1 as libc::c_int as usize] / 72 as libc::c_int as libc::c_double;
         gv_nodesize(
             n,
-            (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .rankdir & 0x3 as libc::c_int & 1 as libc::c_int != 0,
+            (*((*(agraphof(n as *mut libc::c_void) as *mut Agobj_t)).data as *mut Agraphinfo_t))
+                .rankdir
+                & 0x3 as libc::c_int
+                & 1 as libc::c_int
+                != 0,
         );
         finishNode(n);
         if Verbose != 0 {
             fprintf(
                 stderr,
-                b"%s coord %.5g %.5g ht %f width %f\n\0" as *const u8
-                    as *const libc::c_char,
+                b"%s coord %.5g %.5g ht %f width %f\n\0" as *const u8 as *const libc::c_char,
                 agnameof(n as *mut libc::c_void),
-                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.x,
-                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).coord.y,
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .x,
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                    .coord
+                    .y,
                 (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ht,
                 (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw
                     + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw,
@@ -1623,8 +1534,7 @@ pub unsafe extern "C" fn patchworkLayout(mut g: *mut Agraph_t) {
     let mut total: libc::c_double = 0.;
     root = mkTree(g, gp, ap, mp);
     total = (*root).area;
-    (*root)
-        .r = rectangle_new(
+    (*root).r = rectangle_new(
         0 as libc::c_int as libc::c_double,
         0 as libc::c_int as libc::c_double,
         sqrt(total + 0.1f64),

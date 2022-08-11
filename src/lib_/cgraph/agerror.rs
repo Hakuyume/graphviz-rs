@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, register_tool)]
 extern "C" {
@@ -9,11 +17,7 @@ extern "C" {
     fn tmpfile() -> *mut FILE;
     fn fflush(__stream: *mut FILE) -> libc::c_int;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn vfprintf(
-        _: *mut FILE,
-        _: *const libc::c_char,
-        _: ::std::ffi::VaList,
-    ) -> libc::c_int;
+    fn vfprintf(_: *mut FILE, _: *const libc::c_char, _: ::std::ffi::VaList) -> libc::c_int;
     fn vsnprintf(
         _: *mut libc::c_char,
         _: libc::c_ulong,
@@ -26,11 +30,7 @@ extern "C" {
         _: libc::c_ulong,
         _: *mut FILE,
     ) -> libc::c_ulong;
-    fn fseek(
-        __stream: *mut FILE,
-        __off: libc::c_long,
-        __whence: libc::c_int,
-    ) -> libc::c_int;
+    fn fseek(__stream: *mut FILE, __off: libc::c_long, __whence: libc::c_int) -> libc::c_int;
     fn ftell(__stream: *mut FILE) -> libc::c_long;
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
@@ -88,7 +88,7 @@ pub const AGPREV: agerrlevel_t = 3;
 pub const AGMAX: agerrlevel_t = 2;
 pub const AGERR: agerrlevel_t = 1;
 pub const AGWARN: agerrlevel_t = 0;
-pub type agusererrf = Option::<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
+pub type agusererrf = Option<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
 static mut agerrno: agerrlevel_t = AGWARN;
 static mut agerrlevel: agerrlevel_t = AGWARN;
 static mut agmaxerr: libc::c_int = 0;
@@ -115,9 +115,8 @@ pub unsafe extern "C" fn aglasterr() -> *mut libc::c_char {
     fflush(agerrout);
     let mut endpos: libc::c_long = ftell(agerrout);
     let mut len: size_t = (endpos - aglast) as size_t;
-    let mut buf: *mut libc::c_char = malloc(
-        len.wrapping_add(1 as libc::c_int as libc::c_ulong),
-    ) as *mut libc::c_char;
+    let mut buf: *mut libc::c_char =
+        malloc(len.wrapping_add(1 as libc::c_int as libc::c_ulong)) as *mut libc::c_char;
     fseek(agerrout, aglast, 0 as libc::c_int);
     len = fread(
         buf as *mut libc::c_void,
@@ -147,8 +146,7 @@ unsafe extern "C" fn userout(
         fprintf(
             stderr,
             b"%s: vsnprintf failure\n\0" as *const u8 as *const libc::c_char,
-            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0")).as_ptr(),
         );
         return;
     }
@@ -158,26 +156,21 @@ unsafe extern "C" fn userout(
         fprintf(
             stderr,
             b"%s: could not allocate memory\n\0" as *const u8 as *const libc::c_char,
-            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0")).as_ptr(),
         );
         return;
     }
     if level as libc::c_uint != AGPREV as libc::c_int as libc::c_uint {
-        usererrf
-            .expect(
-                "non-null function pointer",
-            )(
+        usererrf.expect("non-null function pointer")(
             (if level as libc::c_uint == AGERR as libc::c_int as libc::c_uint {
                 b"Error\0" as *const u8 as *const libc::c_char
             } else {
                 b"Warning\0" as *const u8 as *const libc::c_char
             }) as *mut libc::c_char,
         );
-        usererrf
-            .expect(
-                "non-null function pointer",
-            )(b": \0" as *const u8 as *const libc::c_char as *mut libc::c_char);
+        usererrf.expect("non-null function pointer")(
+            b": \0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        );
     }
     let mut rc_0: libc::c_int = vsnprintf(buf, bufsz, fmt, args.as_va_list());
     if rc_0 < 0 as libc::c_int {
@@ -185,8 +178,7 @@ unsafe extern "C" fn userout(
         fprintf(
             stderr,
             b"%s: vsnprintf failure\n\0" as *const u8 as *const libc::c_char,
-            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"userout\0")).as_ptr(),
         );
         return;
     }

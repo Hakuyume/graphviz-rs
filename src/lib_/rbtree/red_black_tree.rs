@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -9,13 +17,10 @@ extern "C" {
         __function: *const libc::c_char,
     ) -> !;
     fn StackCreate() -> *mut stk_stack;
-    fn StackPush(
-        theStack: *mut stk_stack,
-        newInfoPointer: *mut libc::c_void,
-    ) -> libc::c_int;
+    fn StackPush(theStack: *mut stk_stack, newInfoPointer: *mut libc::c_void) -> libc::c_int;
     fn StackDestroy(
         theStack: *mut stk_stack,
-        DestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        DestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     );
     fn NullFunction(_: *mut libc::c_void);
     fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
@@ -47,30 +52,29 @@ pub struct rb_red_blk_node {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct rb_red_blk_tree {
-    pub Compare: Option::<
-        unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
-    >,
-    pub DestroyKey: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub DestroyInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub PrintKey: Option::<unsafe extern "C" fn(*const libc::c_void) -> ()>,
-    pub PrintInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub Compare:
+        Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>,
+    pub DestroyKey: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub DestroyInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub PrintKey: Option<unsafe extern "C" fn(*const libc::c_void) -> ()>,
+    pub PrintInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub root: *mut rb_red_blk_node,
     pub nil: *mut rb_red_blk_node,
 }
 #[no_mangle]
 pub unsafe extern "C" fn RBTreeCreate(
-    mut CompFunc: Option::<
+    mut CompFunc: Option<
         unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
     >,
-    mut DestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    mut InfoDestFunc: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    mut PrintFunc: Option::<unsafe extern "C" fn(*const libc::c_void) -> ()>,
-    mut PrintInfo: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut DestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut InfoDestFunc: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut PrintFunc: Option<unsafe extern "C" fn(*const libc::c_void) -> ()>,
+    mut PrintInfo: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) -> *mut rb_red_blk_tree {
     let mut newTree: *mut rb_red_blk_tree = 0 as *mut rb_red_blk_tree;
     let mut temp: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
-    newTree = malloc(::std::mem::size_of::<rb_red_blk_tree>() as libc::c_ulong)
-        as *mut rb_red_blk_tree;
+    newTree =
+        malloc(::std::mem::size_of::<rb_red_blk_tree>() as libc::c_ulong) as *mut rb_red_blk_tree;
     if newTree.is_null() {
         return 0 as *mut rb_red_blk_tree;
     }
@@ -89,8 +93,8 @@ pub unsafe extern "C" fn RBTreeCreate(
     let ref mut fresh6 = (*newTree).DestroyInfo;
     *fresh6 = InfoDestFunc;
     let ref mut fresh7 = (*newTree).nil;
-    *fresh7 = malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong)
-        as *mut rb_red_blk_node;
+    *fresh7 =
+        malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong) as *mut rb_red_blk_node;
     temp = *fresh7;
     if temp.is_null() {
         free(newTree as *mut libc::c_void);
@@ -106,8 +110,8 @@ pub unsafe extern "C" fn RBTreeCreate(
     let ref mut fresh11 = (*temp).key;
     *fresh11 = 0 as *mut libc::c_void;
     let ref mut fresh12 = (*newTree).root;
-    *fresh12 = malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong)
-        as *mut rb_red_blk_node;
+    *fresh12 =
+        malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong) as *mut rb_red_blk_node;
     temp = *fresh12;
     if temp.is_null() {
         free((*newTree).nil as *mut libc::c_void);
@@ -125,10 +129,7 @@ pub unsafe extern "C" fn RBTreeCreate(
     (*temp).red = 0 as libc::c_int;
     return newTree;
 }
-unsafe extern "C" fn LeftRotate(
-    mut tree: *mut rb_red_blk_tree,
-    mut x: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn LeftRotate(mut tree: *mut rb_red_blk_tree, mut x: *mut rb_red_blk_node) {
     let mut y: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
     y = (*x).right;
@@ -152,26 +153,22 @@ unsafe extern "C" fn LeftRotate(
     let ref mut fresh23 = (*x).parent;
     *fresh23 = y;
     if (*(*tree).nil).red == 0
-        && !(b"nil not red in LeftRotate\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"nil not red in LeftRotate\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
             b"!tree->nil->red && \"nil not red in LeftRotate\"\0" as *const u8
                 as *const libc::c_char,
             b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
             122 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"void LeftRotate(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"void LeftRotate(rb_red_blk_tree *, rb_red_blk_node *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
-unsafe extern "C" fn RightRotate(
-    mut tree: *mut rb_red_blk_tree,
-    mut y: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn RightRotate(mut tree: *mut rb_red_blk_tree, mut y: *mut rb_red_blk_node) {
     let mut x: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
     x = (*y).left;
@@ -195,26 +192,22 @@ unsafe extern "C" fn RightRotate(
     let ref mut fresh30 = (*y).parent;
     *fresh30 = x;
     if (*(*tree).nil).red == 0
-        && !(b"nil not red in RightRotate\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"nil not red in RightRotate\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
             b"!tree->nil->red && \"nil not red in RightRotate\"\0" as *const u8
                 as *const libc::c_char,
             b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
             174 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"void RightRotate(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"void RightRotate(rb_red_blk_tree *, rb_red_blk_node *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
-unsafe extern "C" fn TreeInsertHelp(
-    mut tree: *mut rb_red_blk_tree,
-    mut z: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn TreeInsertHelp(mut tree: *mut rb_red_blk_tree, mut z: *mut rb_red_blk_node) {
     let mut x: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut y: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
@@ -247,19 +240,18 @@ unsafe extern "C" fn TreeInsertHelp(
         *fresh35 = z;
     }
     if (*(*tree).nil).red == 0
-        && !(b"nil not red in TreeInsertHelp\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"nil not red in TreeInsertHelp\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
             b"!tree->nil->red && \"nil not red in TreeInsertHelp\"\0" as *const u8
                 as *const libc::c_char,
             b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
             217 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"void TreeInsertHelp(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"void TreeInsertHelp(rb_red_blk_tree *, rb_red_blk_node *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
@@ -272,8 +264,7 @@ pub unsafe extern "C" fn RBTreeInsert(
     let mut y: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut x: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut newNode: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
-    x = malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong)
-        as *mut rb_red_blk_node;
+    x = malloc(::std::mem::size_of::<rb_red_blk_node>() as libc::c_ulong) as *mut rb_red_blk_node;
     if x.is_null() {
         return 0 as *mut rb_red_blk_node;
     }
@@ -374,10 +365,7 @@ pub unsafe extern "C" fn TreePredecessor(
         return y;
     };
 }
-unsafe extern "C" fn InorderTreePrint(
-    mut tree: *mut rb_red_blk_tree,
-    mut x: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn InorderTreePrint(mut tree: *mut rb_red_blk_tree, mut x: *mut rb_red_blk_node) {
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
     let mut root: *mut rb_red_blk_node = (*tree).root;
     if x != (*tree).nil {
@@ -404,14 +392,14 @@ unsafe extern "C" fn InorderTreePrint(
         } else {
             ((*tree).PrintKey).expect("non-null function pointer")((*(*x).parent).key);
         }
-        printf(b"  red=%i\n\0" as *const u8 as *const libc::c_char, (*x).red);
+        printf(
+            b"  red=%i\n\0" as *const u8 as *const libc::c_char,
+            (*x).red,
+        );
         InorderTreePrint(tree, (*x).right);
     }
 }
-unsafe extern "C" fn TreeDestHelper(
-    mut tree: *mut rb_red_blk_tree,
-    mut x: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn TreeDestHelper(mut tree: *mut rb_red_blk_tree, mut x: *mut rb_red_blk_node) {
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
     if x != nil {
         TreeDestHelper(tree, (*x).left);
@@ -443,10 +431,10 @@ pub unsafe extern "C" fn RBExactQuery(
     if x == nil {
         return 0 as *mut rb_red_blk_node;
     }
-    compVal = ((*tree).Compare)
-        .expect(
-            "non-null function pointer",
-        )((*x).key, q as *mut libc::c_int as *const libc::c_void);
+    compVal = ((*tree).Compare).expect("non-null function pointer")(
+        (*x).key,
+        q as *mut libc::c_int as *const libc::c_void,
+    );
     while 0 as libc::c_int != compVal {
         if 1 as libc::c_int == compVal {
             x = (*x).left;
@@ -456,17 +444,14 @@ pub unsafe extern "C" fn RBExactQuery(
         if x == nil {
             return 0 as *mut rb_red_blk_node;
         }
-        compVal = ((*tree).Compare)
-            .expect(
-                "non-null function pointer",
-            )((*x).key, q as *mut libc::c_int as *const libc::c_void);
+        compVal = ((*tree).Compare).expect("non-null function pointer")(
+            (*x).key,
+            q as *mut libc::c_int as *const libc::c_void,
+        );
     }
     return x;
 }
-unsafe extern "C" fn RBDeleteFixUp(
-    mut tree: *mut rb_red_blk_tree,
-    mut x: *mut rb_red_blk_node,
-) {
+unsafe extern "C" fn RBDeleteFixUp(mut tree: *mut rb_red_blk_tree, mut x: *mut rb_red_blk_node) {
     let mut root: *mut rb_red_blk_node = (*(*tree).root).left;
     let mut w: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     while (*x).red == 0 && root != x {
@@ -522,33 +507,37 @@ unsafe extern "C" fn RBDeleteFixUp(
     }
     (*x).red = 0 as libc::c_int;
     if (*(*tree).nil).red == 0
-        && !(b"nil not black in RBDeleteFixUp\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"nil not black in RBDeleteFixUp\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
             b"!tree->nil->red && \"nil not black in RBDeleteFixUp\"\0" as *const u8
                 as *const libc::c_char,
             b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
             573 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 57],
-                &[libc::c_char; 57],
-            >(b"void RBDeleteFixUp(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 57], &[libc::c_char; 57]>(
+                b"void RBDeleteFixUp(rb_red_blk_tree *, rb_red_blk_node *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
 #[no_mangle]
-pub unsafe extern "C" fn RBDelete(
-    mut tree: *mut rb_red_blk_tree,
-    mut z: *mut rb_red_blk_node,
-) {
+pub unsafe extern "C" fn RBDelete(mut tree: *mut rb_red_blk_tree, mut z: *mut rb_red_blk_node) {
     let mut y: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut x: *mut rb_red_blk_node = 0 as *mut rb_red_blk_node;
     let mut nil: *mut rb_red_blk_node = (*tree).nil;
     let mut root: *mut rb_red_blk_node = (*tree).root;
-    y = if (*z).left == nil || (*z).right == nil { z } else { TreeSuccessor(tree, z) };
-    x = if (*y).left == nil { (*y).right } else { (*y).left };
+    y = if (*z).left == nil || (*z).right == nil {
+        z
+    } else {
+        TreeSuccessor(tree, z)
+    };
+    x = if (*y).left == nil {
+        (*y).right
+    } else {
+        (*y).left
+    };
     let ref mut fresh38 = (*x).parent;
     *fresh38 = (*y).parent;
     if root == *fresh38 {
@@ -564,17 +553,16 @@ pub unsafe extern "C" fn RBDelete(
     if y != z {
         if y != (*tree).nil
             && !(b"y is nil in RBDelete\0" as *const u8 as *const libc::c_char).is_null()
-        {} else {
+        {
+        } else {
             __assert_fail(
-                b"y!=tree->nil && \"y is nil in RBDelete\"\0" as *const u8
-                    as *const libc::c_char,
+                b"y!=tree->nil && \"y is nil in RBDelete\"\0" as *const u8 as *const libc::c_char,
                 b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
                 612 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 52],
-                    &[libc::c_char; 52],
-                >(b"void RBDelete(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                    b"void RBDelete(rb_red_blk_tree *, rb_red_blk_node *)\0",
+                ))
+                .as_ptr(),
             );
         }
         if (*y).red == 0 {
@@ -610,19 +598,18 @@ pub unsafe extern "C" fn RBDelete(
         free(y as *mut libc::c_void);
     }
     if (*(*tree).nil).red == 0
-        && !(b"nil not black in RBDelete\0" as *const u8 as *const libc::c_char)
-            .is_null()
-    {} else {
+        && !(b"nil not black in RBDelete\0" as *const u8 as *const libc::c_char).is_null()
+    {
+    } else {
         __assert_fail(
             b"!tree->nil->red && \"nil not black in RBDelete\"\0" as *const u8
                 as *const libc::c_char,
             b"red_black_tree.c\0" as *const u8 as *const libc::c_char,
             637 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"void RBDelete(rb_red_blk_tree *, rb_red_blk_node *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"void RBDelete(rb_red_blk_tree *, rb_red_blk_node *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
@@ -641,8 +628,7 @@ pub unsafe extern "C" fn RBEnumerate(
         return 0 as *mut stk_stack;
     }
     while nil != x {
-        if 1 as libc::c_int
-            == ((*tree).Compare).expect("non-null function pointer")((*x).key, high)
+        if 1 as libc::c_int == ((*tree).Compare).expect("non-null function pointer")((*x).key, high)
         {
             x = (*x).left;
         } else {
@@ -652,11 +638,9 @@ pub unsafe extern "C" fn RBEnumerate(
     }
     while lastBest != nil
         && 1 as libc::c_int
-            != ((*tree).Compare)
-                .expect("non-null function pointer")(low, (*lastBest).key)
+            != ((*tree).Compare).expect("non-null function pointer")(low, (*lastBest).key)
     {
-        if StackPush(enumResultStack, lastBest as *mut libc::c_void) != 0 as libc::c_int
-        {
+        if StackPush(enumResultStack, lastBest as *mut libc::c_void) != 0 as libc::c_int {
             StackDestroy(
                 enumResultStack,
                 Some(NullFunction as unsafe extern "C" fn(*mut libc::c_void) -> ()),

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -7,14 +15,8 @@ extern "C" {
     pub type _IO_marker;
     fn fmin(_: libc::c_double, _: libc::c_double) -> libc::c_double;
     fn abs(_: libc::c_int) -> libc::c_int;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
     fn SparseMatrix_coordinate_form_add_entry(
         A: SparseMatrix,
         irn: libc::c_int,
@@ -133,10 +135,7 @@ unsafe extern "C" fn get_local_12_norm(
     j = *ia.offset(i as isize);
     while j < *ia.offset((i + 1 as libc::c_int) as isize) {
         if !(*ja.offset(j as isize) == i) {
-            *norm
-                .offset(
-                    0 as libc::c_int as isize,
-                ) = if *norm.offset(0 as libc::c_int as isize)
+            *norm.offset(0 as libc::c_int as isize) = if *norm.offset(0 as libc::c_int as isize)
                 < abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
                     as libc::c_double
             {
@@ -146,10 +145,9 @@ unsafe extern "C" fn get_local_12_norm(
                     as libc::c_double
             };
             nz += 1;
-            *norm.offset(1 as libc::c_int as isize)
-                += abs(
-                    *p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize),
-                ) as libc::c_double;
+            *norm.offset(1 as libc::c_int as isize) +=
+                abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                    as libc::c_double;
         }
         j += 1;
     }
@@ -177,39 +175,26 @@ unsafe extern "C" fn get_12_norm(
         j = *ia.offset(i as isize);
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             if !(*ja.offset(j as isize) == i) {
-                *norm
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ) = if *norm.offset(0 as libc::c_int as isize)
-                    < abs(
-                        *p.offset(i as isize)
-                            - *p.offset(*ja.offset(j as isize) as isize),
-                    ) as libc::c_double
+                *norm.offset(0 as libc::c_int as isize) = if *norm.offset(0 as libc::c_int as isize)
+                    < abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                        as libc::c_double
                 {
                     *norm.offset(0 as libc::c_int as isize)
                 } else {
-                    abs(
-                        *p.offset(i as isize)
-                            - *p.offset(*ja.offset(j as isize) as isize),
-                    ) as libc::c_double
+                    abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                        as libc::c_double
                 };
-                *norm.offset(1 as libc::c_int as isize)
-                    += abs(
-                        *p.offset(i as isize)
-                            - *p.offset(*ja.offset(j as isize) as isize),
-                    ) as libc::c_double;
+                *norm.offset(1 as libc::c_int as isize) +=
+                    abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                        as libc::c_double;
                 tmp = if tmp
-                    < abs(
-                        *p.offset(i as isize)
-                            - *p.offset(*ja.offset(j as isize) as isize),
-                    ) as libc::c_double
+                    < abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                        as libc::c_double
                 {
                     tmp
                 } else {
-                    abs(
-                        *p.offset(i as isize)
-                            - *p.offset(*ja.offset(j as isize) as isize),
-                    ) as libc::c_double
+                    abs(*p.offset(i as isize) - *p.offset(*ja.offset(j as isize) as isize))
+                        as libc::c_double
                 };
                 nz += 1;
             }
@@ -252,16 +237,16 @@ pub unsafe extern "C" fn improve_antibandwidth_by_swapping(
             b"w\0" as *const u8 as *const libc::c_char,
         );
     }
-    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, true)\0" as *const u8 as *const libc::c_char,
             b"country_graph_coloring.c\0" as *const u8 as *const libc::c_char,
             67 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 60],
-                &[libc::c_char; 60],
-            >(b"void improve_antibandwidth_by_swapping(SparseMatrix, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 60], &[libc::c_char; 60]>(
+                b"void improve_antibandwidth_by_swapping(SparseMatrix, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     while improved {
@@ -282,17 +267,13 @@ pub unsafe extern "C" fn improve_antibandwidth_by_swapping(
                     if fmin(
                         norm11[0 as libc::c_int as usize],
                         norm22[0 as libc::c_int as usize],
-                    )
-                        > fmin(
-                            norm1[0 as libc::c_int as usize],
-                            norm2[0 as libc::c_int as usize],
-                        )
-                    {
+                    ) > fmin(
+                        norm1[0 as libc::c_int as usize],
+                        norm2[0 as libc::c_int as usize],
+                    ) {
                         improved = 1 as libc::c_int != 0;
-                        norm1[0 as libc::c_int
-                            as usize] = norm11[0 as libc::c_int as usize];
-                        norm1[1 as libc::c_int
-                            as usize] = norm11[1 as libc::c_int as usize];
+                        norm1[0 as libc::c_int as usize] = norm11[0 as libc::c_int as usize];
+                        norm1[1 as libc::c_int as usize] = norm11[1 as libc::c_int as usize];
                     } else {
                         *p.offset(i as isize) = pi as libc::c_int;
                         *p.offset(j as isize) = pj as libc::c_int;
@@ -300,8 +281,7 @@ pub unsafe extern "C" fn improve_antibandwidth_by_swapping(
                 }
                 j += 1;
             }
-            if i % 100 as libc::c_int == 0 as libc::c_int && Verbose as libc::c_int != 0
-            {
+            if i % 100 as libc::c_int == 0 as libc::c_int && Verbose as libc::c_int != 0 {
                 get_12_norm(n, ia, ja, p, norm1.as_mut_ptr());
                 fprintf(
                     fp,
@@ -320,8 +300,7 @@ pub unsafe extern "C" fn improve_antibandwidth_by_swapping(
             cnt = cnt + 1;
             fprintf(
                 stderr,
-                b"[%d] aband = %f, aband_avg = %f\n\0" as *const u8
-                    as *const libc::c_char,
+                b"[%d] aband = %f, aband_avg = %f\n\0" as *const u8 as *const libc::c_char,
                 fresh0,
                 norm1[0 as libc::c_int as usize],
                 norm1[2 as libc::c_int as usize],
@@ -360,16 +339,16 @@ unsafe extern "C" fn country_graph_coloring_internal(
     let mut start: clock_t = 0;
     let mut start2: clock_t = 0;
     start = clock();
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"country_graph_coloring.c\0" as *const u8 as *const libc::c_char,
             118 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 64],
-                &[libc::c_char; 64],
-            >(b"void country_graph_coloring_internal(int, SparseMatrix, int **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 64], &[libc::c_char; 64]>(
+                b"void country_graph_coloring_internal(int, SparseMatrix, int **)\0",
+            ))
+            .as_ptr(),
         );
     }
     A2 = SparseMatrix_symmetrize(A, 1 as libc::c_int != 0);
@@ -432,15 +411,13 @@ unsafe extern "C" fn country_graph_coloring_internal(
     if Verbose != 0 {
         fprintf(
             stderr,
-            b"cpu time for greedy refinement = %f\n\0" as *const u8
-                as *const libc::c_char,
+            b"cpu time for greedy refinement = %f\n\0" as *const u8 as *const libc::c_char,
             (clock() - start2) as libc::c_double
                 / 1000000 as libc::c_int as __clock_t as libc::c_double,
         );
         fprintf(
             stderr,
-            b"cpu time for spectral + greedy = %f\n\0" as *const u8
-                as *const libc::c_char,
+            b"cpu time for spectral + greedy = %f\n\0" as *const u8 as *const libc::c_char,
             (clock() - start) as libc::c_double
                 / 1000000 as libc::c_int as __clock_t as libc::c_double,
         );

@@ -1,35 +1,30 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
     fn rand() -> libc::c_int;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn sqrt(_: libc::c_double) -> libc::c_double;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn mkQueue(_: *mut Queue, _: libc::c_int);
     fn freeQueue(_: *mut Queue);
-    fn bfs(
-        _: libc::c_int,
-        _: *mut vtx_data,
-        _: libc::c_int,
-        _: *mut DistType,
-        _: *mut Queue,
-    );
+    fn bfs(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType, _: *mut Queue);
     fn dijkstra(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType);
 }
 pub type size_t = libc::c_ulong;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
-pub type qsort_cmpf = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
+pub type qsort_cmpf =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct vtx_data {
@@ -77,10 +72,8 @@ pub unsafe extern "C" fn fill_neighbors_vec_unweighted(
     let mut j: libc::c_int = 0;
     j = 1 as libc::c_int;
     while j < (*graph.offset(vtx as isize)).nedges {
-        *vtx_vec
-            .offset(
-                *((*graph.offset(vtx as isize)).edges).offset(j as isize) as isize,
-            ) = 1 as libc::c_int;
+        *vtx_vec.offset(*((*graph.offset(vtx as isize)).edges).offset(j as isize) as isize) =
+            1 as libc::c_int;
         j += 1;
     }
 }
@@ -93,10 +86,8 @@ pub unsafe extern "C" fn empty_neighbors_vec(
     let mut j: libc::c_int = 0;
     j = 1 as libc::c_int;
     while j < (*graph.offset(vtx as isize)).nedges {
-        *vtx_vec
-            .offset(
-                *((*graph.offset(vtx as isize)).edges).offset(j as isize) as isize,
-            ) = 0 as libc::c_int;
+        *vtx_vec.offset(*((*graph.offset(vtx as isize)).edges).offset(j as isize) as isize) =
+            0 as libc::c_int;
         j += 1;
     }
 }
@@ -111,8 +102,10 @@ unsafe extern "C" fn compute_apsp_dijkstra(
         (n * n) as size_t,
         ::std::mem::size_of::<DistType>() as libc::c_ulong,
     ) as *mut DistType;
-    dij = gcalloc(n as size_t, ::std::mem::size_of::<*mut DistType>() as libc::c_ulong)
-        as *mut *mut DistType;
+    dij = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<*mut DistType>() as libc::c_ulong,
+    ) as *mut *mut DistType;
     i = 0 as libc::c_int;
     while i < n {
         let ref mut fresh0 = *dij.offset(i as isize);
@@ -142,8 +135,10 @@ unsafe extern "C" fn compute_apsp_simple(
         end: 0,
         start: 0,
     };
-    dij = gcalloc(n as size_t, ::std::mem::size_of::<*mut DistType>() as libc::c_ulong)
-        as *mut *mut DistType;
+    dij = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<*mut DistType>() as libc::c_ulong,
+    ) as *mut *mut DistType;
     i = 0 as libc::c_int;
     while i < n {
         let ref mut fresh1 = *dij.offset(i as isize);
@@ -165,9 +160,9 @@ pub unsafe extern "C" fn compute_apsp(
     mut n: libc::c_int,
 ) -> *mut *mut DistType {
     if !((*graph).ewgts).is_null() {
-        return compute_apsp_dijkstra(graph, n)
+        return compute_apsp_dijkstra(graph, n);
     } else {
-        return compute_apsp_simple(graph, n)
+        return compute_apsp_simple(graph, n);
     };
 }
 #[no_mangle]
@@ -176,8 +171,7 @@ pub unsafe extern "C" fn compute_apsp_artifical_weights(
     mut n: libc::c_int,
 ) -> *mut *mut DistType {
     let mut Dij: *mut *mut DistType = 0 as *mut *mut DistType;
-    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize))
-        .ewgts;
+    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize)).ewgts;
     compute_new_weights(graph, n);
     Dij = compute_apsp_dijkstra(graph, n);
     restore_old_weights(graph, n, old_weights);
@@ -204,14 +198,10 @@ unsafe extern "C" fn split_by_place(
     *nodes.offset(first as isize) = val;
     place_val = *place.offset(val as isize);
     while left < right {
-        while left < right
-            && *place.offset(*nodes.offset(left as isize) as isize) <= place_val
-        {
+        while left < right && *place.offset(*nodes.offset(left as isize) as isize) <= place_val {
             left += 1;
         }
-        while left < right
-            && *place.offset(*nodes.offset(right as isize) as isize) > place_val
-        {
+        while left < right && *place.offset(*nodes.offset(right as isize) as isize) > place_val {
             right -= 1;
         }
         if left < right {
@@ -240,28 +230,24 @@ pub unsafe extern "C" fn distance_kD(
     let mut k: libc::c_int = 0;
     k = 0 as libc::c_int;
     while k < dim {
-        sum
-            += (*(*coords.offset(k as isize)).offset(i as isize)
-                - *(*coords.offset(k as isize)).offset(j as isize))
-                * (*(*coords.offset(k as isize)).offset(i as isize)
-                    - *(*coords.offset(k as isize)).offset(j as isize));
+        sum += (*(*coords.offset(k as isize)).offset(i as isize)
+            - *(*coords.offset(k as isize)).offset(j as isize))
+            * (*(*coords.offset(k as isize)).offset(i as isize)
+                - *(*coords.offset(k as isize)).offset(j as isize));
         k += 1;
     }
     return sqrt(sum);
 }
 static mut fvals: *mut libc::c_float = 0 as *const libc::c_float as *mut libc::c_float;
-unsafe extern "C" fn fcmpf(
-    mut ip1: *mut libc::c_int,
-    mut ip2: *mut libc::c_int,
-) -> libc::c_int {
+unsafe extern "C" fn fcmpf(mut ip1: *mut libc::c_int, mut ip2: *mut libc::c_int) -> libc::c_int {
     let mut d1: libc::c_float = *fvals.offset(*ip1 as isize);
     let mut d2: libc::c_float = *fvals.offset(*ip2 as isize);
     if d1 < d2 {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else if d1 > d2 {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 #[no_mangle]
@@ -278,22 +264,11 @@ pub unsafe extern "C" fn quicksort_placef(
             (last - first + 1 as libc::c_int) as size_t,
             ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
             ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut libc::c_int,
-                        *mut libc::c_int,
-                    ) -> libc::c_int,
-                >,
+                Option<unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_int) -> libc::c_int>,
                 qsort_cmpf,
-            >(
-                Some(
-                    fcmpf
-                        as unsafe extern "C" fn(
-                            *mut libc::c_int,
-                            *mut libc::c_int,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                fcmpf as unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_int) -> libc::c_int,
+            )),
         );
     }
 }
@@ -337,10 +312,7 @@ pub unsafe extern "C" fn quicksort_place(
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn compute_new_weights(
-    mut graph: *mut vtx_data,
-    mut n: libc::c_int,
-) {
+pub unsafe extern "C" fn compute_new_weights(mut graph: *mut vtx_data, mut n: libc::c_int) {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut nedges: libc::c_int = 0 as libc::c_int;
@@ -376,10 +348,7 @@ pub unsafe extern "C" fn compute_new_weights(
         while j <= deg_i {
             neighbor = *((*graph.offset(i as isize)).edges).offset(j as isize);
             deg_j = (*graph.offset(neighbor as isize)).nedges - 1 as libc::c_int;
-            *weights
-                .offset(
-                    j as isize,
-                ) = (deg_i + deg_j
+            *weights.offset(j as isize) = (deg_i + deg_j
                 - 2 as libc::c_int * common_neighbors(graph, i, neighbor, vtx_vec))
                 as libc::c_float;
             j += 1;
@@ -405,8 +374,7 @@ pub unsafe extern "C" fn restore_old_weights(
         while i < n {
             let ref mut fresh4 = (*graph.offset(i as isize)).ewgts;
             *fresh4 = old_weights;
-            old_weights = old_weights
-                .offset((*graph.offset(i as isize)).nedges as isize);
+            old_weights = old_weights.offset((*graph.offset(i as isize)).nedges as isize);
             i += 1;
         }
     }

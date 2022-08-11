@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -40,30 +48,21 @@ pub unsafe extern "C" fn solve3(
     c_over_a = c / a;
     d_over_a = d / a;
     p = b_over_3a * b_over_3a;
-    q = 2 as libc::c_int as libc::c_double * b_over_3a * p - b_over_3a * c_over_a
-        + d_over_a;
+    q = 2 as libc::c_int as libc::c_double * b_over_3a * p - b_over_3a * c_over_a + d_over_a;
     p = c_over_a / 3 as libc::c_int as libc::c_double - p;
     disc = q * q + 4 as libc::c_int as libc::c_double * p * p * p;
     if disc < 0 as libc::c_int as libc::c_double {
         r = 0.5f64 * sqrt(-disc + q * q);
         theta = atan2(sqrt(-disc), -q);
         temp = 2 as libc::c_int as libc::c_double * cbrt(r);
-        *roots
-            .offset(
-                0 as libc::c_int as isize,
-            ) = temp * cos(theta / 3 as libc::c_int as libc::c_double);
-        *roots
-            .offset(
-                1 as libc::c_int as isize,
-            ) = temp
+        *roots.offset(0 as libc::c_int as isize) =
+            temp * cos(theta / 3 as libc::c_int as libc::c_double);
+        *roots.offset(1 as libc::c_int as isize) = temp
             * cos(
                 (theta + 3.14159265358979323846f64 + 3.14159265358979323846f64)
                     / 3 as libc::c_int as libc::c_double,
             );
-        *roots
-            .offset(
-                2 as libc::c_int as isize,
-            ) = temp
+        *roots.offset(2 as libc::c_int as isize) = temp
             * cos(
                 (theta - 3.14159265358979323846f64 - 3.14159265358979323846f64)
                     / 3 as libc::c_int as libc::c_double,
@@ -109,14 +108,12 @@ unsafe extern "C" fn solve2(
     c_over_a = c / a;
     disc = b_over_2a * b_over_2a - c_over_a;
     if disc < 0 as libc::c_int as libc::c_double {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     } else {
         if disc > 0 as libc::c_int as libc::c_double {
             *roots.offset(0 as libc::c_int as isize) = -b_over_2a + sqrt(disc);
-            *roots
-                .offset(
-                    1 as libc::c_int as isize,
-                ) = -(2 as libc::c_int) as libc::c_double * b_over_2a
+            *roots.offset(1 as libc::c_int as isize) = -(2 as libc::c_int) as libc::c_double
+                * b_over_2a
                 - *roots.offset(0 as libc::c_int as isize);
             return 2 as libc::c_int;
         }
@@ -134,9 +131,9 @@ unsafe extern "C" fn solve1(
     b = *coeff.offset(0 as libc::c_int as isize);
     if a < 1E-7f64 && a > -1E-7f64 {
         if b < 1E-7f64 && b > -1E-7f64 {
-            return 4 as libc::c_int
+            return 4 as libc::c_int;
         } else {
-            return 0 as libc::c_int
+            return 0 as libc::c_int;
         }
     }
     *roots.offset(0 as libc::c_int as isize) = -b / a;

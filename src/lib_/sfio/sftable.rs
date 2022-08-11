@@ -1,13 +1,17 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
     fn localeconv() -> *mut lconv;
@@ -93,15 +97,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -109,29 +108,18 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[derive()]
 #[repr(C)]
 pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,
     pub eventf: Sffmtevent_f,
     pub form: *mut libc::c_char,
-    pub args: ::std::ffi::VaListImpl::<'a>,
+    pub args: ::std::ffi::VaListImpl<'a>,
     pub fmt: libc::c_int,
     pub size: ssize_t,
     pub flags: libc::c_int,
@@ -141,18 +129,11 @@ pub struct _sffmt_s<'a> {
     pub t_str: *mut libc::c_char,
     pub n_str: ssize_t,
 }
-pub type Sffmtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sffmt_t,
-    ) -> libc::c_int,
+pub type Sffmtevent_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
 pub type Sffmt_t = _sffmt_s;
-pub type Sffmtext_f = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
->;
+pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 pub type ptrdiff_t = libc::c_long;
 pub type C2RustUnnamed = libc::c_uint;
 pub const _ISalnum: C2RustUnnamed = 8;
@@ -235,9 +216,9 @@ pub struct _sftab_ {
     pub sf_neg10: [f128::f128; 6],
     pub sf_dec: [libc::c_uchar; 200],
     pub sf_digits: *mut libc::c_char,
-    pub sf_cvinitf: Option::<unsafe extern "C" fn() -> libc::c_int>,
+    pub sf_cvinitf: Option<unsafe extern "C" fn() -> libc::c_int>,
     pub sf_cvinit: libc::c_int,
-    pub sf_fmtposf: Option::<
+    pub sf_fmtposf: Option<
         unsafe extern "C" fn(
             *mut Sfio_t,
             *const libc::c_char,
@@ -245,9 +226,8 @@ pub struct _sftab_ {
             libc::c_int,
         ) -> *mut Fmtpos_t,
     >,
-    pub sf_fmtintf: Option::<
-        unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char,
-    >,
+    pub sf_fmtintf:
+        Option<unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char>,
     pub sf_cv36: [libc::c_uchar; 256],
     pub sf_cv64: [libc::c_uchar; 256],
     pub sf_type: [libc::c_uchar; 256],
@@ -259,7 +239,8 @@ unsafe extern "C" fn sffmtint(
 ) -> *mut libc::c_char {
     *v = 0 as libc::c_int;
     while *(*__ctype_b_loc()).offset(*str as libc::c_int as isize) as libc::c_int
-        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+        != 0
     {
         *v = *v * 10 as libc::c_int + (*str as libc::c_int - '0' as i32);
         str = str.offset(1);
@@ -278,41 +259,33 @@ unsafe extern "C" fn sfcvinit() -> libc::c_int {
     }
     d = 0 as libc::c_int;
     while d < 10 as libc::c_int {
-        _Sftable
-            .sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
-        _Sftable
-            .sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
+        _Sftable.sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
+        _Sftable.sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
         d += 1;
     }
     while d < 36 as libc::c_int {
-        _Sftable
-            .sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
-        _Sftable
-            .sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
+        _Sftable.sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
+        _Sftable.sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
         d += 1;
     }
     l = 10 as libc::c_int;
     while d < 62 as libc::c_int {
-        _Sftable
-            .sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = l as libc::c_uchar;
-        _Sftable
-            .sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
+        _Sftable.sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            l as libc::c_uchar;
+        _Sftable.sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
         l += 1;
         d += 1;
     }
     while d < 64 as libc::c_int {
-        _Sftable
-            .sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
-        _Sftable
-            .sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar
-            as usize] = d as libc::c_uchar;
+        _Sftable.sf_cv36[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
+        _Sftable.sf_cv64[*(_Sftable.sf_digits).offset(d as isize) as libc::c_uchar as usize] =
+            d as libc::c_uchar;
         d += 1;
     }
     _Sftable.sf_type['i' as i32 as usize] = 0o1 as libc::c_int as libc::c_uchar;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -33,11 +41,7 @@ extern "C" {
     fn UF_setname(_: *mut Agnode_t, _: *mut Agnode_t);
     fn allocate_ranks(_: *mut Agraph_t);
     fn build_ranks(_: *mut Agraph_t, _: libc::c_int);
-    fn virtual_edge(
-        _: *mut Agnode_t,
-        _: *mut Agnode_t,
-        _: *mut Agedge_t,
-    ) -> *mut Agedge_t;
+    fn virtual_edge(_: *mut Agnode_t, _: *mut Agnode_t, _: *mut Agedge_t) -> *mut Agedge_t;
     fn virtual_node(_: *mut Agraph_t) -> *mut Agnode_t;
     fn class2(_: *mut Agraph_t);
     fn delete_fast_edge(_: *mut Agedge_t);
@@ -204,9 +208,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -220,25 +222,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -340,7 +335,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -501,16 +497,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -526,18 +516,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -545,16 +529,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -596,9 +573,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -627,13 +603,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -666,26 +637,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -694,29 +657,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -724,8 +679,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -759,7 +714,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -785,9 +740,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -921,7 +874,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1025,13 +978,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1040,7 +992,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1139,7 +1091,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1273,15 +1225,14 @@ pub struct Agedgeinfo_t {
 unsafe extern "C" fn map_interclust_node(mut n: *mut node_t) -> *mut node_t {
     let mut rv: *mut node_t = 0 as *mut node_t;
     if ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust).is_null()
-        || (*((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust
-            as *mut Agobj_t))
-            .data as *mut Agraphinfo_t))
-            .expanded as libc::c_int != 0
+        || (*((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust as *mut Agobj_t)).data
+            as *mut Agraphinfo_t))
+            .expanded as libc::c_int
+            != 0
     {
         rv = n;
     } else {
-        rv = *((*((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust
-            as *mut Agobj_t))
+        rv = *((*((*((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust as *mut Agobj_t))
             .data as *mut Agraphinfo_t))
             .rankleader)
             .offset((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize);
@@ -1297,32 +1248,25 @@ unsafe extern "C" fn make_slots(
     let mut i: libc::c_int = 0;
     let mut v: *mut node_t = 0 as *mut node_t;
     let mut vlist: *mut *mut node_t = 0 as *mut *mut node_t;
-    vlist = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-        .offset(r as isize))
-        .v;
+    vlist = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).v;
     if d <= 0 as libc::c_int {
         i = pos - d + 1 as libc::c_int;
         while i
-            < (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-                .offset(r as isize))
+            < (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
                 .n
         {
             v = *vlist.offset(i as isize);
-            (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .order = i + d - 1 as libc::c_int;
-            let ref mut fresh0 = *vlist
-                .offset(
-                    (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize,
-                );
+            (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order = i + d - 1 as libc::c_int;
+            let ref mut fresh0 =
+                *vlist.offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize);
             *fresh0 = v;
             i += 1;
         }
-        i = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(r as isize))
-            .n + d - 1 as libc::c_int;
+        i = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).n
+            + d
+            - 1 as libc::c_int;
         while i
-            < (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-                .offset(r as isize))
+            < (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
                 .n
         {
             let ref mut fresh1 = *vlist.offset(i as isize);
@@ -1330,17 +1274,13 @@ unsafe extern "C" fn make_slots(
             i += 1;
         }
     } else {
-        i = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(r as isize))
-            .n - 1 as libc::c_int;
+        i = (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).n
+            - 1 as libc::c_int;
         while i > pos {
             v = *vlist.offset(i as isize);
-            (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .order = i + d - 1 as libc::c_int;
-            let ref mut fresh2 = *vlist
-                .offset(
-                    (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize,
-                );
+            (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order = i + d - 1 as libc::c_int;
+            let ref mut fresh2 =
+                *vlist.offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize);
             *fresh2 = v;
             i -= 1;
         }
@@ -1351,8 +1291,8 @@ unsafe extern "C" fn make_slots(
             i += 1;
         }
     }
-    (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
-        .n += d - 1 as libc::c_int;
+    (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).n +=
+        d - 1 as libc::c_int;
 }
 unsafe extern "C" fn clone_vn(mut g: *mut graph_t, mut vn: *mut node_t) -> *mut node_t {
     let mut rv: *mut node_t = 0 as *mut node_t;
@@ -1365,19 +1305,17 @@ unsafe extern "C" fn clone_vn(mut g: *mut graph_t, mut vn: *mut node_t) -> *mut 
         2 as libc::c_int,
     );
     rv = virtual_node(g);
-    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .lw = (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw;
-    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .rw = (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw;
-    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .rank = (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank;
-    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-        .order = (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order
-        + 1 as libc::c_int;
-    let ref mut fresh4 = *((*((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-        .offset(r as isize))
-        .v)
-        .offset((*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize);
+    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw =
+        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).lw;
+    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw =
+        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rw;
+    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank =
+        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank;
+    (*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order =
+        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order + 1 as libc::c_int;
+    let ref mut fresh4 =
+        *((*((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).v)
+            .offset((*((*(rv as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order as isize);
     *fresh4 = rv;
     return rv;
 }
@@ -1394,16 +1332,16 @@ unsafe extern "C" fn map_path(
     let mut e: *mut edge_t = 0 as *mut edge_t;
     if (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
         < (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"ND_rank(from) < ND_rank(to)\0" as *const u8 as *const libc::c_char,
             b"cluster.c\0" as *const u8 as *const libc::c_char,
             79 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 59],
-                &[libc::c_char; 59],
-            >(b"void map_path(node_t *, node_t *, edge_t *, edge_t *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 59], &[libc::c_char; 59]>(
+                b"void map_path(node_t *, node_t *, edge_t *, edge_t *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*(if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
@@ -1411,23 +1349,22 @@ unsafe extern "C" fn map_path(
     } else {
         ve.offset(1 as libc::c_int as isize)
     }))
-        .node == from
-        && (*(if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int
-            == 2 as libc::c_int
-        {
+    .node
+        == from
+        && (*(if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
             ve
         } else {
             ve.offset(-(1 as libc::c_int as isize))
         }))
-            .node == to
+        .node
+            == to
     {
         return;
     }
     if (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t)).count as libc::c_int
         > 1 as libc::c_int
     {
-        let ref mut fresh5 = (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-            .to_virt;
+        let ref mut fresh5 = (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
         *fresh5 = 0 as *mut edge_t;
         if (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
             - (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
@@ -1436,10 +1373,11 @@ unsafe extern "C" fn map_path(
             e = find_fast_edge(from, to);
             if !e.is_null() && ports_eq(orig, e) != 0 {
                 merge_oneway(orig, e);
-                if (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                    as libc::c_int == 0 as libc::c_int
+                if (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type as libc::c_int
+                    == 0 as libc::c_int
                     && (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                        as libc::c_int == 0 as libc::c_int
+                        as libc::c_int
+                        == 0 as libc::c_int
                 {
                     other_edge(orig);
                 }
@@ -1449,30 +1387,25 @@ unsafe extern "C" fn map_path(
         u = from;
         r = (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank;
         while r < (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank {
-            if r
-                < (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
-                    - 1 as libc::c_int
-            {
+            if r < (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank - 1 as libc::c_int {
                 v = clone_vn(
                     dot_root(from as *mut libc::c_void),
-                    (*if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
+                    (*if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int
                     {
                         ve
                     } else {
                         ve.offset(-(1 as libc::c_int as isize))
                     })
-                        .node,
+                    .node,
                 );
             } else {
                 v = to;
             }
             e = virtual_edge(u, v, orig);
-            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .edge_type = type_0 as libc::c_char;
+            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                type_0 as libc::c_char;
             u = v;
-            let ref mut fresh6 = (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .count;
+            let ref mut fresh6 = (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t)).count;
             *fresh6 -= 1;
             ve = *((*((*((*if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int
                 == 2 as libc::c_int
@@ -1481,7 +1414,7 @@ unsafe extern "C" fn map_path(
             } else {
                 ve.offset(-(1 as libc::c_int as isize))
             })
-                .node as *mut Agobj_t))
+            .node as *mut Agobj_t))
                 .data as *mut Agnodeinfo_t))
                 .out
                 .list)
@@ -1495,63 +1428,56 @@ unsafe extern "C" fn map_path(
         {
             ve = find_fast_edge(from, to);
             if !ve.is_null() && ports_eq(orig, ve) != 0 {
-                let ref mut fresh7 = (*((*(orig as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .to_virt;
+                let ref mut fresh7 =
+                    (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                 *fresh7 = ve;
-                (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                    .edge_type = type_0 as libc::c_char;
-                let ref mut fresh8 = (*((*(ve as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .count;
+                (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                    type_0 as libc::c_char;
+                let ref mut fresh8 = (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t)).count;
                 *fresh8 += 1;
-                if (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                    as libc::c_int == 0 as libc::c_int
+                if (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type as libc::c_int
+                    == 0 as libc::c_int
                     && (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                        as libc::c_int == 0 as libc::c_int
+                        as libc::c_int
+                        == 0 as libc::c_int
                 {
                     other_edge(orig);
                 }
             } else {
-                let ref mut fresh9 = (*((*(orig as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .to_virt;
+                let ref mut fresh9 =
+                    (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                 *fresh9 = 0 as *mut edge_t;
                 ve = virtual_edge(from, to, orig);
-                (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                    .edge_type = type_0 as libc::c_char;
+                (*((*(ve as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                    type_0 as libc::c_char;
             }
         }
         if (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
             - (*((*(from as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
             > 1 as libc::c_int
         {
-            if (*(if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 3 as libc::c_int
-            {
+            if (*(if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                 ve
             } else {
                 ve.offset(1 as libc::c_int as isize)
             }))
-                .node != from
+            .node
+                != from
             {
-                let ref mut fresh10 = (*((*(orig as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .to_virt;
+                let ref mut fresh10 =
+                    (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                 *fresh10 = 0 as *mut edge_t;
-                let ref mut fresh11 = (*((*(orig as *mut Agobj_t)).data
-                    as *mut Agedgeinfo_t))
-                    .to_virt;
+                let ref mut fresh11 =
+                    (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                 *fresh11 = virtual_edge(
                     from,
-                    (*if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
+                    (*if ((*(ve as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int
                     {
                         ve
                     } else {
                         ve.offset(-(1 as libc::c_int as isize))
                     })
-                        .node,
+                    .node,
                     orig,
                 );
                 e = *fresh11;
@@ -1566,9 +1492,10 @@ unsafe extern "C" fn map_path(
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             }))
-                .node as *mut Agobj_t))
+            .node as *mut Agobj_t))
                 .data as *mut Agnodeinfo_t))
-                .rank != (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
+                .rank
+                != (*((*(to as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
             {
                 e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                     == 2 as libc::c_int
@@ -1577,36 +1504,36 @@ unsafe extern "C" fn map_path(
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut Agobj_t))
+                .node as *mut Agobj_t))
                     .data as *mut Agnodeinfo_t))
                     .out
                     .list)
                     .offset(0 as libc::c_int as isize);
             }
-            if (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+            if (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             }))
-                .node != to
+            .node
+                != to
             {
                 ve = e;
-                e = virtual_edge(
-                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 3 as libc::c_int
-                    {
-                        e
-                    } else {
-                        e.offset(1 as libc::c_int as isize)
-                    })
+                e =
+                    virtual_edge(
+                        (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                            == 3 as libc::c_int
+                        {
+                            e
+                        } else {
+                            e.offset(1 as libc::c_int as isize)
+                        })
                         .node,
-                    to,
-                    orig,
-                );
-                (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                    .edge_type = type_0 as libc::c_char;
+                        to,
+                        orig,
+                    );
+                (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                    type_0 as libc::c_char;
                 delete_fast_edge(ve);
             }
         }
@@ -1650,9 +1577,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
         while !e.is_null() {
             next = agnxtedge(g, e, n);
             if !(agcontains(subg, e as *mut libc::c_void) != 0) {
-                e = if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                e = if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
@@ -1665,68 +1590,62 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                     } else {
                         e.offset(1 as libc::c_int as isize)
                     }))
-                        .node as *mut Agobj_t))
+                    .node as *mut Agobj_t))
                         .data as *mut Agnodeinfo_t))
                         .rank
-                        == (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 2 as libc::c_int
+                        == (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                            == 2 as libc::c_int
                         {
                             e
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         }))
-                            .node as *mut Agobj_t))
+                        .node as *mut Agobj_t))
                             .data as *mut Agnodeinfo_t))
                             .rank
                     {
-                        let ref mut fresh12 = (*((*(e as *mut Agobj_t)).data
-                            as *mut Agedgeinfo_t))
-                            .to_virt;
+                        let ref mut fresh12 =
+                            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                         *fresh12 = prev;
                     } else {
-                        let ref mut fresh13 = (*((*(e as *mut Agobj_t)).data
-                            as *mut Agedgeinfo_t))
-                            .to_virt;
+                        let ref mut fresh13 =
+                            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                         *fresh13 = 0 as *mut edge_t;
                     }
-                    if !((*((*(prev as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                        .to_virt)
-                        .is_null()
+                    if !((*((*(prev as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt).is_null()
                     {
-                        let ref mut fresh14 = (*((*(e as *mut Agobj_t)).data
-                            as *mut Agedgeinfo_t))
-                            .to_virt;
+                        let ref mut fresh14 =
+                            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                         *fresh14 = 0 as *mut edge_t;
                         merge_chain(
                             subg,
                             e,
-                            (*((*(prev as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                                .to_virt,
+                            (*((*(prev as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt,
                             0 as libc::c_int,
                         );
                         safe_other_edge(e);
                     }
-                } else if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                        as libc::c_int == 3 as libc::c_int
+                } else if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 3 as libc::c_int
+                {
+                    e
+                } else {
+                    e.offset(1 as libc::c_int as isize)
+                }))
+                .node as *mut Agobj_t))
+                    .data as *mut Agnodeinfo_t))
+                    .rank
+                    == (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
                     {
                         e
                     } else {
-                        e.offset(1 as libc::c_int as isize)
+                        e.offset(-(1 as libc::c_int as isize))
                     }))
-                        .node as *mut Agobj_t))
+                    .node as *mut Agobj_t))
                         .data as *mut Agnodeinfo_t))
                         .rank
-                        == (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 2 as libc::c_int
-                        {
-                            e
-                        } else {
-                            e.offset(-(1 as libc::c_int as isize))
-                        }))
-                            .node as *mut Agobj_t))
-                            .data as *mut Agnodeinfo_t))
-                            .rank
-                    {
+                {
                     let mut fe: *mut edge_t = 0 as *mut edge_t;
                     fe = find_flat_edge(
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -1736,7 +1655,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(1 as libc::c_int as isize)
                         })
-                            .node,
+                        .node,
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                             == 2 as libc::c_int
                         {
@@ -1744,41 +1663,39 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         })
-                            .node,
+                        .node,
                     );
                     if fe.is_null() {
                         flat_edge(g, e);
                         prev = e;
                     } else if e != fe {
                         safe_other_edge(e);
-                        if ((*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                            .to_virt)
-                            .is_null()
+                        if ((*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt).is_null()
                         {
                             merge_oneway(e, fe);
                         }
                     }
-                } else if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                        as libc::c_int == 2 as libc::c_int
+                } else if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                    == 2 as libc::c_int
+                {
+                    e
+                } else {
+                    e.offset(-(1 as libc::c_int as isize))
+                }))
+                .node as *mut Agobj_t))
+                    .data as *mut Agnodeinfo_t))
+                    .rank
+                    > (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 3 as libc::c_int
                     {
                         e
                     } else {
-                        e.offset(-(1 as libc::c_int as isize))
+                        e.offset(1 as libc::c_int as isize)
                     }))
-                        .node as *mut Agobj_t))
+                    .node as *mut Agobj_t))
                         .data as *mut Agnodeinfo_t))
                         .rank
-                        > (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 3 as libc::c_int
-                        {
-                            e
-                        } else {
-                            e.offset(1 as libc::c_int as isize)
-                        }))
-                            .node as *mut Agobj_t))
-                            .data as *mut Agnodeinfo_t))
-                            .rank
-                    {
+                {
                     make_interclust_chain(
                         g,
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -1788,7 +1705,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(1 as libc::c_int as isize)
                         })
-                            .node,
+                        .node,
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                             == 2 as libc::c_int
                         {
@@ -1796,7 +1713,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         })
-                            .node,
+                        .node,
                         e,
                     );
                     prev = e;
@@ -1810,7 +1727,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(-(1 as libc::c_int as isize))
                         })
-                            .node,
+                        .node,
                         (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                             == 3 as libc::c_int
                         {
@@ -1818,7 +1735,7 @@ unsafe extern "C" fn interclexp(mut subg: *mut graph_t) {
                         } else {
                             e.offset(1 as libc::c_int as isize)
                         })
-                            .node,
+                        .node,
                         e,
                     );
                     prev = e;
@@ -1840,37 +1757,31 @@ unsafe extern "C" fn merge_ranks(mut subg: *mut graph_t) {
     if (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank
         <= (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank
         && !(b"corrupted rank bounds\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"GD_minrank(subg) <= GD_maxrank(subg) && \"corrupted rank bounds\"\0"
-                as *const u8 as *const libc::c_char,
+            b"GD_minrank(subg) <= GD_maxrank(subg) && \"corrupted rank bounds\"\0" as *const u8
+                as *const libc::c_char,
             b"cluster.c\0" as *const u8 as *const libc::c_char,
             234 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 28],
-                &[libc::c_char; 28],
-            >(b"void merge_ranks(graph_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 28], &[libc::c_char; 28]>(
+                b"void merge_ranks(graph_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     root = dot_root(subg as *mut libc::c_void);
-    if (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank
-        > 0 as libc::c_int
-    {
-        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(
-                ((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank
-                    - 1 as libc::c_int) as isize,
-            ))
-            .valid = 0 as libc::c_int != 0;
+    if (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank > 0 as libc::c_int {
+        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(
+            ((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank - 1 as libc::c_int)
+                as isize,
+        ))
+        .valid = 0 as libc::c_int != 0;
     }
     r = (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank;
     while r <= (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank {
-        d = (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(r as isize))
-            .n;
-        pos = (*((*(*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t))
-            .rankleader)
+        d = (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).n;
+        pos = (*((*(*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader)
             .offset(r as isize) as *mut Agobj_t))
             .data as *mut Agnodeinfo_t))
             .order;
@@ -1878,59 +1789,49 @@ unsafe extern "C" fn merge_ranks(mut subg: *mut graph_t) {
         make_slots(root, r, pos, d);
         i = 0 as libc::c_int;
         while i
-            < (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-                .offset(r as isize))
+            < (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
                 .n
         {
-            let ref mut fresh15 = *((*((*((*(root as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
+            let ref mut fresh15 = *((*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t))
                 .rank)
                 .offset(r as isize))
-                .v)
+            .v)
                 .offset(pos as isize);
-            *fresh15 = *((*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t))
-                .rank)
+            *fresh15 = *((*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
                 .offset(r as isize))
-                .v)
+            .v)
                 .offset(i as isize);
             v = *fresh15;
             let fresh16 = pos;
             pos = pos + 1;
             (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).order = fresh16;
-            if (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                as libc::c_int == 1 as libc::c_int
+            if (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type as libc::c_int
+                == 1 as libc::c_int
             {
                 let ref mut fresh17 = (*v).root;
                 *fresh17 = agroot(root as *mut libc::c_void);
             }
             delete_fast_node(subg, v);
             fast_node(root, v);
-            let ref mut fresh18 = (*((*(root as *mut Agobj_t)).data
-                as *mut Agraphinfo_t))
-                .n_nodes;
+            let ref mut fresh18 = (*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).n_nodes;
             *fresh18 += 1;
             i += 1;
         }
-        let ref mut fresh19 = (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t))
-            .rank)
-            .offset(r as isize))
-            .v;
+        let ref mut fresh19 =
+            (*((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize)).v;
         *fresh19 = ((*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
             .offset(r as isize))
-            .v)
+        .v)
             .offset(ipos as isize);
-        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(r as isize))
+        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
             .valid = 0 as libc::c_int != 0;
         r += 1;
     }
     if r < (*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank {
-        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank)
-            .offset(r as isize))
+        (*((*((*(root as *mut Agobj_t)).data as *mut Agraphinfo_t)).rank).offset(r as isize))
             .valid = 0 as libc::c_int != 0;
     }
-    (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t))
-        .expanded = 1 as libc::c_int != 0;
+    (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).expanded = 1 as libc::c_int != 0;
 }
 unsafe extern "C" fn remove_rankleaders(mut g: *mut graph_t) {
     let mut r: libc::c_int = 0;
@@ -1938,10 +1839,11 @@ unsafe extern "C" fn remove_rankleaders(mut g: *mut graph_t) {
     let mut e: *mut edge_t = 0 as *mut edge_t;
     r = (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank;
     while r <= (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank {
-        v = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader)
-            .offset(r as isize);
+        v = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader).offset(r as isize);
         loop {
-            e = *((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).out.list)
+            e = *((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .out
+                .list)
                 .offset(0 as libc::c_int as isize);
             if e.is_null() {
                 break;
@@ -1949,7 +1851,9 @@ unsafe extern "C" fn remove_rankleaders(mut g: *mut graph_t) {
             delete_fast_edge(e);
         }
         loop {
-            e = *((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).in_0.list)
+            e = *((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .in_0
+                .list)
                 .offset(0 as libc::c_int as isize);
             if e.is_null() {
                 break;
@@ -1957,9 +1861,8 @@ unsafe extern "C" fn remove_rankleaders(mut g: *mut graph_t) {
             delete_fast_edge(e);
         }
         delete_fast_node(dot_root(g as *mut libc::c_void), v);
-        let ref mut fresh20 = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t))
-            .rankleader)
-            .offset(r as isize);
+        let ref mut fresh20 =
+            *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader).offset(r as isize);
         *fresh20 = 0 as *mut node_t;
         r += 1;
     }
@@ -1997,25 +1900,23 @@ pub unsafe extern "C" fn mark_clusters(mut g: *mut graph_t) {
         {
             UF_singleton(n);
         }
-        let ref mut fresh22 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .clust;
+        let ref mut fresh22 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
         *fresh22 = 0 as *mut graph_t;
         n = agnxtnode(g, n);
     }
     c = 1 as libc::c_int;
     while c <= (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).n_cluster {
-        clust = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust)
-            .offset(c as isize);
+        clust = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust).offset(c as isize);
         n = agfstnode(clust);
         while !n.is_null() {
             nn = agnxtnode(clust, n);
-            if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ranktype
-                as libc::c_int != 0 as libc::c_int
+            if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ranktype as libc::c_int
+                != 0 as libc::c_int
             {
                 agerr(
                     AGWARN,
-                    b"%s was already in a rankset, deleted from cluster %s\n\0"
-                        as *const u8 as *const libc::c_char,
+                    b"%s was already in a rankset, deleted from cluster %s\n\0" as *const u8
+                        as *const libc::c_char,
                     agnameof(n as *mut libc::c_void),
                     agnameof(g as *mut libc::c_void),
                 );
@@ -2025,42 +1926,38 @@ pub unsafe extern "C" fn mark_clusters(mut g: *mut graph_t) {
                     n,
                     (*((*(clust as *mut Agobj_t)).data as *mut Agraphinfo_t)).leader,
                 );
-                let ref mut fresh23 = (*((*(n as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .clust;
+                let ref mut fresh23 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
                 *fresh23 = clust;
-                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                    .ranktype = 7 as libc::c_int as libc::c_char;
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ranktype =
+                    7 as libc::c_int as libc::c_char;
                 orig = agfstout(clust, n);
                 while !orig.is_null() {
                     e = (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
                     if !e.is_null() {
-                        while !e.is_null()
-                            && {
-                                vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                                    as libc::c_int == 2 as libc::c_int
-                                {
-                                    e
-                                } else {
-                                    e.offset(-(1 as libc::c_int as isize))
-                                }))
-                                    .node;
-                                (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                                    .node_type as libc::c_int == 1 as libc::c_int
-                            }
-                        {
-                            let ref mut fresh24 = (*((*(vn as *mut Agobj_t)).data
-                                as *mut Agnodeinfo_t))
-                                .clust;
+                        while !e.is_null() && {
+                            vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                                == 2 as libc::c_int
+                            {
+                                e
+                            } else {
+                                e.offset(-(1 as libc::c_int as isize))
+                            }))
+                            .node;
+                            (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
+                                as libc::c_int
+                                == 1 as libc::c_int
+                        } {
+                            let ref mut fresh24 =
+                                (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
                             *fresh24 = clust;
-                            e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype()
-                                as libc::c_int == 2 as libc::c_int
+                            e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                                == 2 as libc::c_int
                             {
                                 e
                             } else {
                                 e.offset(-(1 as libc::c_int as isize))
                             })
-                                .node as *mut Agobj_t))
+                            .node as *mut Agobj_t))
                                 .data as *mut Agnodeinfo_t))
                                 .out
                                 .list)
@@ -2083,11 +1980,10 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
     let mut rl: *mut node_t = 0 as *mut node_t;
     let mut e: *mut edge_t = 0 as *mut edge_t;
     prev = 0 as *mut node_t;
-    let ref mut fresh25 = (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t))
-        .rankleader;
+    let ref mut fresh25 = (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader;
     *fresh25 = gcalloc(
-        ((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank
-            + 2 as libc::c_int) as size_t,
+        ((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank + 2 as libc::c_int)
+            as size_t,
         ::std::mem::size_of::<*mut node_t>() as libc::c_ulong,
     ) as *mut *mut node_t;
     r = (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).minrank;
@@ -2098,15 +1994,13 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
         *fresh26 = virtual_node(g);
         v = *fresh26;
         (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank = r;
-        (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .ranktype = 7 as libc::c_int as libc::c_char;
-        let ref mut fresh27 = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .clust;
+        (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).ranktype =
+            7 as libc::c_int as libc::c_char;
+        let ref mut fresh27 = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
         *fresh27 = subg;
         if !prev.is_null() {
             e = virtual_edge(prev, v, 0 as *mut Agedge_t);
-            let ref mut fresh28 = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .xpenalty;
+            let ref mut fresh28 = (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).xpenalty;
             *fresh28 = (*fresh28 as libc::c_int * 1000 as libc::c_int) as libc::c_short;
         }
         prev = v;
@@ -2116,8 +2010,7 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
     while !v.is_null() {
         rl = *((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader)
             .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize);
-        let ref mut fresh29 = (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .UF_size;
+        let ref mut fresh29 = (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size;
         *fresh29 += 1;
         e = agfstout(subg, v);
         while !e.is_null() {
@@ -2139,7 +2032,7 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 }))
-                    .node as *mut Agobj_t))
+                .node as *mut Agobj_t))
                     .data as *mut Agnodeinfo_t))
                     .rank
             {
@@ -2147,7 +2040,8 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
                     as *mut Agnodeinfo_t))
                     .out
                     .list)
-                    .offset(0 as libc::c_int as isize) as *mut Agobj_t))
+                    .offset(0 as libc::c_int as isize)
+                    as *mut Agobj_t))
                     .data as *mut Agedgeinfo_t))
                     .count;
                 *fresh30 += 1;
@@ -2161,11 +2055,8 @@ pub unsafe extern "C" fn build_skeleton(mut g: *mut graph_t, mut subg: *mut grap
     while r <= (*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).maxrank {
         rl = *((*((*(subg as *mut Agobj_t)).data as *mut Agraphinfo_t)).rankleader)
             .offset(r as isize);
-        if (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size
-            > 1 as libc::c_int
-        {
-            let ref mut fresh31 = (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .UF_size;
+        if (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size > 1 as libc::c_int {
+            let ref mut fresh31 = (*((*(rl as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size;
             *fresh31 -= 1;
         }
         r += 1;
@@ -2203,8 +2094,8 @@ pub unsafe extern "C" fn install_cluster(
             );
             r += 1;
         }
-        (*((*(clust as *mut Agobj_t)).data as *mut Agraphinfo_t))
-            .installed = (pass + 1 as libc::c_int) as libc::c_char;
+        (*((*(clust as *mut Agobj_t)).data as *mut Agraphinfo_t)).installed =
+            (pass + 1 as libc::c_int) as libc::c_char;
     }
 }
 #[no_mangle]
@@ -2215,39 +2106,35 @@ pub unsafe extern "C" fn mark_lowclusters(mut root: *mut Agraph_t) {
     let mut e: *mut Agedge_t = 0 as *mut Agedge_t;
     n = agfstnode(root);
     while !n.is_null() {
-        let ref mut fresh32 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-            .clust;
+        let ref mut fresh32 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
         *fresh32 = 0 as *mut graph_t;
         orig = agfstout(root, n);
         while !orig.is_null() {
             e = (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
             if !e.is_null() {
-                while !e.is_null()
-                    && {
-                        vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                            == 2 as libc::c_int
-                        {
-                            e
-                        } else {
-                            e.offset(-(1 as libc::c_int as isize))
-                        }))
-                            .node;
-                        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                            as libc::c_int == 1 as libc::c_int
-                    }
-                {
-                    let ref mut fresh33 = (*((*(vn as *mut Agobj_t)).data
-                        as *mut Agnodeinfo_t))
-                        .clust;
+                while !e.is_null() && {
+                    vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
+                    {
+                        e
+                    } else {
+                        e.offset(-(1 as libc::c_int as isize))
+                    }))
+                    .node;
+                    (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type as libc::c_int
+                        == 1 as libc::c_int
+                } {
+                    let ref mut fresh33 =
+                        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
                     *fresh33 = 0 as *mut graph_t;
-                    e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype()
-                        as libc::c_int == 2 as libc::c_int
+                    e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
                     {
                         e
                     } else {
                         e.offset(-(1 as libc::c_int as isize))
                     })
-                        .node as *mut Agobj_t))
+                    .node as *mut Agobj_t))
                         .data as *mut Agnodeinfo_t))
                         .out
                         .list)
@@ -2269,52 +2156,45 @@ unsafe extern "C" fn mark_lowcluster_basic(mut g: *mut Agraph_t) {
     let mut c: libc::c_int = 0;
     c = 1 as libc::c_int;
     while c <= (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).n_cluster {
-        clust = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust)
-            .offset(c as isize);
+        clust = *((*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).clust).offset(c as isize);
         mark_lowcluster_basic(clust);
         c += 1;
     }
     n = agfstnode(g);
     while !n.is_null() {
         if ((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust).is_null() {
-            let ref mut fresh34 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .clust;
+            let ref mut fresh34 = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
             *fresh34 = g;
         }
         orig = agfstout(g, n);
         while !orig.is_null() {
             e = (*((*(orig as *mut Agobj_t)).data as *mut Agedgeinfo_t)).to_virt;
             if !e.is_null() {
-                while !e.is_null()
-                    && {
-                        vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                            == 2 as libc::c_int
-                        {
-                            e
-                        } else {
-                            e.offset(-(1 as libc::c_int as isize))
-                        }))
-                            .node;
-                        (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type
-                            as libc::c_int == 1 as libc::c_int
-                    }
-                {
-                    if ((*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust)
-                        .is_null()
+                while !e.is_null() && {
+                    vn = (*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
                     {
-                        let ref mut fresh35 = (*((*(vn as *mut Agobj_t)).data
-                            as *mut Agnodeinfo_t))
-                            .clust;
+                        e
+                    } else {
+                        e.offset(-(1 as libc::c_int as isize))
+                    }))
+                    .node;
+                    (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).node_type as libc::c_int
+                        == 1 as libc::c_int
+                } {
+                    if ((*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust).is_null() {
+                        let ref mut fresh35 =
+                            (*((*(vn as *mut Agobj_t)).data as *mut Agnodeinfo_t)).clust;
                         *fresh35 = g;
                     }
-                    e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype()
-                        as libc::c_int == 2 as libc::c_int
+                    e = *((*((*((*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
                     {
                         e
                     } else {
                         e.offset(-(1 as libc::c_int as isize))
                     })
-                        .node as *mut Agobj_t))
+                    .node as *mut Agobj_t))
                         .data as *mut Agnodeinfo_t))
                         .out
                         .list)

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -47,8 +55,7 @@ unsafe extern "C" fn shortestPath(
     let mut k: libc::c_int = 0;
     let mut t: libc::c_int = 0;
     dad = malloc(
-        (V as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (V as libc::c_ulong).wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
     ) as *mut libc::c_int;
     vl = malloc(
         ((V + 1 as libc::c_int) as libc::c_ulong)
@@ -82,9 +89,7 @@ unsafe extern "C" fn shortestPath(
                     wkt = *(*wadj.offset(t as isize)).offset(k as isize);
                 }
                 newpri = -(*val.offset(k as isize) + wkt);
-                if wkt != 0 as libc::c_int as libc::c_double
-                    && *val.offset(t as isize) < newpri
-                {
+                if wkt != 0 as libc::c_int as libc::c_double && *val.offset(t as isize) < newpri {
                     *val.offset(t as isize) = newpri;
                     *dad.offset(t as isize) = k;
                 }

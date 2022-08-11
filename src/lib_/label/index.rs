@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -141,10 +149,7 @@ pub unsafe extern "C" fn RTreeNewIndex() -> *mut Node_t {
     (*x).level = 0 as libc::c_int;
     return x;
 }
-unsafe extern "C" fn RTreeClose2(
-    mut rtp: *mut RTree_t,
-    mut n: *mut Node_t,
-) -> libc::c_int {
+unsafe extern "C" fn RTreeClose2(mut rtp: *mut RTree_t, mut n: *mut Node_t) -> libc::c_int {
     if (*n).level > 0 as libc::c_int {
         let mut i: libc::c_int = 0 as libc::c_int;
         while i < 64 as libc::c_int {
@@ -181,54 +186,52 @@ pub unsafe extern "C" fn RTreeSearch(
     mut r: *mut Rect_t,
 ) -> *mut LeafList_t {
     let mut llp: *mut LeafList_t = 0 as *mut LeafList_t;
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             145 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*n).level >= 0 as libc::c_int {} else {
+    if (*n).level >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"n->level >= 0\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             146 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !r.is_null() {} else {
+    if !r.is_null() {
+    } else {
         __assert_fail(
             b"r\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             147 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"LeafList_t *RTreeSearch(RTree_t *, Node_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*n).level > 0 as libc::c_int {
         let mut i: size_t = 0 as libc::c_int as size_t;
         while i < 64 as libc::c_int as libc::c_ulong {
             if !((*n).branch[i as usize].child).is_null()
-                && Overlap(r, &mut (*((*n).branch).as_mut_ptr().offset(i as isize)).rect)
-                    != 0
-            {
-                let mut tlp: *mut LeafList_t = RTreeSearch(
-                    rtp,
-                    (*n).branch[i as usize].child,
+                && Overlap(
                     r,
-                );
+                    &mut (*((*n).branch).as_mut_ptr().offset(i as isize)).rect,
+                ) != 0
+            {
+                let mut tlp: *mut LeafList_t = RTreeSearch(rtp, (*n).branch[i as usize].child, r);
                 if !llp.is_null() {
                     let mut xlp: *mut LeafList_t = llp;
                     while !((*xlp).next).is_null() {
@@ -276,46 +279,44 @@ pub unsafe extern "C" fn RTreeInsert(
         child: 0 as *mut Node,
     };
     let mut result: libc::c_int = 0 as libc::c_int;
-    if !r.is_null() && !n.is_null() {} else {
+    if !r.is_null() && !n.is_null() {
+    } else {
         __assert_fail(
             b"r && n\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             190 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if level >= 0 as libc::c_int && level <= (**n).level {} else {
+    if level >= 0 as libc::c_int && level <= (**n).level {
+    } else {
         __assert_fail(
             b"level >= 0 && level <= (*n)->level\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             191 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 61],
-                &[libc::c_char; 61],
-            >(b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < 2 as libc::c_int as libc::c_ulong {
         if (*r).boundary[i as usize]
-            <= (*r)
-                .boundary[(2 as libc::c_int as libc::c_ulong).wrapping_add(i) as usize]
-        {} else {
+            <= (*r).boundary[(2 as libc::c_int as libc::c_ulong).wrapping_add(i) as usize]
+        {
+        } else {
             __assert_fail(
-                b"r->boundary[i] <= r->boundary[NUMDIMS + i]\0" as *const u8
-                    as *const libc::c_char,
+                b"r->boundary[i] <= r->boundary[NUMDIMS + i]\0" as *const u8 as *const libc::c_char,
                 b"index.c\0" as *const u8 as *const libc::c_char,
                 193 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 61],
-                    &[libc::c_char; 61],
-                >(b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 61], &[libc::c_char; 61]>(
+                    b"int RTreeInsert(RTree_t *, Rect_t *, void *, Node_t **, int)\0",
+                ))
+                .as_ptr(),
             );
         }
         i = i.wrapping_add(1);
@@ -347,41 +348,34 @@ unsafe extern "C" fn RTreeInsert2(
         child: 0 as *mut Node,
     };
     let mut n2: *mut Node_t = 0 as *mut Node_t;
-    if !r.is_null() && !n.is_null() && !new.is_null() {} else {
+    if !r.is_null() && !n.is_null() && !new.is_null() {
+    } else {
         __assert_fail(
             b"r && n && new\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             231 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 72],
-                &[libc::c_char; 72],
-            >(
+            (*::std::mem::transmute::<&[u8; 72], &[libc::c_char; 72]>(
                 b"int RTreeInsert2(RTree_t *, Rect_t *, void *, Node_t *, Node_t **, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if level >= 0 as libc::c_int && level <= (*n).level {} else {
+    if level >= 0 as libc::c_int && level <= (*n).level {
+    } else {
         __assert_fail(
             b"level >= 0 && level <= n->level\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             232 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 72],
-                &[libc::c_char; 72],
-            >(
+            (*::std::mem::transmute::<&[u8; 72], &[libc::c_char; 72]>(
                 b"int RTreeInsert2(RTree_t *, Rect_t *, void *, Node_t *, Node_t **, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     if (*n).level > level {
         let mut i: libc::c_int = PickBranch(r, n);
-        if RTreeInsert2(rtp, r, data, (*n).branch[i as usize].child, &mut n2, level) == 0
-        {
-            (*n)
-                .branch[i as usize]
-                .rect = CombineRect(
+        if RTreeInsert2(rtp, r, data, (*n).branch[i as usize].child, &mut n2, level) == 0 {
+            (*n).branch[i as usize].rect = CombineRect(
                 r,
                 &mut (*((*n).branch).as_mut_ptr().offset(i as isize)).rect,
             );
@@ -401,13 +395,10 @@ unsafe extern "C" fn RTreeInsert2(
             b"FALSE\0" as *const u8 as *const libc::c_char,
             b"index.c\0" as *const u8 as *const libc::c_char,
             252 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 72],
-                &[libc::c_char; 72],
-            >(
+            (*::std::mem::transmute::<&[u8; 72], &[libc::c_char; 72]>(
                 b"int RTreeInsert2(RTree_t *, Rect_t *, void *, Node_t *, Node_t **, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
         return 0 as libc::c_int;
     };

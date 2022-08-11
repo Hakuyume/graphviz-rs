@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -85,16 +93,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -110,18 +112,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -129,16 +125,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -180,9 +169,8 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -212,13 +200,8 @@ pub struct Agtag_s {
 }
 pub type IDTYPE = uint64_t;
 pub type uint64_t = __uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -251,26 +234,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -279,29 +254,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -309,8 +276,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -346,8 +313,8 @@ pub struct gvplugin_installed_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvlayout_engine_s {
-    pub layout: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
 }
 pub type gvlayout_engine_t = gvlayout_engine_s;
 pub type C2RustUnnamed_2 = libc::c_uint;
@@ -475,8 +442,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_NEATO as libc::c_int,
                 type_0: b"neato\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &neatogen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &neatogen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -487,8 +454,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_FDP as libc::c_int,
                 type_0: b"fdp\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &fdpgen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &fdpgen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -499,8 +466,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_SFDP as libc::c_int,
                 type_0: b"sfdp\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &sfdpgen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &sfdpgen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -511,8 +478,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_TWOPI as libc::c_int,
                 type_0: b"twopi\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &twopigen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &twopigen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -523,8 +490,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_CIRCO as libc::c_int,
                 type_0: b"circo\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &circogen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &circogen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -535,8 +502,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_PATCHWORK as libc::c_int,
                 type_0: b"patchwork\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &patchwork_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &patchwork_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -547,8 +514,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_CLUSTER as libc::c_int,
                 type_0: b"osage\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &osage_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &osage_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -559,8 +526,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_NOP1 as libc::c_int,
                 type_0: b"nop\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &nop1gen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &nop1gen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -571,8 +538,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_NOP1 as libc::c_int,
                 type_0: b"nop1\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &nop1gen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &nop1gen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };
@@ -583,8 +550,8 @@ pub static mut gvlayout_neato_types: [gvplugin_installed_t; 11] = unsafe {
                 id: LAYOUT_NOP1 as libc::c_int,
                 type_0: b"nop2\0" as *const u8 as *const libc::c_char,
                 quality: 0 as libc::c_int,
-                engine: &nop2gen_engine as *const gvlayout_engine_t
-                    as *mut gvlayout_engine_t as *mut libc::c_void,
+                engine: &nop2gen_engine as *const gvlayout_engine_t as *mut gvlayout_engine_t
+                    as *mut libc::c_void,
                 features: &neatogen_features as *const gvlayout_features_t
                     as *mut gvlayout_features_t as *mut libc::c_void,
             };

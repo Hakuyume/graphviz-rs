@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -94,15 +102,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -110,29 +113,18 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[derive()]
 #[repr(C)]
 pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,
     pub eventf: Sffmtevent_f,
     pub form: *mut libc::c_char,
-    pub args: ::std::ffi::VaListImpl::<'a>,
+    pub args: ::std::ffi::VaListImpl<'a>,
     pub fmt: libc::c_int,
     pub size: ssize_t,
     pub flags: libc::c_int,
@@ -142,26 +134,19 @@ pub struct _sffmt_s<'a> {
     pub t_str: *mut libc::c_char,
     pub n_str: ssize_t,
 }
-pub type Sffmtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sffmt_t,
-    ) -> libc::c_int,
+pub type Sffmtevent_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
 pub type Sffmt_t = _sffmt_s;
-pub type Sffmtext_f = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
->;
+pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 pub type Fmt_t = _fmt_s;
 #[derive()]
 #[repr(C)]
 pub struct _fmt_s<'a> {
     pub form: *mut libc::c_char,
-    pub args: ::std::ffi::VaListImpl::<'a>,
+    pub args: ::std::ffi::VaListImpl<'a>,
     pub oform: *mut libc::c_char,
-    pub oargs: ::std::ffi::VaListImpl::<'a>,
+    pub oargs: ::std::ffi::VaListImpl<'a>,
     pub argn: libc::c_int,
     pub fp: *mut Fmtpos_t,
     pub ft: *mut Sffmt_t,
@@ -210,9 +195,9 @@ pub struct _sftab_ {
     pub sf_neg10: [f128::f128; 6],
     pub sf_dec: [libc::c_uchar; 200],
     pub sf_digits: *mut libc::c_char,
-    pub sf_cvinitf: Option::<unsafe extern "C" fn() -> libc::c_int>,
+    pub sf_cvinitf: Option<unsafe extern "C" fn() -> libc::c_int>,
     pub sf_cvinit: libc::c_int,
-    pub sf_fmtposf: Option::<
+    pub sf_fmtposf: Option<
         unsafe extern "C" fn(
             *mut Sfio_t,
             *const libc::c_char,
@@ -220,9 +205,8 @@ pub struct _sftab_ {
             libc::c_int,
         ) -> *mut Fmtpos_t,
     >,
-    pub sf_fmtintf: Option::<
-        unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char,
-    >,
+    pub sf_fmtintf:
+        Option<unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char>,
     pub sf_cv36: [libc::c_uchar; 256],
     pub sf_cv64: [libc::c_uchar; 256],
     pub sf_type: [libc::c_uchar; 256],
@@ -280,8 +264,7 @@ unsafe extern "C" fn setclass(
         {
             *accept.offset(fmt as isize) = yes as libc::c_char;
         } else {
-            c = *form.offset(-(2 as libc::c_int) as isize) as libc::c_int
-                + 1 as libc::c_int;
+            c = *form.offset(-(2 as libc::c_int) as isize) as libc::c_int + 1 as libc::c_int;
             while c < *form.offset(0 as libc::c_int as isize) as libc::c_int {
                 *accept.offset(c as isize) = yes as libc::c_char;
                 c += 1;

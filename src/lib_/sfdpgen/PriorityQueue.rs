@@ -1,20 +1,25 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
     fn DoubleLinkedList_new(data: *mut libc::c_void) -> DoubleLinkedList;
     fn DoubleLinkedList_delete(
         head: DoubleLinkedList,
-        linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     );
-    fn DoubleLinkedList_prepend(
-        l: DoubleLinkedList,
-        data: *mut libc::c_void,
-    ) -> DoubleLinkedList;
+    fn DoubleLinkedList_prepend(l: DoubleLinkedList, data: *mut libc::c_void) -> DoubleLinkedList;
     fn DoubleLinkedList_get_data(l: DoubleLinkedList) -> *mut libc::c_void;
     fn DoubleLinkedList_delete_element(
         l: DoubleLinkedList,
-        linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
         head: *mut DoubleLinkedList,
     );
     fn free(_: *mut libc::c_void);
@@ -125,28 +130,28 @@ pub unsafe extern "C" fn PriorityQueue_push(
     let mut l: DoubleLinkedList = 0 as *mut DoubleLinkedList_struct;
     let mut data: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut gainold: libc::c_int = 0;
-    if !q.is_null() {} else {
+    if !q.is_null() {
+    } else {
         __assert_fail(
             b"q\0" as *const u8 as *const libc::c_char,
             b"PriorityQueue.c\0" as *const u8 as *const libc::c_char,
             59 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"PriorityQueue PriorityQueue_push(PriorityQueue, int, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"PriorityQueue PriorityQueue_push(PriorityQueue, int, int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if gain <= (*q).ngain {} else {
+    if gain <= (*q).ngain {
+    } else {
         __assert_fail(
             b"gain <= q->ngain\0" as *const u8 as *const libc::c_char,
             b"PriorityQueue.c\0" as *const u8 as *const libc::c_char,
             60 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"PriorityQueue PriorityQueue_push(PriorityQueue, int, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"PriorityQueue PriorityQueue_push(PriorityQueue, int, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*((*q).where_0).offset(i as isize)).is_null() {
@@ -214,8 +219,7 @@ pub unsafe extern "C" fn PriorityQueue_pop(
         &mut *((*q).buckets).offset(gain_max as isize),
     );
     if (*((*q).buckets).offset(gain_max as isize)).is_null() {
-        while gain_max >= 0 as libc::c_int
-            && (*((*q).buckets).offset(gain_max as isize)).is_null()
+        while gain_max >= 0 as libc::c_int && (*((*q).buckets).offset(gain_max as isize)).is_null()
         {
             gain_max -= 1;
         }
@@ -255,8 +259,7 @@ pub unsafe extern "C" fn PriorityQueue_remove(
     );
     gain_max = (*q).gain_max;
     if gain == gain_max && (*((*q).buckets).offset(gain_max as isize)).is_null() {
-        while gain_max >= 0 as libc::c_int
-            && (*((*q).buckets).offset(gain_max as isize)).is_null()
+        while gain_max >= 0 as libc::c_int && (*((*q).buckets).offset(gain_max as isize)).is_null()
         {
             gain_max -= 1;
         }

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -57,13 +65,13 @@ pub type FILE = _IO_FILE;
 pub struct Agraph_t {
     pub dummy: *mut libc::c_char,
 }
-pub type opengfn = Option::<unsafe extern "C" fn(*mut FILE) -> *mut Agraph_t>;
+pub type opengfn = Option<unsafe extern "C" fn(*mut FILE) -> *mut Agraph_t>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct ingdisc {
-    pub openf: Option::<unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void>,
-    pub readf: Option::<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>,
-    pub closef: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub openf: Option<unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void>,
+    pub readf: Option<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>,
+    pub closef: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
     pub dflt: *mut libc::c_void,
 }
 #[derive(Copy, Clone)]
@@ -83,7 +91,7 @@ pub union C2RustUnnamed {
     pub Files: *mut *mut libc::c_char,
     pub Graphs: *mut *mut Agraph_t,
 }
-pub type xopengfn = Option::<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>;
+pub type xopengfn = Option<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>;
 unsafe extern "C" fn nextFile(mut sp: *mut ingraph_state) {
     let mut rv: *mut libc::c_void = 0 as *mut libc::c_void;
     let mut fname: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -161,8 +169,7 @@ unsafe extern "C" fn new_ing(
     mut disc: *mut ingdisc,
 ) -> *mut ingraph_state {
     if sp.is_null() {
-        sp = malloc(::std::mem::size_of::<ingraph_state>() as libc::c_ulong)
-            as *mut ingraph_state;
+        sp = malloc(::std::mem::size_of::<ingraph_state>() as libc::c_ulong) as *mut ingraph_state;
         if sp.is_null() {
             fprintf(
                 stderr,
@@ -199,8 +206,10 @@ unsafe extern "C" fn new_ing(
         }
         return 0 as *mut ingraph_state;
     }
-    if ((*disc).openf).is_none() || ((*disc).readf).is_none()
-        || ((*disc).closef).is_none() || ((*disc).dflt).is_null()
+    if ((*disc).openf).is_none()
+        || ((*disc).readf).is_none()
+        || ((*disc).closef).is_none()
+        || ((*disc).dflt).is_null()
     {
         free((*sp).fns as *mut libc::c_void);
         if (*sp).heap {
@@ -208,8 +217,7 @@ unsafe extern "C" fn new_ing(
         }
         fprintf(
             stderr,
-            b"ingraphs: NULL field in ingdisc argument\n\0" as *const u8
-                as *const libc::c_char,
+            b"ingraphs: NULL field in ingdisc argument\n\0" as *const u8 as *const libc::c_char,
         );
         return 0 as *mut ingraph_state;
     }
@@ -241,13 +249,9 @@ unsafe extern "C" fn dflt_close(mut fp: *mut libc::c_void) -> libc::c_int {
 static mut dflt_disc: ingdisc = unsafe {
     {
         let mut init = ingdisc {
-            openf: Some(
-                dflt_open as unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void,
-            ),
+            openf: Some(dflt_open as unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void),
             readf: None,
-            closef: Some(
-                dflt_close as unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int,
-            ),
+            closef: Some(dflt_close as unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int),
             dflt: 0 as *const libc::c_void as *mut libc::c_void,
         };
         init
@@ -287,20 +291,19 @@ pub unsafe extern "C" fn closeIngraph(mut sp: *mut ingraph_state) {
 pub unsafe extern "C" fn fileName(mut sp: *mut ingraph_state) -> *mut libc::c_char {
     let mut fname: *mut libc::c_char = 0 as *mut libc::c_char;
     if (*sp).ingraphs != 0 {
-        return b"<>\0" as *const u8 as *const libc::c_char as *mut libc::c_char
+        return b"<>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     } else if !((*sp).u.Files).is_null() {
         if (*sp).ctr != 0 {
             fname = *((*sp).u.Files).offset(((*sp).ctr - 1 as libc::c_int) as isize);
             if *fname as libc::c_int == '-' as i32 {
-                return b"<stdin>\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char
+                return b"<stdin>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
             } else {
-                return fname
+                return fname;
             }
         } else {
-            return b"<>\0" as *const u8 as *const libc::c_char as *mut libc::c_char
+            return b"<>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         }
     } else {
-        return b"<stdin>\0" as *const u8 as *const libc::c_char as *mut libc::c_char
+        return b"<stdin>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     };
 }

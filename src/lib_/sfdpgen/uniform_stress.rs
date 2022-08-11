@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -31,17 +39,9 @@ extern "C" {
         format: libc::c_int,
     ) -> SparseMatrix;
     fn SparseMatrix_delete(A: SparseMatrix);
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn StressMajorizationSmoother_delete(sm: StressMajorizationSmoother);
     fn StressMajorizationSmoother_smooth(
         sm: StressMajorizationSmoother,
@@ -92,7 +92,7 @@ pub struct StressMajorizationSmoother_struct {
     pub Lw: SparseMatrix,
     pub Lwd: SparseMatrix,
     pub lambda: *mut libc::c_double,
-    pub data_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub data_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub data: *mut libc::c_void,
     pub scheme: libc::c_int,
     pub scaling: libc::c_double,
@@ -129,7 +129,8 @@ pub unsafe extern "C" fn UniformStressSmoother_new(
     let mut diag_w: libc::c_double = 0.;
     let mut dist: libc::c_double = 0.;
     let mut epsilon: libc::c_double = 0.01f64;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"uniform_stress.c\0" as *const u8 as *const libc::c_char,
@@ -143,9 +144,8 @@ pub unsafe extern "C" fn UniformStressSmoother_new(
                 .as_ptr(),
         );
     }
-    sm = gmalloc(
-        ::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong,
-    ) as UniformStressSmoother;
+    sm = gmalloc(::std::mem::size_of::<StressMajorizationSmoother_struct>() as libc::c_ulong)
+        as UniformStressSmoother;
     let ref mut fresh0 = (*sm).data;
     *fresh0 = 0 as *mut libc::c_void;
     (*sm).scheme = SM_SCHEME_UNIFORM_STRESS as libc::c_int;
@@ -208,10 +208,7 @@ pub unsafe extern "C" fn UniformStressSmoother_new(
                 let ref mut fresh7 = *jw.offset(nz as isize);
                 *fresh7 = k;
                 *jd.offset(nz as isize) = *fresh7;
-                *w
-                    .offset(
-                        nz as isize,
-                    ) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
+                *w.offset(nz as isize) = -(1 as libc::c_int) as libc::c_double / (dist * dist);
                 *w.offset(nz as isize) = -1.0f64;
                 *d.offset(nz as isize) = *w.offset(nz as isize) * dist;
                 diag_w += *w.offset(nz as isize);
@@ -318,16 +315,16 @@ pub unsafe extern "C" fn uniform_stress(
         }
     }
     B = get_distance_matrix(A, scaling);
-    if SparseMatrix_is_symmetric(B, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(B, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(B, false)\0" as *const u8 as *const libc::c_char,
             b"uniform_stress.c\0" as *const u8 as *const libc::c_char,
             161 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 56],
-                &[libc::c_char; 56],
-            >(b"void uniform_stress(int, SparseMatrix, double *, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 56], &[libc::c_char; 56]>(
+                b"void uniform_stress(int, SparseMatrix, double *, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     sm = UniformStressSmoother_new(

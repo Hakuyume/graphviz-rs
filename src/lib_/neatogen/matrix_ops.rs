@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -52,8 +60,7 @@ pub unsafe extern "C" fn power_iteration(
     let mut largest_index: libc::c_int = 0;
     let mut largest_eval: libc::c_double = 0.;
     let mut Max_iterations: libc::c_int = 30 as libc::c_int * n;
-    let mut tol: libc::c_double = 1 as libc::c_int as libc::c_double
-        - p_iteration_threshold;
+    let mut tol: libc::c_double = 1 as libc::c_int as libc::c_double - p_iteration_threshold;
     if neigs >= n {
         neigs = n;
     }
@@ -64,10 +71,8 @@ pub unsafe extern "C" fn power_iteration(
             if initialize != 0 {
                 j = 0 as libc::c_int;
                 while j < n {
-                    *curr_vector
-                        .offset(
-                            j as isize,
-                        ) = (rand() % 100 as libc::c_int) as libc::c_double;
+                    *curr_vector.offset(j as isize) =
+                        (rand() % 100 as libc::c_int) as libc::c_double;
                     j += 1;
                 }
             }
@@ -103,7 +108,12 @@ pub unsafe extern "C" fn power_iteration(
         iteration = 0 as libc::c_int;
         loop {
             iteration += 1;
-            cpvec(last_vec, 0 as libc::c_int, n - 1 as libc::c_int, curr_vector);
+            cpvec(
+                last_vec,
+                0 as libc::c_int,
+                n - 1 as libc::c_int,
+                curr_vector,
+            );
             right_mult_with_vector_d(square_mat, n, n, curr_vector, tmp_vec);
             cpvec(curr_vector, 0 as libc::c_int, n - 1 as libc::c_int, tmp_vec);
             j = 0 as libc::c_int;
@@ -134,7 +144,12 @@ pub unsafe extern "C" fn power_iteration(
                 1.0f64 / len,
                 curr_vector,
             );
-            angle = dot(curr_vector, 0 as libc::c_int, n - 1 as libc::c_int, last_vec);
+            angle = dot(
+                curr_vector,
+                0 as libc::c_int,
+                n - 1 as libc::c_int,
+                last_vec,
+            );
             if !(fabs(angle) < tol) {
                 break;
             }
@@ -146,8 +161,7 @@ pub unsafe extern "C" fn power_iteration(
         curr_vector = *eigs.offset(i as isize);
         j = 0 as libc::c_int;
         while j < n {
-            *curr_vector
-                .offset(j as isize) = (rand() % 100 as libc::c_int) as libc::c_double;
+            *curr_vector.offset(j as isize) = (rand() % 100 as libc::c_int) as libc::c_double;
             j += 1;
         }
         j = 0 as libc::c_int;
@@ -237,30 +251,22 @@ pub unsafe extern "C" fn mult_dense_mat(
         storage = realloc(
             *C.offset(0 as libc::c_int as isize) as *mut libc::c_void,
             ((dim1 * dim3) as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong),
         ) as *mut libc::c_float;
         C = realloc(
             C as *mut libc::c_void,
             (dim1 as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut *mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut *mut libc::c_double>() as libc::c_ulong),
         ) as *mut *mut libc::c_float;
         *CC = C;
     } else {
         storage = malloc(
             ((dim1 * dim3) as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong),
         ) as *mut libc::c_float;
         C = malloc(
             (dim1 as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut *mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut *mut libc::c_double>() as libc::c_ulong),
         ) as *mut *mut libc::c_float;
         *CC = C;
     }
@@ -278,9 +284,8 @@ pub unsafe extern "C" fn mult_dense_mat(
             sum = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < dim2 {
-                sum
-                    += *(*A.offset(i as isize)).offset(k as isize)
-                        * *(*B.offset(k as isize)).offset(j as isize) as libc::c_double;
+                sum += *(*A.offset(i as isize)).offset(k as isize)
+                    * *(*B.offset(k as isize)).offset(j as isize) as libc::c_double;
                 k += 1;
             }
             *(*C.offset(i as isize)).offset(j as isize) = sum as libc::c_float;
@@ -313,9 +318,7 @@ pub unsafe extern "C" fn mult_dense_mat_d(
         C = realloc(
             C as *mut libc::c_void,
             (dim1 as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong),
         ) as *mut *mut libc::c_double;
         *CC = C;
     } else {
@@ -325,9 +328,7 @@ pub unsafe extern "C" fn mult_dense_mat_d(
         ) as *mut libc::c_double;
         C = malloc(
             (dim1 as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut libc::c_double>() as libc::c_ulong),
         ) as *mut *mut libc::c_double;
         *CC = C;
     }
@@ -345,9 +346,8 @@ pub unsafe extern "C" fn mult_dense_mat_d(
             sum = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < dim2 {
-                sum
-                    += *(*A.offset(i as isize)).offset(k as isize)
-                        * *(*B.offset(k as isize)).offset(j as isize) as libc::c_double;
+                sum += *(*A.offset(i as isize)).offset(k as isize)
+                    * *(*B.offset(k as isize)).offset(j as isize) as libc::c_double;
                 k += 1;
             }
             *(*C.offset(i as isize)).offset(j as isize) = sum;
@@ -413,10 +413,8 @@ pub unsafe extern "C" fn mult_sparse_dense_mat_transpose(
             sum = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < nedges {
-                sum
-                    += *ewgts.offset(k as isize) as libc::c_double
-                        * *(*B.offset(j as isize))
-                            .offset(*edges.offset(k as isize) as isize);
+                sum += *ewgts.offset(k as isize) as libc::c_double
+                    * *(*B.offset(j as isize)).offset(*edges.offset(k as isize) as isize);
                 k += 1;
             }
             *(*C.offset(i as isize)).offset(j as isize) = sum as libc::c_float;
@@ -543,10 +541,7 @@ pub unsafe extern "C" fn orthog1(mut n: libc::c_int, mut vec: *mut libc::c_doubl
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn init_vec_orth1(
-    mut n: libc::c_int,
-    mut vec: *mut libc::c_double,
-) {
+pub unsafe extern "C" fn init_vec_orth1(mut n: libc::c_int, mut vec: *mut libc::c_double) {
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
@@ -570,14 +565,8 @@ pub unsafe extern "C" fn right_mult_with_vector(
         res = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < (*matrix.offset(i as isize)).nedges {
-            res
-                += *((*matrix.offset(i as isize)).ewgts).offset(j as isize)
-                    as libc::c_double
-                    * *vector
-                        .offset(
-                            *((*matrix.offset(i as isize)).edges).offset(j as isize)
-                                as isize,
-                        );
+            res += *((*matrix.offset(i as isize)).ewgts).offset(j as isize) as libc::c_double
+                * *vector.offset(*((*matrix.offset(i as isize)).edges).offset(j as isize) as isize);
             j += 1;
         }
         *result.offset(i as isize) = res;
@@ -599,9 +588,8 @@ pub unsafe extern "C" fn right_mult_with_vector_f(
         res = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < n {
-            res
-                += *(*matrix.offset(i as isize)).offset(j as isize) as libc::c_double
-                    * *vector.offset(j as isize);
+            res += *(*matrix.offset(i as isize)).offset(j as isize) as libc::c_double
+                * *vector.offset(j as isize);
             j += 1;
         }
         *result.offset(i as isize) = res;
@@ -618,10 +606,7 @@ pub unsafe extern "C" fn vectors_subtraction(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
-        *result
-            .offset(
-                i as isize,
-            ) = *vector1.offset(i as isize) - *vector2.offset(i as isize);
+        *result.offset(i as isize) = *vector1.offset(i as isize) - *vector2.offset(i as isize);
         i += 1;
     }
 }
@@ -635,10 +620,7 @@ pub unsafe extern "C" fn vectors_addition(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
-        *result
-            .offset(
-                i as isize,
-            ) = *vector1.offset(i as isize) + *vector2.offset(i as isize);
+        *result.offset(i as isize) = *vector1.offset(i as isize) + *vector2.offset(i as isize);
         i += 1;
     }
 }
@@ -714,9 +696,7 @@ pub unsafe extern "C" fn right_mult_with_vector_transpose(
         res = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < dim2 {
-            res
-                += *(*matrix.offset(j as isize)).offset(i as isize)
-                    * *vector.offset(j as isize);
+            res += *(*matrix.offset(j as isize)).offset(i as isize) * *vector.offset(j as isize);
             j += 1;
         }
         *result.offset(i as isize) = res;
@@ -739,9 +719,7 @@ pub unsafe extern "C" fn right_mult_with_vector_d(
         res = 0 as libc::c_int as libc::c_double;
         j = 0 as libc::c_int;
         while j < dim2 {
-            res
-                += *(*matrix.offset(i as isize)).offset(j as isize)
-                    * *vector.offset(j as isize);
+            res += *(*matrix.offset(i as isize)).offset(j as isize) * *vector.offset(j as isize);
             j += 1;
         }
         *result.offset(i as isize) = res;
@@ -800,8 +778,7 @@ pub unsafe extern "C" fn right_mult_with_vector_ff(
         j = i + 1 as libc::c_int;
         while j < n {
             res += *packed_matrix.offset(index as isize) * *vector.offset(j as isize);
-            *result.offset(j as isize)
-                += *packed_matrix.offset(index as isize) * vector_i;
+            *result.offset(j as isize) += *packed_matrix.offset(index as isize) * vector_i;
             j += 1;
             index += 1;
         }
@@ -819,10 +796,7 @@ pub unsafe extern "C" fn vectors_substractionf(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
-        *result
-            .offset(
-                i as isize,
-            ) = *vector1.offset(i as isize) - *vector2.offset(i as isize);
+        *result.offset(i as isize) = *vector1.offset(i as isize) - *vector2.offset(i as isize);
         i += 1;
     }
 }
@@ -836,10 +810,7 @@ pub unsafe extern "C" fn vectors_additionf(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
-        *result
-            .offset(
-                i as isize,
-            ) = *vector1.offset(i as isize) + *vector2.offset(i as isize);
+        *result.offset(i as isize) = *vector1.offset(i as isize) + *vector2.offset(i as isize);
         i += 1;
     }
 }
@@ -853,10 +824,8 @@ pub unsafe extern "C" fn vectors_mult_additionf(
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {
-        *vector1
-            .offset(
-                i as isize,
-            ) = *vector1.offset(i as isize) + alpha * *vector2.offset(i as isize);
+        *vector1.offset(i as isize) =
+            *vector1.offset(i as isize) + alpha * *vector2.offset(i as isize);
         i += 1;
     }
 }
@@ -897,9 +866,7 @@ pub unsafe extern "C" fn vectors_inner_productf(
     let mut result: libc::c_double = 0 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
-        result
-            += (*vector1.offset(i as isize) * *vector2.offset(i as isize))
-                as libc::c_double;
+        result += (*vector1.offset(i as isize) * *vector2.offset(i as isize)) as libc::c_double;
         i += 1;
     }
     return result;
@@ -989,10 +956,7 @@ pub unsafe extern "C" fn sqrt_vecf(
     }
 }
 #[no_mangle]
-pub unsafe extern "C" fn invert_sqrt_vec(
-    mut n: libc::c_int,
-    mut vec: *mut libc::c_float,
-) {
+pub unsafe extern "C" fn invert_sqrt_vec(mut n: libc::c_int, mut vec: *mut libc::c_float) {
     let mut i: libc::c_int = 0;
     i = 0 as libc::c_int;
     while i < n {

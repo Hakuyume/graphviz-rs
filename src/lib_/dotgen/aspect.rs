@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -15,12 +23,7 @@ extern "C" {
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     static mut stderr: *mut FILE;
     fn abs(_: libc::c_int) -> libc::c_int;
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn free(_: *mut libc::c_void);
     fn agfstnode(g: *mut Agraph_t) -> *mut Agnode_t;
     fn agnxtnode(g: *mut Agraph_t, n: *mut Agnode_t) -> *mut Agnode_t;
@@ -34,20 +37,15 @@ extern "C" {
     fn zmalloc(_: size_t) -> *mut libc::c_void;
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn UF_find(_: *mut Agnode_t) -> *mut Agnode_t;
-    fn virtual_edge(
-        _: *mut Agnode_t,
-        _: *mut Agnode_t,
-        _: *mut Agedge_t,
-    ) -> *mut Agedge_t;
+    fn virtual_edge(_: *mut Agnode_t, _: *mut Agnode_t, _: *mut Agedge_t) -> *mut Agedge_t;
     fn rank1(g: *mut graph_t);
 }
 pub type __uint64_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
 pub type size_t = libc::c_ulong;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type uint64_t = __uint64_t;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -192,9 +190,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -208,25 +204,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -328,7 +317,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -489,16 +479,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -514,18 +498,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -533,16 +511,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -584,9 +555,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -615,13 +585,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -654,26 +619,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -682,29 +639,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -712,8 +661,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -747,7 +696,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -773,9 +722,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -909,7 +856,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1013,13 +960,12 @@ pub struct polygon_t {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct shape_functions {
-    pub initfn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub freefn: Option::<unsafe extern "C" fn(*mut node_t) -> ()>,
-    pub portfn: Option::<
-        unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port,
-    >,
-    pub insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
-    pub pboxfn: Option::<
+    pub initfn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub freefn: Option<unsafe extern "C" fn(*mut node_t) -> ()>,
+    pub portfn:
+        Option<unsafe extern "C" fn(*mut node_t, *mut libc::c_char, *mut libc::c_char) -> port>,
+    pub insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+    pub pboxfn: Option<
         unsafe extern "C" fn(
             *mut node_t,
             *mut port,
@@ -1028,7 +974,7 @@ pub struct shape_functions {
             *mut libc::c_int,
         ) -> libc::c_int,
     >,
-    pub codefn: Option::<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
+    pub codefn: Option<unsafe extern "C" fn(*mut GVJ_t, *mut node_t) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1119,7 +1065,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1296,90 +1242,76 @@ unsafe extern "C" fn computeNodeGroups(mut g: *mut graph_t) {
     }
     n = agfstnode(g);
     while !n.is_null() {
-        if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size
-            == 0 as libc::c_int
-        {
+        if (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size == 0 as libc::c_int {
             let ref mut fresh0 = (*nodeGroups.offset(nNodeGroups as isize)).nodes;
-            *fresh0 = zmalloc(::std::mem::size_of::<*mut node_t>() as libc::c_ulong)
-                as *mut *mut node_t;
+            *fresh0 =
+                zmalloc(::std::mem::size_of::<*mut node_t>() as libc::c_ulong) as *mut *mut node_t;
             let ref mut fresh1 = *((*nodeGroups.offset(nNodeGroups as isize)).nodes)
                 .offset(0 as libc::c_int as isize);
             *fresh1 = n;
             (*nodeGroups.offset(nNodeGroups as isize)).nNodes = 1 as libc::c_int;
-            (*nodeGroups.offset(nNodeGroups as isize))
-                .width = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
-            (*nodeGroups.offset(nNodeGroups as isize))
-                .height = (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height;
+            (*nodeGroups.offset(nNodeGroups as isize)).width =
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
+            (*nodeGroups.offset(nNodeGroups as isize)).height =
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height;
             (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id = nNodeGroups;
             nNodeGroups += 1;
         } else {
             let mut l: *mut node_t = UF_find(n);
-            if (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id
-                > -(1 as libc::c_int)
-            {
-                let mut index: libc::c_int = (*((*(l as *mut Agobj_t)).data
-                    as *mut Agnodeinfo_t))
-                    .id;
+            if (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id > -(1 as libc::c_int) {
+                let mut index: libc::c_int =
+                    (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id;
                 let ref mut fresh2 = (*nodeGroups.offset(index as isize)).nNodes;
                 let fresh3 = *fresh2;
                 *fresh2 = *fresh2 + 1;
-                let ref mut fresh4 = *((*nodeGroups.offset(index as isize)).nodes)
-                    .offset(fresh3 as isize);
+                let ref mut fresh4 =
+                    *((*nodeGroups.offset(index as isize)).nodes).offset(fresh3 as isize);
                 *fresh4 = n;
-                (*nodeGroups.offset(index as isize)).width
-                    += (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
-                (*nodeGroups.offset(index as isize))
-                    .height = if (*nodeGroups.offset(index as isize)).height
-                    < (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                {
-                    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
-                } else {
-                    (*nodeGroups.offset(index as isize)).height
-                };
-                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id = index;
-            } else {
-                let ref mut fresh5 = (*nodeGroups.offset(nNodeGroups as isize)).nodes;
-                *fresh5 = gcalloc(
-                    (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size
-                        as size_t,
-                    ::std::mem::size_of::<*mut node_t>() as libc::c_ulong,
-                ) as *mut *mut node_t;
-                if l == n {
-                    let ref mut fresh6 = *((*nodeGroups.offset(nNodeGroups as isize))
-                        .nodes)
-                        .offset(0 as libc::c_int as isize);
-                    *fresh6 = l;
-                    (*nodeGroups.offset(nNodeGroups as isize)).nNodes = 1 as libc::c_int;
-                    (*nodeGroups.offset(nNodeGroups as isize))
-                        .width = (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                        .width;
-                    (*nodeGroups.offset(nNodeGroups as isize))
-                        .height = (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                        .height;
-                } else {
-                    let ref mut fresh7 = *((*nodeGroups.offset(nNodeGroups as isize))
-                        .nodes)
-                        .offset(0 as libc::c_int as isize);
-                    *fresh7 = l;
-                    let ref mut fresh8 = *((*nodeGroups.offset(nNodeGroups as isize))
-                        .nodes)
-                        .offset(1 as libc::c_int as isize);
-                    *fresh8 = n;
-                    (*nodeGroups.offset(nNodeGroups as isize)).nNodes = 2 as libc::c_int;
-                    (*nodeGroups.offset(nNodeGroups as isize))
-                        .width = (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                        .width
-                        + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
-                    (*nodeGroups.offset(nNodeGroups as isize))
-                        .height = if (*((*(l as *mut Agobj_t)).data
-                        as *mut Agnodeinfo_t))
-                        .height
+                (*nodeGroups.offset(index as isize)).width +=
+                    (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
+                (*nodeGroups.offset(index as isize)).height =
+                    if (*nodeGroups.offset(index as isize)).height
                         < (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
                     {
                         (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
                     } else {
-                        (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+                        (*nodeGroups.offset(index as isize)).height
                     };
+                (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id = index;
+            } else {
+                let ref mut fresh5 = (*nodeGroups.offset(nNodeGroups as isize)).nodes;
+                *fresh5 = gcalloc(
+                    (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).UF_size as size_t,
+                    ::std::mem::size_of::<*mut node_t>() as libc::c_ulong,
+                ) as *mut *mut node_t;
+                if l == n {
+                    let ref mut fresh6 = *((*nodeGroups.offset(nNodeGroups as isize)).nodes)
+                        .offset(0 as libc::c_int as isize);
+                    *fresh6 = l;
+                    (*nodeGroups.offset(nNodeGroups as isize)).nNodes = 1 as libc::c_int;
+                    (*nodeGroups.offset(nNodeGroups as isize)).width =
+                        (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
+                    (*nodeGroups.offset(nNodeGroups as isize)).height =
+                        (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height;
+                } else {
+                    let ref mut fresh7 = *((*nodeGroups.offset(nNodeGroups as isize)).nodes)
+                        .offset(0 as libc::c_int as isize);
+                    *fresh7 = l;
+                    let ref mut fresh8 = *((*nodeGroups.offset(nNodeGroups as isize)).nodes)
+                        .offset(1 as libc::c_int as isize);
+                    *fresh8 = n;
+                    (*nodeGroups.offset(nNodeGroups as isize)).nNodes = 2 as libc::c_int;
+                    (*nodeGroups.offset(nNodeGroups as isize)).width =
+                        (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width
+                            + (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).width;
+                    (*nodeGroups.offset(nNodeGroups as isize)).height =
+                        if (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+                            < (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+                        {
+                            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+                        } else {
+                            (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).height
+                        };
                 }
                 (*((*(l as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id = nNodeGroups;
                 (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).id = nNodeGroups;
@@ -1398,14 +1330,13 @@ pub unsafe extern "C" fn countDummyNodes(mut g: *mut graph_t) -> libc::c_int {
     while !n.is_null() {
         e = agfstout(g, n);
         while !e.is_null() {
-            if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
+            if (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int
             {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             }))
-                .node as *mut Agobj_t))
+            .node as *mut Agobj_t))
                 .data as *mut Agnodeinfo_t))
                 .rank
                 != (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
@@ -1415,33 +1346,32 @@ pub unsafe extern "C" fn countDummyNodes(mut g: *mut graph_t) -> libc::c_int {
                 } else {
                     e.offset(1 as libc::c_int as isize)
                 }))
-                    .node as *mut Agobj_t))
+                .node as *mut Agobj_t))
                     .data as *mut Agnodeinfo_t))
                     .rank
             {
-                count
-                    += abs(
-                        (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                            == 2 as libc::c_int
+                count += abs(
+                    (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                        == 2 as libc::c_int
+                    {
+                        e
+                    } else {
+                        e.offset(-(1 as libc::c_int as isize))
+                    }))
+                    .node as *mut Agobj_t))
+                        .data as *mut Agnodeinfo_t))
+                        .rank
+                        - (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+                            == 3 as libc::c_int
                         {
                             e
                         } else {
-                            e.offset(-(1 as libc::c_int as isize))
+                            e.offset(1 as libc::c_int as isize)
                         }))
-                            .node as *mut Agobj_t))
+                        .node as *mut Agobj_t))
                             .data as *mut Agnodeinfo_t))
-                            .rank
-                            - (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype()
-                                as libc::c_int == 3 as libc::c_int
-                            {
-                                e
-                            } else {
-                                e.offset(1 as libc::c_int as isize)
-                            }))
-                                .node as *mut Agobj_t))
-                                .data as *mut Agnodeinfo_t))
-                                .rank,
-                    ) - 1 as libc::c_int;
+                            .rank,
+                ) - 1 as libc::c_int;
             }
             e = agnxtout(g, e);
         }
@@ -1449,10 +1379,9 @@ pub unsafe extern "C" fn countDummyNodes(mut g: *mut graph_t) -> libc::c_int {
     }
     return count;
 }
-static mut layerWidthInfo: *mut layerWidthInfo_t = 0 as *const layerWidthInfo_t
-    as *mut layerWidthInfo_t;
-static mut sortedLayerIndex: *mut libc::c_int = 0 as *const libc::c_int
-    as *mut libc::c_int;
+static mut layerWidthInfo: *mut layerWidthInfo_t =
+    0 as *const layerWidthInfo_t as *mut layerWidthInfo_t;
+static mut sortedLayerIndex: *mut libc::c_int = 0 as *const libc::c_int as *mut libc::c_int;
 static mut nLayers: libc::c_int = 0 as libc::c_int;
 unsafe extern "C" fn computeLayerWidths(mut g: *mut graph_t) {
     let mut i: libc::c_int = 0;
@@ -1469,10 +1398,7 @@ unsafe extern "C" fn computeLayerWidths(mut g: *mut graph_t) {
                 while j < (*layerWidthInfo.offset(i as isize)).nNodeGroupsInLayer {
                     j += 1;
                 }
-                free(
-                    (*layerWidthInfo.offset(i as isize)).nodeGroupsInLayer
-                        as *mut libc::c_void,
-                );
+                free((*layerWidthInfo.offset(i as isize)).nodeGroupsInLayer as *mut libc::c_void);
             }
             free((*layerWidthInfo.offset(i as isize)).removed as *mut libc::c_void);
             i += 1;
@@ -1514,9 +1440,10 @@ unsafe extern "C" fn computeLayerWidths(mut g: *mut graph_t) {
             } else {
                 e.offset(1 as libc::c_int as isize)
             }))
-                .node as *mut Agobj_t))
+            .node as *mut Agobj_t))
                 .data as *mut Agnodeinfo_t))
-                .rank + 1 as libc::c_int;
+                .rank
+                + 1 as libc::c_int;
             while k
                 < (*((*((*(if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                     == 2 as libc::c_int
@@ -1525,7 +1452,7 @@ unsafe extern "C" fn computeLayerWidths(mut g: *mut graph_t) {
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 }))
-                    .node as *mut Agobj_t))
+                .node as *mut Agobj_t))
                     .data as *mut Agnodeinfo_t))
                     .rank
             {
@@ -1540,53 +1467,39 @@ unsafe extern "C" fn computeLayerWidths(mut g: *mut graph_t) {
     i = 0 as libc::c_int;
     while i < nNodeGroups {
         v = *((*nodeGroups.offset(i as isize)).nodes).offset(0 as libc::c_int as isize);
-        if (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank + 1 as libc::c_int
-            > nLayers
-        {
-            nLayers = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
-                + 1 as libc::c_int;
+        if (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank + 1 as libc::c_int > nLayers {
+            nLayers = (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank + 1 as libc::c_int;
         }
         (*layerWidthInfo
             .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
+        .width += (*nodeGroups.offset(i as isize)).width * 72 as libc::c_int as libc::c_double
+            + (((*layerWidthInfo
+                .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
             .width
-            += (*nodeGroups.offset(i as isize)).width
-                * 72 as libc::c_int as libc::c_double
-                + (((*layerWidthInfo
-                    .offset(
-                        (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
-                            as isize,
-                    ))
-                    .width > 0 as libc::c_int as libc::c_double) as libc::c_int
-                    * (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep)
-                    as libc::c_double;
+                > 0 as libc::c_int as libc::c_double) as libc::c_int
+                * (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep)
+                as libc::c_double;
         if (*layerWidthInfo
             .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
-            .height
-            < (*nodeGroups.offset(i as isize)).height
-                * 72 as libc::c_int as libc::c_double
+        .height
+            < (*nodeGroups.offset(i as isize)).height * 72 as libc::c_int as libc::c_double
         {
             (*layerWidthInfo
-                .offset(
-                    (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize,
-                ))
-                .height = (*nodeGroups.offset(i as isize)).height
-                * 72 as libc::c_int as libc::c_double;
+                .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
+            .height = (*nodeGroups.offset(i as isize)).height * 72 as libc::c_int as libc::c_double;
         }
         let ref mut fresh12 = *((*layerWidthInfo
             .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
-            .nodeGroupsInLayer)
+        .nodeGroupsInLayer)
             .offset(
                 (*layerWidthInfo
-                    .offset(
-                        (*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank
-                            as isize,
-                    ))
-                    .nNodeGroupsInLayer as isize,
+                    .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
+                .nNodeGroupsInLayer as isize,
             );
         *fresh12 = &mut *nodeGroups.offset(i as isize) as *mut nodeGroup_t;
         let ref mut fresh13 = (*layerWidthInfo
             .offset((*((*(v as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank as isize))
-            .nNodeGroupsInLayer;
+        .nNodeGroupsInLayer;
         *fresh13 += 1;
         i += 1;
     }
@@ -1609,10 +1522,7 @@ unsafe extern "C" fn sortLayers(mut g: *mut graph_t) {
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         Some(
             compFunction
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
 }
@@ -1660,18 +1570,16 @@ unsafe extern "C" fn reduceMaxWidth2(mut g: *mut graph_t) {
     i = 0 as libc::c_int;
     while i < nLayers {
         if (*layerWidthInfo.offset(*sortedLayerIndex.offset(i as isize) as isize))
-            .nNodeGroupsInLayer <= 1 as libc::c_int
+            .nNodeGroupsInLayer
+            <= 1 as libc::c_int
         {
             i += 1;
         } else {
             maxLayerIndex = *sortedLayerIndex.offset(i as isize);
             nextMaxWidth = if nLayers > i + 1 as libc::c_int {
                 (*layerWidthInfo
-                    .offset(
-                        *sortedLayerIndex.offset((i + 1 as libc::c_int) as isize)
-                            as isize,
-                    ))
-                    .width
+                    .offset(*sortedLayerIndex.offset((i + 1 as libc::c_int) as isize) as isize))
+                .width
             } else {
                 0 as libc::c_int as libc::c_double
             };
@@ -1682,16 +1590,12 @@ unsafe extern "C" fn reduceMaxWidth2(mut g: *mut graph_t) {
         return;
     }
     qsort(
-        (*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer
-            as *mut libc::c_void,
+        (*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer as *mut libc::c_void,
         (*layerWidthInfo.offset(maxLayerIndex as isize)).nNodeGroupsInLayer as size_t,
         ::std::mem::size_of::<*mut nodeGroup_t>() as libc::c_ulong,
         Some(
             compFunction2
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
     if nextMaxWidth
@@ -1699,7 +1603,8 @@ unsafe extern "C" fn reduceMaxWidth2(mut g: *mut graph_t) {
             / 4 as libc::c_int as libc::c_double
         || nextMaxWidth
             >= (*layerWidthInfo.offset(maxLayerIndex as isize)).width
-                * 3 as libc::c_int as libc::c_double / 4 as libc::c_int as libc::c_double
+                * 3 as libc::c_int as libc::c_double
+                / 4 as libc::c_int as libc::c_double
     {
         nextMaxWidth = (*layerWidthInfo.offset(maxLayerIndex as isize)).width
             / 2 as libc::c_int as libc::c_double;
@@ -1713,35 +1618,33 @@ unsafe extern "C" fn reduceMaxWidth2(mut g: *mut graph_t) {
     w = 0 as libc::c_int as libc::c_double;
     i = 0 as libc::c_int;
     while i < limit + rem {
-        if *((*layerWidthInfo.offset(maxLayerIndex as isize)).removed).offset(i as isize)
-            != 0
-        {
+        if *((*layerWidthInfo.offset(maxLayerIndex as isize)).removed).offset(i as isize) != 0 {
             rem += 1;
         } else if w
-                + (**((*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer)
-                    .offset(i as isize))
-                    .width * 72 as libc::c_int as libc::c_double
+            + (**((*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer)
+                .offset(i as isize))
+            .width
+                * 72 as libc::c_int as libc::c_double
+            + ((w > 0 as libc::c_int as libc::c_double) as libc::c_int
+                * (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep)
+                as libc::c_double
+            <= targetWidth
+            || fst == 0
+        {
+            w += (**((*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer)
+                .offset(i as isize))
+            .width
+                * 72 as libc::c_int as libc::c_double
                 + ((w > 0 as libc::c_int as libc::c_double) as libc::c_int
                     * (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep)
-                    as libc::c_double <= targetWidth || fst == 0
-            {
-            w
-                += (**((*layerWidthInfo.offset(maxLayerIndex as isize))
-                    .nodeGroupsInLayer)
-                    .offset(i as isize))
-                    .width * 72 as libc::c_int as libc::c_double
-                    + ((w > 0 as libc::c_int as libc::c_double) as libc::c_int
-                        * (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep)
-                        as libc::c_double;
+                    as libc::c_double;
             if fst == 0 {
-                fstNdGrp = *((*layerWidthInfo.offset(maxLayerIndex as isize))
-                    .nodeGroupsInLayer)
+                fstNdGrp = *((*layerWidthInfo.offset(maxLayerIndex as isize)).nodeGroupsInLayer)
                     .offset(i as isize);
                 fst = 1 as libc::c_int;
             }
         } else {
-            let mut ng: *mut nodeGroup_t = *((*layerWidthInfo
-                .offset(maxLayerIndex as isize))
+            let mut ng: *mut nodeGroup_t = *((*layerWidthInfo.offset(maxLayerIndex as isize))
                 .nodeGroupsInLayer)
                 .offset(i as isize);
             p = 0 as libc::c_int;
@@ -1753,26 +1656,24 @@ unsafe extern "C" fn reduceMaxWidth2(mut g: *mut graph_t) {
                         *((*ng).nodes).offset(q as isize),
                         0 as *mut Agedge_t,
                     );
-                    (*((*(newVEdge as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                        .edge_type = 1 as libc::c_int as libc::c_char;
+                    (*((*(newVEdge as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                        1 as libc::c_int as libc::c_char;
                     ndem += 1;
                     q += 1;
                 }
                 p += 1;
             }
-            *((*layerWidthInfo.offset(maxLayerIndex as isize)).removed)
-                .offset(i as isize) = 1 as libc::c_int;
+            *((*layerWidthInfo.offset(maxLayerIndex as isize)).removed).offset(i as isize) =
+                1 as libc::c_int;
             rem2 += 1;
-            let ref mut fresh14 = (*layerWidthInfo.offset(maxLayerIndex as isize))
-                .nNodeGroupsInLayer;
+            let ref mut fresh14 =
+                (*layerWidthInfo.offset(maxLayerIndex as isize)).nNodeGroupsInLayer;
             *fresh14 -= 1;
-            let ref mut fresh15 = (*layerWidthInfo.offset(maxLayerIndex as isize))
-                .nDummyNodes;
+            let ref mut fresh15 = (*layerWidthInfo.offset(maxLayerIndex as isize)).nDummyNodes;
             *fresh15 += 1;
-            (*layerWidthInfo.offset(maxLayerIndex as isize)).width
-                -= (*ng).width * 72 as libc::c_int as libc::c_double
-                    + (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep
-                        as libc::c_double;
+            (*layerWidthInfo.offset(maxLayerIndex as isize)).width -= (*ng).width
+                * 72 as libc::c_int as libc::c_double
+                + (*((*(g as *mut Agobj_t)).data as *mut Agraphinfo_t)).nodesep as libc::c_double;
         }
         i += 1;
     }
@@ -1800,11 +1701,17 @@ pub unsafe extern "C" fn initEdgeTypes(mut g: *mut graph_t) {
     n = agfstnode(g);
     while !n.is_null() {
         lc = 0 as libc::c_int;
-        while lc < (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).in_0.size {
-            e = *((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).in_0.list)
+        while lc
+            < (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .in_0
+                .size
+        {
+            e = *((*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
+                .in_0
+                .list)
                 .offset(lc as isize);
-            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t))
-                .edge_type = 0 as libc::c_int as libc::c_char;
+            (*((*(e as *mut Agobj_t)).data as *mut Agedgeinfo_t)).edge_type =
+                0 as libc::c_int as libc::c_char;
             lc += 1;
         }
         n = agnxtnode(g, n);
@@ -1850,14 +1757,12 @@ unsafe extern "C" fn zapLayers() {
                 start = (*layerWidthInfo.offset(i as isize)).layerNumber;
             }
             count += 1;
-        } else if count != 0 && (*layerWidthInfo.offset(i as isize)).layerNumber > start
-            {
+        } else if count != 0 && (*layerWidthInfo.offset(i as isize)).layerNumber > start {
             j = 0 as libc::c_int;
             while j < (*layerWidthInfo.offset(i as isize)).nNodeGroupsInLayer {
                 let mut q: libc::c_int = 0;
-                let mut ng: *mut nodeGroup_t = *((*layerWidthInfo.offset(i as isize))
-                    .nodeGroupsInLayer)
-                    .offset(j as isize);
+                let mut ng: *mut nodeGroup_t =
+                    *((*layerWidthInfo.offset(i as isize)).nodeGroupsInLayer).offset(j as isize);
                 q = 0 as libc::c_int;
                 while q < (*ng).nNodes {
                     let mut nd: *mut node_t = *((*ng).nodes).offset(q as isize);
@@ -1881,8 +1786,7 @@ pub unsafe extern "C" fn rank3(mut g: *mut graph_t, mut asp: *mut aspect_t) {
     while i < iterations || iterations == -(1 as libc::c_int) {
         n = agfstnode(g);
         while !n.is_null() {
-            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t))
-                .rank = 0 as libc::c_int;
+            (*((*(n as *mut Agobj_t)).data as *mut Agnodeinfo_t)).rank = 0 as libc::c_int;
             n = agnxtnode(g, n);
         }
         rank1(g);
@@ -1933,17 +1837,15 @@ pub unsafe extern "C" fn setAspect(
         g as *mut libc::c_void,
         b"aspect\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     );
-    if p.is_null()
-        || {
-            r = sscanf(
-                p,
-                b"%lf,%d\0" as *const u8 as *const libc::c_char,
-                &mut rv as *mut libc::c_double,
-                &mut passes as *mut libc::c_int,
-            );
-            r <= 0 as libc::c_int
-        }
-    {
+    if p.is_null() || {
+        r = sscanf(
+            p,
+            b"%lf,%d\0" as *const u8 as *const libc::c_char,
+            &mut rv as *mut libc::c_double,
+            &mut passes as *mut libc::c_int,
+        );
+        r <= 0 as libc::c_int
+    } {
         (*adata).nextIter = 0 as libc::c_int;
         (*adata).badGraph = 0 as libc::c_int;
         (*adata).nPasses = 0 as libc::c_int;

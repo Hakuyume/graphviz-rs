@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -101,10 +109,9 @@ pub unsafe extern "C" fn PCA_alloc(
             sum = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < n {
-                sum
-                    += (*(*coords.offset(i as isize)).offset(k as isize)
-                        * *(*coords.offset(j as isize)).offset(k as isize))
-                        as libc::c_double;
+                sum += (*(*coords.offset(i as isize)).offset(k as isize)
+                    * *(*coords.offset(j as isize)).offset(k as isize))
+                    as libc::c_double;
                 k += 1;
             }
             let ref mut fresh2 = *(*DD.offset(j as isize)).offset(i as isize);
@@ -129,9 +136,8 @@ pub unsafe extern "C" fn PCA_alloc(
             sum = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < dim {
-                sum
-                    += *(*coords.offset(k as isize)).offset(i as isize) as libc::c_double
-                        * *(*eigs.offset(j as isize)).offset(k as isize);
+                sum += *(*coords.offset(k as isize)).offset(i as isize) as libc::c_double
+                    * *(*eigs.offset(j as isize)).offset(k as isize);
                 k += 1;
             }
             *(*new_coords.offset(j as isize)).offset(i as isize) = sum;

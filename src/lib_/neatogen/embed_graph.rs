@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -7,19 +15,9 @@ extern "C" {
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn dijkstra(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType);
     fn mkQueue(_: *mut Queue, _: libc::c_int);
-    fn bfs(
-        _: libc::c_int,
-        _: *mut vtx_data,
-        _: libc::c_int,
-        _: *mut DistType,
-        _: *mut Queue,
-    );
+    fn bfs(_: libc::c_int, _: *mut vtx_data, _: libc::c_int, _: *mut DistType, _: *mut Queue);
     fn compute_new_weights(graph: *mut vtx_data, n: libc::c_int);
-    fn restore_old_weights(
-        graph: *mut vtx_data,
-        n: libc::c_int,
-        old_weights: *mut libc::c_float,
-    );
+    fn restore_old_weights(graph: *mut vtx_data, n: libc::c_int, old_weights: *mut libc::c_float);
 }
 pub type size_t = libc::c_ulong;
 #[derive(Copy, Clone)]
@@ -60,8 +58,7 @@ pub unsafe extern "C" fn embed_graph(
         n as size_t,
         ::std::mem::size_of::<DistType>() as libc::c_ulong,
     ) as *mut DistType;
-    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize))
-        .ewgts;
+    let mut old_weights: *mut libc::c_float = (*graph.offset(0 as libc::c_int as isize)).ewgts;
     let mut Q: Queue = Queue {
         data: 0 as *mut libc::c_int,
         queueSize: 0,
@@ -92,14 +89,17 @@ pub unsafe extern "C" fn embed_graph(
     if reweight_graph != 0 {
         dijkstra(node, graph, n, *coords.offset(0 as libc::c_int as isize));
     } else {
-        bfs(node, graph, n, *coords.offset(0 as libc::c_int as isize), &mut Q);
+        bfs(
+            node,
+            graph,
+            n,
+            *coords.offset(0 as libc::c_int as isize),
+            &mut Q,
+        );
     }
     i = 0 as libc::c_int;
     while i < n {
-        *dist
-            .offset(
-                i as isize,
-            ) = *(*coords.offset(0 as libc::c_int as isize)).offset(i as isize);
+        *dist.offset(i as isize) = *(*coords.offset(0 as libc::c_int as isize)).offset(i as isize);
         if *dist.offset(i as isize) > max_dist {
             node = i;
             max_dist = *dist.offset(i as isize);
@@ -116,16 +116,12 @@ pub unsafe extern "C" fn embed_graph(
         max_dist = 0 as libc::c_int;
         j = 0 as libc::c_int;
         while j < n {
-            *dist
-                .offset(
-                    j as isize,
-                ) = if *dist.offset(j as isize)
-                < *(*coords.offset(i as isize)).offset(j as isize)
-            {
-                *dist.offset(j as isize)
-            } else {
-                *(*coords.offset(i as isize)).offset(j as isize)
-            };
+            *dist.offset(j as isize) =
+                if *dist.offset(j as isize) < *(*coords.offset(i as isize)).offset(j as isize) {
+                    *dist.offset(j as isize)
+                } else {
+                    *(*coords.offset(i as isize)).offset(j as isize)
+                };
             if *dist.offset(j as isize) > max_dist {
                 node = j;
                 max_dist = *dist.offset(j as isize);

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 use num_traits::ToPrimitive;
@@ -88,15 +96,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -104,29 +107,18 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 #[derive()]
 #[repr(C)]
 pub struct _sffmt_s<'a> {
     pub extf: Sffmtext_f,
     pub eventf: Sffmtevent_f,
     pub form: *mut libc::c_char,
-    pub args: ::std::ffi::VaListImpl::<'a>,
+    pub args: ::std::ffi::VaListImpl<'a>,
     pub fmt: libc::c_int,
     pub size: ssize_t,
     pub flags: libc::c_int,
@@ -136,18 +128,11 @@ pub struct _sffmt_s<'a> {
     pub t_str: *mut libc::c_char,
     pub n_str: ssize_t,
 }
-pub type Sffmtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sffmt_t,
-    ) -> libc::c_int,
+pub type Sffmtevent_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
 >;
 pub type Sffmt_t = _sffmt_s;
-pub type Sffmtext_f = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int,
->;
+pub type Sffmtext_f = Option<unsafe extern "C" fn(*mut libc::c_void, *mut Sffmt_t) -> libc::c_int>;
 pub type Fmtpos_t = _fmtpos_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -188,9 +173,9 @@ pub struct _sftab_ {
     pub sf_neg10: [f128::f128; 6],
     pub sf_dec: [libc::c_uchar; 200],
     pub sf_digits: *mut libc::c_char,
-    pub sf_cvinitf: Option::<unsafe extern "C" fn() -> libc::c_int>,
+    pub sf_cvinitf: Option<unsafe extern "C" fn() -> libc::c_int>,
     pub sf_cvinit: libc::c_int,
-    pub sf_fmtposf: Option::<
+    pub sf_fmtposf: Option<
         unsafe extern "C" fn(
             *mut Sfio_t,
             *const libc::c_char,
@@ -198,18 +183,17 @@ pub struct _sftab_ {
             libc::c_int,
         ) -> *mut Fmtpos_t,
     >,
-    pub sf_fmtintf: Option::<
-        unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char,
-    >,
+    pub sf_fmtintf:
+        Option<unsafe extern "C" fn(*const libc::c_char, *mut libc::c_int) -> *mut libc::c_char>,
     pub sf_cv36: [libc::c_uchar; 256],
     pub sf_cv64: [libc::c_uchar; 256],
     pub sf_type: [libc::c_uchar; 256],
 }
 pub type Sftab_t = _sftab_;
-static mut Inf: *mut libc::c_char = b"Inf\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
-static mut Zero: *mut libc::c_char = b"0\0" as *const u8 as *const libc::c_char
-    as *mut libc::c_char;
+static mut Inf: *mut libc::c_char =
+    b"Inf\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+static mut Zero: *mut libc::c_char =
+    b"0\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub unsafe extern "C" fn _sfcvt(
     mut dv: *mut libc::c_void,
@@ -226,17 +210,15 @@ pub unsafe extern "C" fn _sfcvt(
     let mut buf: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut endsp: *mut libc::c_char = 0 as *mut libc::c_char;
     static mut Buf: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
-    if Buf.is_null()
-        && {
-            Buf = malloc(
-                ((256 as libc::c_int + 1024 as libc::c_int) as libc::c_ulong)
-                    .wrapping_div(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                    .wrapping_add(1 as libc::c_int as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
-            ) as *mut libc::c_char;
-            Buf.is_null()
-        }
-    {
+    if Buf.is_null() && {
+        Buf = malloc(
+            ((256 as libc::c_int + 1024 as libc::c_int) as libc::c_ulong)
+                .wrapping_div(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
+                .wrapping_add(1 as libc::c_int as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        ) as *mut libc::c_char;
+        Buf.is_null()
+    } {
         _Sfi = 3 as libc::c_int as ssize_t;
         return Inf;
     }
@@ -281,25 +263,17 @@ pub unsafe extern "C" fn _sfcvt(
         dval -= v as libc::c_double;
         while v as uint64_t >= 10000 as libc::c_int as libc::c_ulong {
             n = v;
-            v = (v as uint64_t).wrapping_div(10000 as libc::c_int as libc::c_ulong)
-                as libc::c_long;
+            v = (v as uint64_t).wrapping_div(10000 as libc::c_int as libc::c_ulong) as libc::c_long;
             n = (n as uint64_t)
-                .wrapping_sub(
-                    (v as uint64_t).wrapping_mul(10000 as libc::c_int as libc::c_ulong),
-                ) as libc::c_long;
+                .wrapping_sub((v as uint64_t).wrapping_mul(10000 as libc::c_int as libc::c_ulong))
+                as libc::c_long;
             sp = sp.offset(-(4 as libc::c_int as isize));
             if n < (5 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
                 if n < (2 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
                     if n < (1 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '0' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '0' as i32 as libc::c_char;
                     } else {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '1' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '1' as i32 as libc::c_char;
                         n -= (1 as libc::c_int * 1000 as libc::c_int) as libc::c_long;
                     }
                 } else if n < (3 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
@@ -333,15 +307,9 @@ pub unsafe extern "C" fn _sfcvt(
             if n < (5 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                 if n < (2 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                     if n < (1 as libc::c_int * 100 as libc::c_int) as libc::c_long {
-                        *sp
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ) = '0' as i32 as libc::c_char;
+                        *sp.offset(1 as libc::c_int as isize) = '0' as i32 as libc::c_char;
                     } else {
-                        *sp
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ) = '1' as i32 as libc::c_char;
+                        *sp.offset(1 as libc::c_int as isize) = '1' as i32 as libc::c_char;
                         n -= (1 as libc::c_int * 100 as libc::c_int) as libc::c_long;
                     }
                 } else if n < (3 as libc::c_int * 100 as libc::c_int) as libc::c_long {
@@ -373,46 +341,30 @@ pub unsafe extern "C" fn _sfcvt(
                 n -= (9 as libc::c_int * 100 as libc::c_int) as libc::c_long;
             }
             n <<= 1 as libc::c_int;
-            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char)
-                .offset(n as isize);
+            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char).offset(n as isize);
             *sp.offset(2 as libc::c_int as isize) = *ep;
-            *sp
-                .offset(
-                    3 as libc::c_int as isize,
-                ) = *ep.offset(1 as libc::c_int as isize);
+            *sp.offset(3 as libc::c_int as isize) = *ep.offset(1 as libc::c_int as isize);
         }
         if v < 100 as libc::c_int as libc::c_long {
             if v < 10 as libc::c_int as libc::c_long {
                 sp = sp.offset(-(1 as libc::c_int as isize));
-                *sp
-                    .offset(
-                        0 as libc::c_int as isize,
-                    ) = ('0' as i32 as libc::c_long + v) as libc::c_char;
+                *sp.offset(0 as libc::c_int as isize) =
+                    ('0' as i32 as libc::c_long + v) as libc::c_char;
             } else {
                 sp = sp.offset(-(2 as libc::c_int as isize));
                 v <<= 1 as libc::c_int;
-                ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char)
-                    .offset(v as isize);
+                ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char).offset(v as isize);
                 *sp.offset(0 as libc::c_int as isize) = *ep;
-                *sp
-                    .offset(
-                        1 as libc::c_int as isize,
-                    ) = *ep.offset(1 as libc::c_int as isize);
+                *sp.offset(1 as libc::c_int as isize) = *ep.offset(1 as libc::c_int as isize);
             }
         } else if v < 1000 as libc::c_int as libc::c_long {
             sp = sp.offset(-(3 as libc::c_int as isize));
             if v < (5 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                 if v < (2 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                     if v < (1 as libc::c_int * 100 as libc::c_int) as libc::c_long {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '0' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '0' as i32 as libc::c_char;
                     } else {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '1' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '1' as i32 as libc::c_char;
                         v -= (1 as libc::c_int * 100 as libc::c_int) as libc::c_long;
                     }
                 } else if v < (3 as libc::c_int * 100 as libc::c_int) as libc::c_long {
@@ -444,27 +396,17 @@ pub unsafe extern "C" fn _sfcvt(
                 v -= (9 as libc::c_int * 100 as libc::c_int) as libc::c_long;
             }
             v <<= 1 as libc::c_int;
-            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char)
-                .offset(v as isize);
+            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char).offset(v as isize);
             *sp.offset(1 as libc::c_int as isize) = *ep;
-            *sp
-                .offset(
-                    2 as libc::c_int as isize,
-                ) = *ep.offset(1 as libc::c_int as isize);
+            *sp.offset(2 as libc::c_int as isize) = *ep.offset(1 as libc::c_int as isize);
         } else {
             sp = sp.offset(-(4 as libc::c_int as isize));
             if v < (5 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
                 if v < (2 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
                     if v < (1 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '0' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '0' as i32 as libc::c_char;
                     } else {
-                        *sp
-                            .offset(
-                                0 as libc::c_int as isize,
-                            ) = '1' as i32 as libc::c_char;
+                        *sp.offset(0 as libc::c_int as isize) = '1' as i32 as libc::c_char;
                         v -= (1 as libc::c_int * 1000 as libc::c_int) as libc::c_long;
                     }
                 } else if v < (3 as libc::c_int * 1000 as libc::c_int) as libc::c_long {
@@ -498,15 +440,9 @@ pub unsafe extern "C" fn _sfcvt(
             if v < (5 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                 if v < (2 as libc::c_int * 100 as libc::c_int) as libc::c_long {
                     if v < (1 as libc::c_int * 100 as libc::c_int) as libc::c_long {
-                        *sp
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ) = '0' as i32 as libc::c_char;
+                        *sp.offset(1 as libc::c_int as isize) = '0' as i32 as libc::c_char;
                     } else {
-                        *sp
-                            .offset(
-                                1 as libc::c_int as isize,
-                            ) = '1' as i32 as libc::c_char;
+                        *sp.offset(1 as libc::c_int as isize) = '1' as i32 as libc::c_char;
                         v -= (1 as libc::c_int * 100 as libc::c_int) as libc::c_long;
                     }
                 } else if v < (3 as libc::c_int * 100 as libc::c_int) as libc::c_long {
@@ -538,13 +474,9 @@ pub unsafe extern "C" fn _sfcvt(
                 v -= (9 as libc::c_int * 100 as libc::c_int) as libc::c_long;
             }
             v <<= 1 as libc::c_int;
-            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char)
-                .offset(v as isize);
+            ep = ((_Sftable.sf_dec).as_mut_ptr() as *mut libc::c_char).offset(v as isize);
             *sp.offset(2 as libc::c_int as isize) = *ep;
-            *sp
-                .offset(
-                    3 as libc::c_int as isize,
-                ) = *ep.offset(1 as libc::c_int as isize);
+            *sp.offset(3 as libc::c_int as isize) = *ep.offset(1 as libc::c_int as isize);
         }
         n = buf.offset_from(sp) as libc::c_long;
         *decpt += n as libc::c_int;
@@ -561,19 +493,19 @@ pub unsafe extern "C" fn _sfcvt(
         1 as libc::c_int
     } else {
         *decpt + 1 as libc::c_int
-    }) as libc::c_long - n;
+    }) as libc::c_long
+        - n;
     if n_digit > 0 as libc::c_int {
         n += n_digit as libc::c_long;
     }
     ep = sp.offset(n as isize);
-    endsp = Buf
-        .offset(
-            ((256 as libc::c_int + 1024 as libc::c_int) as libc::c_ulong)
-                .wrapping_div(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_add(1 as libc::c_int as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(2 as libc::c_int as libc::c_ulong) as isize,
-        );
+    endsp = Buf.offset(
+        ((256 as libc::c_int + 1024 as libc::c_int) as libc::c_ulong)
+            .wrapping_div(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
+            .wrapping_add(1 as libc::c_int as libc::c_ulong)
+            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
+            .wrapping_sub(2 as libc::c_int as libc::c_ulong) as isize,
+    );
     if ep > endsp {
         ep = endsp;
     }
@@ -581,8 +513,7 @@ pub unsafe extern "C" fn _sfcvt(
         sp = ep;
         current_block = 9567781456482637466;
     } else {
-        if format & 0o1000000000 as libc::c_int != 0 && *decpt == 0 as libc::c_int
-            && dval > 0.0f64
+        if format & 0o1000000000 as libc::c_int != 0 && *decpt == 0 as libc::c_int && dval > 0.0f64
         {
             let mut d: libc::c_double = 0.;
             loop {
@@ -647,10 +578,7 @@ pub unsafe extern "C" fn _sfcvt(
                         *sp = '1' as i32 as libc::c_char;
                         *decpt += 1 as libc::c_int;
                         if format & 0o1000000000 as libc::c_int == 0 {
-                            *ep
-                                .offset(
-                                    -(1 as libc::c_int) as isize,
-                                ) = '0' as i32 as libc::c_char;
+                            *ep.offset(-(1 as libc::c_int) as isize) = '0' as i32 as libc::c_char;
                             ep = ep.offset(1 as libc::c_int as isize);
                         }
                     }

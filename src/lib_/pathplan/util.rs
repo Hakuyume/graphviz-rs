@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -61,8 +69,7 @@ pub unsafe extern "C" fn Ppolybarriers(
         i += 1;
     }
     bar = malloc(
-        (n as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<Pedge_t>() as libc::c_ulong),
+        (n as libc::c_ulong).wrapping_mul(::std::mem::size_of::<Pedge_t>() as libc::c_ulong),
     ) as *mut Pedge_t;
     b = 0 as libc::c_int;
     i = 0 as libc::c_int;
@@ -81,16 +88,16 @@ pub unsafe extern "C" fn Ppolybarriers(
         }
         i += 1;
     }
-    if b == n {} else {
+    if b == n {
+    } else {
         __assert_fail(
             b"b == n\0" as *const u8 as *const libc::c_char,
             b"util.c\0" as *const u8 as *const libc::c_char,
             49 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"int Ppolybarriers(Ppoly_t **, int, Pedge_t **, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"int Ppolybarriers(Ppoly_t **, int, Pedge_t **, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *barriers = bar;
@@ -98,16 +105,12 @@ pub unsafe extern "C" fn Ppolybarriers(
     return 1 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn make_polyline(
-    mut line: Ppolyline_t,
-    mut sline: *mut Ppolyline_t,
-) {
+pub unsafe extern "C" fn make_polyline(mut line: Ppolyline_t, mut sline: *mut Ppolyline_t) {
     static mut isz: libc::c_int = 0 as libc::c_int;
     static mut ispline: *mut Ppoint_t = 0 as *const Ppoint_t as *mut Ppoint_t;
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
-    let mut npts: libc::c_int = 4 as libc::c_int
-        + 3 as libc::c_int * (line.pn - 2 as libc::c_int);
+    let mut npts: libc::c_int = 4 as libc::c_int + 3 as libc::c_int * (line.pn - 2 as libc::c_int);
     if npts > isz {
         ispline = realloc(
             ispline as *mut libc::c_void,

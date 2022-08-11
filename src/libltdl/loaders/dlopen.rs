@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -6,10 +14,7 @@ extern "C" {
     fn lt__error_string(errorcode: libc::c_int) -> *const libc::c_char;
     fn lt__zalloc(n: size_t) -> *mut libc::c_void;
     fn dlclose(__handle: *mut libc::c_void) -> libc::c_int;
-    fn dlsym(
-        __handle: *mut libc::c_void,
-        __name: *const libc::c_char,
-    ) -> *mut libc::c_void;
+    fn dlsym(__handle: *mut libc::c_void, __name: *const libc::c_char) -> *mut libc::c_void;
     fn dlerror() -> *mut libc::c_char;
     fn dlopen(__file: *const libc::c_char, __mode: libc::c_int) -> *mut libc::c_void;
 }
@@ -51,17 +56,11 @@ pub struct lt__advise {
     pub c2rust_padding: [u8; 3],
 }
 pub type lt_dladvise = *mut lt__advise;
-pub type lt_module_open = unsafe extern "C" fn(
-    lt_user_data,
-    *const libc::c_char,
-    lt_dladvise,
-) -> lt_module;
+pub type lt_module_open =
+    unsafe extern "C" fn(lt_user_data, *const libc::c_char, lt_dladvise) -> lt_module;
 pub type lt_module_close = unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int;
-pub type lt_find_sym = unsafe extern "C" fn(
-    lt_user_data,
-    lt_module,
-    *const libc::c_char,
-) -> *mut libc::c_void;
+pub type lt_find_sym =
+    unsafe extern "C" fn(lt_user_data, lt_module, *const libc::c_char) -> *mut libc::c_void;
 pub type lt_dlloader_init = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_exit = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_priority = libc::c_uint;
@@ -72,22 +71,20 @@ pub const LT_DLLOADER_PREPEND: lt_dlloader_priority = 0;
 pub struct lt_dlvtable {
     pub name: *const libc::c_char,
     pub sym_prefix: *const libc::c_char,
-    pub module_open: Option::<lt_module_open>,
-    pub module_close: Option::<lt_module_close>,
-    pub find_sym: Option::<lt_find_sym>,
-    pub dlloader_init: Option::<lt_dlloader_init>,
-    pub dlloader_exit: Option::<lt_dlloader_exit>,
+    pub module_open: Option<lt_module_open>,
+    pub module_close: Option<lt_module_close>,
+    pub find_sym: Option<lt_find_sym>,
+    pub dlloader_init: Option<lt_dlloader_init>,
+    pub dlloader_exit: Option<lt_dlloader_exit>,
     pub dlloader_data: lt_user_data,
     pub priority: lt_dlloader_priority,
 }
 static mut vtable: *mut lt_dlvtable = 0 as *const lt_dlvtable as *mut lt_dlvtable;
 #[no_mangle]
-pub unsafe extern "C" fn dlopen_LTX_get_vtable(
-    mut loader_data: lt_user_data,
-) -> *mut lt_dlvtable {
+pub unsafe extern "C" fn dlopen_LTX_get_vtable(mut loader_data: lt_user_data) -> *mut lt_dlvtable {
     if vtable.is_null() {
-        vtable = lt__zalloc(::std::mem::size_of::<lt_dlvtable>() as libc::c_ulong)
-            as *mut lt_dlvtable;
+        vtable =
+            lt__zalloc(::std::mem::size_of::<lt_dlvtable>() as libc::c_ulong) as *mut lt_dlvtable;
     }
     if !vtable.is_null() && ((*vtable).name).is_null() {
         let ref mut fresh0 = (*vtable).name;
@@ -102,9 +99,7 @@ pub unsafe extern "C" fn dlopen_LTX_get_vtable(
                 ) -> lt_module,
         );
         let ref mut fresh2 = (*vtable).module_close;
-        *fresh2 = Some(
-            vm_close as unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int,
-        );
+        *fresh2 = Some(vm_close as unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int);
         let ref mut fresh3 = (*vtable).find_sym;
         *fresh3 = Some(
             vm_sym
@@ -151,10 +146,7 @@ unsafe extern "C" fn vm_open(
     }
     return module;
 }
-unsafe extern "C" fn vm_close(
-    mut loader_data: lt_user_data,
-    mut module: lt_module,
-) -> libc::c_int {
+unsafe extern "C" fn vm_close(mut loader_data: lt_user_data, mut module: lt_module) -> libc::c_int {
     let mut errors: libc::c_int = 0 as libc::c_int;
     if dlclose(module) != 0 as libc::c_int {
         lt__set_last_error(dlerror());

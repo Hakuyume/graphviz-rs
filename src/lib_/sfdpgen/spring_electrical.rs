@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -14,19 +22,10 @@ extern "C" {
     fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     static mut stderr: *mut FILE;
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn free(_: *mut libc::c_void);
     fn srand(__seed: libc::c_uint);
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn __assert_fail(
         __assertion: *const libc::c_char,
         __file: *const libc::c_char,
@@ -61,19 +60,11 @@ extern "C" {
         sz: size_t,
     ) -> SparseMatrix;
     fn SparseMatrix_delete(A: SparseMatrix);
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_symmetrize_nodiag(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_multiply_dense(
         A: SparseMatrix,
         v: *mut libc::c_double,
@@ -111,17 +102,10 @@ extern "C" {
         counts: *mut libc::c_double,
         flag: *mut libc::c_int,
     );
-    fn Multilevel_control_new(
-        scheme: libc::c_int,
-        mode: libc::c_int,
-    ) -> Multilevel_control;
+    fn Multilevel_control_new(scheme: libc::c_int, mode: libc::c_int) -> Multilevel_control;
     fn Multilevel_control_delete(ctrl: Multilevel_control);
     fn Multilevel_delete(grid: Multilevel);
-    fn Multilevel_new(
-        A: SparseMatrix,
-        D: SparseMatrix,
-        ctrl: Multilevel_control,
-    ) -> Multilevel;
+    fn Multilevel_new(A: SparseMatrix, D: SparseMatrix, ctrl: Multilevel_control) -> Multilevel;
     fn Multilevel_get_coarsest(grid: Multilevel) -> Multilevel;
     fn post_process_smoothing(
         dim: libc::c_int,
@@ -147,9 +131,8 @@ extern "C" {
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _IO_FILE {
@@ -358,18 +341,16 @@ pub const ELSCHEME_NONE: C2RustUnnamed_9 = 0;
 #[no_mangle]
 pub unsafe extern "C" fn spring_electrical_control_new() -> spring_electrical_control {
     let mut ctrl: spring_electrical_control = 0 as *mut spring_electrical_control_struct;
-    ctrl = gmalloc(
-        ::std::mem::size_of::<spring_electrical_control_struct>() as libc::c_ulong,
-    ) as spring_electrical_control;
+    ctrl = gmalloc(::std::mem::size_of::<spring_electrical_control_struct>() as libc::c_ulong)
+        as spring_electrical_control;
     (*ctrl).p = -1.0001234f64;
     (*ctrl).q = 1 as libc::c_int as libc::c_double;
     (*ctrl).random_start = (0 as libc::c_int == 0) as libc::c_int;
     (*ctrl).K = -(1 as libc::c_int) as libc::c_double;
     (*ctrl).C = 0.2f64;
     (*ctrl).multilevels = 0 as libc::c_int;
-    (*ctrl)
-        .multilevel_coarsen_scheme = COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_SUPERNODES_FIRST
-        as libc::c_int;
+    (*ctrl).multilevel_coarsen_scheme =
+        COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_SUPERNODES_FIRST as libc::c_int;
     (*ctrl).multilevel_coarsen_mode = COARSEN_MODE_FORCEFUL as libc::c_int;
     (*ctrl).quadtree_size = 45 as libc::c_int;
     (*ctrl).max_qtree_level = 10 as libc::c_int;
@@ -392,19 +373,14 @@ pub unsafe extern "C" fn spring_electrical_control_new() -> spring_electrical_co
     return ctrl;
 }
 #[no_mangle]
-pub unsafe extern "C" fn spring_electrical_control_delete(
-    mut ctrl: spring_electrical_control,
-) {
+pub unsafe extern "C" fn spring_electrical_control_delete(mut ctrl: spring_electrical_control) {
     free(ctrl as *mut libc::c_void);
 }
 static mut smoothings: [*mut libc::c_char; 7] = [
     b"NONE\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-    b"STRESS_MAJORIZATION_GRAPH_DIST\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char,
-    b"STRESS_MAJORIZATION_AVG_DIST\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char,
-    b"STRESS_MAJORIZATION_POWER_DIST\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char,
+    b"STRESS_MAJORIZATION_GRAPH_DIST\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    b"STRESS_MAJORIZATION_AVG_DIST\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+    b"STRESS_MAJORIZATION_POWER_DIST\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     b"SPRING\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     b"TRIANGLE\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
     b"RNG\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -426,9 +402,7 @@ static mut methods: [*mut libc::c_char; 8] = [
     b"NONE\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
 ];
 #[no_mangle]
-pub unsafe extern "C" fn spring_electrical_control_print(
-    mut ctrl: spring_electrical_control,
-) {
+pub unsafe extern "C" fn spring_electrical_control_print(mut ctrl: spring_electrical_control) {
     fprintf(
         stderr,
         b"spring_electrical_control:\n\0" as *const u8 as *const libc::c_char,
@@ -476,8 +450,7 @@ pub unsafe extern "C" fn spring_electrical_control_print(
     );
     fprintf(
         stderr,
-        b"  cooling %.03f step size  %.03f adaptive %d\n\0" as *const u8
-            as *const libc::c_char,
+        b"  cooling %.03f step size  %.03f adaptive %d\n\0" as *const u8 as *const libc::c_char,
         (*ctrl).cool,
         (*ctrl).step,
         (*ctrl).adaptive_cooling,
@@ -492,8 +465,8 @@ pub unsafe extern "C" fn spring_electrical_control_print(
     );
     fprintf(
         stderr,
-        b"  smoothing %s overlap %d initial_scaling %.03f do_shrinking %d\n\0"
-            as *const u8 as *const libc::c_char,
+        b"  smoothing %s overlap %d initial_scaling %.03f do_shrinking %d\n\0" as *const u8
+            as *const libc::c_char,
         smoothings[(*ctrl).smoothing as usize],
         (*ctrl).overlap,
         (*ctrl).initial_scaling,
@@ -518,28 +491,25 @@ pub unsafe extern "C" fn oned_optimizer_delete(mut opt: oned_optimizer) {
 #[no_mangle]
 pub unsafe extern "C" fn oned_optimizer_new(mut i: libc::c_int) -> oned_optimizer {
     let mut opt: oned_optimizer = 0 as *mut oned_optimizer_struct;
-    opt = gmalloc(::std::mem::size_of::<oned_optimizer_struct>() as libc::c_ulong)
-        as oned_optimizer;
+    opt =
+        gmalloc(::std::mem::size_of::<oned_optimizer_struct>() as libc::c_ulong) as oned_optimizer;
     (*opt).i = i;
     (*opt).direction = OPT_INIT as libc::c_int;
     return opt;
 }
 #[no_mangle]
-pub unsafe extern "C" fn oned_optimizer_train(
-    mut opt: oned_optimizer,
-    mut work: libc::c_double,
-) {
+pub unsafe extern "C" fn oned_optimizer_train(mut opt: oned_optimizer, mut work: libc::c_double) {
     let mut i: libc::c_int = (*opt).i;
-    if i >= 0 as libc::c_int {} else {
+    if i >= 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"i >= 0\0" as *const u8 as *const libc::c_char,
             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
             120 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void oned_optimizer_train(oned_optimizer, double)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void oned_optimizer_train(oned_optimizer, double)\0",
+            ))
+            .as_ptr(),
         );
     }
     (*opt).work[i as usize] = work;
@@ -549,31 +519,29 @@ pub unsafe extern "C" fn oned_optimizer_train(
             (*opt).i = (*opt).i - 1 as libc::c_int;
         } else {
             (*opt).direction = OPT_UP as libc::c_int;
-            (*opt)
-                .i = if (MAX_I as libc::c_int) < (*opt).i + 1 as libc::c_int {
+            (*opt).i = if (MAX_I as libc::c_int) < (*opt).i + 1 as libc::c_int {
                 MAX_I as libc::c_int
             } else {
                 (*opt).i + 1 as libc::c_int
             };
         }
     } else if (*opt).direction == OPT_UP as libc::c_int {
-        if i >= 1 as libc::c_int {} else {
+        if i >= 1 as libc::c_int {
+        } else {
             __assert_fail(
                 b"i >= 1\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
                 132 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 50],
-                    &[libc::c_char; 50],
-                >(b"void oned_optimizer_train(oned_optimizer, double)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                    b"void oned_optimizer_train(oned_optimizer, double)\0",
+                ))
+                .as_ptr(),
             );
         }
         if (*opt).work[i as usize] < (*opt).work[(i - 1 as libc::c_int) as usize]
             && (*opt).i < MAX_I as libc::c_int
         {
-            (*opt)
-                .i = if (MAX_I as libc::c_int) < (*opt).i + 1 as libc::c_int {
+            (*opt).i = if (MAX_I as libc::c_int) < (*opt).i + 1 as libc::c_int {
                 MAX_I as libc::c_int
             } else {
                 (*opt).i + 1 as libc::c_int
@@ -584,23 +552,22 @@ pub unsafe extern "C" fn oned_optimizer_train(
             (*opt).direction = OPT_DOWN as libc::c_int;
         }
     } else {
-        if i < MAX_I as libc::c_int {} else {
+        if i < MAX_I as libc::c_int {
+        } else {
             __assert_fail(
                 b"i < MAX_I\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
                 142 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 50],
-                    &[libc::c_char; 50],
-                >(b"void oned_optimizer_train(oned_optimizer, double)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                    b"void oned_optimizer_train(oned_optimizer, double)\0",
+                ))
+                .as_ptr(),
             );
         }
         if (*opt).work[i as usize] < (*opt).work[(i + 1 as libc::c_int) as usize]
             && (*opt).i > 0 as libc::c_int
         {
-            (*opt)
-                .i = if 0 as libc::c_int > (*opt).i - 1 as libc::c_int {
+            (*opt).i = if 0 as libc::c_int > (*opt).i - 1 as libc::c_int {
                 0 as libc::c_int
             } else {
                 (*opt).i - 1 as libc::c_int
@@ -629,16 +596,16 @@ pub unsafe extern "C" fn average_edge_length(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut k: libc::c_int = 0;
-    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 1 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, true)\0" as *const u8 as *const libc::c_char,
             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
             163 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 56],
-                &[libc::c_char; 56],
-            >(b"double average_edge_length(SparseMatrix, int, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 56], &[libc::c_char; 56]>(
+                b"double average_edge_length(SparseMatrix, int, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if *ia.offset((*A).m as isize) == 0 as libc::c_int {
@@ -651,11 +618,10 @@ pub unsafe extern "C" fn average_edge_length(
             d = 0 as libc::c_int as libc::c_double;
             k = 0 as libc::c_int;
             while k < dim {
-                d
-                    += (*coord.offset((dim * i + k) as isize)
-                        - *coord.offset((dim * *ja.offset(j as isize)) as isize))
-                        * (*coord.offset((dim * i + k) as isize)
-                            - *coord.offset((dim * *ja.offset(j as isize)) as isize));
+                d += (*coord.offset((dim * i + k) as isize)
+                    - *coord.offset((dim * *ja.offset(j as isize)) as isize))
+                    * (*coord.offset((dim * i + k) as isize)
+                        - *coord.offset((dim * *ja.offset(j as isize)) as isize));
                 k += 1;
             }
             dist += sqrt(d);
@@ -768,7 +734,11 @@ pub unsafe extern "C" fn export_embedding(
         }
         i += 1;
     }
-    fprintf(fp, b"}],Hue[%f]\0" as *const u8 as *const libc::c_char, 1.0f64);
+    fprintf(
+        fp,
+        b"}],Hue[%f]\0" as *const u8 as *const libc::c_char,
+        1.0f64,
+    );
     if !width.is_null() && dim == 2 as libc::c_int {
         i = 0 as libc::c_int;
         while i < (*A).m {
@@ -919,9 +889,7 @@ unsafe extern "C" fn get_angle(
     let mut eps: libc::c_double = 0.00001f64;
     k = 0 as libc::c_int;
     while k < 2 as libc::c_int {
-        y[k
-            as usize] = *x.offset((j * dim + k) as isize)
-            - *x.offset((i * dim + k) as isize);
+        y[k as usize] = *x.offset((j * dim + k) as isize) - *x.offset((i * dim + k) as isize);
         k += 1;
     }
     if fabs(y[0 as libc::c_int as usize]) <= fabs(y[1 as libc::c_int as usize]) * eps {
@@ -947,7 +915,7 @@ unsafe extern "C" fn comp_real(
     let mut xx: *const libc::c_double = x as *const libc::c_double;
     let mut yy: *const libc::c_double = y as *const libc::c_double;
     if *xx > *yy {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
         if *xx < *yy {
             return -(1 as libc::c_int);
@@ -962,10 +930,7 @@ unsafe extern "C" fn sort_real(mut n: libc::c_int, mut a: *mut libc::c_double) {
         ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
         Some(
             comp_real
-                as unsafe extern "C" fn(
-                    *const libc::c_void,
-                    *const libc::c_void,
-                ) -> libc::c_int,
+                as unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
         ),
     );
 }
@@ -978,10 +943,8 @@ unsafe extern "C" fn set_leaves(
     mut j: libc::c_int,
 ) {
     *x.offset((dim * j) as isize) = cos(ang) * dist + *x.offset((dim * i) as isize);
-    *x
-        .offset(
-            (dim * j + 1 as libc::c_int) as isize,
-        ) = sin(ang) * dist + *x.offset((dim * i + 1 as libc::c_int) as isize);
+    *x.offset((dim * j + 1 as libc::c_int) as isize) =
+        sin(ang) * dist + *x.offset((dim * i + 1 as libc::c_int) as isize);
 }
 unsafe extern "C" fn beautify_leaves(
     mut dim: libc::c_int,
@@ -1007,22 +970,20 @@ unsafe extern "C" fn beautify_leaves(
     let mut leaves: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut nangles_max: libc::c_int = 10 as libc::c_int;
     let mut nangles: libc::c_int = 0;
-    if SparseMatrix_has_diagonal(A) == 0 {} else {
+    if SparseMatrix_has_diagonal(A) == 0 {
+    } else {
         __assert_fail(
             b"!SparseMatrix_has_diagonal(A)\0" as *const u8 as *const libc::c_char,
             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
             382 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void beautify_leaves(int, SparseMatrix, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void beautify_leaves(int, SparseMatrix, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    let mut checked: *mut bool = gcalloc(
-        ::std::mem::size_of::<bool>() as libc::c_ulong,
-        m as size_t,
-    ) as *mut bool;
+    let mut checked: *mut bool =
+        gcalloc(::std::mem::size_of::<bool>() as libc::c_ulong, m as size_t) as *mut bool;
     angles = gmalloc(
         (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
             .wrapping_mul(nangles_max as libc::c_ulong),
@@ -1045,44 +1006,35 @@ unsafe extern "C" fn beautify_leaves(
                     nangles = 0 as libc::c_int;
                     j = *ia.offset(p as isize);
                     while j < *ia.offset((p + 1 as libc::c_int) as isize) {
-                        if *ia
-                            .offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                        if *ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
                             - *ia.offset(*ja.offset(j as isize) as isize)
                             == 1 as libc::c_int
                         {
-                            *checked
-                                .offset(
-                                    *ja.offset(j as isize) as isize,
-                                ) = 0 as libc::c_int == 0;
+                            *checked.offset(*ja.offset(j as isize) as isize) =
+                                0 as libc::c_int == 0;
                             check_int_array_size(&mut leaves, nleaves, &mut nleaves_max);
                             dist += distance(x, dim, p, *ja.offset(j as isize));
                             *leaves.offset(nleaves as isize) = *ja.offset(j as isize);
                             nleaves += 1;
                         } else {
-                            check_real_array_size(
-                                &mut angles,
-                                nangles,
-                                &mut nangles_max,
-                            );
+                            check_real_array_size(&mut angles, nangles, &mut nangles_max);
                             let fresh2 = nangles;
                             nangles = nangles + 1;
-                            *angles
-                                .offset(
-                                    fresh2 as isize,
-                                ) = get_angle(x, dim, p, *ja.offset(j as isize));
+                            *angles.offset(fresh2 as isize) =
+                                get_angle(x, dim, p, *ja.offset(j as isize));
                         }
                         j += 1;
                     }
-                    if nleaves > 0 as libc::c_int {} else {
+                    if nleaves > 0 as libc::c_int {
+                    } else {
                         __assert_fail(
                             b"nleaves > 0\0" as *const u8 as *const libc::c_char,
                             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
                             408 as libc::c_int as libc::c_uint,
-                            (*::std::mem::transmute::<
-                                &[u8; 50],
-                                &[libc::c_char; 50],
-                            >(b"void beautify_leaves(int, SparseMatrix, double *)\0"))
-                                .as_ptr(),
+                            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                                b"void beautify_leaves(int, SparseMatrix, double *)\0",
+                            ))
+                            .as_ptr(),
                         );
                     }
                     dist /= nleaves as libc::c_double;
@@ -1092,7 +1044,8 @@ unsafe extern "C" fn beautify_leaves(
                         k = 0 as libc::c_int;
                         while k < nangles - 1 as libc::c_int {
                             if *angles.offset((k + 1 as libc::c_int) as isize)
-                                - *angles.offset(k as isize) > maxang
+                                - *angles.offset(k as isize)
+                                > maxang
                             {
                                 maxang = *angles.offset((k + 1 as libc::c_int) as isize)
                                     - *angles.offset(k as isize);
@@ -1106,29 +1059,27 @@ unsafe extern "C" fn beautify_leaves(
                             - *angles.offset((nangles - 1 as libc::c_int) as isize)
                             > maxang
                         {
-                            maxang = 2 as libc::c_int as libc::c_double
-                                * 3.14159265358979323846f64
+                            maxang = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
                                 + *angles.offset(0 as libc::c_int as isize)
                                 - *angles.offset((nangles - 1 as libc::c_int) as isize);
                             ang1 = *angles.offset((nangles - 1 as libc::c_int) as isize);
-                            ang2 = 2 as libc::c_int as libc::c_double
-                                * 3.14159265358979323846f64
+                            ang2 = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64
                                 + *angles.offset(0 as libc::c_int as isize);
                         }
                     } else {
                         ang1 = 0 as libc::c_int as libc::c_double;
-                        ang2 = 2 as libc::c_int as libc::c_double
-                            * 3.14159265358979323846f64;
-                        maxang = 2 as libc::c_int as libc::c_double
-                            * 3.14159265358979323846f64;
+                        ang2 = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
+                        maxang = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
                     }
                     pad = (if maxang
-                        - 3.14159265358979323846f64 * 0.166667f64
+                        - 3.14159265358979323846f64
+                            * 0.166667f64
                             * (nleaves - 1 as libc::c_int) as libc::c_double
                         > 0 as libc::c_int as libc::c_double
                     {
                         maxang
-                            - 3.14159265358979323846f64 * 0.166667f64
+                            - 3.14159265358979323846f64
+                                * 0.166667f64
                                 * (nleaves - 1 as libc::c_int) as libc::c_double
                     } else {
                         0 as libc::c_int as libc::c_double
@@ -1136,26 +1087,23 @@ unsafe extern "C" fn beautify_leaves(
                     ang1 += pad * 0.95f64;
                     ang2 -= pad * 0.95f64;
                     ang1 = 0 as libc::c_int as libc::c_double;
-                    ang2 = 2 as libc::c_int as libc::c_double
-                        * 3.14159265358979323846f64;
-                    maxang = 2 as libc::c_int as libc::c_double
-                        * 3.14159265358979323846f64;
-                    if ang2 >= ang1 {} else {
+                    ang2 = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
+                    maxang = 2 as libc::c_int as libc::c_double * 3.14159265358979323846f64;
+                    if ang2 >= ang1 {
+                    } else {
                         __assert_fail(
                             b"ang2 >= ang1\0" as *const u8 as *const libc::c_char,
                             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
                             431 as libc::c_int as libc::c_uint,
-                            (*::std::mem::transmute::<
-                                &[u8; 50],
-                                &[libc::c_char; 50],
-                            >(b"void beautify_leaves(int, SparseMatrix, double *)\0"))
-                                .as_ptr(),
+                            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                                b"void beautify_leaves(int, SparseMatrix, double *)\0",
+                            ))
+                            .as_ptr(),
                         );
                     }
                     step = 0.0f64;
                     if nleaves > 1 as libc::c_int {
-                        step = (ang2 - ang1)
-                            / (nleaves - 1 as libc::c_int) as libc::c_double;
+                        step = (ang2 - ang1) / (nleaves - 1 as libc::c_int) as libc::c_double;
                     }
                     i = 0 as libc::c_int;
                     while i < nleaves {
@@ -1210,8 +1158,7 @@ pub unsafe extern "C" fn force_print(
             fprintf(
                 fp,
                 b"%f\0" as *const u8 as *const libc::c_char,
-                *x.offset((i * dim + k) as isize)
-                    + 0.5f64 * *force.offset((i * dim + k) as isize),
+                *x.offset((i * dim + k) as isize) + 0.5f64 * *force.offset((i * dim + k) as isize),
             );
             k += 1;
         }
@@ -1293,7 +1240,8 @@ pub unsafe extern "C" fn spring_electrical_embedding_fast(
     if m != n {
         *flag = ERROR_NOT_SQUARE_MATRIX as libc::c_int;
     } else {
-        if (*A).format == FORMAT_CSR as libc::c_int {} else {
+        if (*A).format == FORMAT_CSR as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -1365,7 +1313,8 @@ pub unsafe extern "C" fn spring_electrical_embedding_fast(
                 counts.as_mut_ptr(),
                 flag,
             );
-            if *flag == 0 {} else {
+            if *flag == 0 {
+            } else {
                 __assert_fail(
                     b"!(*flag)\0" as *const u8 as *const libc::c_char,
                     b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -1388,11 +1337,10 @@ pub unsafe extern "C" fn spring_electrical_embedding_fast(
                         dist = distance(x, dim, i, *ja.offset(j as isize));
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                -= CRK
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
-                                    * dist;
+                            *f.offset(k as isize) -= CRK
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
+                                * dist;
                             k += 1;
                         }
                     }
@@ -1547,7 +1495,8 @@ unsafe extern "C" fn spring_electrical_embedding_slow(
     if m != n {
         *flag = ERROR_NOT_SQUARE_MATRIX as libc::c_int;
     } else {
-        if (*A).format == FORMAT_CSR as libc::c_int {} else {
+        if (*A).format == FORMAT_CSR as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -1652,11 +1601,11 @@ unsafe extern "C" fn spring_electrical_embedding_slow(
                         };
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                += *supernode_wgts.offset(j as isize) * KP
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *center.offset((j * dim + k) as isize))
-                                    / pow(dist, 1.0f64 - p);
+                            *f.offset(k as isize) += *supernode_wgts.offset(j as isize)
+                                * KP
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *center.offset((j * dim + k) as isize))
+                                / pow(dist, 1.0f64 - p);
                             k += 1;
                         }
                         j += 1;
@@ -1668,11 +1617,10 @@ unsafe extern "C" fn spring_electrical_embedding_slow(
                             dist = distance_cropped(x, dim, i, j);
                             k = 0 as libc::c_int;
                             while k < dim {
-                                *f.offset(k as isize)
-                                    += KP
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((j * dim + k) as isize))
-                                        / pow(dist, 1.0f64 - p);
+                                *f.offset(k as isize) += KP
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((j * dim + k) as isize))
+                                    / pow(dist, 1.0f64 - p);
                                 k += 1;
                             }
                         }
@@ -1699,11 +1647,10 @@ unsafe extern "C" fn spring_electrical_embedding_slow(
                         dist = distance(x, dim, i, *ja.offset(j as isize));
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                -= CRK
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
-                                    * dist;
+                            *f.offset(k as isize) -= CRK
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
+                                * dist;
                             k += 1;
                         }
                     }
@@ -1752,8 +1699,8 @@ unsafe extern "C" fn spring_electrical_embedding_slow(
                 if Verbose as libc::c_int != 0 && 0 as libc::c_int != 0 {
                     fprintf(
                         stderr,
-                        b"nsuper_avg=%f, counts_avg = %f 2*nsuper+counts=%f\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"nsuper_avg=%f, counts_avg = %f 2*nsuper+counts=%f\n\0" as *const u8
+                            as *const libc::c_char,
                         nsuper_avg,
                         counts_avg,
                         2 as libc::c_int as libc::c_double * nsuper_avg + counts_avg,
@@ -1868,7 +1815,8 @@ pub unsafe extern "C" fn spring_electrical_embedding(
     if m != n {
         *flag = ERROR_NOT_SQUARE_MATRIX as libc::c_int;
     } else {
-        if (*A).format == FORMAT_CSR as libc::c_int {} else {
+        if (*A).format == FORMAT_CSR as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -1946,11 +1894,10 @@ pub unsafe extern "C" fn spring_electrical_embedding(
                         dist = distance(x, dim, i, *ja.offset(j as isize));
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                -= CRK
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
-                                    * dist;
+                            *f.offset(k as isize) -= CRK
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
+                                * dist;
                             k += 1;
                         }
                     }
@@ -1985,11 +1932,11 @@ pub unsafe extern "C" fn spring_electrical_embedding(
                         };
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                += *supernode_wgts.offset(j as isize) * KP
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *center.offset((j * dim + k) as isize))
-                                    / pow(dist, 1.0f64 - p);
+                            *f.offset(k as isize) += *supernode_wgts.offset(j as isize)
+                                * KP
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *center.offset((j * dim + k) as isize))
+                                / pow(dist, 1.0f64 - p);
                             k += 1;
                         }
                         j += 1;
@@ -2001,11 +1948,10 @@ pub unsafe extern "C" fn spring_electrical_embedding(
                             dist = distance_cropped(x, dim, i, j);
                             k = 0 as libc::c_int;
                             while k < dim {
-                                *f.offset(k as isize)
-                                    += KP
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((j * dim + k) as isize))
-                                        / pow(dist, 1.0f64 - p);
+                                *f.offset(k as isize) += KP
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((j * dim + k) as isize))
+                                    / pow(dist, 1.0f64 - p);
                                 k += 1;
                             }
                         }
@@ -2041,8 +1987,8 @@ pub unsafe extern "C" fn spring_electrical_embedding(
                 if Verbose as libc::c_int & 0 as libc::c_int != 0 {
                     fprintf(
                         stderr,
-                        b"nsuper_avg=%f, counts_avg = %f 2*nsuper+counts=%f\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"nsuper_avg=%f, counts_avg = %f 2*nsuper+counts=%f\n\0" as *const u8
+                            as *const libc::c_char,
                         nsuper_avg,
                         counts_avg,
                         2 as libc::c_int as libc::c_double * nsuper_avg + counts_avg,
@@ -2111,7 +2057,8 @@ unsafe extern "C" fn scale_coord(
                 if !d.is_null() {
                     dj = *d.offset(j as isize);
                 }
-                if dj > 0 as libc::c_int as libc::c_double {} else {
+                if dj > 0 as libc::c_int as libc::c_double {
+                } else {
                     __assert_fail(
                         b"dj > 0\0" as *const u8 as *const libc::c_char,
                         b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -2145,7 +2092,11 @@ unsafe extern "C" fn scale_coord(
         *x.offset(i as isize) *= s;
         i += 1;
     }
-    fprintf(stderr, b"scaling factor = %f\n\0" as *const u8 as *const libc::c_char, s);
+    fprintf(
+        stderr,
+        b"scaling factor = %f\n\0" as *const u8 as *const libc::c_char,
+        s,
+    );
 }
 unsafe extern "C" fn dmean_get(
     mut n: libc::c_int,
@@ -2245,7 +2196,8 @@ unsafe extern "C" fn spring_maxent_embedding(
     if m != n {
         *flag = ERROR_NOT_SQUARE_MATRIX as libc::c_int;
     } else {
-        if (*A).format == FORMAT_CSR as libc::c_int {} else {
+        if (*A).format == FORMAT_CSR as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -2344,7 +2296,8 @@ unsafe extern "C" fn spring_maxent_embedding(
                         if !d.is_null() {
                             dj = *d.offset(j as isize);
                         }
-                        if dj > 0 as libc::c_int as libc::c_double {} else {
+                        if dj > 0 as libc::c_int as libc::c_double {
+                        } else {
                             __assert_fail(
                                 b"dj > 0\0" as *const u8 as *const libc::c_char,
                                 b"spring_electrical.c\0" as *const u8
@@ -2359,24 +2312,22 @@ unsafe extern "C" fn spring_maxent_embedding(
                                     .as_ptr(),
                             );
                         }
-                        w_ij = 1.0f64
-                            / pow(dj, (*ctrl).q + 1 as libc::c_int as libc::c_double);
+                        w_ij = 1.0f64 / pow(dj, (*ctrl).q + 1 as libc::c_int as libc::c_double);
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                += -w_ij
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
-                                    * pow(dist - dj, (*ctrl).q) / dist;
+                            *f.offset(k as isize) += -w_ij
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
+                                * pow(dist - dj, (*ctrl).q)
+                                / dist;
                             k += 1;
                         }
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                -= rho
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
-                                    / pow(dist, 1.0f64 - p);
+                            *f.offset(k as isize) -= rho
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
+                                / pow(dist, 1.0f64 - p);
                             k += 1;
                         }
                     }
@@ -2410,11 +2361,11 @@ unsafe extern "C" fn spring_maxent_embedding(
                         };
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                += rho * *supernode_wgts.offset(j as isize)
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *center.offset((j * dim + k) as isize))
-                                    / pow(dist, 1.0f64 - p);
+                            *f.offset(k as isize) += rho
+                                * *supernode_wgts.offset(j as isize)
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *center.offset((j * dim + k) as isize))
+                                / pow(dist, 1.0f64 - p);
                             k += 1;
                         }
                         j += 1;
@@ -2426,11 +2377,10 @@ unsafe extern "C" fn spring_maxent_embedding(
                             dist = distance_cropped(x, dim, i, j);
                             k = 0 as libc::c_int;
                             while k < dim {
-                                *f.offset(k as isize)
-                                    += rho
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((j * dim + k) as isize))
-                                        / pow(dist, 1.0f64 - p);
+                                *f.offset(k as isize) += rho
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((j * dim + k) as isize))
+                                    / pow(dist, 1.0f64 - p);
                                 k += 1;
                             }
                         }
@@ -2563,7 +2513,8 @@ pub unsafe extern "C" fn spring_electrical_spring_embedding(
     if m != n {
         *flag = ERROR_NOT_SQUARE_MATRIX as libc::c_int;
     } else {
-        if (*A).format == FORMAT_CSR as libc::c_int {} else {
+        if (*A).format == FORMAT_CSR as libc::c_int {
+        } else {
             __assert_fail(
                 b"A->format == FORMAT_CSR\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -2642,11 +2593,10 @@ pub unsafe extern "C" fn spring_electrical_spring_embedding(
                         dist = distance(x, dim, i, *ja.offset(j as isize));
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                -= CRK
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
-                                    * dist;
+                            *f.offset(k as isize) -= CRK
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *x.offset((*ja.offset(j as isize) * dim + k) as isize))
+                                * dist;
                             k += 1;
                         }
                     }
@@ -2659,19 +2609,21 @@ pub unsafe extern "C" fn spring_electrical_spring_embedding(
                         k = 0 as libc::c_int;
                         while k < dim {
                             if dist < *d.offset(j as isize) {
-                                *f.offset(k as isize)
-                                    += 0.2f64 * CRK
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
-                                        * (dist - *d.offset(j as isize))
-                                        * (dist - *d.offset(j as isize)) / dist;
+                                *f.offset(k as isize) += 0.2f64
+                                    * CRK
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
+                                    * (dist - *d.offset(j as isize))
+                                    * (dist - *d.offset(j as isize))
+                                    / dist;
                             } else {
-                                *f.offset(k as isize)
-                                    -= 0.2f64 * CRK
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
-                                        * (dist - *d.offset(j as isize))
-                                        * (dist - *d.offset(j as isize)) / dist;
+                                *f.offset(k as isize) -= 0.2f64
+                                    * CRK
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((*jd.offset(j as isize) * dim + k) as isize))
+                                    * (dist - *d.offset(j as isize))
+                                    * (dist - *d.offset(j as isize))
+                                    / dist;
                             }
                             k += 1;
                         }
@@ -2706,11 +2658,11 @@ pub unsafe extern "C" fn spring_electrical_spring_embedding(
                         };
                         k = 0 as libc::c_int;
                         while k < dim {
-                            *f.offset(k as isize)
-                                += *supernode_wgts.offset(j as isize) * KP
-                                    * (*x.offset((i * dim + k) as isize)
-                                        - *center.offset((j * dim + k) as isize))
-                                    / pow(dist, 1.0f64 - p);
+                            *f.offset(k as isize) += *supernode_wgts.offset(j as isize)
+                                * KP
+                                * (*x.offset((i * dim + k) as isize)
+                                    - *center.offset((j * dim + k) as isize))
+                                / pow(dist, 1.0f64 - p);
                             k += 1;
                         }
                         j += 1;
@@ -2722,11 +2674,10 @@ pub unsafe extern "C" fn spring_electrical_spring_embedding(
                             dist = distance_cropped(x, dim, i, j);
                             k = 0 as libc::c_int;
                             while k < dim {
-                                *f.offset(k as isize)
-                                    += KP
-                                        * (*x.offset((i * dim + k) as isize)
-                                            - *x.offset((j * dim + k) as isize))
-                                        / pow(dist, 1.0f64 - p);
+                                *f.offset(k as isize) += KP
+                                    * (*x.offset((i * dim + k) as isize)
+                                        - *x.offset((j * dim + k) as isize))
+                                    / pow(dist, 1.0f64 - p);
                                 k += 1;
                             }
                         }
@@ -2847,8 +2798,7 @@ pub unsafe extern "C" fn interpolate_coord(
                 nz += 1;
                 k = 0 as libc::c_int;
                 while k < dim {
-                    *y.offset(k as isize)
-                        += *x.offset((*ja.offset(j as isize) * dim + k) as isize);
+                    *y.offset(k as isize) += *x.offset((*ja.offset(j as isize) * dim + k) as isize);
                     k += 1;
                 }
             }
@@ -2858,11 +2808,8 @@ pub unsafe extern "C" fn interpolate_coord(
             beta = (1 as libc::c_int as libc::c_double - alpha) / nz as libc::c_double;
             k = 0 as libc::c_int;
             while k < dim {
-                *x
-                    .offset(
-                        (i * dim + k) as isize,
-                    ) = alpha * *x.offset((i * dim + k) as isize)
-                    + beta * *y.offset(k as isize);
+                *x.offset((i * dim + k) as isize) =
+                    alpha * *x.offset((i * dim + k) as isize) + beta * *y.offset(k as isize);
                 k += 1;
             }
         }
@@ -2900,8 +2847,8 @@ unsafe extern "C" fn prolongate(
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 k = 0 as libc::c_int;
                 while k < dim {
-                    *y.offset((*ja.offset(j as isize) * dim + k) as isize)
-                        += delta * (drand() - 0.5f64);
+                    *y.offset((*ja.offset(j as isize) * dim + k) as isize) +=
+                        delta * (drand() - 0.5f64);
                     k += 1;
                 }
                 j += 1;
@@ -2950,10 +2897,8 @@ pub unsafe extern "C" fn power_law_graph(mut A: SparseMatrix) -> libc::c_int {
         };
         i += 1;
     }
-    if *mask.offset(1 as libc::c_int as isize) as libc::c_double
-        > 0.8f64 * max as libc::c_double
-        && *mask.offset(1 as libc::c_int as isize) as libc::c_double
-            > 0.3f64 * m as libc::c_double
+    if *mask.offset(1 as libc::c_int as isize) as libc::c_double > 0.8f64 * max as libc::c_double
+        && *mask.offset(1 as libc::c_int as isize) as libc::c_double > 0.3f64 * m as libc::c_double
     {
         res = (0 as libc::c_int == 0) as libc::c_int;
     }
@@ -2975,16 +2920,16 @@ pub unsafe extern "C" fn pcp_rotate(
     let mut dist: libc::c_double = 0.;
     let mut x0: libc::c_double = 0.;
     let mut x1: libc::c_double = 0.;
-    if dim == 2 as libc::c_int {} else {
+    if dim == 2 as libc::c_int {
+    } else {
         __assert_fail(
             b"dim == 2\0" as *const u8 as *const libc::c_char,
             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
             1666 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 36],
-                &[libc::c_char; 36],
-            >(b"void pcp_rotate(int, int, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 36], &[libc::c_char; 36]>(
+                b"void pcp_rotate(int, int, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     i = 0 as libc::c_int;
@@ -3015,10 +2960,8 @@ pub unsafe extern "C" fn pcp_rotate(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            *x
-                .offset(
-                    (dim * i + k) as isize,
-                ) = *x.offset((dim * i + k) as isize) - center[k as usize];
+            *x.offset((dim * i + k) as isize) =
+                *x.offset((dim * i + k) as isize) - center[k as usize];
             k += 1;
         }
         i += 1;
@@ -3029,9 +2972,8 @@ pub unsafe extern "C" fn pcp_rotate(
         while k < dim {
             l = 0 as libc::c_int;
             while l < dim {
-                y[(dim * k + l) as usize]
-                    += *x.offset((i * dim + k) as isize)
-                        * *x.offset((i * dim + l) as isize);
+                y[(dim * k + l) as usize] +=
+                    *x.offset((i * dim + k) as isize) * *x.offset((i * dim + l) as isize);
                 l += 1;
             }
             k += 1;
@@ -3042,16 +2984,19 @@ pub unsafe extern "C" fn pcp_rotate(
         axis[0 as libc::c_int as usize] = 0 as libc::c_int as libc::c_double;
         axis[1 as libc::c_int as usize] = 1 as libc::c_int as libc::c_double;
     } else {
-        axis[0 as libc::c_int
-            as usize] = -(-y[0 as libc::c_int as usize] + y[3 as libc::c_int as usize]
+        axis[0 as libc::c_int as usize] = -(-y[0 as libc::c_int as usize]
+            + y[3 as libc::c_int as usize]
             - sqrt(
                 y[0 as libc::c_int as usize] * y[0 as libc::c_int as usize]
-                    + 4 as libc::c_int as libc::c_double * y[1 as libc::c_int as usize]
+                    + 4 as libc::c_int as libc::c_double
                         * y[1 as libc::c_int as usize]
-                    - 2 as libc::c_int as libc::c_double * y[0 as libc::c_int as usize]
+                        * y[1 as libc::c_int as usize]
+                    - 2 as libc::c_int as libc::c_double
+                        * y[0 as libc::c_int as usize]
                         * y[3 as libc::c_int as usize]
                     + y[3 as libc::c_int as usize] * y[3 as libc::c_int as usize],
-            )) / (2 as libc::c_int as libc::c_double * y[1 as libc::c_int as usize]);
+            ))
+            / (2 as libc::c_int as libc::c_double * y[1 as libc::c_int as usize]);
         axis[1 as libc::c_int as usize] = 1 as libc::c_int as libc::c_double;
     }
     dist = sqrt(
@@ -3063,11 +3008,9 @@ pub unsafe extern "C" fn pcp_rotate(
     i = 0 as libc::c_int;
     while i < n {
         x0 = *x.offset((dim * i) as isize) * axis[0 as libc::c_int as usize]
-            + *x.offset((dim * i + 1 as libc::c_int) as isize)
-                * axis[1 as libc::c_int as usize];
+            + *x.offset((dim * i + 1 as libc::c_int) as isize) * axis[1 as libc::c_int as usize];
         x1 = -*x.offset((dim * i) as isize) * axis[1 as libc::c_int as usize]
-            + *x.offset((dim * i + 1 as libc::c_int) as isize)
-                * axis[0 as libc::c_int as usize];
+            + *x.offset((dim * i + 1 as libc::c_int) as isize) * axis[0 as libc::c_int as usize];
         *x.offset((dim * i) as isize) = x0;
         *x.offset((dim * i + 1 as libc::c_int) as isize) = x1;
         i += 1;
@@ -3086,16 +3029,16 @@ unsafe extern "C" fn rotate(
     let mut x0: libc::c_double = 0.;
     let mut x1: libc::c_double = 0.;
     let mut radian: libc::c_double = 3.14159f64 / 180 as libc::c_int as libc::c_double;
-    if dim == 2 as libc::c_int {} else {
+    if dim == 2 as libc::c_int {
+    } else {
         __assert_fail(
             b"dim == 2\0" as *const u8 as *const libc::c_char,
             b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
             1719 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 40],
-                &[libc::c_char; 40],
-            >(b"void rotate(int, int, double *, double)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 40], &[libc::c_char; 40]>(
+                b"void rotate(int, int, double *, double)\0",
+            ))
+            .as_ptr(),
         );
     }
     i = 0 as libc::c_int;
@@ -3121,10 +3064,8 @@ unsafe extern "C" fn rotate(
     while i < n {
         k = 0 as libc::c_int;
         while k < dim {
-            *x
-                .offset(
-                    (dim * i + k) as isize,
-                ) = *x.offset((dim * i + k) as isize) - center[k as usize];
+            *x.offset((dim * i + k) as isize) =
+                *x.offset((dim * i + k) as isize) - center[k as usize];
             k += 1;
         }
         i += 1;
@@ -3134,11 +3075,9 @@ unsafe extern "C" fn rotate(
     i = 0 as libc::c_int;
     while i < n {
         x0 = *x.offset((dim * i) as isize) * axis[0 as libc::c_int as usize]
-            + *x.offset((dim * i + 1 as libc::c_int) as isize)
-                * axis[1 as libc::c_int as usize];
+            + *x.offset((dim * i + 1 as libc::c_int) as isize) * axis[1 as libc::c_int as usize];
         x1 = -*x.offset((dim * i) as isize) * axis[1 as libc::c_int as usize]
-            + *x.offset((dim * i + 1 as libc::c_int) as isize)
-                * axis[0 as libc::c_int as usize];
+            + *x.offset((dim * i + 1 as libc::c_int) as isize) * axis[0 as libc::c_int as usize];
         *x.offset((dim * i) as isize) = x0;
         *x.offset((dim * i + 1 as libc::c_int) as isize) = x1;
         i += 1;
@@ -3173,10 +3112,7 @@ unsafe extern "C" fn attach_edge_label_coordinates(
         if *edge_label_nodes.offset(i as isize) >= 0 as libc::c_int
             && *edge_label_nodes.offset(i as isize) < (*A).m
         {
-            *mask
-                .offset(
-                    *edge_label_nodes.offset(i as isize) as isize,
-                ) = -(1 as libc::c_int);
+            *mask.offset(*edge_label_nodes.offset(i as isize) as isize) = -(1 as libc::c_int);
         }
         i += 1;
     }
@@ -3194,10 +3130,8 @@ unsafe extern "C" fn attach_edge_label_coordinates(
         if *mask.offset(i as isize) >= 0 as libc::c_int {
             k = 0 as libc::c_int;
             while k < dim {
-                *x
-                    .offset(
-                        (i * dim + k) as isize,
-                    ) = *x2.offset((*mask.offset(i as isize) * dim + k) as isize);
+                *x.offset((i * dim + k) as isize) =
+                    *x2.offset((*mask.offset(i as isize) * dim + k) as isize);
                 k += 1;
             }
         }
@@ -3206,9 +3140,10 @@ unsafe extern "C" fn attach_edge_label_coordinates(
     i = 0 as libc::c_int;
     while i < n_edge_label_nodes {
         ii = *edge_label_nodes.offset(i as isize);
-        len = (*((*A).ia).offset((ii + 1 as libc::c_int) as isize)
-            - *((*A).ia).offset(ii as isize)) as libc::c_double;
-        if len >= 2 as libc::c_int as libc::c_double {} else {
+        len = (*((*A).ia).offset((ii + 1 as libc::c_int) as isize) - *((*A).ia).offset(ii as isize))
+            as libc::c_double;
+        if len >= 2 as libc::c_int as libc::c_double {
+        } else {
             __assert_fail(
                 b"len >= 2\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -3222,7 +3157,8 @@ unsafe extern "C" fn attach_edge_label_coordinates(
                     .as_ptr(),
             );
         }
-        if *mask.offset(ii as isize) < 0 as libc::c_int {} else {
+        if *mask.offset(ii as isize) < 0 as libc::c_int {
+        } else {
             __assert_fail(
                 b"mask[ii] < 0\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -3245,8 +3181,8 @@ unsafe extern "C" fn attach_edge_label_coordinates(
         while j < *((*A).ia).offset((ii + 1 as libc::c_int) as isize) {
             k = 0 as libc::c_int;
             while k < dim {
-                *x.offset((ii * dim + k) as isize)
-                    += *x.offset((*((*A).ja).offset(j as isize) * dim + k) as isize);
+                *x.offset((ii * dim + k) as isize) +=
+                    *x.offset((*((*A).ja).offset(j as isize) * dim + k) as isize);
                 k += 1;
             }
             j += 1;
@@ -3288,8 +3224,7 @@ unsafe extern "C" fn shorting_edge_label_nodes(
     }
     i = 0 as libc::c_int;
     while i < n_edge_label_nodes {
-        *mask
-            .offset(*edge_label_nodes.offset(i as isize) as isize) = -(1 as libc::c_int);
+        *mask.offset(*edge_label_nodes.offset(i as isize) as isize) = -(1 as libc::c_int);
         i += 1;
     }
     i = 0 as libc::c_int;
@@ -3314,8 +3249,7 @@ unsafe extern "C" fn shorting_edge_label_nodes(
                     jj = *ia.offset(ii as isize);
                     while jj < *ia.offset((ii + 1 as libc::c_int) as isize) {
                         if *ja.offset(jj as isize) != i
-                            && *mask.offset(*ja.offset(jj as isize) as isize)
-                                >= 0 as libc::c_int
+                            && *mask.offset(*ja.offset(jj as isize) as isize) >= 0 as libc::c_int
                         {
                             nz += 1;
                         }
@@ -3347,25 +3281,19 @@ unsafe extern "C" fn shorting_edge_label_nodes(
                     *irn.offset(nz as isize) = *mask.offset(i as isize);
                     let fresh6 = nz;
                     nz = nz + 1;
-                    *jcn
-                        .offset(
-                            fresh6 as isize,
-                        ) = *mask.offset(*ja.offset(j as isize) as isize);
+                    *jcn.offset(fresh6 as isize) = *mask.offset(*ja.offset(j as isize) as isize);
                 } else {
                     ii = *ja.offset(j as isize);
                     jj = *ia.offset(ii as isize);
                     while jj < *ia.offset((ii + 1 as libc::c_int) as isize) {
                         if *ja.offset(jj as isize) != i
-                            && *mask.offset(*ja.offset(jj as isize) as isize)
-                                >= 0 as libc::c_int
+                            && *mask.offset(*ja.offset(jj as isize) as isize) >= 0 as libc::c_int
                         {
                             *irn.offset(nz as isize) = *mask.offset(i as isize);
                             let fresh7 = nz;
                             nz = nz + 1;
-                            *jcn
-                                .offset(
-                                    fresh7 as isize,
-                                ) = *mask.offset(*ja.offset(jj as isize) as isize);
+                            *jcn.offset(fresh7 as isize) =
+                                *mask.offset(*ja.offset(jj as isize) as isize);
                             if *mask.offset(i as isize) == 68 as libc::c_int
                                 || *mask.offset(*ja.offset(jj as isize) as isize)
                                     == 68 as libc::c_int
@@ -3467,7 +3395,8 @@ unsafe extern "C" fn multilevel_spring_electrical_embedding_core(
     {
         if (*ctrl).method == METHOD_SPRING_MAXENT as libc::c_int {
             A = SparseMatrix_symmetrize_nodiag(A);
-            if !D0.is_null() {} else {
+            if !D0.is_null() {
+            } else {
                 __assert_fail(
                     b"D0\0" as *const u8 as *const libc::c_char,
                     b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -3487,7 +3416,8 @@ unsafe extern "C" fn multilevel_spring_electrical_embedding_core(
         }
     } else {
         if (*ctrl).method == METHOD_SPRING_MAXENT as libc::c_int {
-            if !D0.is_null() {} else {
+            if !D0.is_null() {
+            } else {
                 __assert_fail(
                     b"D0\0" as *const u8 as *const libc::c_char,
                     b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -3527,7 +3457,8 @@ unsafe extern "C" fn multilevel_spring_electrical_embedding_core(
             0 as *mut libc::c_int,
             flag,
         );
-        if *flag == 0 {} else {
+        if *flag == 0 {
+        } else {
             __assert_fail(
                 b"!(*flag)\0" as *const u8 as *const libc::c_char,
                 b"spring_electrical.c\0" as *const u8 as *const libc::c_char,
@@ -3541,14 +3472,7 @@ unsafe extern "C" fn multilevel_spring_electrical_embedding_core(
                     .as_ptr(),
             );
         }
-        attach_edge_label_coordinates(
-            dim,
-            A,
-            n_edge_label_nodes,
-            edge_label_nodes,
-            x,
-            x2,
-        );
+        attach_edge_label_coordinates(dim, A, n_edge_label_nodes, edge_label_nodes, x, x2);
         remove_overlap(
             dim,
             A,
@@ -3597,11 +3521,12 @@ unsafe extern "C" fn multilevel_spring_electrical_embedding_core(
             if (*ctrl).tscheme == QUAD_TREE_NONE as libc::c_int {
                 spring_electrical_embedding_slow(dim, (*grid).A, ctrl, xc, flag);
             } else if (*ctrl).tscheme == QUAD_TREE_FAST as libc::c_int
-                    || (*ctrl).tscheme == QUAD_TREE_HYBRID as libc::c_int
-                        && (*(*grid).A).m > QUAD_TREE_HYBRID_SIZE as libc::c_int
-                {
+                || (*ctrl).tscheme == QUAD_TREE_HYBRID as libc::c_int
+                    && (*(*grid).A).m > QUAD_TREE_HYBRID_SIZE as libc::c_int
+            {
                 if (*ctrl).tscheme == QUAD_TREE_HYBRID as libc::c_int
-                    && (*(*grid).A).m > 10 as libc::c_int && Verbose as libc::c_int != 0
+                    && (*(*grid).A).m > 10 as libc::c_int
+                    && Verbose as libc::c_int != 0
                 {
                     fprintf(
                         stderr,

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -93,13 +101,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -124,16 +127,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -153,10 +150,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -164,16 +160,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -254,17 +243,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -297,26 +280,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -325,29 +300,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -355,8 +322,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -412,10 +379,7 @@ pub struct Agattr_s {
 }
 pub type Agattr_t = Agattr_s;
 #[no_mangle]
-pub unsafe extern "C" fn agfindnode_by_id(
-    mut g: *mut Agraph_t,
-    mut id: IDTYPE,
-) -> *mut Agnode_t {
+pub unsafe extern "C" fn agfindnode_by_id(mut g: *mut Agraph_t, mut id: IDTYPE) -> *mut Agnode_t {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
     static mut template: Agsubnode_t = Agsubnode_t {
         seq_link: Dtlink_t {
@@ -460,17 +424,17 @@ pub unsafe extern "C" fn agfindnode_by_id(
     };
     dummy.base.tag.id = id;
     template.node = &mut dummy;
-    sn = (Some(
-        ((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )(
+    sn = (Some(((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
         (*g).n_id,
         &mut template as *mut Agsubnode_t as *mut libc::c_void,
         0o4 as libc::c_int,
     ) as *mut Agsubnode_t;
-    return if !sn.is_null() { (*sn).node } else { 0 as *mut Agnode_t };
+    return if !sn.is_null() {
+        (*sn).node
+    } else {
+        0 as *mut Agnode_t
+    };
 }
 unsafe extern "C" fn agfindnode_by_name(
     mut g: *mut Agraph_t,
@@ -478,68 +442,76 @@ unsafe extern "C" fn agfindnode_by_name(
 ) -> *mut Agnode_t {
     let mut id: IDTYPE = 0;
     if agmapnametoid(g, 1 as libc::c_int, name, &mut id, 0 as libc::c_int) != 0 {
-        return agfindnode_by_id(g, id)
+        return agfindnode_by_id(g, id);
     } else {
-        return 0 as *mut Agnode_t
+        return 0 as *mut Agnode_t;
     };
 }
 #[no_mangle]
 pub unsafe extern "C" fn agfstnode(mut g: *mut Agraph_t) -> *mut Agnode_t {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
-    sn = (Some(
-        ((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_seq, 0 as *mut libc::c_void, 0o200 as libc::c_int) as *mut Agsubnode_t;
-    return if !sn.is_null() { (*sn).node } else { 0 as *mut Agnode_t };
+    sn = (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        (*g).n_seq,
+        0 as *mut libc::c_void,
+        0o200 as libc::c_int,
+    ) as *mut Agsubnode_t;
+    return if !sn.is_null() {
+        (*sn).node
+    } else {
+        0 as *mut Agnode_t
+    };
 }
 #[no_mangle]
-pub unsafe extern "C" fn agnxtnode(
-    mut g: *mut Agraph_t,
-    mut n: *mut Agnode_t,
-) -> *mut Agnode_t {
+pub unsafe extern "C" fn agnxtnode(mut g: *mut Agraph_t, mut n: *mut Agnode_t) -> *mut Agnode_t {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
     sn = agsubrep(g, n);
     if !sn.is_null() {
-        sn = (Some(
-            ((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )((*g).n_seq, sn as *mut libc::c_void, 0o10 as libc::c_int)
-            as *mut Agsubnode_t;
+        sn = (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
+            (*g).n_seq,
+            sn as *mut libc::c_void,
+            0o10 as libc::c_int,
+        ) as *mut Agsubnode_t;
     }
-    return if !sn.is_null() { (*sn).node } else { 0 as *mut Agnode_t };
+    return if !sn.is_null() {
+        (*sn).node
+    } else {
+        0 as *mut Agnode_t
+    };
 }
 #[no_mangle]
 pub unsafe extern "C" fn aglstnode(mut g: *mut Agraph_t) -> *mut Agnode_t {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
-    sn = (Some(
-        ((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_seq, 0 as *mut libc::c_void, 0o400 as libc::c_int) as *mut Agsubnode_t;
-    return if !sn.is_null() { (*sn).node } else { 0 as *mut Agnode_t };
+    sn = (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        (*g).n_seq,
+        0 as *mut libc::c_void,
+        0o400 as libc::c_int,
+    ) as *mut Agsubnode_t;
+    return if !sn.is_null() {
+        (*sn).node
+    } else {
+        0 as *mut Agnode_t
+    };
 }
 #[no_mangle]
-pub unsafe extern "C" fn agprvnode(
-    mut g: *mut Agraph_t,
-    mut n: *mut Agnode_t,
-) -> *mut Agnode_t {
+pub unsafe extern "C" fn agprvnode(mut g: *mut Agraph_t, mut n: *mut Agnode_t) -> *mut Agnode_t {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
     sn = agsubrep(g, n);
     if !sn.is_null() {
-        sn = (Some(
-            ((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer"),
-        ))
-            .expect(
-                "non-null function pointer",
-            )((*g).n_seq, sn as *mut libc::c_void, 0o20 as libc::c_int)
-            as *mut Agsubnode_t;
+        sn = (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
+            .expect("non-null function pointer")(
+            (*g).n_seq,
+            sn as *mut libc::c_void,
+            0o20 as libc::c_int,
+        ) as *mut Agsubnode_t;
     }
-    return if !sn.is_null() { (*sn).node } else { 0 as *mut Agnode_t };
+    return if !sn.is_null() {
+        (*sn).node
+    } else {
+        0 as *mut Agnode_t
+    };
 }
 unsafe extern "C" fn newnode(
     mut g: *mut Agraph_t,
@@ -568,57 +540,60 @@ unsafe extern "C" fn newnode(
 unsafe extern "C" fn installnode(mut g: *mut Agraph_t, mut n: *mut Agnode_t) {
     let mut sn: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
     let mut osize: libc::c_int = 0;
-    if dtsize((*g).n_id) == dtsize((*g).n_seq) {} else {
+    if dtsize((*g).n_id) == dtsize((*g).n_seq) {
+    } else {
         __assert_fail(
             b"dtsize(g->n_id) == dtsize(g->n_seq)\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             92 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"void installnode(Agraph_t *, Agnode_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"void installnode(Agraph_t *, Agnode_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     osize = dtsize((*g).n_id);
     if g == agroot(g as *mut libc::c_void) {
         sn = &mut (*n).mainsub;
     } else {
-        sn = agalloc(g, ::std::mem::size_of::<Agsubnode_t>() as libc::c_ulong)
-            as *mut Agsubnode_t;
+        sn = agalloc(g, ::std::mem::size_of::<Agsubnode_t>() as libc::c_ulong) as *mut Agsubnode_t;
     }
     let ref mut fresh3 = (*sn).node;
     *fresh3 = n;
     (Some(((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_id, sn as *mut libc::c_void, 0o1 as libc::c_int);
+        .expect("non-null function pointer")(
+        (*g).n_id,
+        sn as *mut libc::c_void,
+        0o1 as libc::c_int,
+    );
     (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_seq, sn as *mut libc::c_void, 0o1 as libc::c_int);
-    if dtsize((*g).n_id) == dtsize((*g).n_seq) {} else {
+        .expect("non-null function pointer")(
+        (*g).n_seq,
+        sn as *mut libc::c_void,
+        0o1 as libc::c_int,
+    );
+    if dtsize((*g).n_id) == dtsize((*g).n_seq) {
+    } else {
         __assert_fail(
             b"dtsize(g->n_id) == dtsize(g->n_seq)\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             99 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"void installnode(Agraph_t *, Agnode_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"void installnode(Agraph_t *, Agnode_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if dtsize((*g).n_id) == osize + 1 as libc::c_int {} else {
+    if dtsize((*g).n_id) == osize + 1 as libc::c_int {
+    } else {
         __assert_fail(
             b"dtsize(g->n_id) == osize + 1\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             100 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"void installnode(Agraph_t *, Agnode_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"void installnode(Agraph_t *, Agnode_t *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
@@ -647,12 +622,10 @@ pub unsafe extern "C" fn agidnode(
     n = agfindnode_by_id(g, id);
     if n.is_null() && cflag != 0 {
         root = agroot(g as *mut libc::c_void);
-        if g != root
-            && {
-                n = agfindnode_by_id(root, id);
-                !n.is_null()
-            }
-        {
+        if g != root && {
+            n = agfindnode_by_id(root, id);
+            !n.is_null()
+        } {
             agsubnode(g, n, (0 as libc::c_int == 0) as libc::c_int);
         } else if agallocid(g, 1 as libc::c_int, id) != 0 {
             n = newnode(g, id, agnextseq(g, 1 as libc::c_int));
@@ -679,12 +652,10 @@ pub unsafe extern "C" fn agnode(
         if !n.is_null() {
             return n;
         }
-        if cflag != 0 && g != root
-            && {
-                n = agfindnode_by_id(root, id);
-                !n.is_null()
-            }
-        {
+        if cflag != 0 && g != root && {
+            n = agfindnode_by_id(root, id);
+            !n.is_null()
+        } {
             return agsubnode(g, n, (0 as libc::c_int == 0) as libc::c_int);
         }
     }
@@ -700,16 +671,16 @@ pub unsafe extern "C" fn agnode(
         n = newnode(g, id, agnextseq(g, 1 as libc::c_int));
         installnodetoroot(g, n);
         initnode(g, n);
-        if !(agsubrep(g, n)).is_null() {} else {
+        if !(agsubrep(g, n)).is_null() {
+        } else {
             __assert_fail(
                 b"agsubrep(g,n)\0" as *const u8 as *const libc::c_char,
                 b"node.c\0" as *const u8 as *const libc::c_char,
                 164 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 42],
-                    &[libc::c_char; 42],
-                >(b"Agnode_t *agnode(Agraph_t *, char *, int)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 42], &[libc::c_char; 42]>(
+                    b"Agnode_t *agnode(Agraph_t *, char *, int)\0",
+                ))
+                .as_ptr(),
             );
         }
         agregister(g, 1 as libc::c_int, n as *mut libc::c_void);
@@ -748,27 +719,20 @@ pub unsafe extern "C" fn agdelnodeimage(
         e = f;
     }
     (Some(((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(
+        .expect("non-null function pointer")(
         (*g).n_id,
         &mut template as *mut Agsubnode_t as *mut libc::c_void,
         0o2 as libc::c_int,
     );
     (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(
+        .expect("non-null function pointer")(
         (*g).n_seq,
         &mut template as *mut Agsubnode_t as *mut libc::c_void,
         0o2 as libc::c_int,
     );
 }
 #[no_mangle]
-pub unsafe extern "C" fn agdelnode(
-    mut g: *mut Agraph_t,
-    mut n: *mut Agnode_t,
-) -> libc::c_int {
+pub unsafe extern "C" fn agdelnode(mut g: *mut Agraph_t, mut n: *mut Agnode_t) -> libc::c_int {
     let mut e: *mut Agedge_t = 0 as *mut Agedge_t;
     let mut f: *mut Agedge_t = 0 as *mut Agedge_t;
     if (agfindnode_by_id(g, (*(n as *mut Agobj_t)).tag.id)).is_null() {
@@ -792,24 +756,12 @@ pub unsafe extern "C" fn agdelnode(
         g,
         n as *mut Agobj_t,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut Agraph_t,
-                    *mut Agnode_t,
-                    *mut libc::c_void,
-                ) -> (),
-            >,
+            Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
             agobjfn_t,
-        >(
-            Some(
-                agdelnodeimage
-                    as unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-            ),
-        ),
+        >(Some(
+            agdelnodeimage
+                as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+        )),
         0 as *mut libc::c_void,
         0 as libc::c_int,
     ) == 0 as libc::c_int
@@ -819,7 +771,7 @@ pub unsafe extern "C" fn agdelnode(
         }
         return 0 as libc::c_int;
     } else {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     };
 }
 unsafe extern "C" fn dict_relabel(mut n: *mut Agnode_t, mut arg: *mut libc::c_void) {
@@ -828,14 +780,14 @@ unsafe extern "C" fn dict_relabel(mut n: *mut Agnode_t, mut arg: *mut libc::c_vo
     g = agraphof(n as *mut libc::c_void);
     new_id = *(arg as *mut uint64_t);
     (Some(((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_id, n as *mut libc::c_void, 0o2 as libc::c_int);
+        .expect("non-null function pointer")(
+        (*g).n_id, n as *mut libc::c_void, 0o2 as libc::c_int
+    );
     (*(n as *mut Agobj_t)).tag.id = new_id;
     (Some(((*((*g).n_id as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*g).n_id, n as *mut libc::c_void, 0o1 as libc::c_int);
+        .expect("non-null function pointer")(
+        (*g).n_id, n as *mut libc::c_void, 0o1 as libc::c_int
+    );
 }
 #[no_mangle]
 pub unsafe extern "C" fn agrelabel_node(
@@ -862,19 +814,11 @@ pub unsafe extern "C" fn agrelabel_node(
                 g,
                 n as *mut Agobj_t,
                 ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(*mut Agnode_t, *mut libc::c_void) -> (),
-                    >,
+                    Option<unsafe extern "C" fn(*mut Agnode_t, *mut libc::c_void) -> ()>,
                     agobjfn_t,
-                >(
-                    Some(
-                        dict_relabel
-                            as unsafe extern "C" fn(
-                                *mut Agnode_t,
-                                *mut libc::c_void,
-                            ) -> (),
-                    ),
-                ),
+                >(Some(
+                    dict_relabel as unsafe extern "C" fn(*mut Agnode_t, *mut libc::c_void) -> (),
+                )),
                 &mut new_id as *mut IDTYPE as *mut libc::c_void,
                 0 as libc::c_int,
             );
@@ -916,12 +860,10 @@ unsafe extern "C" fn agsubnodeidcmpf(
     let mut sn1: *mut Agsubnode_t = 0 as *mut Agsubnode_t;
     sn0 = arg0 as *mut Agsubnode_t;
     sn1 = arg1 as *mut Agsubnode_t;
-    if (*((*sn0).node as *mut Agobj_t)).tag.id < (*((*sn1).node as *mut Agobj_t)).tag.id
-    {
+    if (*((*sn0).node as *mut Agobj_t)).tag.id < (*((*sn1).node as *mut Agobj_t)).tag.id {
         return -(1 as libc::c_int);
     }
-    if (*((*sn0).node as *mut Agobj_t)).tag.id > (*((*sn1).node as *mut Agobj_t)).tag.id
-    {
+    if (*((*sn0).node as *mut Agobj_t)).tag.id > (*((*sn1).node as *mut Agobj_t)).tag.id {
         return 1 as libc::c_int;
     }
     return 0 as libc::c_int;
@@ -999,24 +941,12 @@ pub static mut Ag_subnode_seq_disc: Dtdisc_t = unsafe {
             link: 0 as libc::c_ulong as libc::c_int,
             makef: None,
             freef: ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut Dt_t,
-                        *mut Agsubnode_t,
-                        *mut Dtdisc_t,
-                    ) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Dt_t, *mut Agsubnode_t, *mut Dtdisc_t) -> ()>,
                 Dtfree_f,
-            >(
-                Some(
-                    free_subnode
-                        as unsafe extern "C" fn(
-                            *mut Dt_t,
-                            *mut Agsubnode_t,
-                            *mut Dtdisc_t,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                free_subnode
+                    as unsafe extern "C" fn(*mut Dt_t, *mut Agsubnode_t, *mut Dtdisc_t) -> (),
+            )),
             comparf: Some(
                 agsubnodeseqcmpf
                     as unsafe extern "C" fn(
@@ -1063,9 +993,7 @@ unsafe extern "C" fn agnodesetfinger(
     };
     template.node = n;
     (Some(((*((*g).n_seq as *mut Dt_t)).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(
+        .expect("non-null function pointer")(
         (*g).n_seq,
         &mut template as *mut Agsubnode_t as *mut libc::c_void,
         0o4 as libc::c_int,
@@ -1110,24 +1038,12 @@ pub unsafe extern "C" fn agnodebefore(
         g,
         n as *mut Agobj_t,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut Agraph_t,
-                    *mut Agnode_t,
-                    *mut libc::c_void,
-                ) -> (),
-            >,
+            Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
             agobjfn_t,
-        >(
-            Some(
-                agnodesetfinger
-                    as unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-            ),
-        ),
+        >(Some(
+            agnodesetfinger
+                as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+        )),
         n as *mut libc::c_void,
         0 as libc::c_int,
     ) != 0 as libc::c_int
@@ -1135,33 +1051,20 @@ pub unsafe extern "C" fn agnodebefore(
         return -(1 as libc::c_int);
     }
     let ref mut fresh4 = (*(snd as *mut Agobj_t)).tag;
-    (*fresh4)
-        .set_seq(
-            ((*(*g).clos).seq[1 as libc::c_int as usize])
-                .wrapping_add(2 as libc::c_int as libc::c_ulong) as libc::c_uint,
-        );
+    (*fresh4).set_seq(
+        ((*(*g).clos).seq[1 as libc::c_int as usize])
+            .wrapping_add(2 as libc::c_int as libc::c_ulong) as libc::c_uint,
+    );
     if agapply(
         g,
         n as *mut Agobj_t,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut Agraph_t,
-                    *mut Agnode_t,
-                    *mut libc::c_void,
-                ) -> (),
-            >,
+            Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
             agobjfn_t,
-        >(
-            Some(
-                agnoderenew
-                    as unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-            ),
-        ),
+        >(Some(
+            agnoderenew
+                as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+        )),
         n as *mut libc::c_void,
         0 as libc::c_int,
     ) != 0 as libc::c_int
@@ -1175,24 +1078,12 @@ pub unsafe extern "C" fn agnodebefore(
             g,
             n as *mut Agobj_t,
             ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
                 agobjfn_t,
-            >(
-                Some(
-                    agnodesetfinger
-                        as unsafe extern "C" fn(
-                            *mut Agraph_t,
-                            *mut Agnode_t,
-                            *mut libc::c_void,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                agnodesetfinger
+                    as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+            )),
             n as *mut libc::c_void,
             0 as libc::c_int,
         ) != 0 as libc::c_int
@@ -1200,33 +1091,19 @@ pub unsafe extern "C" fn agnodebefore(
             return -(1 as libc::c_int);
         }
         let ref mut fresh5 = (*(n as *mut Agobj_t)).tag;
-        (*fresh5)
-            .set_seq(
-                (((*(n as *mut Agobj_t)).tag).seq() as libc::c_int + 1 as libc::c_int)
-                    as libc::c_uint,
-            );
+        (*fresh5).set_seq(
+            (((*(n as *mut Agobj_t)).tag).seq() as libc::c_int + 1 as libc::c_int) as libc::c_uint,
+        );
         if agapply(
             g,
             n as *mut Agobj_t,
             ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-                >,
+                Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
                 agobjfn_t,
-            >(
-                Some(
-                    agnoderenew
-                        as unsafe extern "C" fn(
-                            *mut Agraph_t,
-                            *mut Agnode_t,
-                            *mut libc::c_void,
-                        ) -> (),
-                ),
-            ),
+            >(Some(
+                agnoderenew
+                    as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+            )),
             n as *mut libc::c_void,
             0 as libc::c_int,
         ) != 0 as libc::c_int
@@ -1245,24 +1122,12 @@ pub unsafe extern "C" fn agnodebefore(
         g,
         snd as *mut Agobj_t,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut Agraph_t,
-                    *mut Agnode_t,
-                    *mut libc::c_void,
-                ) -> (),
-            >,
+            Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
             agobjfn_t,
-        >(
-            Some(
-                agnodesetfinger
-                    as unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-            ),
-        ),
+        >(Some(
+            agnodesetfinger
+                as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+        )),
         n as *mut libc::c_void,
         0 as libc::c_int,
     ) != 0 as libc::c_int
@@ -1270,33 +1135,19 @@ pub unsafe extern "C" fn agnodebefore(
         return -(1 as libc::c_int);
     }
     let ref mut fresh6 = (*(snd as *mut Agobj_t)).tag;
-    (*fresh6)
-        .set_seq(
-            (((*(fst as *mut Agobj_t)).tag).seq() as libc::c_int - 1 as libc::c_int)
-                as libc::c_uint,
-        );
+    (*fresh6).set_seq(
+        (((*(fst as *mut Agobj_t)).tag).seq() as libc::c_int - 1 as libc::c_int) as libc::c_uint,
+    );
     if agapply(
         g,
         snd as *mut Agobj_t,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut Agraph_t,
-                    *mut Agnode_t,
-                    *mut libc::c_void,
-                ) -> (),
-            >,
+            Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> ()>,
             agobjfn_t,
-        >(
-            Some(
-                agnoderenew
-                    as unsafe extern "C" fn(
-                        *mut Agraph_t,
-                        *mut Agnode_t,
-                        *mut libc::c_void,
-                    ) -> (),
-            ),
-        ),
+        >(Some(
+            agnoderenew
+                as unsafe extern "C" fn(*mut Agraph_t, *mut Agnode_t, *mut libc::c_void) -> (),
+        )),
         snd as *mut libc::c_void,
         0 as libc::c_int,
     ) != 0 as libc::c_int

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -46,10 +54,7 @@ extern "C" {
     fn gtk_window_get_type() -> GType;
     fn gtk_window_new(type_0: GtkWindowType) -> *mut GtkWidget;
     fn gtk_window_set_title(window: *mut GtkWindow, title: *const gchar);
-    fn gtk_window_add_accel_group(
-        window: *mut GtkWindow,
-        accel_group: *mut GtkAccelGroup,
-    );
+    fn gtk_window_add_accel_group(window: *mut GtkWindow, accel_group: *mut GtkAccelGroup);
     fn gtk_menu_new() -> *mut GtkWidget;
     fn gtk_label_new(str: *const gchar) -> *mut GtkWidget;
     fn gtk_box_get_type() -> GType;
@@ -76,10 +81,7 @@ extern "C" {
     fn gtk_vbox_new(homogeneous: gboolean, spacing: gint) -> *mut GtkWidget;
     fn gtk_tree_view_get_type() -> GType;
     fn gtk_tree_view_new() -> *mut GtkWidget;
-    fn gtk_tree_view_set_headers_visible(
-        tree_view: *mut GtkTreeView,
-        headers_visible: gboolean,
-    );
+    fn gtk_tree_view_set_headers_visible(tree_view: *mut GtkTreeView, headers_visible: gboolean);
     fn gtk_tree_view_set_rules_hint(tree_view: *mut GtkTreeView, setting: gboolean);
     fn gtk_drawing_area_new() -> *mut GtkWidget;
     fn gtk_hbox_new(homogeneous: gboolean, spacing: gint) -> *mut GtkWidget;
@@ -201,7 +203,7 @@ pub type guint = libc::c_uint;
 pub type gfloat = libc::c_float;
 pub type gdouble = libc::c_double;
 pub type gpointer = *mut libc::c_void;
-pub type GDestroyNotify = Option::<unsafe extern "C" fn(gpointer) -> ()>;
+pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _GTimeVal {
@@ -279,10 +281,11 @@ pub struct _GClosure {
     #[bitfield(name = "derivative_flag", ty = "guint", bits = "29..=29")]
     #[bitfield(name = "in_marshal", ty = "guint", bits = "30..=30")]
     #[bitfield(name = "is_invalid", ty = "guint", bits = "31..=31")]
-    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid: [u8; 4],
+    pub ref_count_meta_marshal_nouse_n_guards_n_fnotifiers_n_inotifiers_in_inotify_floating_derivative_flag_in_marshal_is_invalid:
+        [u8; 4],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 4],
-    pub marshal: Option::<
+    pub marshal: Option<
         unsafe extern "C" fn(
             *mut GClosure,
             *mut GValue,
@@ -302,9 +305,9 @@ pub struct _GClosureNotifyData {
     pub data: gpointer,
     pub notify: GClosureNotify,
 }
-pub type GClosureNotify = Option::<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
+pub type GClosureNotify = Option<unsafe extern "C" fn(gpointer, *mut GClosure) -> ()>;
 pub type GClosure = _GClosure;
-pub type GCallback = Option::<unsafe extern "C" fn() -> ()>;
+pub type GCallback = Option<unsafe extern "C" fn() -> ()>;
 pub type GConnectFlags = libc::c_uint;
 pub const G_CONNECT_SWAPPED: GConnectFlags = 2;
 pub const G_CONNECT_AFTER: GConnectFlags = 1;
@@ -1185,7 +1188,8 @@ pub struct _GtkWindow {
     #[bitfield(name = "gravity", ty = "guint", bits = "24..=28")]
     #[bitfield(name = "is_active", ty = "guint", bits = "29..=29")]
     #[bitfield(name = "has_toplevel_focus", ty = "guint", bits = "30..=30")]
-    pub allow_shrink_allow_grow_configure_notify_received_need_default_position_need_default_size_position_type_0_has_user_ref_count_has_focus_modal_destroy_with_parent_has_frame_iconify_initially_stick_initially_maximize_initially_decorated_type_hint_gravity_is_active_has_toplevel_focus: [u8; 4],
+    pub allow_shrink_allow_grow_configure_notify_received_need_default_position_need_default_size_position_type_0_has_user_ref_count_has_focus_modal_destroy_with_parent_has_frame_iconify_initially_stick_initially_maximize_initially_decorated_type_hint_gravity_is_active_has_toplevel_focus:
+        [u8; 4],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub frame_left: guint,
@@ -1255,7 +1259,8 @@ pub struct _GtkButton {
     #[bitfield(name = "depressed", ty = "guint", bits = "7..=7")]
     #[bitfield(name = "depress_on_activate", ty = "guint", bits = "8..=8")]
     #[bitfield(name = "focus_on_click", ty = "guint", bits = "9..=9")]
-    pub constructed_in_button_button_down_relief_use_underline_use_stock_depressed_depress_on_activate_focus_on_click: [u8; 2],
+    pub constructed_in_button_button_down_relief_use_underline_use_stock_depressed_depress_on_activate_focus_on_click:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
 }
@@ -1281,7 +1286,8 @@ pub struct _GtkMenuItem {
     #[bitfield(name = "right_justify", ty = "guint", bits = "3..=3")]
     #[bitfield(name = "timer_from_keypress", ty = "guint", bits = "4..=4")]
     #[bitfield(name = "from_menubar", ty = "guint", bits = "5..=5")]
-    pub show_submenu_indicator_submenu_placement_submenu_direction_right_justify_timer_from_keypress_from_menubar: [u8; 1],
+    pub show_submenu_indicator_submenu_placement_submenu_direction_right_justify_timer_from_keypress_from_menubar:
+        [u8; 1],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 3],
     pub timer: guint,
@@ -1318,7 +1324,8 @@ pub struct _GtkPaned {
     #[bitfield(name = "orientation", ty = "guint", bits = "6..=6")]
     #[bitfield(name = "in_recursion", ty = "guint", bits = "7..=7")]
     #[bitfield(name = "handle_prelit", ty = "guint", bits = "8..=8")]
-    pub position_set_in_drag_child1_shrink_child1_resize_child2_shrink_child2_resize_orientation_in_recursion_handle_prelit: [u8; 2],
+    pub position_set_in_drag_child1_shrink_child1_resize_child2_shrink_child2_resize_orientation_in_recursion_handle_prelit:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub last_child1_focus: *mut GtkWidget,
@@ -1377,7 +1384,8 @@ pub struct _GtkScrolledWindow {
     #[bitfield(name = "vscrollbar_visible", ty = "guint", bits = "5..=5")]
     #[bitfield(name = "window_placement", ty = "guint", bits = "6..=7")]
     #[bitfield(name = "focus_out", ty = "guint", bits = "8..=8")]
-    pub hscrollbar_policy_vscrollbar_policy_hscrollbar_visible_vscrollbar_visible_window_placement_focus_out: [u8; 2],
+    pub hscrollbar_policy_vscrollbar_policy_hscrollbar_visible_vscrollbar_visible_window_placement_focus_out:
+        [u8; 2],
     pub shadow_type: guint16,
 }
 pub type GtkScrolledWindow = _GtkScrolledWindow;
@@ -1453,10 +1461,8 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
     vbox1 = gtk_vbox_new(0 as libc::c_int, 0 as libc::c_int);
     gtk_widget_show(vbox1);
     gtk_container_add(
-        g_type_check_instance_cast(
-            window1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         vbox1,
     );
     menubar1 = gtk_menu_bar_new();
@@ -1469,23 +1475,17 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         0 as libc::c_int,
         0 as libc::c_int as guint,
     );
-    menuitem4 = gtk_menu_item_new_with_mnemonic(
-        b"_File\0" as *const u8 as *const libc::c_char,
-    );
+    menuitem4 = gtk_menu_item_new_with_mnemonic(b"_File\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(menuitem4);
     gtk_container_add(
-        g_type_check_instance_cast(
-            menubar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(menubar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         menuitem4,
     );
     menu4 = gtk_menu_new();
     gtk_menu_item_set_submenu(
-        g_type_check_instance_cast(
-            menuitem4 as *mut GTypeInstance,
-            gtk_menu_item_get_type(),
-        ) as *mut libc::c_void as *mut GtkMenuItem,
+        g_type_check_instance_cast(menuitem4 as *mut GTypeInstance, gtk_menu_item_get_type())
+            as *mut libc::c_void as *mut GtkMenuItem,
         menu4,
     );
     new1 = gtk_image_menu_item_new_from_stock(
@@ -1546,23 +1546,17 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
             as *mut libc::c_void as *mut GtkContainer,
         quit1,
     );
-    menuitem5 = gtk_menu_item_new_with_mnemonic(
-        b"_Edit\0" as *const u8 as *const libc::c_char,
-    );
+    menuitem5 = gtk_menu_item_new_with_mnemonic(b"_Edit\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(menuitem5);
     gtk_container_add(
-        g_type_check_instance_cast(
-            menubar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(menubar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         menuitem5,
     );
     menu5 = gtk_menu_new();
     gtk_menu_item_set_submenu(
-        g_type_check_instance_cast(
-            menuitem5 as *mut GTypeInstance,
-            gtk_menu_item_get_type(),
-        ) as *mut libc::c_void as *mut GtkMenuItem,
+        g_type_check_instance_cast(menuitem5 as *mut GTypeInstance, gtk_menu_item_get_type())
+            as *mut libc::c_void as *mut GtkMenuItem,
         menu5,
     );
     cut1 = gtk_image_menu_item_new_from_stock(
@@ -1605,47 +1599,33 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
             as *mut libc::c_void as *mut GtkContainer,
         delete1,
     );
-    menuitem6 = gtk_menu_item_new_with_mnemonic(
-        b"_View\0" as *const u8 as *const libc::c_char,
-    );
+    menuitem6 = gtk_menu_item_new_with_mnemonic(b"_View\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(menuitem6);
     gtk_container_add(
-        g_type_check_instance_cast(
-            menubar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(menubar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         menuitem6,
     );
     menu6 = gtk_menu_new();
     gtk_menu_item_set_submenu(
-        g_type_check_instance_cast(
-            menuitem6 as *mut GTypeInstance,
-            gtk_menu_item_get_type(),
-        ) as *mut libc::c_void as *mut GtkMenuItem,
+        g_type_check_instance_cast(menuitem6 as *mut GTypeInstance, gtk_menu_item_get_type())
+            as *mut libc::c_void as *mut GtkMenuItem,
         menu6,
     );
-    menuitem7 = gtk_menu_item_new_with_mnemonic(
-        b"_Help\0" as *const u8 as *const libc::c_char,
-    );
+    menuitem7 = gtk_menu_item_new_with_mnemonic(b"_Help\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(menuitem7);
     gtk_container_add(
-        g_type_check_instance_cast(
-            menubar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(menubar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         menuitem7,
     );
     menu7 = gtk_menu_new();
     gtk_menu_item_set_submenu(
-        g_type_check_instance_cast(
-            menuitem7 as *mut GTypeInstance,
-            gtk_menu_item_get_type(),
-        ) as *mut libc::c_void as *mut GtkMenuItem,
+        g_type_check_instance_cast(menuitem7 as *mut GTypeInstance, gtk_menu_item_get_type())
+            as *mut libc::c_void as *mut GtkMenuItem,
         menu7,
     );
-    about1 = gtk_menu_item_new_with_mnemonic(
-        b"_About\0" as *const u8 as *const libc::c_char,
-    );
+    about1 = gtk_menu_item_new_with_mnemonic(b"_About\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(about1);
     gtk_container_add(
         g_type_check_instance_cast(menu7 as *mut GTypeInstance, gtk_container_get_type())
@@ -1697,10 +1677,7 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         1 as libc::c_int as guint,
     );
     gtk_widget_set_size_request(drawingarea2, 100 as libc::c_int, 100 as libc::c_int);
-    scrolledwindow3 = gtk_scrolled_window_new(
-        0 as *mut GtkAdjustment,
-        0 as *mut GtkAdjustment,
-    );
+    scrolledwindow3 = gtk_scrolled_window_new(0 as *mut GtkAdjustment, 0 as *mut GtkAdjustment);
     gtk_widget_show(scrolledwindow3);
     gtk_box_pack_end(
         g_type_check_instance_cast(hbox2 as *mut GTypeInstance, gtk_box_get_type())
@@ -1735,10 +1712,8 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         treeview1,
     );
     gtk_tree_view_set_headers_visible(
-        g_type_check_instance_cast(
-            treeview1 as *mut GTypeInstance,
-            gtk_tree_view_get_type(),
-        ) as *mut libc::c_void as *mut GtkTreeView,
+        g_type_check_instance_cast(treeview1 as *mut GTypeInstance, gtk_tree_view_get_type())
+            as *mut libc::c_void as *mut GtkTreeView,
         0 as libc::c_int,
     );
     toolbar1 = gtk_toolbar_new();
@@ -1752,73 +1727,55 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         0 as libc::c_int as guint,
     );
     gtk_toolbar_set_style(
-        g_type_check_instance_cast(
-            toolbar1 as *mut GTypeInstance,
-            gtk_toolbar_get_type(),
-        ) as *mut libc::c_void as *mut GtkToolbar,
+        g_type_check_instance_cast(toolbar1 as *mut GTypeInstance, gtk_toolbar_get_type())
+            as *mut libc::c_void as *mut GtkToolbar,
         GTK_TOOLBAR_ICONS,
     );
     toolitem1 = gtk_tool_item_new() as *mut GtkWidget;
     gtk_widget_show(toolitem1);
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolbar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolbar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         toolitem1,
     );
     label1 = gtk_label_new(b"type - name\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(label1);
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolitem1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolitem1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         label1,
     );
     toolitem2 = gtk_tool_item_new() as *mut GtkWidget;
     gtk_widget_show(toolitem2);
     gtk_tool_item_set_expand(
-        g_type_check_instance_cast(
-            toolitem2 as *mut GTypeInstance,
-            gtk_tool_item_get_type(),
-        ) as *mut libc::c_void as *mut GtkToolItem,
+        g_type_check_instance_cast(toolitem2 as *mut GTypeInstance, gtk_tool_item_get_type())
+            as *mut libc::c_void as *mut GtkToolItem,
         (0 as libc::c_int == 0) as libc::c_int,
     );
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolbar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolbar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         toolitem2,
     );
     label2 = gtk_label_new(b"\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(label2);
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolitem2 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolitem2 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         label2,
     );
     toolitem3 = gtk_tool_item_new() as *mut GtkWidget;
     gtk_widget_show(toolitem3);
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolbar1 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolbar1 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         toolitem3,
     );
-    button1 = gtk_button_new_with_mnemonic(
-        b"Delete\0" as *const u8 as *const libc::c_char,
-    );
+    button1 = gtk_button_new_with_mnemonic(b"Delete\0" as *const u8 as *const libc::c_char);
     gtk_widget_show(button1);
     gtk_container_add(
-        g_type_check_instance_cast(
-            toolitem3 as *mut GTypeInstance,
-            gtk_container_get_type(),
-        ) as *mut libc::c_void as *mut GtkContainer,
+        g_type_check_instance_cast(toolitem3 as *mut GTypeInstance, gtk_container_get_type())
+            as *mut libc::c_void as *mut GtkContainer,
         button1,
     );
     gtk_button_set_focus_on_click(
@@ -1826,10 +1783,7 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
             as *mut libc::c_void as *mut GtkButton,
         0 as libc::c_int,
     );
-    scrolledwindow4 = gtk_scrolled_window_new(
-        0 as *mut GtkAdjustment,
-        0 as *mut GtkAdjustment,
-    );
+    scrolledwindow4 = gtk_scrolled_window_new(0 as *mut GtkAdjustment, 0 as *mut GtkAdjustment);
     gtk_widget_show(scrolledwindow4);
     gtk_box_pack_start(
         g_type_check_instance_cast(vbox2 as *mut GTypeInstance, gtk_box_get_type())
@@ -1864,17 +1818,13 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         treeview2,
     );
     gtk_tree_view_set_headers_visible(
-        g_type_check_instance_cast(
-            treeview2 as *mut GTypeInstance,
-            gtk_tree_view_get_type(),
-        ) as *mut libc::c_void as *mut GtkTreeView,
+        g_type_check_instance_cast(treeview2 as *mut GTypeInstance, gtk_tree_view_get_type())
+            as *mut libc::c_void as *mut GtkTreeView,
         0 as libc::c_int,
     );
     gtk_tree_view_set_rules_hint(
-        g_type_check_instance_cast(
-            treeview2 as *mut GTypeInstance,
-            gtk_tree_view_get_type(),
-        ) as *mut libc::c_void as *mut GtkTreeView,
+        g_type_check_instance_cast(treeview2 as *mut GTypeInstance, gtk_tree_view_get_type())
+            as *mut libc::c_void as *mut GtkTreeView,
         (0 as libc::c_int == 0) as libc::c_int,
     );
     drawingarea1 = gtk_drawing_area_new();
@@ -1889,30 +1839,24 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
     gtk_widget_set_size_request(drawingarea1, 300 as libc::c_int, 300 as libc::c_int);
     gtk_widget_set_events(
         drawingarea1,
-        GDK_EXPOSURE_MASK as libc::c_int | GDK_POINTER_MOTION_MASK as libc::c_int
+        GDK_EXPOSURE_MASK as libc::c_int
+            | GDK_POINTER_MOTION_MASK as libc::c_int
             | GDK_BUTTON_MOTION_MASK as libc::c_int
             | GDK_BUTTON_PRESS_MASK as libc::c_int
             | GDK_BUTTON_RELEASE_MASK as libc::c_int
-            | GDK_ENTER_NOTIFY_MASK as libc::c_int | GDK_LEAVE_NOTIFY_MASK as libc::c_int,
+            | GDK_ENTER_NOTIFY_MASK as libc::c_int
+            | GDK_LEAVE_NOTIFY_MASK as libc::c_int,
     );
     g_signal_connect_data(
         window1 as gpointer,
         b"delete_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_window1_delete_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEvent,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_window1_delete_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -1921,14 +1865,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         new1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_new1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_new1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_object_get_type())
             as *mut libc::c_void as *mut GtkObject as gpointer,
         None,
@@ -1938,14 +1879,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         open1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_open1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_open1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_object_get_type())
             as *mut libc::c_void as *mut GtkObject as gpointer,
         None,
@@ -1955,14 +1893,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         save1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_save1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_save1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_object_get_type())
             as *mut libc::c_void as *mut GtkObject as gpointer,
         None,
@@ -1972,14 +1907,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         save_as1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_save_as1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_save_as1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_object_get_type())
             as *mut libc::c_void as *mut GtkObject as gpointer,
         None,
@@ -1989,14 +1921,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         quit1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_quit1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_quit1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2005,14 +1934,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         cut1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_cut1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_cut1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2021,14 +1947,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         copy1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_copy1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_copy1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2037,14 +1960,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         paste1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_paste1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_paste1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2053,14 +1973,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         delete1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_delete1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_delete1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2069,14 +1986,11 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         about1 as gpointer,
         b"activate\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
+            Option<unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> ()>,
             GCallback,
-        >(
-            Some(
-                on_about1_activate
-                    as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
-            ),
-        ),
+        >(Some(
+            on_about1_activate as unsafe extern "C" fn(*mut GtkMenuItem, gpointer) -> (),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2085,24 +1999,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea2 as gpointer,
         b"expose_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventExpose,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventExpose, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea2_expose_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventExpose,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea2_expose_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventExpose, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2111,24 +2013,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea2 as gpointer,
         b"motion_notify_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventMotion,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventMotion, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea2_motion_notify_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventMotion,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea2_motion_notify_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventMotion, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2137,24 +2027,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         button1 as gpointer,
         b"button_press_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventButton,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_button1_button_press_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventButton,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_button1_button_press_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2163,24 +2041,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"expose_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventExpose,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventExpose, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea1_expose_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventExpose,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea1_expose_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventExpose, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2189,24 +2055,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"motion_notify_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventMotion,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventMotion, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea1_motion_notify_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventMotion,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea1_motion_notify_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventMotion, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2215,24 +2069,18 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"configure_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
+            Option<
+                unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventConfigure, gpointer) -> gboolean,
+            >,
+            GCallback,
+        >(Some(
+            on_drawingarea1_configure_event
+                as unsafe extern "C" fn(
                     *mut GtkWidget,
                     *mut GdkEventConfigure,
                     gpointer,
                 ) -> gboolean,
-            >,
-            GCallback,
-        >(
-            Some(
-                on_drawingarea1_configure_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventConfigure,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2241,24 +2089,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"button_press_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventButton,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea1_button_press_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventButton,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea1_button_press_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2267,24 +2103,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"button_release_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(
-                    *mut GtkWidget,
-                    *mut GdkEventButton,
-                    gpointer,
-                ) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea1_button_release_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEventButton,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea1_button_release_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEventButton, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2293,20 +2117,12 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         drawingarea1 as gpointer,
         b"scroll_event\0" as *const u8 as *const libc::c_char,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean,
-            >,
+            Option<unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean>,
             GCallback,
-        >(
-            Some(
-                on_drawingarea1_scroll_event
-                    as unsafe extern "C" fn(
-                        *mut GtkWidget,
-                        *mut GdkEvent,
-                        gpointer,
-                    ) -> gboolean,
-            ),
-        ),
+        >(Some(
+            on_drawingarea1_scroll_event
+                as unsafe extern "C" fn(*mut GtkWidget, *mut GdkEvent, gpointer) -> gboolean,
+        )),
         0 as *mut libc::c_void,
         None,
         0 as GConnectFlags,
@@ -2326,10 +2142,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"vbox1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(vbox1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2338,10 +2153,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menubar1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menubar1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2350,10 +2164,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menuitem4\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menuitem4) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2362,10 +2175,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menu4\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menu4) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2374,10 +2186,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"new1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(new1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2386,10 +2197,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"open1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(open1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2398,10 +2208,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"save1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(save1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2410,10 +2219,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"save_as1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(save_as1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2422,10 +2230,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"separatormenuitem1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(separatormenuitem1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2434,10 +2241,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"quit1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(quit1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2446,10 +2252,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menuitem5\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menuitem5) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2458,10 +2263,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menu5\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menu5) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2470,10 +2274,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"cut1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(cut1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2482,10 +2285,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"copy1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(copy1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2494,10 +2296,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"paste1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(paste1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2506,10 +2307,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"delete1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(delete1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2518,10 +2318,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menuitem6\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menuitem6) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2530,10 +2329,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menu6\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menu6) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2542,10 +2340,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menuitem7\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menuitem7) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2554,10 +2351,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"menu7\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(menu7) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2566,10 +2362,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"about1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(about1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2578,10 +2373,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"hpaned1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(hpaned1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2590,10 +2384,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"vbox2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(vbox2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2602,10 +2395,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"hbox2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(hbox2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2614,10 +2406,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"drawingarea2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(drawingarea2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2626,10 +2417,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"scrolledwindow3\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(scrolledwindow3) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2638,10 +2428,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"treeview1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(treeview1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2650,10 +2439,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"toolbar1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(toolbar1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2662,10 +2450,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"toolitem1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(toolitem1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2674,10 +2461,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"label1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(label1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2686,10 +2472,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"toolitem2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(toolitem2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2698,10 +2483,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"label2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(label2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2710,10 +2494,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"toolitem3\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(toolitem3) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2722,10 +2505,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"button1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(button1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2734,10 +2516,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"scrolledwindow4\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(scrolledwindow4) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2746,10 +2527,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"treeview2\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(treeview2) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     g_object_set_data_full(
         g_type_check_instance_cast(
@@ -2758,10 +2538,9 @@ pub unsafe extern "C" fn create_window1() -> *mut GtkWidget {
         ) as *mut libc::c_void as *mut GObject,
         b"drawingarea1\0" as *const u8 as *const libc::c_char,
         gtk_widget_ref(drawingarea1) as gpointer,
-        ::std::mem::transmute::<
-            Option::<unsafe extern "C" fn(*mut GtkWidget) -> ()>,
-            GDestroyNotify,
-        >(Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ())),
+        ::std::mem::transmute::<Option<unsafe extern "C" fn(*mut GtkWidget) -> ()>, GDestroyNotify>(
+            Some(gtk_widget_unref as unsafe extern "C" fn(*mut GtkWidget) -> ()),
+        ),
     );
     gtk_window_add_accel_group(
         g_type_check_instance_cast(window1 as *mut GTypeInstance, gtk_window_get_type())

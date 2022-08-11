@@ -1,2 +1,2 @@
-pub mod prune;
 pub mod diffimg;
+pub mod prune;

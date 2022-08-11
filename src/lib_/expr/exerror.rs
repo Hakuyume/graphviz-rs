@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, label_break_value, register_tool)]
 extern "C" {
@@ -24,11 +32,7 @@ extern "C" {
         _: ::std::ffi::VaList,
     ) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
-    fn excontext(
-        _: *mut Expr_t,
-        _: *mut libc::c_char,
-        _: libc::c_int,
-    ) -> *mut libc::c_char;
+    fn excontext(_: *mut Expr_t, _: *mut libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     static mut expr: Exstate_t;
 }
 pub type __builtin_va_list = [__va_list_tag; 1];
@@ -152,16 +156,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -177,18 +175,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -196,16 +188,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -353,15 +338,9 @@ pub struct C2RustUnnamed_11 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_12 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -380,7 +359,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -391,7 +370,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -401,7 +380,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -411,27 +390,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -442,7 +408,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -453,7 +419,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -465,7 +431,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -480,9 +446,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -512,7 +476,7 @@ pub struct Expr_s {
     pub loopop: libc::c_int,
     pub nesting: libc::c_int,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -597,16 +561,16 @@ unsafe extern "C" fn make_msg(
         b"%s\n -- \0" as *const u8 as *const libc::c_char,
         buf.as_mut_ptr(),
     );
-    if offset > 0 as libc::c_int {} else {
+    if offset > 0 as libc::c_int {
+    } else {
         __assert_fail(
             b"offset > 0\0" as *const u8 as *const libc::c_char,
             b"exerror.c\0" as *const u8 as *const libc::c_char,
             55 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 53],
-                &[libc::c_char; 53],
-            >(b"char *make_msg(const char *, struct __va_list_tag *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 53], &[libc::c_char; 53]>(
+                b"char *make_msg(const char *, struct __va_list_tag *)\0",
+            ))
+            .as_ptr(),
         );
     }
     vsnprintf(
@@ -625,13 +589,12 @@ pub unsafe extern "C" fn exerror(mut format: *const libc::c_char, mut args: ...)
         ap = args.clone();
         let mut s: *mut libc::c_char = make_msg(format, ap.as_va_list());
         (Some(((*(*expr.program).disc).errorf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )(
+            .expect("non-null function pointer")(
             expr.program,
             (*expr.program).disc,
             if (*(*expr.program).disc).flags
-                & ((1 as libc::c_int) << 2 as libc::c_int) as libc::c_ulong != 0
+                & ((1 as libc::c_int) << 2 as libc::c_int) as libc::c_ulong
+                != 0
             {
                 3 as libc::c_int
             } else {
@@ -646,8 +609,9 @@ pub unsafe extern "C" fn exerror(mut format: *const libc::c_char, mut args: ...)
         );
         free(s as *mut libc::c_void);
     } else if (*(*expr.program).disc).flags
-            & ((1 as libc::c_int) << 2 as libc::c_int) as libc::c_ulong != 0
-        {
+        & ((1 as libc::c_int) << 2 as libc::c_int) as libc::c_ulong
+        != 0
+    {
         graphviz_exit(1 as libc::c_int);
     }
 }
@@ -658,9 +622,7 @@ pub unsafe extern "C" fn exwarn(mut format: *const libc::c_char, mut args: ...) 
         ap = args.clone();
         let mut s: *mut libc::c_char = make_msg(format, ap.as_va_list());
         (Some(((*(*expr.program).disc).errorf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )(
+            .expect("non-null function pointer")(
             expr.program,
             (*expr.program).disc,
             1 as libc::c_int,

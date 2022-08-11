@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -21,20 +29,17 @@ pub type generic_list_t = generic_list_s;
 #[no_mangle]
 pub unsafe extern "C" fn new_generic_list(mut size: uint64_t) -> *mut generic_list_t {
     let mut list: *mut generic_list_t = 0 as *mut generic_list_t;
-    list = malloc(::std::mem::size_of::<generic_list_t>() as libc::c_ulong)
-        as *mut generic_list_t;
+    list = malloc(::std::mem::size_of::<generic_list_t>() as libc::c_ulong) as *mut generic_list_t;
     if list.is_null() {
         perror(
-            b"[new_generic_list()] Error allocating memory:\0" as *const u8
-                as *const libc::c_char,
+            b"[new_generic_list()] Error allocating memory:\0" as *const u8 as *const libc::c_char,
         );
         return 0 as *mut generic_list_t;
     }
     if size != 0 as libc::c_int as libc::c_ulong {
         let ref mut fresh0 = (*list).data;
-        *fresh0 = malloc(
-            size.wrapping_mul(::std::mem::size_of::<gl_data>() as libc::c_ulong),
-        ) as *mut gl_data;
+        *fresh0 = malloc(size.wrapping_mul(::std::mem::size_of::<gl_data>() as libc::c_ulong))
+            as *mut gl_data;
         if ((*list).data).is_null() {
             perror(
                 b"[new_generic_list()] Error allocating memory:\0" as *const u8

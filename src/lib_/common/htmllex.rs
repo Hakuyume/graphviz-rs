@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -17,30 +25,14 @@ extern "C" {
         __line: libc::c_uint,
         __function: *const libc::c_char,
     ) -> !;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strtok(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
@@ -59,10 +51,7 @@ extern "C" {
         start: XML_StartElementHandler,
         end: XML_EndElementHandler,
     );
-    fn XML_SetCharacterDataHandler(
-        parser: XML_Parser,
-        handler: XML_CharacterDataHandler,
-    );
+    fn XML_SetCharacterDataHandler(parser: XML_Parser, handler: XML_CharacterDataHandler);
     fn XML_SetUserData(parser: XML_Parser, userData: *mut libc::c_void);
     fn XML_Parse(
         parser: XML_Parser,
@@ -80,9 +69,8 @@ pub type __uint64_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
 pub type size_t = libc::c_ulong;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub type uint64_t = __uint64_t;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -227,9 +215,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -243,25 +229,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -363,7 +342,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -524,16 +504,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -549,18 +523,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -568,16 +536,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -619,9 +580,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -650,13 +610,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -689,26 +644,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -717,29 +664,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -747,8 +686,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -782,7 +721,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -808,9 +747,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -936,7 +873,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1151,7 +1088,7 @@ pub struct Agraphinfo_t {
     pub flags: libc::c_ushort,
     pub alg: *mut libc::c_void,
     pub gvc: *mut GVC_t,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut graph_t) -> ()>,
+    pub cleanup: Option<unsafe extern "C" fn(*mut graph_t) -> ()>,
     pub neato_nlist: *mut *mut node_t,
     pub move_0: libc::c_int,
     pub dist: *mut *mut libc::c_double,
@@ -1253,31 +1190,25 @@ pub struct lexstate_t {
     pub prevtoklen: size_t,
 }
 pub type XML_Parser = *mut XML_ParserStruct;
-pub type XML_CharacterDataHandler = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *const XML_Char, libc::c_int) -> (),
->;
+pub type XML_CharacterDataHandler =
+    Option<unsafe extern "C" fn(*mut libc::c_void, *const XML_Char, libc::c_int) -> ()>;
 pub type XML_Char = libc::c_char;
 pub type XML_Size = libc::c_ulong;
-pub type XML_StartElementHandler = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *const XML_Char, *mut *const XML_Char) -> (),
->;
+pub type XML_StartElementHandler =
+    Option<unsafe extern "C" fn(*mut libc::c_void, *const XML_Char, *mut *const XML_Char) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct attr_item {
     pub name: *mut libc::c_char,
     pub action: attrFn,
 }
-pub type attrFn = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char) -> libc::c_int,
->;
-pub type bcmpfn = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type attrFn = Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char) -> libc::c_int>;
+pub type bcmpfn =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 pub const FLAGS_MAX: C2RustUnnamed_11 = 127;
 pub type C2RustUnnamed_11 = libc::c_uint;
-pub type XML_EndElementHandler = Option::<
-    unsafe extern "C" fn(*mut libc::c_void, *const XML_Char) -> (),
->;
+pub type XML_EndElementHandler =
+    Option<unsafe extern "C" fn(*mut libc::c_void, *const XML_Char) -> ()>;
 pub type XML_LChar = libc::c_char;
 pub type XML_Error = libc::c_uint;
 pub const XML_ERROR_AMPLIFICATION_LIMIT_BREACH: XML_Error = 43;
@@ -1336,41 +1267,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -1379,7 +1309,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn bsearch(
@@ -1397,7 +1331,9 @@ unsafe extern "C" fn bsearch(
     __l = 0 as libc::c_int as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l.wrapping_add(__u).wrapping_div(2 as libc::c_int as libc::c_ulong);
+        __idx = __l
+            .wrapping_add(__u)
+            .wrapping_div(2 as libc::c_int as libc::c_ulong);
         __p = (__base as *const libc::c_char).offset(__idx.wrapping_mul(__size) as isize)
             as *const libc::c_void;
         __comparison = (Some(__compar.expect("non-null function pointer")))
@@ -1407,7 +1343,7 @@ unsafe extern "C" fn bsearch(
         } else if __comparison > 0 as libc::c_int {
             __l = __idx.wrapping_add(1 as libc::c_int as libc::c_ulong);
         } else {
-            return __p as *mut libc::c_void
+            return __p as *mut libc::c_void;
         }
     }
     return 0 as *mut libc::c_void;
@@ -1417,16 +1353,17 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
     exit(status);
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -1438,10 +1375,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -1506,9 +1446,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -1527,7 +1473,11 @@ unsafe extern "C" fn agxbput_n(
     if ((*xb).ptr).offset(ssz as isize) > (*xb).eptr {
         agxbmore(xb, ssz);
     }
-    memcpy((*xb).ptr as *mut libc::c_void, s as *const libc::c_void, ssz);
+    memcpy(
+        (*xb).ptr as *mut libc::c_void,
+        s as *const libc::c_void,
+        ssz,
+    );
     let ref mut fresh7 = (*xb).ptr;
     *fresh7 = (*fresh7).offset(ssz as isize);
     return ssz;
@@ -1631,34 +1581,22 @@ unsafe extern "C" fn lexerror(mut name: *const libc::c_char) {
 unsafe extern "C" fn icmp(mut i: *mut attr_item, mut j: *mut attr_item) -> libc::c_int {
     return strcasecmp((*i).name, (*j).name);
 }
-unsafe extern "C" fn bgcolorfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn bgcolorfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh12 = (*p).bgcolor;
     *fresh12 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn pencolorfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn pencolorfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh13 = (*p).pencolor;
     *fresh13 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn hreffn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn hreffn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh14 = (*p).href;
     *fresh14 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn sidesfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn sidesfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut flags: libc::c_ushort = 0 as libc::c_int as libc::c_ushort;
     let mut c: libc::c_char = 0;
     loop {
@@ -1707,8 +1645,8 @@ unsafe extern "C" fn sidesfn(
             _ => {
                 agerr(
                     AGWARN,
-                    b"Unrecognized character '%c' (%d) in sides attribute\n\0"
-                        as *const u8 as *const libc::c_char,
+                    b"Unrecognized character '%c' (%d) in sides attribute\n\0" as *const u8
+                        as *const libc::c_char,
                     c as libc::c_int,
                     c as libc::c_int,
                 );
@@ -1726,26 +1664,17 @@ unsafe extern "C" fn sidesfn(
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn titlefn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn titlefn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh17 = (*p).title;
     *fresh17 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn portfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn portfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh18 = (*p).port;
     *fresh18 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn stylefn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn stylefn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     let mut tk: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut buf: *mut libc::c_char = strdup(v);
@@ -1762,12 +1691,11 @@ unsafe extern "C" fn stylefn(
         } else if strcasecmp(tk, b"SOLID\0" as *const u8 as *const libc::c_char) == 0 {
             let ref mut fresh21 = (*p).style;
             *fresh21 = (*fresh21 as libc::c_int
-                & !((1 as libc::c_int) << 7 as libc::c_int
-                    | (1 as libc::c_int) << 8 as libc::c_int) as libc::c_ushort
-                    as libc::c_int) as libc::c_ushort;
+                & !((1 as libc::c_int) << 7 as libc::c_int | (1 as libc::c_int) << 8 as libc::c_int)
+                    as libc::c_ushort as libc::c_int) as libc::c_ushort;
         } else if strcasecmp(tk, b"INVISIBLE\0" as *const u8 as *const libc::c_char) == 0
-                || strcasecmp(tk, b"INVIS\0" as *const u8 as *const libc::c_char) == 0
-            {
+            || strcasecmp(tk, b"INVIS\0" as *const u8 as *const libc::c_char) == 0
+        {
             let ref mut fresh22 = (*p).style;
             *fresh22 = (*fresh22 as libc::c_int | (1 as libc::c_int) << 5 as libc::c_int)
                 as libc::c_ushort;
@@ -1782,29 +1710,25 @@ unsafe extern "C" fn stylefn(
         } else {
             agerr(
                 AGWARN,
-                b"Illegal value %s for STYLE - ignored\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Illegal value %s for STYLE - ignored\n\0" as *const u8 as *const libc::c_char,
                 tk,
             );
             rv = 1 as libc::c_int;
         }
-        tk = strtok(0 as *mut libc::c_char, b" ,\0" as *const u8 as *const libc::c_char);
+        tk = strtok(
+            0 as *mut libc::c_char,
+            b" ,\0" as *const u8 as *const libc::c_char,
+        );
     }
     free(buf as *mut libc::c_void);
     return rv;
 }
-unsafe extern "C" fn targetfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn targetfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh25 = (*p).target;
     *fresh25 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn idfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn idfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh26 = (*p).id;
     *fresh26 = strdup(v);
     return 0 as libc::c_int;
@@ -1830,8 +1754,7 @@ unsafe extern "C" fn doInt(
     } else if b > max as libc::c_long {
         agerr(
             AGWARN,
-            b"%s value %s > %d - too large - ignored\0" as *const u8
-                as *const libc::c_char,
+            b"%s value %s > %d - too large - ignored\0" as *const u8 as *const libc::c_char,
             s,
             v,
             max,
@@ -1840,8 +1763,7 @@ unsafe extern "C" fn doInt(
     } else if b < min as libc::c_long {
         agerr(
             AGWARN,
-            b"%s value %s < %d - too small - ignored\0" as *const u8
-                as *const libc::c_char,
+            b"%s value %s < %d - too small - ignored\0" as *const u8 as *const libc::c_char,
             s,
             v,
             min,
@@ -1870,10 +1792,7 @@ unsafe extern "C" fn gradientanglefn(
     (*p).gradientangle = u as libc::c_ushort as libc::c_int;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn borderfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn borderfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -1887,8 +1806,7 @@ unsafe extern "C" fn borderfn(
     }
     (*p).border = u as libc::c_uchar;
     let ref mut fresh27 = (*p).flags;
-    *fresh27 = (*fresh27 as libc::c_int | (1 as libc::c_int) << 5 as libc::c_int)
-        as libc::c_ushort;
+    *fresh27 = (*fresh27 as libc::c_int | (1 as libc::c_int) << 5 as libc::c_int) as libc::c_ushort;
     return 0 as libc::c_int;
 }
 unsafe extern "C" fn cellpaddingfn(
@@ -1908,8 +1826,7 @@ unsafe extern "C" fn cellpaddingfn(
     }
     (*p).pad = u as libc::c_uchar;
     let ref mut fresh28 = (*p).flags;
-    *fresh28 = (*fresh28 as libc::c_int | (1 as libc::c_int) << 6 as libc::c_int)
-        as libc::c_ushort;
+    *fresh28 = (*fresh28 as libc::c_int | (1 as libc::c_int) << 6 as libc::c_int) as libc::c_ushort;
     return 0 as libc::c_int;
 }
 unsafe extern "C" fn cellspacingfn(
@@ -1929,14 +1846,10 @@ unsafe extern "C" fn cellspacingfn(
     }
     (*p).space = u as libc::c_schar;
     let ref mut fresh29 = (*p).flags;
-    *fresh29 = (*fresh29 as libc::c_int | (1 as libc::c_int) << 7 as libc::c_int)
-        as libc::c_ushort;
+    *fresh29 = (*fresh29 as libc::c_int | (1 as libc::c_int) << 7 as libc::c_int) as libc::c_ushort;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn cellborderfn(
-    mut p: *mut htmltbl_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn cellborderfn(mut p: *mut htmltbl_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -1951,15 +1864,11 @@ unsafe extern "C" fn cellborderfn(
     (*p).cb = u as libc::c_schar;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn columnsfn(
-    mut p: *mut htmltbl_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn columnsfn(mut p: *mut htmltbl_t, mut v: *mut libc::c_char) -> libc::c_int {
     if *v as libc::c_int != '*' as i32 {
         agerr(
             AGWARN,
-            b"Unknown value %s for COLUMNS - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Unknown value %s for COLUMNS - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         return 1 as libc::c_int;
@@ -1968,15 +1877,11 @@ unsafe extern "C" fn columnsfn(
     *fresh30 = (*fresh30 as libc::c_int | 1 as libc::c_int) as libc::c_uchar;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn rowsfn(
-    mut p: *mut htmltbl_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn rowsfn(mut p: *mut htmltbl_t, mut v: *mut libc::c_char) -> libc::c_int {
     if *v as libc::c_int != '*' as i32 {
         agerr(
             AGWARN,
-            b"Unknown value %s for ROWS - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Unknown value %s for ROWS - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         return 1 as libc::c_int;
@@ -1985,10 +1890,7 @@ unsafe extern "C" fn rowsfn(
     *fresh31 = (*fresh31 as libc::c_int | 2 as libc::c_int) as libc::c_uchar;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn fixedsizefn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn fixedsizefn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"TRUE\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh32 = (*p).flags;
@@ -1996,56 +1898,47 @@ unsafe extern "C" fn fixedsizefn(
     } else if strcasecmp(v, b"FALSE\0" as *const u8 as *const libc::c_char) != 0 {
         agerr(
             AGWARN,
-            b"Illegal value %s for FIXEDSIZE - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for FIXEDSIZE - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         rv = 1 as libc::c_int;
     }
     return rv;
 }
-unsafe extern "C" fn valignfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn valignfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"BOTTOM\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh33 = (*p).flags;
-        *fresh33 = (*fresh33 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int)
-            as libc::c_ushort;
+        *fresh33 =
+            (*fresh33 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"TOP\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh34 = (*p).flags;
-        *fresh34 = (*fresh34 as libc::c_int | (1 as libc::c_int) << 3 as libc::c_int)
-            as libc::c_ushort;
+        *fresh34 =
+            (*fresh34 as libc::c_int | (1 as libc::c_int) << 3 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"MIDDLE\0" as *const u8 as *const libc::c_char) != 0 {
         agerr(
             AGWARN,
-            b"Illegal value %s for VALIGN - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for VALIGN - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         rv = 1 as libc::c_int;
     }
     return rv;
 }
-unsafe extern "C" fn halignfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn halignfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"LEFT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh35 = (*p).flags;
-        *fresh35 = (*fresh35 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int)
-            as libc::c_ushort;
+        *fresh35 =
+            (*fresh35 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"RIGHT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh36 = (*p).flags;
-        *fresh36 = (*fresh36 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
-            as libc::c_ushort;
+        *fresh36 =
+            (*fresh36 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"CENTER\0" as *const u8 as *const libc::c_char) != 0 {
         agerr(
             AGWARN,
-            b"Illegal value %s for ALIGN - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for ALIGN - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         rv = 1 as libc::c_int;
@@ -2059,60 +1952,52 @@ unsafe extern "C" fn cell_halignfn(
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"LEFT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh37 = (*p).flags;
-        *fresh37 = (*fresh37 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int)
-            as libc::c_ushort;
+        *fresh37 =
+            (*fresh37 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"RIGHT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh38 = (*p).flags;
-        *fresh38 = (*fresh38 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int)
-            as libc::c_ushort;
+        *fresh38 =
+            (*fresh38 as libc::c_int | (1 as libc::c_int) << 1 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"TEXT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh39 = (*p).flags;
         *fresh39 = (*fresh39 as libc::c_int
-            | ((1 as libc::c_int) << 1 as libc::c_int
-                | (1 as libc::c_int) << 2 as libc::c_int)) as libc::c_ushort;
+            | ((1 as libc::c_int) << 1 as libc::c_int | (1 as libc::c_int) << 2 as libc::c_int))
+            as libc::c_ushort;
     } else if strcasecmp(v, b"CENTER\0" as *const u8 as *const libc::c_char) != 0 {
         rv = 1 as libc::c_int;
     }
     if rv != 0 {
         agerr(
             AGWARN,
-            b"Illegal value %s for ALIGN in TD - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for ALIGN in TD - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
     }
     return rv;
 }
-unsafe extern "C" fn balignfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn balignfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"LEFT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh40 = (*p).flags;
-        *fresh40 = (*fresh40 as libc::c_int | (1 as libc::c_int) << 9 as libc::c_int)
-            as libc::c_ushort;
+        *fresh40 =
+            (*fresh40 as libc::c_int | (1 as libc::c_int) << 9 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"RIGHT\0" as *const u8 as *const libc::c_char) == 0 {
         let ref mut fresh41 = (*p).flags;
-        *fresh41 = (*fresh41 as libc::c_int | (1 as libc::c_int) << 8 as libc::c_int)
-            as libc::c_ushort;
+        *fresh41 =
+            (*fresh41 as libc::c_int | (1 as libc::c_int) << 8 as libc::c_int) as libc::c_ushort;
     } else if strcasecmp(v, b"CENTER\0" as *const u8 as *const libc::c_char) != 0 {
         rv = 1 as libc::c_int;
     }
     if rv != 0 {
         agerr(
             AGWARN,
-            b"Illegal value %s for BALIGN in TD - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for BALIGN in TD - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
     }
     return rv;
 }
-unsafe extern "C" fn heightfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn heightfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -2127,10 +2012,7 @@ unsafe extern "C" fn heightfn(
     (*p).height = u as libc::c_ushort;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn widthfn(
-    mut p: *mut htmldata_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn widthfn(mut p: *mut htmldata_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -2145,10 +2027,7 @@ unsafe extern "C" fn widthfn(
     (*p).width = u as libc::c_ushort;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn rowspanfn(
-    mut p: *mut htmlcell_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn rowspanfn(mut p: *mut htmlcell_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -2163,18 +2042,14 @@ unsafe extern "C" fn rowspanfn(
     if u == 0 as libc::c_int as libc::c_long {
         agerr(
             AGWARN,
-            b"ROWSPAN value cannot be 0 - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"ROWSPAN value cannot be 0 - ignored\n\0" as *const u8 as *const libc::c_char,
         );
         return 1 as libc::c_int;
     }
     (*p).rspan = u as libc::c_ushort;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn colspanfn(
-    mut p: *mut htmlcell_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn colspanfn(mut p: *mut htmlcell_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -2189,34 +2064,24 @@ unsafe extern "C" fn colspanfn(
     if u == 0 as libc::c_int as libc::c_long {
         agerr(
             AGWARN,
-            b"COLSPAN value cannot be 0 - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"COLSPAN value cannot be 0 - ignored\n\0" as *const u8 as *const libc::c_char,
         );
         return 1 as libc::c_int;
     }
     (*p).cspan = u as libc::c_ushort;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn fontcolorfn(
-    mut p: *mut textfont_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn fontcolorfn(mut p: *mut textfont_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh42 = (*p).color;
     *fresh42 = v;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn facefn(
-    mut p: *mut textfont_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn facefn(mut p: *mut textfont_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh43 = (*p).name;
     *fresh43 = v;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn ptsizefn(
-    mut p: *mut textfont_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn ptsizefn(mut p: *mut textfont_t, mut v: *mut libc::c_char) -> libc::c_int {
     let mut u: libc::c_long = 0;
     if doInt(
         v,
@@ -2231,26 +2096,17 @@ unsafe extern "C" fn ptsizefn(
     (*p).size = u as libc::c_double;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn srcfn(
-    mut p: *mut htmlimg_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn srcfn(mut p: *mut htmlimg_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh44 = (*p).src;
     *fresh44 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn scalefn(
-    mut p: *mut htmlimg_t,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn scalefn(mut p: *mut htmlimg_t, mut v: *mut libc::c_char) -> libc::c_int {
     let ref mut fresh45 = (*p).scale;
     *fresh45 = strdup(v);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn alignfn(
-    mut p: *mut libc::c_int,
-    mut v: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn alignfn(mut p: *mut libc::c_int, mut v: *mut libc::c_char) -> libc::c_int {
     let mut rv: libc::c_int = 0 as libc::c_int;
     if strcasecmp(v, b"RIGHT\0" as *const u8 as *const libc::c_char) == 0 {
         *p = 'r' as i32;
@@ -2261,8 +2117,7 @@ unsafe extern "C" fn alignfn(
     } else {
         agerr(
             AGWARN,
-            b"Illegal value %s for ALIGN - ignored\n\0" as *const u8
-                as *const libc::c_char,
+            b"Illegal value %s for ALIGN - ignored\n\0" as *const u8 as *const libc::c_char,
             v,
         );
         rv = 1 as libc::c_int;
@@ -2273,265 +2128,144 @@ static mut tbl_items: [attr_item; 22] = unsafe {
     [
         {
             let mut init = attr_item {
-                name: b"align\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"align\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        halignfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    halignfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"bgcolor\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"bgcolor\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        bgcolorfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    bgcolorfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"border\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"border\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        borderfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    borderfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"cellborder\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cellborder\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmltbl_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cellborderfn
-                            as unsafe extern "C" fn(
-                                *mut htmltbl_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cellborderfn
+                        as unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"cellpadding\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cellpadding\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cellpaddingfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cellpaddingfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"cellspacing\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cellspacing\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cellspacingfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cellspacingfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"color\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"color\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        pencolorfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    pencolorfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"columns\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"columns\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmltbl_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        columnsfn
-                            as unsafe extern "C" fn(
-                                *mut htmltbl_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    columnsfn
+                        as unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"fixedsize\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"fixedsize\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        fixedsizefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    fixedsizefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"gradientangle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"gradientangle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        gradientanglefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    gradientanglefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"height\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"height\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        heightfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    heightfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -2539,22 +2273,12 @@ static mut tbl_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"href\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        hreffn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    hreffn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -2562,22 +2286,11 @@ static mut tbl_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"id\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        idfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    idfn as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -2585,22 +2298,12 @@ static mut tbl_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"port\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        portfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    portfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -2608,190 +2311,103 @@ static mut tbl_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"rows\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmltbl_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        rowsfn
-                            as unsafe extern "C" fn(
-                                *mut htmltbl_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    rowsfn
+                        as unsafe extern "C" fn(*mut htmltbl_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"sides\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"sides\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        sidesfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    sidesfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"style\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"style\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        stylefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    stylefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"target\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"target\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        targetfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    targetfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"title\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"title\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        titlefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    titlefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"tooltip\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"tooltip\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        titlefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    titlefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"valign\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"valign\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        valignfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    valignfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"width\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"width\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        widthfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    widthfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -2801,265 +2417,144 @@ static mut cell_items: [attr_item; 22] = unsafe {
     [
         {
             let mut init = attr_item {
-                name: b"align\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"align\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cell_halignfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cell_halignfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"balign\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"balign\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        balignfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    balignfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"bgcolor\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"bgcolor\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        bgcolorfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    bgcolorfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"border\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"border\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        borderfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    borderfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"cellpadding\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cellpadding\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cellpaddingfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cellpaddingfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"cellspacing\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"cellspacing\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        cellspacingfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    cellspacingfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"color\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"color\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        pencolorfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    pencolorfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"colspan\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"colspan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmlcell_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmlcell_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        colspanfn
-                            as unsafe extern "C" fn(
-                                *mut htmlcell_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    colspanfn
+                        as unsafe extern "C" fn(*mut htmlcell_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"fixedsize\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"fixedsize\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        fixedsizefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    fixedsizefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"gradientangle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"gradientangle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        gradientanglefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    gradientanglefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"height\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"height\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        heightfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    heightfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3067,22 +2562,12 @@ static mut cell_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"href\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        hreffn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    hreffn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3090,22 +2575,11 @@ static mut cell_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"id\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        idfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    idfn as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3113,214 +2587,116 @@ static mut cell_items: [attr_item; 22] = unsafe {
             let mut init = attr_item {
                 name: b"port\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        portfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    portfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"rowspan\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"rowspan\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmlcell_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmlcell_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        rowspanfn
-                            as unsafe extern "C" fn(
-                                *mut htmlcell_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    rowspanfn
+                        as unsafe extern "C" fn(*mut htmlcell_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"sides\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"sides\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        sidesfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    sidesfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"style\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"style\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        stylefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    stylefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"target\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"target\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        targetfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    targetfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"title\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"title\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        titlefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    titlefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"tooltip\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"tooltip\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        titlefn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    titlefn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"valign\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"valign\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        valignfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    valignfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"width\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"width\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmldata_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        widthfn
-                            as unsafe extern "C" fn(
-                                *mut htmldata_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    widthfn
+                        as unsafe extern "C" fn(*mut htmldata_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3330,25 +2706,14 @@ static mut font_items: [attr_item; 3] = unsafe {
     [
         {
             let mut init = attr_item {
-                name: b"color\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"color\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut textfont_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        fontcolorfn
-                            as unsafe extern "C" fn(
-                                *mut textfont_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    fontcolorfn
+                        as unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3356,46 +2721,25 @@ static mut font_items: [attr_item; 3] = unsafe {
             let mut init = attr_item {
                 name: b"face\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut textfont_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        facefn
-                            as unsafe extern "C" fn(
-                                *mut textfont_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    facefn
+                        as unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
         {
             let mut init = attr_item {
-                name: b"point-size\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"point-size\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut textfont_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        ptsizefn
-                            as unsafe extern "C" fn(
-                                *mut textfont_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    ptsizefn
+                        as unsafe extern "C" fn(*mut textfont_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3405,25 +2749,14 @@ static mut img_items: [attr_item; 2] = unsafe {
     [
         {
             let mut init = attr_item {
-                name: b"scale\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                name: b"scale\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmlimg_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmlimg_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        scalefn
-                            as unsafe extern "C" fn(
-                                *mut htmlimg_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    scalefn
+                        as unsafe extern "C" fn(*mut htmlimg_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
@@ -3431,54 +2764,29 @@ static mut img_items: [attr_item; 2] = unsafe {
             let mut init = attr_item {
                 name: b"src\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut htmlimg_t,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
+                    Option<unsafe extern "C" fn(*mut htmlimg_t, *mut libc::c_char) -> libc::c_int>,
                     attrFn,
-                >(
-                    Some(
-                        srcfn
-                            as unsafe extern "C" fn(
-                                *mut htmlimg_t,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
+                >(Some(
+                    srcfn as unsafe extern "C" fn(*mut htmlimg_t, *mut libc::c_char) -> libc::c_int,
+                )),
             };
             init
         },
     ]
 };
 static mut br_items: [attr_item; 1] = unsafe {
-    [
-        {
-            let mut init = attr_item {
-                name: b"align\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
-                action: ::std::mem::transmute::<
-                    Option::<
-                        unsafe extern "C" fn(
-                            *mut libc::c_int,
-                            *mut libc::c_char,
-                        ) -> libc::c_int,
-                    >,
-                    attrFn,
-                >(
-                    Some(
-                        alignfn
-                            as unsafe extern "C" fn(
-                                *mut libc::c_int,
-                                *mut libc::c_char,
-                            ) -> libc::c_int,
-                    ),
-                ),
-            };
-            init
-        },
-    ]
+    [{
+        let mut init = attr_item {
+            name: b"align\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            action: ::std::mem::transmute::<
+                Option<unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_char) -> libc::c_int>,
+                attrFn,
+            >(Some(
+                alignfn as unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_char) -> libc::c_int,
+            )),
+        };
+        init
+    }]
 };
 unsafe extern "C" fn doAttrs(
     mut tp: *mut libc::c_void,
@@ -3511,33 +2819,24 @@ unsafe extern "C" fn doAttrs(
             nel as size_t,
             ::std::mem::size_of::<attr_item>() as libc::c_ulong,
             ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(*mut attr_item, *mut attr_item) -> libc::c_int,
-                >,
+                Option<unsafe extern "C" fn(*mut attr_item, *mut attr_item) -> libc::c_int>,
                 bcmpfn,
-            >(
-                Some(
-                    icmp
-                        as unsafe extern "C" fn(
-                            *mut attr_item,
-                            *mut attr_item,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                icmp as unsafe extern "C" fn(*mut attr_item, *mut attr_item) -> libc::c_int,
+            )),
         ) as *mut attr_item;
         if !ip.is_null() {
             state.warn |= ((*ip).action).expect("non-null function pointer")(tp, val);
         } else {
             agerr(
                 AGWARN,
-                b"Illegal attribute %s in %s - ignored\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Illegal attribute %s in %s - ignored\n\0" as *const u8 as *const libc::c_char,
                 name,
                 s,
             );
             state.warn = 1 as libc::c_int;
         }
-    };
+    }
 }
 unsafe extern "C" fn mkBR(mut atts: *mut *mut libc::c_char) {
     htmllval.i = 0 as libc::c_int;
@@ -3552,9 +2851,8 @@ unsafe extern "C" fn mkBR(mut atts: *mut *mut libc::c_char) {
     );
 }
 unsafe extern "C" fn mkImg(mut atts: *mut *mut libc::c_char) -> *mut htmlimg_t {
-    let mut img: *mut htmlimg_t = zmalloc(
-        ::std::mem::size_of::<htmlimg_t>() as libc::c_ulong,
-    ) as *mut htmlimg_t;
+    let mut img: *mut htmlimg_t =
+        zmalloc(::std::mem::size_of::<htmlimg_t>() as libc::c_ulong) as *mut htmlimg_t;
     doAttrs(
         img as *mut libc::c_void,
         img_items.as_mut_ptr(),
@@ -3585,21 +2883,20 @@ unsafe extern "C" fn mkFont(
         init
     };
     tf.size = -1.0f64;
-    if flags as libc::c_int <= FLAGS_MAX as libc::c_int {} else {
+    if flags as libc::c_int <= FLAGS_MAX as libc::c_int {
+    } else {
         __assert_fail(
             b"flags <= FLAGS_MAX\0" as *const u8 as *const libc::c_char,
             b"htmllex.c\0" as *const u8 as *const libc::c_char,
             589 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 52],
-                &[libc::c_char; 52],
-            >(b"textfont_t *mkFont(GVC_t *, char **, unsigned char)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 52], &[libc::c_char; 52]>(
+                b"textfont_t *mkFont(GVC_t *, char **, unsigned char)\0",
+            ))
+            .as_ptr(),
         );
     }
     tf.set_flags(
-        (flags as libc::c_int & FLAGS_MAX as libc::c_int) as libc::c_uchar
-            as libc::c_uint,
+        (flags as libc::c_int & FLAGS_MAX as libc::c_int) as libc::c_uchar as libc::c_uint,
     );
     if !atts.is_null() {
         doAttrs(
@@ -3613,18 +2910,15 @@ unsafe extern "C" fn mkFont(
         );
     }
     return (Some(((*(*gvc).textfont_dt).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )(
+        .expect("non-null function pointer")(
         (*gvc).textfont_dt,
         &mut tf as *mut textfont_t as *mut libc::c_void,
         0o1 as libc::c_int,
     ) as *mut textfont_t;
 }
 unsafe extern "C" fn mkCell(mut atts: *mut *mut libc::c_char) -> *mut htmlcell_t {
-    let mut cell: *mut htmlcell_t = zmalloc(
-        ::std::mem::size_of::<htmlcell_t>() as libc::c_ulong,
-    ) as *mut htmlcell_t;
+    let mut cell: *mut htmlcell_t =
+        zmalloc(::std::mem::size_of::<htmlcell_t>() as libc::c_ulong) as *mut htmlcell_t;
     (*cell).cspan = 1 as libc::c_int as libc::c_ushort;
     (*cell).rspan = 1 as libc::c_int as libc::c_ushort;
     doAttrs(
@@ -3639,9 +2933,8 @@ unsafe extern "C" fn mkCell(mut atts: *mut *mut libc::c_char) -> *mut htmlcell_t
     return cell;
 }
 unsafe extern "C" fn mkTbl(mut atts: *mut *mut libc::c_char) -> *mut htmltbl_t {
-    let mut tbl: *mut htmltbl_t = zmalloc(
-        ::std::mem::size_of::<htmltbl_t>() as libc::c_ulong,
-    ) as *mut htmltbl_t;
+    let mut tbl: *mut htmltbl_t =
+        zmalloc(::std::mem::size_of::<htmltbl_t>() as libc::c_ulong) as *mut htmltbl_t;
     (*tbl).rc = -(1 as libc::c_int);
     (*tbl).cb = -(1 as libc::c_int) as libc::c_schar;
     doAttrs(
@@ -3661,209 +2954,135 @@ unsafe extern "C" fn startElement(
     mut atts: *mut *mut libc::c_char,
 ) {
     let mut gvc: *mut GVC_t = user as *mut GVC_t;
-    if strcasecmp(name, b"TABLE\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
-    {
+    if strcasecmp(name, b"TABLE\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         htmllval.tbl = mkTbl(atts);
         state.inCell = 0 as libc::c_int as libc::c_char;
         state.tok = 286 as libc::c_int;
-    } else if strcasecmp(name, b"TR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-            || strcasecmp(name, b"TH\0" as *const u8 as *const libc::c_char)
-                == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"TR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
+        || strcasecmp(name, b"TH\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
+    {
         state.inCell = 0 as libc::c_int as libc::c_char;
         state.tok = 260 as libc::c_int;
-    } else if strcasecmp(name, b"TD\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"TD\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.inCell = 1 as libc::c_int as libc::c_char;
         htmllval.cell = mkCell(atts);
         state.tok = 287 as libc::c_int;
-    } else if strcasecmp(name, b"FONT\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"FONT\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         htmllval.font = mkFont(gvc, atts, 0 as libc::c_int as libc::c_uchar);
         state.tok = 288 as libc::c_int;
-    } else if strcasecmp(name, b"B\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"B\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 290 as libc::c_int;
-    } else if strcasecmp(name, b"S\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"S\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 295 as libc::c_int;
-    } else if strcasecmp(name, b"U\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"U\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 2 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 291 as libc::c_int;
-    } else if strcasecmp(name, b"O\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"O\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 6 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 292 as libc::c_int;
-    } else if strcasecmp(name, b"I\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"I\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 289 as libc::c_int;
-    } else if strcasecmp(name, b"SUP\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"SUP\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 293 as libc::c_int;
-    } else if strcasecmp(name, b"SUB\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
-        htmllval
-            .font = mkFont(
+    } else if strcasecmp(name, b"SUB\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
+        htmllval.font = mkFont(
             gvc,
             0 as *mut *mut libc::c_char,
             ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_uchar,
         );
         state.tok = 294 as libc::c_int;
-    } else if strcasecmp(name, b"BR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"BR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         mkBR(atts);
         state.tok = 283 as libc::c_int;
-    } else if strcasecmp(name, b"HR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"HR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 277 as libc::c_int;
-    } else if strcasecmp(name, b"VR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"VR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 280 as libc::c_int;
-    } else if strcasecmp(name, b"IMG\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"IMG\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         htmllval.img = mkImg(atts);
         state.tok = 285 as libc::c_int;
-    } else if strcasecmp(name, b"HTML\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"HTML\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 262 as libc::c_int;
     } else {
         lexerror(name);
     };
 }
-unsafe extern "C" fn endElement(
-    mut user: *mut libc::c_void,
-    mut name: *const libc::c_char,
-) {
-    if strcasecmp(name, b"TABLE\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
-    {
+unsafe extern "C" fn endElement(mut user: *mut libc::c_void, mut name: *const libc::c_char) {
+    if strcasecmp(name, b"TABLE\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 264 as libc::c_int;
         state.inCell = 1 as libc::c_int as libc::c_char;
-    } else if strcasecmp(name, b"TR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-            || strcasecmp(name, b"TH\0" as *const u8 as *const libc::c_char)
-                == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"TR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
+        || strcasecmp(name, b"TH\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
+    {
         state.tok = 261 as libc::c_int;
-    } else if strcasecmp(name, b"TD\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"TD\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 265 as libc::c_int;
         state.inCell = 0 as libc::c_int as libc::c_char;
-    } else if strcasecmp(name, b"HTML\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"HTML\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 263 as libc::c_int;
-    } else if strcasecmp(name, b"FONT\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"FONT\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 266 as libc::c_int;
-    } else if strcasecmp(name, b"B\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"B\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 270 as libc::c_int;
-    } else if strcasecmp(name, b"U\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"U\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 271 as libc::c_int;
-    } else if strcasecmp(name, b"O\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"O\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 272 as libc::c_int;
-    } else if strcasecmp(name, b"I\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"I\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 269 as libc::c_int;
-    } else if strcasecmp(name, b"SUP\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"SUP\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 273 as libc::c_int;
-    } else if strcasecmp(name, b"SUB\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"SUB\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 274 as libc::c_int;
-    } else if strcasecmp(name, b"S\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"S\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         state.tok = 275 as libc::c_int;
-    } else if strcasecmp(name, b"BR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"BR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         if state.tok == 283 as libc::c_int {
             state.tok = 282 as libc::c_int;
         } else {
             state.tok = 258 as libc::c_int;
         }
-    } else if strcasecmp(name, b"HR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"HR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         if state.tok == 277 as libc::c_int {
             state.tok = 276 as libc::c_int;
         } else {
             state.tok = 278 as libc::c_int;
         }
-    } else if strcasecmp(name, b"VR\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"VR\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         if state.tok == 280 as libc::c_int {
             state.tok = 279 as libc::c_int;
         } else {
             state.tok = 281 as libc::c_int;
         }
-    } else if strcasecmp(name, b"IMG\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcasecmp(name, b"IMG\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         if state.tok == 285 as libc::c_int {
             state.tok = 284 as libc::c_int;
         } else {
@@ -3905,7 +3124,11 @@ pub unsafe extern "C" fn initHTMLlexer(
     mut env: *mut htmlenv_t,
 ) -> libc::c_int {
     state.xb = xb;
-    agxbinit(&mut state.lb, 128 as libc::c_int as libc::c_uint, 0 as *mut libc::c_char);
+    agxbinit(
+        &mut state.lb,
+        128 as libc::c_int as libc::c_uint,
+        0 as *mut libc::c_char,
+    );
     state.ptr = src;
     state.mode = 0 as libc::c_int as libc::c_char;
     state.warn = 0 as libc::c_int;
@@ -3913,22 +3136,17 @@ pub unsafe extern "C" fn initHTMLlexer(
     state.currtoklen = 0 as libc::c_int as size_t;
     state.prevtoklen = 0 as libc::c_int as size_t;
     state.inCell = 1 as libc::c_int as libc::c_char;
-    state
-        .parser = XML_ParserCreate(
-        charsetToStr(
-            (*((*((*env).g as *mut Agobj_t)).data as *mut Agraphinfo_t)).charset
-                as libc::c_int,
-        ),
-    );
+    state.parser = XML_ParserCreate(charsetToStr(
+        (*((*((*env).g as *mut Agobj_t)).data as *mut Agraphinfo_t)).charset as libc::c_int,
+    ));
     XML_SetUserData(
         state.parser,
-        (*((*((*env).g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gvc
-            as *mut libc::c_void,
+        (*((*((*env).g as *mut Agobj_t)).data as *mut Agraphinfo_t)).gvc as *mut libc::c_void,
     );
     XML_SetElementHandler(
         state.parser,
         ::std::mem::transmute::<
-            Option::<
+            Option<
                 unsafe extern "C" fn(
                     *mut libc::c_void,
                     *const libc::c_char,
@@ -3936,30 +3154,21 @@ pub unsafe extern "C" fn initHTMLlexer(
                 ) -> (),
             >,
             XML_StartElementHandler,
-        >(
-            Some(
-                startElement
-                    as unsafe extern "C" fn(
-                        *mut libc::c_void,
-                        *const libc::c_char,
-                        *mut *mut libc::c_char,
-                    ) -> (),
-            ),
-        ),
-        Some(
-            endElement
-                as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> (),
-        ),
+        >(Some(
+            startElement
+                as unsafe extern "C" fn(
+                    *mut libc::c_void,
+                    *const libc::c_char,
+                    *mut *mut libc::c_char,
+                ) -> (),
+        )),
+        Some(endElement as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> ()),
     );
     XML_SetCharacterDataHandler(
         state.parser,
         Some(
             characterData
-                as unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                    libc::c_int,
-                ) -> (),
+                as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char, libc::c_int) -> (),
         ),
     );
     return 0 as libc::c_int;
@@ -3975,14 +3184,12 @@ unsafe extern "C" fn eatComment(mut p: *mut libc::c_char) -> *mut libc::c_char {
     let mut depth: libc::c_int = 1 as libc::c_int;
     let mut s: *mut libc::c_char = p;
     let mut c: libc::c_char = 0;
-    while depth != 0
-        && {
-            let fresh49 = s;
-            s = s.offset(1);
-            c = *fresh49;
-            c as libc::c_int != 0
-        }
-    {
+    while depth != 0 && {
+        let fresh49 = s;
+        s = s.offset(1);
+        c = *fresh49;
+        c as libc::c_int != 0
+    } {
         if c as libc::c_int == '<' as i32 {
             depth += 1;
         } else if c as libc::c_int == '>' as i32 {
@@ -3999,16 +3206,16 @@ unsafe extern "C" fn eatComment(mut p: *mut libc::c_char) -> *mut libc::c_char {
                 2 as libc::c_int as libc::c_ulong,
             ) != 0
         {
-            agerr(AGWARN, b"Unclosed comment\n\0" as *const u8 as *const libc::c_char);
+            agerr(
+                AGWARN,
+                b"Unclosed comment\n\0" as *const u8 as *const libc::c_char,
+            );
             state.warn = 1 as libc::c_int;
         }
     }
     return s;
 }
-unsafe extern "C" fn findNext(
-    mut s: *mut libc::c_char,
-    mut xb: *mut agxbuf,
-) -> *mut libc::c_char {
+unsafe extern "C" fn findNext(mut s: *mut libc::c_char, mut xb: *mut agxbuf) -> *mut libc::c_char {
     let mut t: *mut libc::c_char = s.offset(1 as libc::c_int as isize);
     let mut c: libc::c_char = 0;
     if *s as libc::c_int == '<' as i32 {
@@ -4027,8 +3234,7 @@ unsafe extern "C" fn findNext(
         if *t as libc::c_int != '>' as i32 {
             agerr(
                 AGWARN,
-                b"Label closed before end of HTML element\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Label closed before end of HTML element\n\0" as *const u8 as *const libc::c_char,
             );
             state.warn = 1 as libc::c_int;
         } else {
@@ -4070,10 +3276,10 @@ pub unsafe extern "C" fn htmllineno() -> libc::c_int {
 }
 #[no_mangle]
 pub unsafe extern "C" fn htmllex() -> libc::c_int {
-    static mut begin_html: *mut libc::c_char = b"<HTML>\0" as *const u8
-        as *const libc::c_char as *mut libc::c_char;
-    static mut end_html: *mut libc::c_char = b"</HTML>\0" as *const u8
-        as *const libc::c_char as *mut libc::c_char;
+    static mut begin_html: *mut libc::c_char =
+        b"<HTML>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    static mut end_html: *mut libc::c_char =
+        b"</HTML>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut endp: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut len: size_t = 0;
@@ -4108,19 +3314,16 @@ pub unsafe extern "C" fn htmllex() -> libc::c_int {
         llen = agxblen(&mut state.lb);
         if llen != 0 {
             if llen <= 2147483647 as libc::c_int as size_t
-                && !(b"XML token too long for expat API\0" as *const u8
-                    as *const libc::c_char)
+                && !(b"XML token too long for expat API\0" as *const u8 as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
                     b"llen <= (size_t)INT_MAX && \"XML token too long for expat API\"\0"
                         as *const u8 as *const libc::c_char,
                     b"htmllex.c\0" as *const u8 as *const libc::c_char,
                     1081 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 14],
-                        &[libc::c_char; 14],
-                    >(b"int htmllex()\0"))
+                    (*::std::mem::transmute::<&[u8; 14], &[libc::c_char; 14]>(b"int htmllex()\0"))
                         .as_ptr(),
                 );
             }
@@ -4132,19 +3335,16 @@ pub unsafe extern "C" fn htmllex() -> libc::c_int {
             ) as libc::c_int;
         } else {
             if len <= 2147483647 as libc::c_int as size_t
-                && !(b"XML token too long for expat API\0" as *const u8
-                    as *const libc::c_char)
+                && !(b"XML token too long for expat API\0" as *const u8 as *const libc::c_char)
                     .is_null()
-            {} else {
+            {
+            } else {
                 __assert_fail(
-                    b"len <= (size_t)INT_MAX && \"XML token too long for expat API\"\0"
-                        as *const u8 as *const libc::c_char,
+                    b"len <= (size_t)INT_MAX && \"XML token too long for expat API\"\0" as *const u8
+                        as *const libc::c_char,
                     b"htmllex.c\0" as *const u8 as *const libc::c_char,
                     1084 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 14],
-                        &[libc::c_char; 14],
-                    >(b"int htmllex()\0"))
+                    (*::std::mem::transmute::<&[u8; 14], &[libc::c_char; 14]>(b"int htmllex()\0"))
                         .as_ptr(),
                 );
             }
@@ -4152,7 +3352,11 @@ pub unsafe extern "C" fn htmllex() -> libc::c_int {
                 state.parser,
                 s,
                 len as libc::c_int,
-                if len != 0 { 0 as libc::c_int } else { 1 as libc::c_int },
+                if len != 0 {
+                    0 as libc::c_int
+                } else {
+                    1 as libc::c_int
+                },
             ) as libc::c_int;
         }
         if rv == XML_STATUS_ERROR as libc::c_int {

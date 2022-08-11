@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 #[no_mangle]
@@ -12,19 +20,18 @@ pub unsafe extern "C" fn dtstrhash(
         while *s as libc::c_int != 0 as libc::c_int {
             h = h
                 .wrapping_add(
-                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int)
-                        << 8 as libc::c_int) as libc::c_uint,
+                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+                        as libc::c_uint,
                 )
                 .wrapping_add(*s.offset(1 as libc::c_int as isize) as libc::c_uint)
                 .wrapping_mul(17109811 as libc::c_int as libc::c_uint);
-            s = s
-                .offset(
-                    (if *s.offset(1 as libc::c_int as isize) as libc::c_int != 0 {
-                        2 as libc::c_int
-                    } else {
-                        1 as libc::c_int
-                    }) as isize,
-                );
+            s = s.offset(
+                (if *s.offset(1 as libc::c_int as isize) as libc::c_int != 0 {
+                    2 as libc::c_int
+                } else {
+                    1 as libc::c_int
+                }) as isize,
+            );
         }
         n = s.offset_from(args as *mut libc::c_uchar) as libc::c_long as libc::c_int;
     } else {
@@ -33,8 +40,8 @@ pub unsafe extern "C" fn dtstrhash(
         while s < ends {
             h = h
                 .wrapping_add(
-                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int)
-                        << 8 as libc::c_int) as libc::c_uint,
+                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+                        as libc::c_uint,
                 )
                 .wrapping_add(*s.offset(1 as libc::c_int as isize) as libc::c_uint)
                 .wrapping_mul(17109811 as libc::c_int as libc::c_uint);
@@ -43,8 +50,8 @@ pub unsafe extern "C" fn dtstrhash(
         if s <= ends {
             h = h
                 .wrapping_add(
-                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int)
-                        << 8 as libc::c_int) as libc::c_uint,
+                    ((*s.offset(0 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+                        as libc::c_uint,
                 )
                 .wrapping_mul(17109811 as libc::c_int as libc::c_uint);
         }

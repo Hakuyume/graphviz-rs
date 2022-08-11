@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, label_break_value, register_tool)]
 extern "C" {
@@ -21,25 +29,13 @@ extern "C" {
         _: *const libc::c_char,
         _: ::std::ffi::VaList,
     ) -> libc::c_int;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     static mut sfstderr: *mut Sfio_t;
-    fn sfopen(
-        _: *mut Sfio_t,
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-    ) -> *mut Sfio_t;
+    fn sfopen(_: *mut Sfio_t, _: *const libc::c_char, _: *const libc::c_char) -> *mut Sfio_t;
     fn sfclose(_: *mut Sfio_t) -> libc::c_int;
     fn sfprintf(_: *mut Sfio_t, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn _sfflsbuf(_: *mut Sfio_t, _: libc::c_int) -> libc::c_int;
@@ -232,16 +228,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -257,18 +247,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -276,16 +260,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -400,15 +377,9 @@ pub struct C2RustUnnamed_12 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_13 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 pub type yytype_int16 = libc::c_short;
 pub type yytype_uint8 = libc::c_uchar;
@@ -467,7 +438,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -478,7 +449,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -488,7 +459,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -498,27 +469,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -529,7 +487,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -540,7 +498,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -552,7 +510,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -567,10 +525,8 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
-pub type Exerror_f = Option::<
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -686,21 +642,16 @@ pub unsafe extern "C" fn excast(
     let mut t2t: libc::c_int = 0;
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut e: *mut libc::c_char = 0 as *mut libc::c_char;
-    if !x.is_null() && (*x).type_0 != type_0 && type_0 != 0
-        && type_0 != 264 as libc::c_int
-    {
+    if !x.is_null() && (*x).type_0 != type_0 && type_0 != 0 && type_0 != 264 as libc::c_int {
         if (*x).type_0 == 0 {
             (*x).type_0 = type_0;
             return x;
         }
-        t2t = typecast[(if (*x).type_0 >= 259 as libc::c_int
-            && (*x).type_0 <= 263 as libc::c_int
-        {
+        t2t = typecast[(if (*x).type_0 >= 259 as libc::c_int && (*x).type_0 <= 263 as libc::c_int {
             (*x).type_0 - 259 as libc::c_int + 1 as libc::c_int
         } else {
             0 as libc::c_int
-        })
-            as usize][(if type_0 >= 259 as libc::c_int && type_0 <= 263 as libc::c_int {
+        }) as usize][(if type_0 >= 259 as libc::c_int && type_0 <= 263 as libc::c_int {
             type_0 - 259 as libc::c_int + 1 as libc::c_int
         } else {
             0 as libc::c_int
@@ -724,14 +675,16 @@ pub unsafe extern "C" fn excast(
             if t2t >= 315 as libc::c_int {
                 let mut a: libc::c_int = if arg != 0 { arg } else { 1 as libc::c_int };
                 if (Some(((*(*p).disc).convertf).expect("non-null function pointer")))
-                    .expect("non-null function pointer")(p, x, type_0, sym, a, (*p).disc)
-                    < 0 as libc::c_int
+                    .expect("non-null function pointer")(
+                    p, x, type_0, sym, a, (*p).disc
+                ) < 0 as libc::c_int
                 {
                     if !xref.is_null() {
                         if (*sym).lex == 279 as libc::c_int as libc::c_long && arg != 0 {
                             exerror(
                                 b"%s: cannot use value of type %s as argument %d in function %s\0"
-                                    as *const u8 as *const libc::c_char,
+                                    as *const u8
+                                    as *const libc::c_char,
                                 ((*sym).name).as_mut_ptr(),
                                 extypename(p, (*x).type_0),
                                 arg,
@@ -748,8 +701,7 @@ pub unsafe extern "C" fn excast(
                         }
                     } else {
                         exerror(
-                            b"cannot convert %s to %s\0" as *const u8
-                                as *const libc::c_char,
+                            b"cannot convert %s to %s\0" as *const u8 as *const libc::c_char,
                             extypename(p, (*x).type_0),
                             extypename(p, type_0),
                         );
@@ -761,13 +713,15 @@ pub unsafe extern "C" fn excast(
             match t2t {
                 315 | 316 | 317 | 318 | 319 | 320 | 321 => {
                     if !xref.is_null() && (*xref).op == 283 as libc::c_int {
-                        if (Some(
-                            ((*(*p).disc).convertf).expect("non-null function pointer"),
-                        ))
-                            .expect(
-                                "non-null function pointer",
-                            )(p, x, type_0, (*xref).data.variable.symbol, arg, (*p).disc)
-                            < 0 as libc::c_int
+                        if (Some(((*(*p).disc).convertf).expect("non-null function pointer")))
+                            .expect("non-null function pointer")(
+                            p,
+                            x,
+                            type_0,
+                            (*xref).data.variable.symbol,
+                            arg,
+                            (*p).disc,
+                        ) < 0 as libc::c_int
                         {
                             exerror(
                                 b"%s: cannot cast constant %s to %s\0" as *const u8
@@ -777,28 +731,26 @@ pub unsafe extern "C" fn excast(
                                 extypename(p, type_0),
                             );
                         }
-                    } else if (Some(
-                            ((*(*p).disc).convertf).expect("non-null function pointer"),
-                        ))
-                            .expect(
-                                "non-null function pointer",
-                            )(p, x, type_0, 0 as *mut Exid_t, arg, (*p).disc)
-                            < 0 as libc::c_int
-                        {
+                    } else if (Some(((*(*p).disc).convertf).expect("non-null function pointer")))
+                        .expect("non-null function pointer")(
+                        p,
+                        x,
+                        type_0,
+                        0 as *mut Exid_t,
+                        arg,
+                        (*p).disc,
+                    ) < 0 as libc::c_int
+                    {
                         exerror(
-                            b"cannot cast constant %s to %s\0" as *const u8
-                                as *const libc::c_char,
+                            b"cannot cast constant %s to %s\0" as *const u8 as *const libc::c_char,
                             extypename(p, (*x).type_0),
                             extypename(p, type_0),
                         );
                     }
                 }
                 308 => {
-                    (*x)
-                        .data
-                        .constant
-                        .value
-                        .integer = (*x).data.constant.value.floating as libc::c_longlong;
+                    (*x).data.constant.value.integer =
+                        (*x).data.constant.value.floating as libc::c_longlong;
                 }
                 309 => {
                     let ref mut fresh0 = (*x).data.constant.value.string;
@@ -809,11 +761,8 @@ pub unsafe extern "C" fn excast(
                     );
                 }
                 310 => {
-                    (*x)
-                        .data
-                        .constant
-                        .value
-                        .floating = (*x).data.constant.value.integer as libc::c_double;
+                    (*x).data.constant.value.floating =
+                        (*x).data.constant.value.integer as libc::c_double;
                 }
                 311 => {
                     let ref mut fresh1 = (*x).data.constant.value.string;
@@ -825,34 +774,20 @@ pub unsafe extern "C" fn excast(
                 }
                 313 => {
                     s = (*x).data.constant.value.string;
-                    (*x)
-                        .data
-                        .constant
-                        .value
-                        .integer = strtod(s, &mut e) as libc::c_longlong;
+                    (*x).data.constant.value.integer = strtod(s, &mut e) as libc::c_longlong;
                     if *e != 0 {
-                        (*x)
-                            .data
-                            .constant
-                            .value
-                            .floating = (*s as libc::c_int != 0 as libc::c_int)
-                            as libc::c_int as libc::c_double;
+                        (*x).data.constant.value.floating = (*s as libc::c_int != 0 as libc::c_int)
+                            as libc::c_int
+                            as libc::c_double;
                     }
                 }
                 314 => {
                     s = (*x).data.constant.value.string;
-                    (*x)
-                        .data
-                        .constant
-                        .value
-                        .integer = strtoll(s, &mut e, 0 as libc::c_int);
+                    (*x).data.constant.value.integer = strtoll(s, &mut e, 0 as libc::c_int);
                     if *e != 0 {
-                        (*x)
-                            .data
-                            .constant
-                            .value
-                            .integer = (*s as libc::c_int != 0 as libc::c_int)
-                            as libc::c_int as libc::c_longlong;
+                        (*x).data.constant.value.integer = (*s as libc::c_int != 0 as libc::c_int)
+                            as libc::c_int
+                            as libc::c_longlong;
                     }
                 }
                 _ => {
@@ -919,17 +854,15 @@ pub unsafe extern "C" fn expush(
                 buf.as_mut_ptr(),
                 ::std::mem::size_of::<[libc::c_char; 4096]>() as libc::c_ulong,
             );
-            if s.is_null()
-                || {
-                    let ref mut fresh6 = (*in_0).fp;
-                    *fresh6 = sfopen(
-                        0 as *mut Sfio_t,
-                        s,
-                        b"r\0" as *const u8 as *const libc::c_char,
-                    );
-                    (*fresh6).is_null()
-                }
-            {
+            if s.is_null() || {
+                let ref mut fresh6 = (*in_0).fp;
+                *fresh6 = sfopen(
+                    0 as *mut Sfio_t,
+                    s,
+                    b"r\0" as *const u8 as *const libc::c_char,
+                );
+                (*fresh6).is_null()
+            } {
                 exerror(
                     b"%s: file not found\0" as *const u8 as *const libc::c_char,
                     name,
@@ -951,9 +884,7 @@ pub unsafe extern "C" fn expush(
     *fresh10 = (*p).input;
     if ((**fresh10).next).is_null() {
         (*p).errors = 0 as libc::c_int;
-        if (*(*p).disc).flags & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong
-            == 0
-        {
+        if (*(*p).disc).flags & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong == 0 {
             if line >= 0 as libc::c_int {
                 _err_info.line = line;
             }
@@ -1000,17 +931,16 @@ unsafe extern "C" fn exprintf(
     );
     if len >= 0 as libc::c_int
         && !(b"invalid vsnprintf call\0" as *const u8 as *const libc::c_char).is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"len >= 0 && \"invalid vsnprintf call\"\0" as *const u8
-                as *const libc::c_char,
+            b"len >= 0 && \"invalid vsnprintf call\"\0" as *const u8 as *const libc::c_char,
             b"../../lib/expr/expr.h\0" as *const u8 as *const libc::c_char,
             321 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"char *exprintf(Vmalloc_t *, const char *, ...)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"char *exprintf(Vmalloc_t *, const char *, ...)\0",
+            ))
+            .as_ptr(),
         );
     }
     len += 1;
@@ -1027,8 +957,7 @@ pub unsafe extern "C" fn extypename(
     mut type_0: libc::c_int,
 ) -> *mut libc::c_char {
     if type_0 > 258 as libc::c_int {
-        return typename[(if type_0 >= 259 as libc::c_int && type_0 <= 263 as libc::c_int
-        {
+        return typename[(if type_0 >= 259 as libc::c_int && type_0 <= 263 as libc::c_int {
             type_0 - 259 as libc::c_int + 1 as libc::c_int
         } else {
             0 as libc::c_int
@@ -1053,18 +982,13 @@ pub unsafe extern "C" fn expop(mut p: *mut Expr_t) -> libc::c_int {
         return -(1 as libc::c_int);
     }
     if (*in_0).nesting != 0 {
-        exerror(
-            b"unbalanced quote or nesting construct\0" as *const u8
-                as *const libc::c_char,
-        );
+        exerror(b"unbalanced quote or nesting construct\0" as *const u8 as *const libc::c_char);
     }
     _err_info.file = (*in_0).file;
     if !((*(*in_0).next).next).is_null() {
         _err_info.line = (*in_0).line;
     } else {
-        if (*p).errors != 0 && !((*in_0).fp).is_null()
-            && (*p).linep != ((*p).line).as_mut_ptr()
-        {
+        if (*p).errors != 0 && !((*in_0).fp).is_null() && (*p).linep != ((*p).line).as_mut_ptr() {
             loop {
                 c = (if (*(*in_0).fp).next >= (*(*in_0).fp).endr {
                     _sffilbuf((*in_0).fp, 0 as libc::c_int)
@@ -1084,9 +1008,7 @@ pub unsafe extern "C" fn expop(mut p: *mut Expr_t) -> libc::c_int {
                 break;
             }
         }
-        if (*(*p).disc).flags & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong
-            == 0
-        {
+        if (*(*p).disc).flags & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong == 0 {
             _err_info.line = (*in_0).line;
         }
     }
@@ -1125,7 +1047,7 @@ pub unsafe extern "C" fn excomp(
             return -(1 as libc::c_int);
         }
     } else if expush(p, name, line, sp, fp) != 0 {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
         (*(*p).input).unit = (line >= 0 as libc::c_int) as libc::c_int;
     }
@@ -1135,25 +1057,30 @@ pub unsafe extern "C" fn excomp(
     (*p).eof = eof;
     if expr.statics != 0 {
         v = (Some(((*(*p).symbols).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )((*p).symbols, 0 as *mut libc::c_void, 0o200 as libc::c_int) as *mut Exid_t;
+            .expect("non-null function pointer")(
+            (*p).symbols,
+            0 as *mut libc::c_void,
+            0o200 as libc::c_int,
+        ) as *mut Exid_t;
         while !v.is_null() {
             if (*v).isstatic != 0 {
                 (Some(((*(*p).symbols).searchf).expect("non-null function pointer")))
-                    .expect(
-                        "non-null function pointer",
-                    )((*p).symbols, v as *mut libc::c_void, 0o2 as libc::c_int);
+                    .expect("non-null function pointer")(
+                    (*p).symbols,
+                    v as *mut libc::c_void,
+                    0o2 as libc::c_int,
+                );
                 expr.statics -= 1;
                 if expr.statics == 0 {
                     break;
                 }
             }
             v = (Some(((*(*p).symbols).searchf).expect("non-null function pointer")))
-                .expect(
-                    "non-null function pointer",
-                )((*p).symbols, v as *mut libc::c_void, 0o10 as libc::c_int)
-                as *mut Exid_t;
+                .expect("non-null function pointer")(
+                (*p).symbols,
+                v as *mut libc::c_void,
+                0o10 as libc::c_int,
+            ) as *mut Exid_t;
         }
         expr.statics = 0 as libc::c_int;
     }
@@ -1222,8 +1149,7 @@ pub unsafe extern "C" fn exnewnode(
     mut right: *mut Exnode_t,
 ) -> *mut Exnode_t {
     let mut x: *mut Exnode_t = 0 as *mut Exnode_t;
-    x = vmalloc((*p).vm, ::std::mem::size_of::<Exnode_t>() as libc::c_ulong)
-        as *mut Exnode_t;
+    x = vmalloc((*p).vm, ::std::mem::size_of::<Exnode_t>() as libc::c_ulong) as *mut Exnode_t;
     memset(
         x as *mut libc::c_void,
         0 as libc::c_int,
@@ -1243,8 +1169,7 @@ pub unsafe extern "C" fn exnewnode(
 }
 #[no_mangle]
 pub unsafe extern "C" fn exnoncast(mut x: *mut Exnode_t) -> *mut Exnode_t {
-    while !x.is_null() && (*x).op >= 308 as libc::c_int && (*x).op <= 321 as libc::c_int
-    {
+    while !x.is_null() && (*x).op >= 308 as libc::c_int && (*x).op <= 321 as libc::c_int {
         x = (*x).data.operand.left;
     }
     return x;
@@ -1398,9 +1323,8 @@ pub unsafe extern "C" fn exfreenode(mut p: *mut Expr_t, mut x: *mut Exnode_t) {
                 i = 0 as libc::c_int as size_t;
                 while i
                     < (::std::mem::size_of::<[*mut Exnode_s; 3]>() as libc::c_ulong)
-                        .wrapping_div(
-                            ::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong,
-                        ) && !((*pr).param[i as usize]).is_null()
+                        .wrapping_div(::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong)
+                    && !((*pr).param[i as usize]).is_null()
                 {
                     exfreenode(p, (*pr).param[i as usize]);
                     i = i.wrapping_add(1);
@@ -1471,15 +1395,12 @@ unsafe extern "C" fn makeVar(
     *fresh35 = dyna;
     if ((*(*prog).disc).getf).is_none() {
         exerror(
-            b"%s: identifier references not supported\0" as *const u8
-                as *const libc::c_char,
+            b"%s: identifier references not supported\0" as *const u8 as *const libc::c_char,
             ((*sym).name).as_mut_ptr(),
         );
     } else if ((*(*expr.program).disc).reff).is_some() {
         (Some(((*(*expr.program).disc).reff).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )(
+            .expect("non-null function pointer")(
             prog,
             nn,
             (*nn).data.variable.symbol,
@@ -1504,9 +1425,7 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
     let mut p: *mut Print_t = 0 as *mut Print_t;
     let mut q: *mut Print_t = 0 as *mut Print_t;
     if args.is_null() || (*(*args).data.operand.left).type_0 != 263 as libc::c_int {
-        exerror(
-            b"format string argument expected\0" as *const u8 as *const libc::c_char,
-        );
+        exerror(b"format string argument expected\0" as *const u8 as *const libc::c_char);
     }
     if (*(*args).data.operand.left).op != 271 as libc::c_int {
         x = vmalloc(
@@ -1589,18 +1508,16 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                 match c {
                     0 => {
                         exerror(
-                            b"unterminated %%... in format\0" as *const u8
-                                as *const libc::c_char,
+                            b"unterminated %%... in format\0" as *const u8 as *const libc::c_char,
                         );
                         current_block = 11696355557053689112;
                         break 's_133;
                     }
                     42 => {
                         if i as libc::c_ulong
-                            >= (::std::mem::size_of::<[*mut Exnode_s; 3]>()
-                                as libc::c_ulong)
+                            >= (::std::mem::size_of::<[*mut Exnode_s; 3]>() as libc::c_ulong)
                                 .wrapping_div(
-                                    ::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong,
+                                    ::std::mem::size_of::<*mut Exnode_s>() as libc::c_ulong
                                 )
                         {
                             *s = 0 as libc::c_int as libc::c_char;
@@ -1631,12 +1548,8 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                     40 => {
                         n = 1 as libc::c_int;
                         loop {
-                            if (*(*expr.program).tmp).next >= (*(*expr.program).tmp).endw
-                            {
-                                _sfflsbuf(
-                                    (*expr.program).tmp,
-                                    c as libc::c_uchar as libc::c_int,
-                                );
+                            if (*(*expr.program).tmp).next >= (*(*expr.program).tmp).endw {
+                                _sfflsbuf((*expr.program).tmp, c as libc::c_uchar as libc::c_int);
                             } else {
                                 let ref mut fresh45 = (*(*expr.program).tmp).next;
                                 let fresh46 = *fresh45;
@@ -1673,8 +1586,7 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                     }
                     104 => {
                         exerror(
-                            b"short formats not supported\0" as *const u8
-                                as *const libc::c_char,
+                            b"short formats not supported\0" as *const u8 as *const libc::c_char,
                         );
                         current_block = 11696355557053689112;
                         break 's_133;
@@ -1723,8 +1635,7 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                     if *s == 0 {
                         *e = 0 as libc::c_int as libc::c_char;
                         exerror(
-                            b"%s: trailing %% in format\0" as *const u8
-                                as *const libc::c_char,
+                            b"%s: trailing %% in format\0" as *const u8 as *const libc::c_char,
                             f,
                         );
                         current_block = 11696355557053689112;
@@ -1764,8 +1675,8 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                                 if (*(*x).arg).type_0 == 263 as libc::c_int {
                                     313 as libc::c_int
                                 } else if (*(*x).arg).type_0 >= 259 as libc::c_int
-                                        && (*(*x).arg).type_0 <= 261 as libc::c_int
-                                    {
+                                    && (*(*x).arg).type_0 <= 261 as libc::c_int
+                                {
                                     310 as libc::c_int
                                 } else {
                                     318 as libc::c_int
@@ -1817,9 +1728,7 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                                     ((*(*expr.program).disc).convertf)
                                         .expect("non-null function pointer"),
                                 ))
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                .expect("non-null function pointer")(
                                     expr.program,
                                     (*x).arg,
                                     263 as libc::c_int,
@@ -1833,23 +1742,19 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                                             as *const libc::c_char,
                                     );
                                 } else {
-                                    let ref mut fresh57 = (*(*x).arg)
-                                        .data
-                                        .constant
-                                        .value
-                                        .string;
+                                    let ref mut fresh57 = (*(*x).arg).data.constant.value.string;
                                     *fresh57 = vmstrdup(
                                         (*expr.program).vm,
                                         (*(*x).arg).data.constant.value.string,
                                     );
                                 }
                             } else if ((*(*expr.program).disc).convertf).is_none()
-                                    || (*(*x).arg).op != 283 as libc::c_int
-                                        && (*(*x).arg).op != 275 as libc::c_int
-                                        && (*(*x).arg).op != 315 as libc::c_int
-                                        && (*(*x).arg).op != 316 as libc::c_int
-                                        && (*(*x).arg).op != 317 as libc::c_int
-                                {
+                                || (*(*x).arg).op != 283 as libc::c_int
+                                    && (*(*x).arg).op != 275 as libc::c_int
+                                    && (*(*x).arg).op != 315 as libc::c_int
+                                    && (*(*x).arg).op != 316 as libc::c_int
+                                    && (*(*x).arg).op != 317 as libc::c_int
+                            {
                                 exerror(
                                     b"string format argument expected\0" as *const u8
                                         as *const libc::c_char,
@@ -1861,8 +1766,8 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
                                     if (*(*x).arg).type_0 == 262 as libc::c_int {
                                         309 as libc::c_int
                                     } else if (*(*x).arg).type_0 >= 259 as libc::c_int
-                                            && (*(*x).arg).type_0 <= 261 as libc::c_int
-                                        {
+                                        && (*(*x).arg).type_0 <= 261 as libc::c_int
+                                    {
                                         311 as libc::c_int
                                     } else {
                                         320 as libc::c_int
@@ -1895,16 +1800,15 @@ unsafe extern "C" fn preprint(mut args: *mut Exnode_t) -> *mut Print_t {
     match current_block {
         6478348674394853609 => {
             if !args.is_null() {
-                exerror(
-                    b"too many format arguments\0" as *const u8 as *const libc::c_char,
-                );
+                exerror(b"too many format arguments\0" as *const u8 as *const libc::c_char);
             }
         }
         _ => {}
     }
     if (0 as libc::c_int) < 0 as libc::c_int
         || 0 as libc::c_int as libc::c_long > (*(*expr.program).tmp).size
-    {} else {
+    {
+    } else {
         let ref mut fresh60 = (*(*expr.program).tmp).next;
         *fresh60 = ((*(*expr.program).tmp).data).offset(0 as libc::c_int as isize);
     };
@@ -1934,10 +1838,7 @@ unsafe extern "C" fn exprint(
     );
     return pr;
 }
-unsafe extern "C" fn exstringOf(
-    mut p: *mut Expr_t,
-    mut x: *mut Exnode_t,
-) -> *mut Exnode_t {
+unsafe extern "C" fn exstringOf(mut p: *mut Expr_t, mut x: *mut Exnode_t) -> *mut Exnode_t {
     let mut type_0: libc::c_int = (*x).type_0;
     let mut cvt: libc::c_int = 0 as libc::c_int;
     if type_0 == 0 {
@@ -1953,8 +1854,9 @@ unsafe extern "C" fn exstringOf(
     if (*x).op != 271 as libc::c_int {
         if !(type_0 > 258 as libc::c_int) {
             if (Some(((*(*p).disc).stringof).expect("non-null function pointer")))
-                .expect("non-null function pointer")(p, x, 1 as libc::c_int, (*p).disc)
-                < 0 as libc::c_int
+                .expect("non-null function pointer")(
+                p, x, 1 as libc::c_int, (*p).disc
+            ) < 0 as libc::c_int
             {
                 exerror(
                     b"cannot convert %s to STRING\0" as *const u8 as *const libc::c_char,
@@ -1987,8 +1889,7 @@ unsafe extern "C" fn exstringOf(
             < 0 as libc::c_int
         {
             exerror(
-                b"cannot convert constant %s to STRING\0" as *const u8
-                    as *const libc::c_char,
+                b"cannot convert constant %s to STRING\0" as *const u8 as *const libc::c_char,
                 extypename(p, (*x).type_0),
             );
         }
@@ -2012,8 +1913,7 @@ unsafe extern "C" fn exstringOf(
             }
             _ => {
                 exerror(
-                    b"internal error: %d: unknown type\0" as *const u8
-                        as *const libc::c_char,
+                    b"internal error: %d: unknown type\0" as *const u8 as *const libc::c_char,
                     type_0,
                 );
             }
@@ -2089,44 +1989,33 @@ unsafe extern "C" fn exnewsplit(
     *fresh66 = seps;
     return ss;
 }
-unsafe extern "C" fn exnewsubstr(
-    mut p: *mut Expr_t,
-    mut args: *mut Exnode_t,
-) -> *mut Exnode_t {
+unsafe extern "C" fn exnewsubstr(mut p: *mut Expr_t, mut args: *mut Exnode_t) -> *mut Exnode_t {
     let mut base: *mut Exnode_t = 0 as *mut Exnode_t;
     let mut pat: *mut Exnode_t = 0 as *mut Exnode_t;
     let mut repl: *mut Exnode_t = 0 as *mut Exnode_t;
     let mut ss: *mut Exnode_t = 0 as *mut Exnode_t;
     base = extract(p, &mut args, 263 as libc::c_int);
     if base.is_null() {
-        exerror(
-            b"invalid first argument to substr operator\0" as *const u8
-                as *const libc::c_char,
-        );
+        exerror(b"invalid first argument to substr operator\0" as *const u8 as *const libc::c_char);
     }
     pat = extract(p, &mut args, 259 as libc::c_int);
     if pat.is_null() {
         exerror(
-            b"invalid second argument to substr operator\0" as *const u8
-                as *const libc::c_char,
+            b"invalid second argument to substr operator\0" as *const u8 as *const libc::c_char,
         );
     }
     if !args.is_null() {
         repl = extract(p, &mut args, 259 as libc::c_int);
         if repl.is_null() {
             exerror(
-                b"invalid third argument to substr operator\0" as *const u8
-                    as *const libc::c_char,
+                b"invalid third argument to substr operator\0" as *const u8 as *const libc::c_char,
             );
         }
     } else {
         repl = 0 as *mut Exnode_t;
     }
     if !args.is_null() {
-        exerror(
-            b"too many arguments to substr operator\0" as *const u8
-                as *const libc::c_char,
-        );
+        exerror(b"too many arguments to substr operator\0" as *const u8 as *const libc::c_char);
     }
     ss = exnewnode(
         p,
@@ -2174,33 +2063,24 @@ unsafe extern "C" fn exnewsub(
     let mut ss: *mut Exnode_t = 0 as *mut Exnode_t;
     base = extract(p, &mut args, 263 as libc::c_int);
     if base.is_null() {
-        exerror(
-            b"invalid first argument to sub operator\0" as *const u8
-                as *const libc::c_char,
-        );
+        exerror(b"invalid first argument to sub operator\0" as *const u8 as *const libc::c_char);
     }
     pat = extract(p, &mut args, 263 as libc::c_int);
     if pat.is_null() {
-        exerror(
-            b"invalid second argument to sub operator\0" as *const u8
-                as *const libc::c_char,
-        );
+        exerror(b"invalid second argument to sub operator\0" as *const u8 as *const libc::c_char);
     }
     if !args.is_null() {
         repl = extract(p, &mut args, 263 as libc::c_int);
         if repl.is_null() {
             exerror(
-                b"invalid third argument to sub operator\0" as *const u8
-                    as *const libc::c_char,
+                b"invalid third argument to sub operator\0" as *const u8 as *const libc::c_char,
             );
         }
     } else {
         repl = 0 as *mut Exnode_t;
     }
     if !args.is_null() {
-        exerror(
-            b"too many arguments to sub operator\0" as *const u8 as *const libc::c_char,
-        );
+        exerror(b"too many arguments to sub operator\0" as *const u8 as *const libc::c_char);
     }
     ss = exnewnode(
         p,
@@ -2237,8 +2117,8 @@ unsafe extern "C" fn call(
     );
     t = (*fun).type_0 as libc::c_int;
     fun = if !ref_0.is_null()
-        && (*(*expr.program).disc).flags
-            & ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_ulong != 0
+        && (*(*expr.program).disc).flags & ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_ulong
+            != 0
     {
         qualify(ref_0, fun)
     } else {
@@ -2287,13 +2167,9 @@ unsafe extern "C" fn call(
 unsafe extern "C" fn T(mut t: libc::c_int) -> libc::c_int {
     if !((*(*expr.program).disc).types).is_null() {
         return *((*(*expr.program).disc).types)
-            .offset(
-                (t & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int)
-                    as isize,
-            )
+            .offset((t & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as isize);
     } else {
-        return a2t[(t & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int)
-            as usize]
+        return a2t[(t & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as usize];
     };
 }
 static mut a2t: [libc::c_int; 4] = [
@@ -2302,10 +2178,7 @@ static mut a2t: [libc::c_int; 4] = [
     259 as libc::c_int,
     263 as libc::c_int,
 ];
-unsafe extern "C" fn qualify(
-    mut ref_0: *mut Exref_t,
-    mut sym: *mut Exid_t,
-) -> *mut Exid_t {
+unsafe extern "C" fn qualify(mut ref_0: *mut Exref_t, mut sym: *mut Exid_t) -> *mut Exid_t {
     let mut x: *mut Exid_t = 0 as *mut Exid_t;
     while !((*ref_0).next).is_null() {
         ref_0 = (*ref_0).next;
@@ -2313,9 +2186,9 @@ unsafe extern "C" fn qualify(
     let mut len: size_t = (strlen(((*(*ref_0).symbol).name).as_mut_ptr()))
         .wrapping_add(strlen(((*sym).name).as_mut_ptr()))
         .wrapping_add(2 as libc::c_int as libc::c_ulong);
-    let mut s: *mut libc::c_char = malloc(
-        (::std::mem::size_of::<libc::c_char>() as libc::c_ulong).wrapping_mul(len),
-    ) as *mut libc::c_char;
+    let mut s: *mut libc::c_char =
+        malloc((::std::mem::size_of::<libc::c_char>() as libc::c_ulong).wrapping_mul(len))
+            as *mut libc::c_char;
     if s.is_null() {
         exnospace();
         return 0 as *mut Exid_t;
@@ -2328,10 +2201,11 @@ unsafe extern "C" fn qualify(
         ((*sym).name).as_mut_ptr(),
     );
     x = (Some(((*(*expr.program).symbols).searchf).expect("non-null function pointer")))
-        .expect(
-            "non-null function pointer",
-        )((*expr.program).symbols, s as *mut libc::c_void, 0o1000 as libc::c_int)
-        as *mut Exid_t;
+        .expect("non-null function pointer")(
+        (*expr.program).symbols,
+        s as *mut libc::c_void,
+        0o1000 as libc::c_int,
+    ) as *mut Exid_t;
     if x.is_null() {
         x = if 0 as libc::c_int != 0 {
             realloc(
@@ -2364,12 +2238,12 @@ unsafe extern "C" fn qualify(
                     .wrapping_sub(32 as libc::c_int as libc::c_ulong),
             );
             strcpy(((*x).name).as_mut_ptr(), s);
-            (Some(
-                ((*(*expr.program).symbols).searchf).expect("non-null function pointer"),
-            ))
-                .expect(
-                    "non-null function pointer",
-                )((*expr.program).symbols, x as *mut libc::c_void, 0o1 as libc::c_int);
+            (Some(((*(*expr.program).symbols).searchf).expect("non-null function pointer")))
+                .expect("non-null function pointer")(
+                (*expr.program).symbols,
+                x as *mut libc::c_void,
+                0o1 as libc::c_int,
+            );
         } else {
             exnospace();
             x = sym;
@@ -2390,8 +2264,8 @@ unsafe extern "C" fn checkBinary(
     {
         if !r.is_null() {
             exerror(
-                b"cannot apply operator %s to expressions of types %s and %s\0"
-                    as *const u8 as *const libc::c_char,
+                b"cannot apply operator %s to expressions of types %s and %s\0" as *const u8
+                    as *const libc::c_char,
                 exopname((*ex).op),
                 extypename(p, (*l).type_0),
                 extypename(p, (*r).type_0),
@@ -2413,33 +2287,30 @@ unsafe extern "C" fn cmpKey(
     mut disc: *mut Dtdisc_t,
 ) -> libc::c_int {
     if (*key1).integer < (*key2).integer {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else if (*key1).integer > (*key2).integer {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn checkName(mut id: *mut Exid_t) {
     match (*id).lex {
         275 => {
             exerror(
-                b"Variable \"%s\" already declared\0" as *const u8
-                    as *const libc::c_char,
+                b"Variable \"%s\" already declared\0" as *const u8 as *const libc::c_char,
                 ((*id).name).as_mut_ptr(),
             );
         }
         279 => {
             exerror(
-                b"Name \"%s\" already used as a function\0" as *const u8
-                    as *const libc::c_char,
+                b"Name \"%s\" already used as a function\0" as *const u8 as *const libc::c_char,
                 ((*id).name).as_mut_ptr(),
             );
         }
         283 => {
             exerror(
-                b"Name \"%s\" already used as a keyword\0" as *const u8
-                    as *const libc::c_char,
+                b"Name \"%s\" already used as a keyword\0" as *const u8 as *const libc::c_char,
                 ((*id).name).as_mut_ptr(),
             );
         }
@@ -6611,14 +6482,15 @@ unsafe extern "C" fn yy_symbol_print(
     yy_symbol_value_print(yyoutput, yytype, yyvaluep);
     sfprintf(yyoutput, b")\0" as *const u8 as *const libc::c_char);
 }
-unsafe extern "C" fn yy_stack_print(
-    mut yybottom: *mut yytype_int16,
-    mut yytop: *mut yytype_int16,
-) {
+unsafe extern "C" fn yy_stack_print(mut yybottom: *mut yytype_int16, mut yytop: *mut yytype_int16) {
     sfprintf(sfstderr, b"Stack now\0" as *const u8 as *const libc::c_char);
     while yybottom <= yytop {
         let mut yybot: libc::c_int = *yybottom as libc::c_int;
-        sfprintf(sfstderr, b" %d\0" as *const u8 as *const libc::c_char, yybot);
+        sfprintf(
+            sfstderr,
+            b" %d\0" as *const u8 as *const libc::c_char,
+            yybot,
+        );
         yybottom = yybottom.offset(1);
     }
     sfprintf(sfstderr, b"\n\0" as *const u8 as *const libc::c_char);
@@ -6669,10 +6541,11 @@ pub unsafe extern "C" fn exop(mut index: size_t) -> *const libc::c_char {
         minid = minid.wrapping_add(1);
     }
     if !(yytname[minid as usize]).is_null()
-        && !(b"failed to find MINTOKEN; incorrect token list in exparse.y?\0"
-            as *const u8 as *const libc::c_char)
+        && !(b"failed to find MINTOKEN; incorrect token list in exparse.y?\0" as *const u8
+            as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"yytname[minid] != NULL && \"failed to find MINTOKEN; incorrect token list in exparse.y?\"\0"
                 as *const u8 as *const libc::c_char,
@@ -6695,10 +6568,10 @@ pub unsafe extern "C" fn exop(mut index: size_t) -> *const libc::c_char {
         while *(yytname[i as usize]).offset(k as isize) as libc::c_int != '\0' as i32 {
             if *(yytname[i as usize]).offset(k as isize) as libc::c_int != '_' as i32
                 && *(*__ctype_b_loc())
-                    .offset(
-                        *(yytname[i as usize]).offset(k as isize) as libc::c_int as isize,
-                    ) as libc::c_int
-                    & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int == 0
+                    .offset(*(yytname[i as usize]).offset(k as isize) as libc::c_int as isize)
+                    as libc::c_int
+                    & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
+                    == 0
             {
                 break;
             }
@@ -6729,7 +6602,11 @@ unsafe extern "C" fn yydestruct(
         yymsg = b"Deleting\0" as *const u8 as *const libc::c_char;
     }
     if ex_debug != 0 {
-        sfprintf(sfstderr, b"%s \0" as *const u8 as *const libc::c_char, yymsg);
+        sfprintf(
+            sfstderr,
+            b"%s \0" as *const u8 as *const libc::c_char,
+            yymsg,
+        );
         yy_symbol_print(sfstderr, yytype, yyvaluep);
         sfprintf(sfstderr, b"\n\0" as *const u8 as *const libc::c_char);
     }
@@ -6770,7 +6647,10 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
     yyvsp = yyvs;
     yystacksize = 200 as libc::c_int as libc::c_ulong;
     if ex_debug != 0 {
-        sfprintf(sfstderr, b"Starting parse\n\0" as *const u8 as *const libc::c_char);
+        sfprintf(
+            sfstderr,
+            b"Starting parse\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     yystate = 0 as libc::c_int;
     yyerrstatus = 0 as libc::c_int;
@@ -6778,11 +6658,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
     ex_char = -(2 as libc::c_int);
     'c_3638: loop {
         *yyssp = yystate as yytype_int16;
-        if yyss.offset(yystacksize as isize).offset(-(1 as libc::c_int as isize))
+        if yyss
+            .offset(yystacksize as isize)
+            .offset(-(1 as libc::c_int as isize))
             <= yyssp
         {
             let mut yysize: libc::c_ulong = (yyssp.offset_from(yyss) as libc::c_long
-                + 1 as libc::c_int as libc::c_long) as libc::c_ulong;
+                + 1 as libc::c_int as libc::c_long)
+                as libc::c_ulong;
             if 10000 as libc::c_int as libc::c_ulong <= yystacksize {
                 current_block = 12056922904886382946;
                 break;
@@ -6796,9 +6679,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                 yystacksize
                     .wrapping_mul(
                         (::std::mem::size_of::<yytype_int16>() as libc::c_ulong)
-                            .wrapping_add(
-                                ::std::mem::size_of::<EX_STYPE>() as libc::c_ulong,
-                            ),
+                            .wrapping_add(::std::mem::size_of::<EX_STYPE>() as libc::c_ulong),
                     )
                     .wrapping_add(
                         (::std::mem::size_of::<yyalloc>() as libc::c_ulong)
@@ -6813,8 +6694,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
             libc::memcpy(
                 &mut (*yyptr).yyss_alloc as *mut yytype_int16 as *mut libc::c_void,
                 yyss as *const libc::c_void,
-                yysize
-                    .wrapping_mul(::std::mem::size_of::<yytype_int16>() as libc::c_ulong)
+                yysize.wrapping_mul(::std::mem::size_of::<yytype_int16>() as libc::c_ulong)
                     as libc::size_t,
             );
             yyss = &mut (*yyptr).yyss_alloc;
@@ -6824,12 +6704,9 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     (::std::mem::size_of::<yyalloc>() as libc::c_ulong)
                         .wrapping_sub(1 as libc::c_int as libc::c_ulong),
                 );
-            yyptr = yyptr
-                .offset(
-                    yynewbytes
-                        .wrapping_div(::std::mem::size_of::<yyalloc>() as libc::c_ulong)
-                        as isize,
-                );
+            yyptr = yyptr.offset(
+                yynewbytes.wrapping_div(::std::mem::size_of::<yyalloc>() as libc::c_ulong) as isize,
+            );
             let mut yynewbytes_0: libc::c_ulong = 0;
             libc::memcpy(
                 &mut (*yyptr).yyvs_alloc as *mut EX_STYPE as *mut libc::c_void,
@@ -6844,26 +6721,29 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     (::std::mem::size_of::<yyalloc>() as libc::c_ulong)
                         .wrapping_sub(1 as libc::c_int as libc::c_ulong),
                 );
-            yyptr = yyptr
-                .offset(
-                    yynewbytes_0
-                        .wrapping_div(::std::mem::size_of::<yyalloc>() as libc::c_ulong)
-                        as isize,
-                );
+            yyptr = yyptr.offset(
+                yynewbytes_0.wrapping_div(::std::mem::size_of::<yyalloc>() as libc::c_ulong)
+                    as isize,
+            );
             if yyss1 != yyssa.as_mut_ptr() {
                 free(yyss1 as *mut libc::c_void);
             }
-            yyssp = yyss.offset(yysize as isize).offset(-(1 as libc::c_int as isize));
-            yyvsp = yyvs.offset(yysize as isize).offset(-(1 as libc::c_int as isize));
+            yyssp = yyss
+                .offset(yysize as isize)
+                .offset(-(1 as libc::c_int as isize));
+            yyvsp = yyvs
+                .offset(yysize as isize)
+                .offset(-(1 as libc::c_int as isize));
             if ex_debug != 0 {
                 sfprintf(
                     sfstderr,
-                    b"Stack size increased to %lu\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"Stack size increased to %lu\n\0" as *const u8 as *const libc::c_char,
                     yystacksize,
                 );
             }
-            if yyss.offset(yystacksize as isize).offset(-(1 as libc::c_int as isize))
+            if yyss
+                .offset(yystacksize as isize)
+                .offset(-(1 as libc::c_int as isize))
                 <= yyssp
             {
                 current_block = 6934551251188356327;
@@ -6901,14 +6781,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     if ex_debug != 0 {
                         sfprintf(
                             sfstderr,
-                            b"Now at end of input.\n\0" as *const u8
-                                as *const libc::c_char,
+                            b"Now at end of input.\n\0" as *const u8 as *const libc::c_char,
                         );
                     }
                 } else {
-                    yytoken = if ex_char as libc::c_uint
-                        <= 336 as libc::c_int as libc::c_uint
-                    {
+                    yytoken = if ex_char as libc::c_uint <= 336 as libc::c_int as libc::c_uint {
                         yytranslate[ex_char as usize] as libc::c_int
                     } else {
                         2 as libc::c_int
@@ -6924,7 +6801,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     }
                 }
                 yyn += yytoken;
-                if yyn < 0 as libc::c_int || (1112 as libc::c_int) < yyn
+                if yyn < 0 as libc::c_int
+                    || (1112 as libc::c_int) < yyn
                     || yycheck[yyn as usize] as libc::c_int != yytoken
                 {
                     current_block = 12878331909665404271;
@@ -6948,10 +6826,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 b"Shifting\0" as *const u8 as *const libc::c_char,
                             );
                             yy_symbol_print(sfstderr, yytoken, &mut ex_lval);
-                            sfprintf(
-                                sfstderr,
-                                b"\n\0" as *const u8 as *const libc::c_char,
-                            );
+                            sfprintf(sfstderr, b"\n\0" as *const u8 as *const libc::c_char);
                         }
                         ex_char = -(2 as libc::c_int);
                         yystate = yyn;
@@ -6976,9 +6851,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                 4173045695846325437 => {
                     yytoken = if ex_char == -(2 as libc::c_int) {
                         -(2 as libc::c_int)
-                    } else if ex_char as libc::c_uint
-                            <= 336 as libc::c_int as libc::c_uint
-                        {
+                    } else if ex_char as libc::c_uint <= 336 as libc::c_int as libc::c_uint {
                         yytranslate[ex_char as usize] as libc::c_int
                     } else {
                         2 as libc::c_int
@@ -7007,7 +6880,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         yyn = yypact[yystate as usize] as libc::c_int;
                         if !(yyn == -(144 as libc::c_int)) {
                             yyn += 1 as libc::c_int;
-                            if 0 as libc::c_int <= yyn && yyn <= 1112 as libc::c_int
+                            if 0 as libc::c_int <= yyn
+                                && yyn <= 1112 as libc::c_int
                                 && yycheck[yyn as usize] as libc::c_int == 1 as libc::c_int
                             {
                                 yyn = yytable[yyn as usize] as libc::c_int;
@@ -7040,11 +6914,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             b"%s \0" as *const u8 as *const libc::c_char,
                             b"Shifting\0" as *const u8 as *const libc::c_char,
                         );
-                        yy_symbol_print(
-                            sfstderr,
-                            yystos[yyn as usize] as libc::c_int,
-                            yyvsp,
-                        );
+                        yy_symbol_print(sfstderr, yystos[yyn as usize] as libc::c_int, yyvsp);
                         sfprintf(sfstderr, b"\n\0" as *const u8 as *const libc::c_char);
                     }
                     yystate = yyn;
@@ -7057,8 +6927,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     }
                     match yyn {
                         2 => {
-                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
+                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null()
                                 && (*(*expr.program).disc).flags
                                     & ((1 as libc::c_int) << 8 as libc::c_int) as libc::c_ulong
                                     == 0
@@ -7075,24 +6944,20 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 {
                                     let mut x: *mut Exnode_t = 0 as *mut Exnode_t;
                                     x = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
-                                    let ref mut fresh78 = (*yyvsp
-                                        .offset(-(1 as libc::c_int) as isize))
-                                        .expr;
+                                    let ref mut fresh78 =
+                                        (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                     *fresh78 = (*x).data.operand.left;
                                     let ref mut fresh79 = (*x).data.operand.left;
                                     *fresh79 = 0 as *mut Exnode_t;
                                     exfreenode(expr.program, x);
                                 }
-                                (*expr.program)
-                                    .main
-                                    .lex = 293 as libc::c_int as libc::c_long;
+                                (*expr.program).main.lex = 293 as libc::c_int as libc::c_long;
                                 let ref mut fresh80 = (*expr.program).main.value;
                                 *fresh80 = exnewnode(
                                     expr.program,
                                     293 as libc::c_int,
                                     1 as libc::c_int,
-                                    (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                        .type_0,
+                                    (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0,
                                     0 as *mut Exnode_t,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                                 );
@@ -7107,12 +6972,10 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         as *const libc::c_char,
                                 );
                             }
-                            (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id)
-                                .lex = 293 as libc::c_int as libc::c_long;
-                            let ref mut fresh81 = (*(*yyvsp
-                                .offset(-(1 as libc::c_int) as isize))
-                                .id)
-                                .value;
+                            (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id).lex =
+                                293 as libc::c_int as libc::c_long;
+                            let ref mut fresh81 =
+                                (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id).value;
                             *fresh81 = exnewnode(
                                 expr.program,
                                 293 as libc::c_int,
@@ -7150,17 +7013,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     b"begin\0" as *const u8 as *const libc::c_char,
                                 ) != 0
                             {
-                                let ref mut fresh82 = (*expr.procedure)
-                                    .data
-                                    .procedure
-                                    .frame;
+                                let ref mut fresh82 = (*expr.procedure).data.procedure.frame;
                                 *fresh82 = dtopen(disc, Dtset);
                                 if (*fresh82).is_null()
                                     || (dtview(
                                         (*expr.procedure).data.procedure.frame,
                                         (*expr.program).symbols,
                                     ))
-                                        .is_null()
+                                    .is_null()
                                 {
                                     exnospace();
                                 }
@@ -7180,28 +7040,24 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 let ref mut fresh86 = (*expr.program).frame;
                                 *fresh86 = 0 as *mut Dt_t;
                             }
-                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                .is_null()
+                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null()
                                 && (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).op
                                     == 312 as libc::c_int
                             {
                                 let mut x_0: *mut Exnode_t = 0 as *mut Exnode_t;
                                 x_0 = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
-                                let ref mut fresh87 = (*yyvsp
-                                    .offset(0 as libc::c_int as isize))
-                                    .expr;
+                                let ref mut fresh87 =
+                                    (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 *fresh87 = (*x_0).data.operand.left;
                                 let ref mut fresh88 = (*x_0).data.operand.left;
                                 *fresh88 = 0 as *mut Exnode_t;
                                 exfreenode(expr.program, x_0);
                             }
-                            let ref mut fresh89 = (*(*(*yyvsp
-                                .offset(-(3 as libc::c_int) as isize))
-                                .id)
-                                .value)
-                                .data
-                                .operand
-                                .right;
+                            let ref mut fresh89 =
+                                (*(*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).value)
+                                    .data
+                                    .operand
+                                    .right;
                             *fresh89 = excast(
                                 expr.program,
                                 (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -7217,29 +7073,20 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         8 => {
-                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
+                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null() {
+                                yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                            } else if ((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null() {
+                                yyval.expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                            } else if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).op
+                                == 271 as libc::c_int
                             {
-                                yyval
-                                    .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
-                            } else if ((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .is_null()
-                                {
-                                yyval
-                                    .expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
-                            } else if (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
-                                    .op == 271 as libc::c_int
-                                {
                                 exfreenode(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                                 );
-                                yyval
-                                    .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                                yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                             } else {
-                                yyval
-                                    .expr = exnewnode(
+                                yyval.expr = exnewnode(
                                     expr.program,
                                     ';' as i32,
                                     1 as libc::c_int,
@@ -7251,17 +7098,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         9 => {
-                            yyval
-                                .expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                            yyval.expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             current_block = 16782213842982696595;
                         }
                         10 => {
-                            yyval
-                                .expr = if !((*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                .expr)
+                            yyval.expr = if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                 .is_null()
-                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0 == 263 as libc::c_int
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    == 263 as libc::c_int
                             {
                                 exnewnode(
                                     expr.program,
@@ -7277,39 +7121,32 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         11 => {
-                            expr
-                                .instatic = (*yyvsp.offset(0 as libc::c_int as isize))
-                                .integer as libc::c_int;
+                            expr.instatic =
+                                (*yyvsp.offset(0 as libc::c_int as isize)).integer as libc::c_int;
                             current_block = 16782213842982696595;
                         }
                         12 => {
-                            expr
-                                .declare = (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                .type_0 as libc::c_int;
+                            expr.declare = (*(*yyvsp.offset(0 as libc::c_int as isize)).id).type_0
+                                as libc::c_int;
                             current_block = 16782213842982696595;
                         }
                         13 => {
-                            yyval
-                                .expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                            yyval.expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             expr.declare = 0 as libc::c_int;
                             current_block = 16782213842982696595;
                         }
                         14 => {
-                            if exisAssign(
-                                (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr,
-                            ) != 0
-                            {
+                            if exisAssign((*yyvsp.offset(-(3 as libc::c_int) as isize)).expr) != 0 {
                                 exwarn(
                                     b"assignment used as boolean in if statement\0" as *const u8
                                         as *const libc::c_char,
                                 );
                             }
-                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                .type_0 == 263 as libc::c_int
+                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
                             {
-                                let ref mut fresh90 = (*yyvsp
-                                    .offset(-(3 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh90 =
+                                    (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr;
                                 *fresh90 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -7318,15 +7155,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(-(3 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                        .type_0 <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh91 = (*yyvsp
-                                    .offset(-(3 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
+                                .type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh91 =
+                                    (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr;
                                 *fresh91 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr,
@@ -7335,8 +7171,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(5 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -7361,8 +7196,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         15 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 281 as libc::c_int,
                                 0 as libc::c_int,
@@ -7371,8 +7205,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                             );
                             let ref mut fresh92 = (*yyval.expr).data.generate.array;
-                            *fresh92 = (*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .expr;
+                            *fresh92 = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                             if ((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
                                 .data
                                 .variable
@@ -7382,7 +7215,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .data
                                     .variable
                                     .index)
-                                    .op != 275 as libc::c_int
+                                    .op
+                                    != 275 as libc::c_int
                             {
                                 exerror(
                                     b"simple index variable expected\0" as *const u8
@@ -7390,8 +7224,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 );
                             }
                             let ref mut fresh93 = (*yyval.expr).data.generate.index;
-                            *fresh93 = (*(*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .expr)
+                            *fresh93 = (*(*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
                                 .data
                                 .variable
                                 .index)
@@ -7415,8 +7248,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .variable
                                     .index,
                             );
-                            let ref mut fresh94 = (*(*yyvsp
-                                .offset(-(2 as libc::c_int) as isize))
+                            let ref mut fresh94 = (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
                                 .expr)
                                 .data
                                 .variable
@@ -7427,12 +7259,9 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         16 => {
-                            if ((*yyvsp.offset(-(4 as libc::c_int) as isize)).expr)
-                                .is_null()
-                            {
-                                let ref mut fresh96 = (*yyvsp
-                                    .offset(-(4 as libc::c_int) as isize))
-                                    .expr;
+                            if ((*yyvsp.offset(-(4 as libc::c_int) as isize)).expr).is_null() {
+                                let ref mut fresh96 =
+                                    (*yyvsp.offset(-(4 as libc::c_int) as isize)).expr;
                                 *fresh96 = exnewnode(
                                     expr.program,
                                     271 as libc::c_int,
@@ -7446,13 +7275,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .constant
                                     .value
                                     .integer = 1 as libc::c_int as libc::c_longlong;
-                            } else if (*(*yyvsp.offset(-(4 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 == 263 as libc::c_int
-                                {
-                                let ref mut fresh97 = (*yyvsp
-                                    .offset(-(4 as libc::c_int) as isize))
-                                    .expr;
+                            } else if (*(*yyvsp.offset(-(4 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
+                            {
+                                let ref mut fresh97 =
+                                    (*yyvsp.offset(-(4 as libc::c_int) as isize)).expr;
                                 *fresh97 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -7461,15 +7288,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(4 as libc::c_int) as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(-(4 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(-(4 as libc::c_int) as isize)).expr)
-                                        .type_0 <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh98 = (*yyvsp
-                                    .offset(-(4 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(4 as libc::c_int) as isize)).expr)
+                                .type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(4 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh98 =
+                                    (*yyvsp.offset(-(4 as libc::c_int) as isize)).expr;
                                 *fresh98 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(4 as libc::c_int) as isize)).expr,
@@ -7478,8 +7304,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(8 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -7495,11 +7320,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                 ),
                             );
-                            if !((*yyvsp.offset(-(6 as libc::c_int) as isize)).expr)
-                                .is_null()
-                            {
-                                yyval
-                                    .expr = exnewnode(
+                            if !((*yyvsp.offset(-(6 as libc::c_int) as isize)).expr).is_null() {
+                                yyval.expr = exnewnode(
                                     expr.program,
                                     ';' as i32,
                                     1 as libc::c_int,
@@ -7511,8 +7333,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         17 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 282 as libc::c_int,
                                 0 as libc::c_int,
@@ -7521,8 +7342,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                             );
                             let ref mut fresh99 = (*yyval.expr).data.generate.array;
-                            *fresh99 = (*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .expr;
+                            *fresh99 = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                             if ((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
                                 .data
                                 .variable
@@ -7532,7 +7352,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .data
                                     .variable
                                     .index)
-                                    .op != 275 as libc::c_int
+                                    .op
+                                    != 275 as libc::c_int
                             {
                                 exerror(
                                     b"simple index variable expected\0" as *const u8
@@ -7540,8 +7361,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 );
                             }
                             let ref mut fresh100 = (*yyval.expr).data.generate.index;
-                            *fresh100 = (*(*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .expr)
+                            *fresh100 = (*(*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
                                 .data
                                 .variable
                                 .index)
@@ -7565,8 +7385,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .variable
                                     .index,
                             );
-                            let ref mut fresh101 = (*(*yyvsp
-                                .offset(-(2 as libc::c_int) as isize))
+                            let ref mut fresh101 = (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
                                 .expr)
                                 .data
                                 .variable
@@ -7589,8 +7408,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         .as_mut_ptr(),
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 306 as libc::c_int,
                                 0 as libc::c_int,
@@ -7617,10 +7435,10 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         .as_mut_ptr(),
                                 );
                             }
-                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                .index_type > 0 as libc::c_int as libc::c_long
-                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0 as libc::c_long
+                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).index_type
+                                > 0 as libc::c_int as libc::c_long
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    as libc::c_long
                                     != (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
                                         .index_type
                             {
@@ -7632,16 +7450,17 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     extypename(
                                         expr.program,
                                         (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                            .index_type as libc::c_int,
+                                            .index_type
+                                            as libc::c_int,
                                     ),
                                     extypename(
                                         expr.program,
-                                        (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0,
+                                        (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
+                                            .type_0,
                                     ),
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 306 as libc::c_int,
                                 0 as libc::c_int,
@@ -7652,26 +7471,21 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             let ref mut fresh105 = (*yyval.expr).data.variable.symbol;
                             *fresh105 = (*yyvsp.offset(-(3 as libc::c_int) as isize)).id;
                             let ref mut fresh106 = (*yyval.expr).data.variable.index;
-                            *fresh106 = (*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                .expr;
+                            *fresh106 = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             current_block = 16782213842982696595;
                         }
                         20 => {
-                            if exisAssign(
-                                (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
-                            ) != 0
-                            {
+                            if exisAssign((*yyvsp.offset(-(2 as libc::c_int) as isize)).expr) != 0 {
                                 exwarn(
-                                    b"assignment used as boolean in while statement\0"
-                                        as *const u8 as *const libc::c_char,
+                                    b"assignment used as boolean in while statement\0" as *const u8
+                                        as *const libc::c_char,
                                 );
                             }
-                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                .type_0 == 263 as libc::c_int
+                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
                             {
-                                let ref mut fresh107 = (*yyvsp
-                                    .offset(-(2 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh107 =
+                                    (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                 *fresh107 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -7680,15 +7494,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                        .type_0 <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh108 = (*yyvsp
-                                    .offset(-(2 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                .type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh108 =
+                                    (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                 *fresh108 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
@@ -7697,8 +7510,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(4 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -7717,16 +7529,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         21 => {
-                            expr
-                                .declare = (*(*yyvsp.offset(0 as libc::c_int as isize))
-                                .expr)
-                                .type_0;
+                            expr.declare =
+                                (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0;
                             current_block = 16782213842982696595;
                         }
                         22 => {
                             let mut sw: *mut Switch_t = expr.swstate;
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(7 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -7751,12 +7560,9 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         23 | 24 => {
-                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
-                            {
-                                let ref mut fresh109 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null() {
+                                let ref mut fresh109 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh109 = exnewnode(
                                     expr.program,
                                     271 as libc::c_int,
@@ -7770,15 +7576,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .constant
                                     .value
                                     .integer = 1 as libc::c_int as libc::c_longlong;
-                            } else if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                        .type_0 <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh110 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
+                                .type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh110 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh110 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -7787,8 +7592,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -7800,20 +7604,15 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         25 => {
-                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
-                            {
-                                if !(expr.procedure).is_null()
-                                    && (*expr.procedure).type_0 == 0
-                                {
+                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null() {
+                                if !(expr.procedure).is_null() && (*expr.procedure).type_0 == 0 {
                                     exerror(
                                         b"return in void function\0" as *const u8
                                             as *const libc::c_char,
                                     );
                                 }
-                                let ref mut fresh111 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh111 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh111 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -7826,14 +7625,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 296 as libc::c_int,
                                 1 as libc::c_int,
-                                if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .is_null()
-                                {
+                                if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null() {
                                     (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
                                 } else {
                                     0 as libc::c_int
@@ -7910,8 +7706,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         28 => {
                             let mut sw_1: *mut Switch_t = expr.swstate;
                             let mut n_0: libc::c_int = 0;
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 270 as libc::c_int,
                                 1 as libc::c_int,
@@ -7929,28 +7724,28 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 }
                                 let ref mut fresh121 = (*sw_1).lastcase;
                                 *fresh121 = yyval.expr;
-                                n_0 = ((*sw_1).cur).offset_from((*sw_1).base)
-                                    as libc::c_long as libc::c_int;
+                                n_0 = ((*sw_1).cur).offset_from((*sw_1).base) as libc::c_long
+                                    as libc::c_int;
                                 let ref mut fresh122 = (*sw_1).cur;
                                 *fresh122 = (*sw_1).base;
                                 let ref mut fresh123 = (*yyval.expr).data.select.constant;
                                 *fresh123 = vmalloc(
                                     (*expr.program).vm,
-                                    ((n_0 + 1 as libc::c_int) as libc::c_ulong)
-                                        .wrapping_mul(
-                                            ::std::mem::size_of::<*mut Extype_t>() as libc::c_ulong,
-                                        ),
+                                    ((n_0 + 1 as libc::c_int) as libc::c_ulong).wrapping_mul(
+                                        ::std::mem::size_of::<*mut Extype_t>() as libc::c_ulong,
+                                    ),
                                 ) as *mut *mut Extype_t;
                                 memcpy(
                                     (*yyval.expr).data.select.constant as *mut libc::c_void,
                                     (*sw_1).base as *const libc::c_void,
-                                    (n_0 as libc::c_ulong)
-                                        .wrapping_mul(
-                                            ::std::mem::size_of::<*mut Extype_t>() as libc::c_ulong,
-                                        ),
+                                    (n_0 as libc::c_ulong).wrapping_mul(::std::mem::size_of::<
+                                        *mut Extype_t,
+                                    >(
+                                    )
+                                        as libc::c_ulong),
                                 );
-                                let ref mut fresh124 = *((*yyval.expr).data.select.constant)
-                                    .offset(n_0 as isize);
+                                let ref mut fresh124 =
+                                    *((*yyval.expr).data.select.constant).offset(n_0 as isize);
                                 *fresh124 = 0 as *mut Extype_t;
                             } else {
                                 let ref mut fresh125 = (*yyval.expr).data.select.constant;
@@ -7973,8 +7768,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         31 => {
                             let mut n_1: libc::c_int = 0;
                             if (*expr.swstate).cur >= (*expr.swstate).last {
-                                n_1 = ((*expr.swstate).cur)
-                                    .offset_from((*expr.swstate).base) as libc::c_long
+                                n_1 = ((*expr.swstate).cur).offset_from((*expr.swstate).base)
+                                    as libc::c_long
                                     as libc::c_int;
                                 let ref mut fresh127 = (*expr.swstate).base;
                                 *fresh127 = if !((*expr.swstate).base).is_null() {
@@ -8007,9 +7802,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .offset((2 as libc::c_int * n_1) as isize);
                             }
                             if !((*expr.swstate).cur).is_null() {
-                                let ref mut fresh130 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh130 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh130 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -8020,8 +7814,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 let ref mut fresh131 = (*expr.swstate).cur;
                                 let fresh132 = *fresh131;
                                 *fresh131 = (*fresh131).offset(1);
-                                *fresh132 = &mut (*(*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
+                                *fresh132 = &mut (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
                                     .expr)
                                     .data
                                     .constant
@@ -8042,11 +7835,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         36 => {
-                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                .is_null()
-                            {
-                                yyval
-                                    .expr = if !((*yyvsp.offset(-(2 as libc::c_int) as isize))
+                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null() {
+                                yyval.expr = if !((*yyvsp.offset(-(2 as libc::c_int) as isize))
                                     .expr)
                                     .is_null()
                                 {
@@ -8071,34 +7861,29 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         }
                         38 => {
                             yyval.expr = 0 as *mut Exnode_s;
-                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
-                                == 0 || expr.declare != 0
+                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0 == 0
+                                || expr.declare != 0
                             {
-                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .type_0 = expr.declare as libc::c_long;
+                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0 =
+                                    expr.declare as libc::c_long;
                             }
-                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                .is_null()
+                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null()
                                 && (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).op
                                     == 293 as libc::c_int
                             {
-                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .lex = 293 as libc::c_int as libc::c_long;
-                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .type_0 = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .type_0 as libc::c_long;
-                                let ref mut fresh133 = (*(*yyvsp
-                                    .offset(-(3 as libc::c_int) as isize))
-                                    .id)
-                                    .value;
+                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).lex =
+                                    293 as libc::c_int as libc::c_long;
+                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0 =
+                                    (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                        as libc::c_long;
+                                let ref mut fresh133 =
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).value;
                                 *fresh133 = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                             } else {
-                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .lex = 275 as libc::c_int as libc::c_long;
-                                let ref mut fresh134 = (*(*yyvsp
-                                    .offset(-(3 as libc::c_int) as isize))
-                                    .id)
-                                    .value;
+                                (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).lex =
+                                    275 as libc::c_int as libc::c_long;
+                                let ref mut fresh134 =
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).value;
                                 *fresh134 = exnewnode(
                                     expr.program,
                                     0 as libc::c_int,
@@ -8107,8 +7892,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as *mut Exnode_t,
                                     0 as *mut Exnode_t,
                                 );
-                                if (*yyvsp.offset(-(1 as libc::c_int) as isize)).integer
-                                    != 0
+                                if (*yyvsp.offset(-(1 as libc::c_int) as isize)).integer != 0
                                     && ((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
                                         .local
                                         .pointer)
@@ -8137,88 +7921,87 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         == 259 as libc::c_int as libc::c_longlong
                                     {
                                         (*disc_0).key = 16 as libc::c_ulong as libc::c_int;
-                                        (*disc_0)
-                                            .size = ::std::mem::size_of::<Extype_t>() as libc::c_ulong
+                                        (*disc_0).size = ::std::mem::size_of::<Extype_t>()
+                                            as libc::c_ulong
                                             as libc::c_int;
                                         let ref mut fresh135 = (*disc_0).comparf;
                                         *fresh135 = ::std::mem::transmute::<
-                                            Option::<
+                                            Option<
                                                 unsafe extern "C" fn(
                                                     *mut Dt_t,
                                                     *mut Extype_t,
                                                     *mut Extype_t,
                                                     *mut Dtdisc_t,
-                                                ) -> libc::c_int,
+                                                )
+                                                    -> libc::c_int,
                                             >,
                                             Dtcompar_f,
-                                        >(
-                                            Some(
-                                                cmpKey
-                                                    as unsafe extern "C" fn(
-                                                        *mut Dt_t,
-                                                        *mut Extype_t,
-                                                        *mut Extype_t,
-                                                        *mut Dtdisc_t,
-                                                    ) -> libc::c_int,
-                                            ),
-                                        );
+                                        >(Some(
+                                            cmpKey
+                                                as unsafe extern "C" fn(
+                                                    *mut Dt_t,
+                                                    *mut Extype_t,
+                                                    *mut Extype_t,
+                                                    *mut Dtdisc_t,
+                                                )
+                                                    -> libc::c_int,
+                                        ));
                                     } else {
                                         (*disc_0).key = 32 as libc::c_ulong as libc::c_int;
                                     }
-                                    let ref mut fresh136 = (*(*yyvsp
-                                        .offset(-(3 as libc::c_int) as isize))
-                                        .id)
-                                        .local
-                                        .pointer;
+                                    let ref mut fresh136 =
+                                        (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
+                                            .local
+                                            .pointer;
                                     *fresh136 = dtopen(disc_0, Dtoset) as *mut libc::c_char;
                                     if (*fresh136).is_null() {
                                         exerror(
-                                            b"%s: cannot initialize associative array\0" as *const u8
+                                            b"%s: cannot initialize associative array\0"
+                                                as *const u8
                                                 as *const libc::c_char,
-                                            ((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).name)
+                                            ((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
+                                                .name)
                                                 .as_mut_ptr(),
                                         );
                                     }
                                     (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
                                         .index_type = (*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                        .integer as libc::c_long;
+                                        .integer
+                                        as libc::c_long;
                                 }
-                                if !((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .is_null()
-                                {
+                                if !((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null() {
                                     if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                                         as libc::c_long
                                         != (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
                                             .type_0
                                     {
-                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                            .type_0 = (*(*yyvsp.offset(-(3 as libc::c_int) as isize))
-                                            .id)
-                                            .type_0 as libc::c_int;
-                                        let ref mut fresh137 = (*(*yyvsp
-                                            .offset(0 as libc::c_int as isize))
-                                            .expr)
-                                            .data
-                                            .operand
-                                            .right;
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 =
+                                            (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
+                                                .type_0
+                                                as libc::c_int;
+                                        let ref mut fresh137 =
+                                            (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                                .data
+                                                .operand
+                                                .right;
                                         *fresh137 = excast(
                                             expr.program,
                                             (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
                                                 .data
                                                 .operand
                                                 .right,
-                                            (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
+                                            (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
+                                                .type_0
                                                 as libc::c_int,
                                             0 as *mut Exnode_t,
                                             0 as libc::c_int,
                                         );
                                     }
-                                    let ref mut fresh138 = (*(*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr)
-                                        .data
-                                        .operand
-                                        .left;
+                                    let ref mut fresh138 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                            .data
+                                            .operand
+                                            .left;
                                     *fresh138 = exnewnode(
                                         expr.program,
                                         275 as libc::c_int,
@@ -8228,22 +8011,18 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         0 as *mut Exnode_t,
                                         0 as *mut Exnode_t,
                                     );
-                                    let ref mut fresh139 = (*(*(*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr)
-                                        .data
-                                        .operand
-                                        .left)
-                                        .data
-                                        .variable
-                                        .symbol;
-                                    *fresh139 = (*yyvsp.offset(-(3 as libc::c_int) as isize))
-                                        .id;
-                                    yyval
-                                        .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
-                                } else if (*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                        .integer == 0
-                                    {
+                                    let ref mut fresh139 =
+                                        (*(*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                            .data
+                                            .operand
+                                            .left)
+                                            .data
+                                            .variable
+                                            .symbol;
+                                    *fresh139 = (*yyvsp.offset(-(3 as libc::c_int) as isize)).id;
+                                    yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                                } else if (*yyvsp.offset(-(1 as libc::c_int) as isize)).integer == 0
+                                {
                                     (*(*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).value)
                                         .data
                                         .value = exzero(
@@ -8267,17 +8046,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         49 => {
-                            yyval
-                                .expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                            yyval.expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             current_block = 16782213842982696595;
                         }
                         50 => {
-                            yyval
-                                .expr = if (*(*yyvsp.offset(0 as libc::c_int as isize))
-                                .expr)
+                            yyval.expr = if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
                                 .type_0 as libc::c_long
-                                == (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id)
-                                    .type_0
+                                == (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id).type_0
                             {
                                 (*yyvsp.offset(0 as libc::c_int as isize)).expr
                             } else {
@@ -8303,12 +8078,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 720742499249991355;
                         }
                         67 | 68 => {
-                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                .type_0 == 263 as libc::c_int
+                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
                             {
-                                let ref mut fresh146 = (*yyvsp
-                                    .offset(-(2 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh146 =
+                                    (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                 *fresh146 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -8317,13 +8091,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 > 258 as libc::c_int)
-                                {
-                                let ref mut fresh147 = (*yyvsp
-                                    .offset(-(2 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                .type_0
+                                > 258 as libc::c_int)
+                            {
+                                let ref mut fresh147 =
+                                    (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                 *fresh147 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
@@ -8335,9 +8108,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                                 == 263 as libc::c_int
                             {
-                                let ref mut fresh148 = (*yyvsp
-                                    .offset(0 as libc::c_int as isize))
-                                    .expr;
+                                let ref mut fresh148 =
+                                    (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 *fresh148 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -8346,13 +8118,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize))
-                                    .expr)
-                                    .type_0 > 258 as libc::c_int)
-                                {
-                                let ref mut fresh149 = (*yyvsp
-                                    .offset(0 as libc::c_int as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                > 258 as libc::c_int)
+                            {
+                                let ref mut fresh149 =
+                                    (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 *fresh149 = excast(
                                     expr.program,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -8371,11 +8141,9 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     expr.program,
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
                                 );
-                                yyval
-                                    .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                                yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                             } else {
-                                yyval
-                                    .expr = exnewnode(
+                                yyval.expr = exnewnode(
                                     expr.program,
                                     ',' as i32,
                                     1 as libc::c_int,
@@ -8395,38 +8163,27 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         72 => {
-                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                .type_0 == 0
-                            {
-                                if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
-                                    == 0
-                                {
-                                    let ref mut fresh150 = (*(*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr)
-                                        .type_0;
+                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0 == 0 {
+                                if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 == 0 {
+                                    let ref mut fresh150 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0;
                                     *fresh150 = 259 as libc::c_int;
-                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                        .type_0 = *fresh150;
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0 =
+                                        *fresh150;
                                 } else {
-                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                        .type_0 = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0;
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0;
                                 }
-                            } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .type_0 == 0
-                                {
-                                (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .type_0 = (*(*yyvsp.offset(-(3 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0;
-                            }
-                            if (*(*yyvsp.offset(-(6 as libc::c_int) as isize)).expr)
-                                .type_0 == 263 as libc::c_int
+                            } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 == 0
                             {
-                                let ref mut fresh151 = (*yyvsp
-                                    .offset(-(6 as libc::c_int) as isize))
-                                    .expr;
+                                (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 =
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0;
+                            }
+                            if (*(*yyvsp.offset(-(6 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
+                            {
+                                let ref mut fresh151 =
+                                    (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr;
                                 *fresh151 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -8435,15 +8192,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(-(6 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(-(6 as libc::c_int) as isize)).expr)
-                                        .type_0 <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh152 = (*yyvsp
-                                    .offset(-(6 as libc::c_int) as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(-(6 as libc::c_int) as isize)).expr)
+                                .type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(6 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh152 =
+                                    (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr;
                                 *fresh152 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr,
@@ -8452,12 +8208,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                .type_0
+                            if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0
                                 != (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                             {
-                                if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                    .type_0 == 263 as libc::c_int
+                                if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0
+                                    == 263 as libc::c_int
                                     || (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                                         == 263 as libc::c_int
                                 {
@@ -8465,13 +8220,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         b"if statement string type mismatch\0" as *const u8
                                             as *const libc::c_char,
                                     );
-                                } else if (*(*yyvsp.offset(-(3 as libc::c_int) as isize))
-                                        .expr)
-                                        .type_0 == 262 as libc::c_int
-                                    {
-                                    let ref mut fresh153 = (*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr;
+                                } else if (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
+                                    .type_0
+                                    == 262 as libc::c_int
+                                {
+                                    let ref mut fresh153 =
+                                        (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                     *fresh153 = excast(
                                         expr.program,
                                         (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -8479,12 +8233,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         0 as *mut Exnode_t,
                                         0 as libc::c_int,
                                     );
-                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0 == 262 as libc::c_int
-                                    {
-                                    let ref mut fresh154 = (*yyvsp
-                                        .offset(-(3 as libc::c_int) as isize))
-                                        .expr;
+                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                    == 262 as libc::c_int
+                                {
+                                    let ref mut fresh154 =
+                                        (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr;
                                     *fresh154 = excast(
                                         expr.program,
                                         (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr,
@@ -8501,17 +8254,16 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .data
                                     .constant
                                     .value
-                                    .integer != 0
+                                    .integer
+                                    != 0
                                 {
-                                    yyval
-                                        .expr = (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr;
+                                    yyval.expr = (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr;
                                     exfreenode(
                                         expr.program,
                                         (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                     );
                                 } else {
-                                    yyval
-                                        .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                                    yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                     exfreenode(
                                         expr.program,
                                         (*yyvsp.offset(-(3 as libc::c_int) as isize)).expr,
@@ -8522,13 +8274,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr,
                                 );
                             } else {
-                                yyval
-                                    .expr = exnewnode(
+                                yyval.expr = exnewnode(
                                     expr.program,
                                     '?' as i32,
                                     1 as libc::c_int,
-                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr)
-                                        .type_0,
+                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).expr).type_0,
                                     (*yyvsp.offset(-(6 as libc::c_int) as isize)).expr,
                                     exnewnode(
                                         expr.program,
@@ -8556,8 +8306,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         .as_mut_ptr(),
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 '#' as i32,
                                 0 as libc::c_int,
@@ -8573,9 +8322,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                                 == 263 as libc::c_int
                             {
-                                let ref mut fresh155 = (*yyvsp
-                                    .offset(0 as libc::c_int as isize))
-                                    .expr;
+                                let ref mut fresh155 =
+                                    (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 *fresh155 = exnewnode(
                                     expr.program,
                                     312 as libc::c_int,
@@ -8584,15 +8332,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                     0 as *mut Exnode_t,
                                 );
-                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize))
-                                    .expr)
-                                    .type_0 >= 259 as libc::c_int
-                                    && (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
-                                        <= 261 as libc::c_int)
-                                {
-                                let ref mut fresh156 = (*yyvsp
-                                    .offset(0 as libc::c_int as isize))
-                                    .expr;
+                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
+                            {
+                                let ref mut fresh156 =
+                                    (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 *fresh156 = excast(
                                     expr.program,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -8611,29 +8357,23 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         78 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 266 as libc::c_int,
                                 0 as libc::c_int,
-                                T(
-                                    (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0,
-                                ),
+                                T((*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0),
                                 (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                 0 as *mut Exnode_t,
                             );
                             current_block = 16782213842982696595;
                         }
                         79 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 267 as libc::c_int,
                                 1 as libc::c_int,
-                                T(
-                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
-                                        as libc::c_int,
-                                ),
+                                T((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
+                                    as libc::c_int),
                                 call(
                                     0 as *mut Exref_t,
                                     (*yyvsp.offset(-(3 as libc::c_int) as isize)).id,
@@ -8644,15 +8384,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         80 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 279 as libc::c_int,
                                 1 as libc::c_int,
-                                T(
-                                    (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
-                                        as libc::c_int,
-                                ),
+                                T((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).type_0
+                                    as libc::c_int),
                                 call(
                                     0 as *mut Exref_t,
                                     (*yyvsp.offset(-(3 as libc::c_int) as isize)).id,
@@ -8663,8 +8400,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         81 => {
-                            yyval
-                                .expr = exnewsub(
+                            yyval.expr = exnewsub(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                                 280 as libc::c_int,
@@ -8672,8 +8408,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         82 => {
-                            yyval
-                                .expr = exnewsub(
+                            yyval.expr = exnewsub(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                                 302 as libc::c_int,
@@ -8681,16 +8416,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         83 => {
-                            yyval
-                                .expr = exnewsubstr(
+                            yyval.expr = exnewsubstr(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                             );
                             current_block = 16782213842982696595;
                         }
                         84 => {
-                            yyval
-                                .expr = exnewsplit(
+                            yyval.expr = exnewsplit(
                                 expr.program,
                                 (*(*yyvsp.offset(-(5 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -8701,8 +8434,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         85 => {
-                            yyval
-                                .expr = exnewsplit(
+                            yyval.expr = exnewsplit(
                                 expr.program,
                                 (*(*yyvsp.offset(-(7 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -8713,14 +8445,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         86 => {
-                            if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .type_0 >= 259 as libc::c_int
-                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0 <= 261 as libc::c_int)
+                            if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
                             {
-                                let ref mut fresh158 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh158 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh158 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -8729,8 +8460,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 277 as libc::c_int,
                                 1 as libc::c_int,
@@ -8741,8 +8471,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         87 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 295 as libc::c_int,
                                 0 as libc::c_int,
@@ -8753,8 +8482,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         88 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 300 as libc::c_int,
                                 0 as libc::c_int,
@@ -8765,14 +8493,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         89 => {
-                            if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .type_0 >= 259 as libc::c_int
-                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0 <= 261 as libc::c_int)
+                            if !((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                >= 259 as libc::c_int
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    <= 261 as libc::c_int)
                             {
-                                let ref mut fresh159 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
+                                let ref mut fresh159 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                                 *fresh159 = excast(
                                     expr.program,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -8781,8 +8508,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as libc::c_int,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 300 as libc::c_int,
                                 1 as libc::c_int,
@@ -8793,8 +8519,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         90 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 269 as libc::c_int,
                                 1 as libc::c_int,
@@ -8808,8 +8533,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         91 => {
-                            yyval
-                                .expr = exprint(
+                            yyval.expr = exprint(
                                 expr.program,
                                 (*yyvsp.offset(-(3 as libc::c_int) as isize)).id,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -8817,8 +8541,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         92 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -8828,32 +8551,27 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
+                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null()
                                 && (*(*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .left)
-                                    .type_0 == 259 as libc::c_int
+                                    .type_0
+                                    == 259 as libc::c_int
                             {
                                 let ref mut fresh161 = (*yyval.expr).data.print.descriptor;
-                                *fresh161 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
+                                *fresh161 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .left;
-                                let ref mut fresh162 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
-                                *fresh162 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
+                                let ref mut fresh162 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                                *fresh162 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .right;
                             } else {
-                                match (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .index
-                                {
+                                match (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).index {
                                     294 => {
                                         let ref mut fresh163 = (*yyval.expr).data.print.descriptor;
                                         *fresh163 = exnewnode(
@@ -8894,15 +8612,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 }
                             }
                             let ref mut fresh166 = (*yyval.expr).data.print.args;
-                            *fresh166 = preprint(
-                                (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
-                            );
+                            *fresh166 =
+                                preprint((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr);
                             current_block = 16782213842982696595;
                         }
                         93 => {
                             let mut x_1: *mut Exnode_t = 0 as *mut Exnode_t;
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).index
                                     as libc::c_int,
@@ -8912,32 +8628,27 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
+                            if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null()
                                 && (*(*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .left)
-                                    .type_0 == 259 as libc::c_int
+                                    .type_0
+                                    == 259 as libc::c_int
                             {
                                 let ref mut fresh167 = (*yyval.expr).data.scan.descriptor;
-                                *fresh167 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
+                                *fresh167 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .left;
-                                let ref mut fresh168 = (*yyvsp
-                                    .offset(-(1 as libc::c_int) as isize))
-                                    .expr;
-                                *fresh168 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .expr)
+                                let ref mut fresh168 =
+                                    (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                                *fresh168 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
                                     .right;
                             } else {
-                                match (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id)
-                                    .index
-                                {
+                                match (*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).index {
                                     297 => {
                                         let ref mut fresh169 = (*yyval.expr).data.scan.descriptor;
                                         *fresh169 = 0 as *mut Exnode_t;
@@ -8945,23 +8656,27 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     301 => {
                                         if !((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                             .is_null()
-                                            && (*(*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
+                                            && (*(*(*yyvsp.offset(-(1 as libc::c_int) as isize))
+                                                .expr)
                                                 .data
                                                 .operand
                                                 .left)
-                                                .type_0 == 263 as libc::c_int
+                                                .type_0
+                                                == 263 as libc::c_int
                                         {
-                                            let ref mut fresh170 = (*yyval.expr).data.scan.descriptor;
-                                            *fresh170 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                                .expr)
+                                            let ref mut fresh170 =
+                                                (*yyval.expr).data.scan.descriptor;
+                                            *fresh170 = (*(*yyvsp
+                                                .offset(-(1 as libc::c_int) as isize))
+                                            .expr)
                                                 .data
                                                 .operand
                                                 .left;
-                                            let ref mut fresh171 = (*yyvsp
+                                            let ref mut fresh171 =
+                                                (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                                            *fresh171 = (*(*yyvsp
                                                 .offset(-(1 as libc::c_int) as isize))
-                                                .expr;
-                                            *fresh171 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                                .expr)
+                                            .expr)
                                                 .data
                                                 .operand
                                                 .right;
@@ -8969,7 +8684,9 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                             exerror(
                                                 b"%s: string argument expected\0" as *const u8
                                                     as *const libc::c_char,
-                                                ((*(*yyvsp.offset(-(3 as libc::c_int) as isize)).id).name)
+                                                ((*(*yyvsp.offset(-(3 as libc::c_int) as isize))
+                                                    .id)
+                                                    .name)
                                                     .as_mut_ptr(),
                                             );
                                         }
@@ -8977,8 +8694,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     _ => {}
                                 }
                             }
-                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .is_null()
+                            if ((*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).is_null()
                                 || ((*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                     .data
                                     .operand
@@ -8988,7 +8704,8 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     .data
                                     .operand
                                     .left)
-                                    .type_0 != 263 as libc::c_int
+                                    .type_0
+                                    != 263 as libc::c_int
                             {
                                 exerror(
                                     b"%s: format argument expected\0" as *const u8
@@ -8998,14 +8715,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 );
                             }
                             let ref mut fresh172 = (*yyval.expr).data.scan.format;
-                            *fresh172 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                .expr)
+                            *fresh172 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                 .data
                                 .operand
                                 .left;
                             let ref mut fresh173 = (*yyval.expr).data.scan.args;
-                            *fresh173 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                .expr)
+                            *fresh173 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                 .data
                                 .operand
                                 .right;
@@ -9026,9 +8741,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         94 => {
-                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                .is_null()
-                            {
+                            if !((*yyvsp.offset(0 as libc::c_int as isize)).expr).is_null() {
                                 if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).op
                                     == 283 as libc::c_int
                                     && ((*(*expr.program).disc).setf).is_none()
@@ -9044,27 +8757,26 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                             .as_mut_ptr(),
                                     );
                                 } else {
-                                    if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                        .type_0 == 0
+                                    if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                        == 0
                                     {
                                         (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                            .type_0 = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                            .type_0 = (*(*yyvsp.offset(0 as libc::c_int as isize))
+                                            .expr)
                                             .type_0;
                                     } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                        .type_0
+                                        != (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
                                             .type_0
-                                            != (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                                .type_0
-                                        {
-                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                            .type_0 = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                            .expr)
-                                            .type_0;
-                                        let ref mut fresh175 = (*(*yyvsp
-                                            .offset(0 as libc::c_int as isize))
-                                            .expr)
-                                            .data
-                                            .operand
-                                            .right;
+                                    {
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 =
+                                            (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
+                                                .type_0;
+                                        let ref mut fresh175 =
+                                            (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                                .data
+                                                .operand
+                                                .right;
                                         *fresh175 = excast(
                                             expr.program,
                                             (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
@@ -9077,16 +8789,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                             0 as libc::c_int,
                                         );
                                     }
-                                    let ref mut fresh176 = (*(*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr)
-                                        .data
-                                        .operand
-                                        .left;
-                                    *fresh176 = (*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                        .expr;
-                                    yyval
-                                        .expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
+                                    let ref mut fresh176 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                                            .data
+                                            .operand
+                                            .left;
+                                    *fresh176 = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                                    yyval.expr = (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                 }
                             }
                             current_block = 16782213842982696595;
@@ -9104,12 +8813,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         .as_mut_ptr(),
                                 );
                             }
-                            if (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                .index_type > 0 as libc::c_int as libc::c_long
-                                && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                    .type_0 as libc::c_long
-                                    != (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                        .index_type
+                            if (*(*yyvsp.offset(0 as libc::c_int as isize)).id).index_type
+                                > 0 as libc::c_int as libc::c_long
+                                && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
+                                    as libc::c_long
+                                    != (*(*yyvsp.offset(0 as libc::c_int as isize)).id).index_type
                             {
                                 exerror(
                                     b"%s indices must have type %s, not %s\0" as *const u8
@@ -9123,12 +8831,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     ),
                                     extypename(
                                         expr.program,
-                                        (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0,
+                                        (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                            .type_0,
                                     ),
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 331 as libc::c_int,
                                 0 as libc::c_int,
@@ -9139,8 +8847,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             let ref mut fresh177 = (*yyval.expr).data.variable.symbol;
                             *fresh177 = (*yyvsp.offset(0 as libc::c_int as isize)).id;
                             let ref mut fresh178 = (*yyval.expr).data.variable.index;
-                            *fresh178 = (*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .expr;
+                            *fresh178 = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                             current_block = 16782213842982696595;
                         }
                         95 | 98 => {
@@ -9152,8 +8859,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         as *const libc::c_char,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).op,
                                 0 as libc::c_int,
@@ -9165,21 +8871,19 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         96 | 99 => {
-                            if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                .type_0 == 263 as libc::c_int
+                            if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                == 263 as libc::c_int
                             {
                                 exerror(
                                     b"++ and -- invalid for string variables\0" as *const u8
                                         as *const libc::c_char,
                                 );
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*yyvsp.offset(0 as libc::c_int as isize)).op,
                                 0 as libc::c_int,
-                                (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0,
+                                (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
                                 0 as *mut Exnode_t,
                             );
@@ -9187,8 +8891,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         103 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 271 as libc::c_int,
                                 0 as libc::c_int,
@@ -9205,16 +8908,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         .as_mut_ptr(),
                                 );
                             } else {
-                                (*yyval.expr)
-                                    .data
-                                    .constant
-                                    .value = (Some(
+                                (*yyval.expr).data.constant.value = (Some(
                                     ((*(*expr.program).disc).reff)
                                         .expect("non-null function pointer"),
                                 ))
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                .expect("non-null function pointer")(
                                     expr.program,
                                     yyval.expr,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).id,
@@ -9227,8 +8925,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         104 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 271 as libc::c_int,
                                 0 as libc::c_int,
@@ -9236,17 +8933,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            (*yyval.expr)
-                                .data
-                                .constant
-                                .value
-                                .floating = (*yyvsp.offset(0 as libc::c_int as isize))
-                                .floating;
+                            (*yyval.expr).data.constant.value.floating =
+                                (*yyvsp.offset(0 as libc::c_int as isize)).floating;
                             current_block = 16782213842982696595;
                         }
                         105 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 271 as libc::c_int,
                                 0 as libc::c_int,
@@ -9254,17 +8946,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            (*yyval.expr)
-                                .data
-                                .constant
-                                .value
-                                .integer = (*yyvsp.offset(0 as libc::c_int as isize))
-                                .integer;
+                            (*yyval.expr).data.constant.value.integer =
+                                (*yyvsp.offset(0 as libc::c_int as isize)).integer;
                             current_block = 16782213842982696595;
                         }
                         106 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 271 as libc::c_int,
                                 0 as libc::c_int,
@@ -9272,18 +8959,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            let ref mut fresh179 = (*yyval.expr)
-                                .data
-                                .constant
-                                .value
-                                .string;
-                            *fresh179 = (*yyvsp.offset(0 as libc::c_int as isize))
-                                .string;
+                            let ref mut fresh179 = (*yyval.expr).data.constant.value.string;
+                            *fresh179 = (*yyvsp.offset(0 as libc::c_int as isize)).string;
                             current_block = 16782213842982696595;
                         }
                         107 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 271 as libc::c_int,
                                 0 as libc::c_int,
@@ -9291,17 +8972,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            (*yyval.expr)
-                                .data
-                                .constant
-                                .value
-                                .integer = (*yyvsp.offset(0 as libc::c_int as isize))
-                                .integer;
+                            (*yyval.expr).data.constant.value.integer =
+                                (*yyvsp.offset(0 as libc::c_int as isize)).integer;
                             current_block = 16782213842982696595;
                         }
                         113 => {
-                            yyval
-                                .expr = makeVar(
+                            yyval.expr = makeVar(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).id,
                                 0 as *mut Exnode_t,
@@ -9326,12 +9002,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             let ref mut fresh181 = (*n_2).data.variable.reference;
                             *fresh181 = 0 as *mut Exref_t;
                             let ref mut fresh182 = (*n_2).data.variable.index;
-                            *fresh182 = (*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                .expr;
+                            *fresh182 = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             if (*fresh182 == 0 as *mut Exnode_t) as libc::c_int
                                 != ((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id)
                                     .local
-                                    .pointer == 0 as *mut libc::c_char) as libc::c_int
+                                    .pointer
+                                    == 0 as *mut libc::c_char)
+                                    as libc::c_int
                             {
                                 exerror(
                                     b"%s: is%s an array\0" as *const u8 as *const libc::c_char,
@@ -9352,11 +9029,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 .local
                                 .pointer)
                                 .is_null()
-                                && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id)
-                                    .index_type > 0 as libc::c_int as libc::c_long
+                                && (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id).index_type
+                                    > 0 as libc::c_int as libc::c_long
                             {
-                                if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
-                                    .type_0 as libc::c_long
+                                if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0
+                                    as libc::c_long
                                     != (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id)
                                         .index_type
                                 {
@@ -9368,18 +9045,18 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         extypename(
                                             expr.program,
                                             (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id)
-                                                .index_type as libc::c_int,
+                                                .index_type
+                                                as libc::c_int,
                                         ),
                                         extypename(
                                             expr.program,
-                                            (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr).type_0,
+                                            (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).expr)
+                                                .type_0,
                                         ),
                                     );
                                 }
                             }
-                            if !((*yyvsp.offset(0 as libc::c_int as isize)).reference)
-                                .is_null()
-                            {
+                            if !((*yyvsp.offset(0 as libc::c_int as isize)).reference).is_null() {
                                 let ref mut fresh183 = (*n_2).data.variable.dyna;
                                 *fresh183 = exnewnode(
                                     expr.program,
@@ -9389,8 +9066,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     0 as *mut Exnode_t,
                                     0 as *mut Exnode_t,
                                 );
-                                yyval
-                                    .expr = makeVar(
+                                yyval.expr = makeVar(
                                     expr.program,
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).id,
                                     (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr,
@@ -9403,8 +9079,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         115 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 283 as libc::c_int,
                                 0 as libc::c_int,
@@ -9441,15 +9116,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         118 => {
                             if (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id).type_0
                                 >= 259 as libc::c_int as libc::c_long
-                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id)
-                                    .type_0 <= 261 as libc::c_int as libc::c_long
+                                && (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id).type_0
+                                    <= 261 as libc::c_int as libc::c_long
                             {
                                 yyval.integer = 259 as libc::c_int as libc::c_longlong;
                             } else {
-                                yyval
-                                    .integer = (*(*yyvsp.offset(-(1 as libc::c_int) as isize))
-                                    .id)
-                                    .type_0 as libc::c_longlong;
+                                yyval.integer = (*(*yyvsp.offset(-(1 as libc::c_int) as isize)).id)
+                                    .type_0
+                                    as libc::c_longlong;
                             }
                             current_block = 16782213842982696595;
                         }
@@ -9458,8 +9132,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         120 => {
-                            yyval
-                                .expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
+                            yyval.expr = (*yyvsp.offset(-(1 as libc::c_int) as isize)).expr;
                             current_block = 16782213842982696595;
                         }
                         121 => {
@@ -9467,20 +9140,17 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         122 => {
-                            yyval
-                                .expr = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
+                            yyval.expr = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
                                 .data
                                 .operand
                                 .left;
-                            let ref mut fresh188 = (*(*yyvsp
-                                .offset(0 as libc::c_int as isize))
+                            let ref mut fresh188 = (*(*yyvsp.offset(0 as libc::c_int as isize))
                                 .expr)
                                 .data
                                 .operand
                                 .right;
                             *fresh188 = 0 as *mut Exnode_t;
-                            let ref mut fresh189 = (*(*yyvsp
-                                .offset(0 as libc::c_int as isize))
+                            let ref mut fresh189 = (*(*yyvsp.offset(0 as libc::c_int as isize))
                                 .expr)
                                 .data
                                 .operand
@@ -9493,8 +9163,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         123 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 ',' as i32,
                                 1 as libc::c_int,
@@ -9514,26 +9183,23 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         124 => {
-                            let ref mut fresh191 = (*(*(*yyvsp
-                                .offset(-(2 as libc::c_int) as isize))
-                                .expr)
-                                .data
-                                .operand
-                                .right)
-                                .data
-                                .operand
-                                .right;
+                            let ref mut fresh191 =
+                                (*(*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                    .data
+                                    .operand
+                                    .right)
+                                    .data
+                                    .operand
+                                    .right;
                             *fresh191 = exnewnode(
                                 expr.program,
                                 ',' as i32,
                                 1 as libc::c_int,
-                                (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                    .type_0,
+                                (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0,
                                 (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                 0 as *mut Exnode_t,
                             );
-                            let ref mut fresh192 = (*(*yyvsp
-                                .offset(-(2 as libc::c_int) as isize))
+                            let ref mut fresh192 = (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
                                 .expr)
                                 .data
                                 .operand
@@ -9547,18 +9213,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         }
                         126 => {
                             yyval.expr = 0 as *mut Exnode_s;
-                            if (*(*yyvsp.offset(0 as libc::c_int as isize)).id).type_0
-                                != 0
-                            {
-                                exerror(
-                                    b"(void) expected\0" as *const u8 as *const libc::c_char,
-                                );
+                            if (*(*yyvsp.offset(0 as libc::c_int as isize)).id).type_0 != 0 {
+                                exerror(b"(void) expected\0" as *const u8 as *const libc::c_char);
                             }
                             current_block = 16782213842982696595;
                         }
                         128 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 ',' as i32,
                                 1 as libc::c_int,
@@ -9571,8 +9232,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                         129 => {
                             let mut x_2: *mut Exnode_t = 0 as *mut Exnode_t;
                             let mut y: *mut Exnode_t = 0 as *mut Exnode_t;
-                            yyval
-                                .expr = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
+                            yyval.expr = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                             x_2 = (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                             loop {
                                 y = (*x_2).data.operand.right;
@@ -9593,14 +9253,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         130 => {
-                            expr
-                                .declare = (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                .type_0 as libc::c_int;
+                            expr.declare = (*(*yyvsp.offset(0 as libc::c_int as isize)).id).type_0
+                                as libc::c_int;
                             current_block = 16782213842982696595;
                         }
                         131 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 283 as libc::c_int,
                                 0 as libc::c_int,
@@ -9611,16 +9269,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             );
                             let ref mut fresh194 = (*yyval.expr).data.variable.symbol;
                             *fresh194 = (*yyvsp.offset(0 as libc::c_int as isize)).id;
-                            (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                .lex = 275 as libc::c_int as libc::c_long;
-                            (*(*yyvsp.offset(0 as libc::c_int as isize)).id)
-                                .type_0 = (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                .id)
-                                .type_0;
-                            let ref mut fresh195 = (*(*yyvsp
-                                .offset(0 as libc::c_int as isize))
-                                .id)
-                                .value;
+                            (*(*yyvsp.offset(0 as libc::c_int as isize)).id).lex =
+                                275 as libc::c_int as libc::c_long;
+                            (*(*yyvsp.offset(0 as libc::c_int as isize)).id).type_0 =
+                                (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).id).type_0;
+                            let ref mut fresh195 =
+                                (*(*yyvsp.offset(0 as libc::c_int as isize)).id).value;
                             *fresh195 = exnewnode(
                                 expr.program,
                                 0 as libc::c_int,
@@ -9629,10 +9283,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 0 as *mut Exnode_t,
                             );
-                            let ref mut fresh196 = (*expr.procedure)
-                                .data
-                                .procedure
-                                .arity;
+                            let ref mut fresh196 = (*expr.procedure).data.procedure.arity;
                             *fresh196 += 1;
                             expr.declare = 0 as libc::c_int;
                             current_block = 16782213842982696595;
@@ -9716,8 +9367,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             current_block = 16782213842982696595;
                         }
                         138 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 '=' as i32,
                                 1 as libc::c_int,
@@ -9725,21 +9375,19 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 0 as *mut Exnode_t,
                                 (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                             );
-                            (*yyval.expr)
-                                .subop = (*yyvsp.offset(-(1 as libc::c_int) as isize)).op;
+                            (*yyval.expr).subop = (*yyvsp.offset(-(1 as libc::c_int) as isize)).op;
                             current_block = 16782213842982696595;
                         }
                         140 => {
                             let mut disc_1: *mut Dtdisc_t = 0 as *mut Dtdisc_t;
                             if !(expr.procedure).is_null() {
                                 exerror(
-                                    b"%s: nested function definitions not supported\0"
-                                        as *const u8 as *const libc::c_char,
+                                    b"%s: nested function definitions not supported\0" as *const u8
+                                        as *const libc::c_char,
                                     ((*expr.id).name).as_mut_ptr(),
                                 );
                             }
-                            expr
-                                .procedure = exnewnode(
+                            expr.procedure = exnewnode(
                                 expr.program,
                                 293 as libc::c_int,
                                 1 as libc::c_int,
@@ -9771,17 +9419,14 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 b"begin\0" as *const u8 as *const libc::c_char,
                             ) != 0
                             {
-                                let ref mut fresh206 = (*expr.procedure)
-                                    .data
-                                    .procedure
-                                    .frame;
+                                let ref mut fresh206 = (*expr.procedure).data.procedure.frame;
                                 *fresh206 = dtopen(disc_1, Dtset);
                                 if (*fresh206).is_null()
                                     || (dtview(
                                         (*expr.procedure).data.procedure.frame,
                                         (*expr.program).symbols,
                                     ))
-                                        .is_null()
+                                    .is_null()
                                 {
                                     exnospace();
                                 }
@@ -9812,8 +9457,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 *fresh210 = 0 as *mut Dt_t;
                             }
                             let ref mut fresh211 = (*yyval.expr).data.operand.left;
-                            *fresh211 = (*yyvsp.offset(-(5 as libc::c_int) as isize))
-                                .expr;
+                            *fresh211 = (*yyvsp.offset(-(5 as libc::c_int) as isize)).expr;
                             let ref mut fresh212 = (*yyval.expr).data.operand.right;
                             *fresh212 = excast(
                                 expr.program,
@@ -9833,8 +9477,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     }
                     match current_block {
                         17643436426743203513 => {
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).op,
                                 1 as libc::c_int,
@@ -9851,24 +9494,17 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).op
                                 == 271 as libc::c_int
                             {
-                                (*yyval.expr)
-                                    .data
-                                    .constant
-                                    .value = exeval(
-                                    expr.program,
-                                    yyval.expr,
-                                    0 as *mut libc::c_void,
-                                );
+                                (*yyval.expr).data.constant.value =
+                                    exeval(expr.program, yyval.expr, 0 as *mut libc::c_void);
                                 (*yyval.expr).binary = 0 as libc::c_int;
                                 (*yyval.expr).op = 271 as libc::c_int;
                                 exfreenode(
                                     expr.program,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                 );
-                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize))
-                                    .expr)
-                                    .type_0 > 258 as libc::c_int)
-                                {
+                            } else if !((*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                > 258 as libc::c_int)
+                            {
                                 checkBinary(
                                     expr.program,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -9890,46 +9526,34 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     }
                     match current_block {
                         7062641858472886451 => {
-                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                .type_0 == 0
-                            {
-                                if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
-                                    == 0
-                                {
-                                    let ref mut fresh140 = (*(*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr)
-                                        .type_0;
+                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0 == 0 {
+                                if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 == 0 {
+                                    let ref mut fresh140 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0;
                                     *fresh140 = if rel != 0 {
                                         263 as libc::c_int
                                     } else {
                                         259 as libc::c_int
                                     };
-                                    (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                        .type_0 = *fresh140;
+                                    (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0 =
+                                        *fresh140;
                                 } else {
-                                    (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                        .type_0 = (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0;
+                                    (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0 =
+                                        (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0;
                                 }
-                            } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .type_0 == 0
-                                {
-                                (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                    .type_0 = (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0;
+                            } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 == 0
+                            {
+                                (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0 =
+                                    (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0;
                             }
-                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                .type_0
+                            if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
                                 != (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                             {
-                                if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
-                                    .type_0 == 263 as libc::c_int
+                                if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr).type_0
+                                    == 263 as libc::c_int
                                 {
-                                    let ref mut fresh141 = (*yyvsp
-                                        .offset(-(2 as libc::c_int) as isize))
-                                        .expr;
+                                    let ref mut fresh141 =
+                                        (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                     *fresh141 = excast(
                                         expr.program,
                                         (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
@@ -9937,12 +9561,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                         0 as libc::c_int,
                                     );
-                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0 == 263 as libc::c_int
-                                    {
-                                    let ref mut fresh142 = (*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr;
+                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                    == 263 as libc::c_int
+                                {
+                                    let ref mut fresh142 =
+                                        (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                     *fresh142 = excast(
                                         expr.program,
                                         (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -9951,13 +9574,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
                                         0 as libc::c_int,
                                     );
-                                } else if (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                        .expr)
-                                        .type_0 == 262 as libc::c_int
-                                    {
-                                    let ref mut fresh143 = (*yyvsp
-                                        .offset(0 as libc::c_int as isize))
-                                        .expr;
+                                } else if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                    .type_0
+                                    == 262 as libc::c_int
+                                {
+                                    let ref mut fresh143 =
+                                        (*yyvsp.offset(0 as libc::c_int as isize)).expr;
                                     *fresh143 = excast(
                                         expr.program,
                                         (*yyvsp.offset(0 as libc::c_int as isize)).expr,
@@ -9965,12 +9587,11 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                         (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
                                         0 as libc::c_int,
                                     );
-                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0 == 262 as libc::c_int
-                                    {
-                                    let ref mut fresh144 = (*yyvsp
-                                        .offset(-(2 as libc::c_int) as isize))
-                                        .expr;
+                                } else if (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                    == 262 as libc::c_int
+                                {
+                                    let ref mut fresh144 =
+                                        (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr;
                                     *fresh144 = excast(
                                         expr.program,
                                         (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
@@ -9981,22 +9602,21 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 }
                             }
                             if rel == 0 {
-                                rel = if (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 == 263 as libc::c_int
+                                rel = if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                    .type_0
+                                    == 263 as libc::c_int
                                 {
                                     263 as libc::c_int
-                                } else if (*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                        .expr)
-                                        .type_0 == 260 as libc::c_int
-                                    {
+                                } else if (*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                    .type_0
+                                    == 260 as libc::c_int
+                                {
                                     260 as libc::c_int
                                 } else {
                                     (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
                                 };
                             }
-                            yyval
-                                .expr = exnewnode(
+                            yyval.expr = exnewnode(
                                 expr.program,
                                 (*yyvsp.offset(-(1 as libc::c_int) as isize)).op,
                                 1 as libc::c_int,
@@ -10010,20 +9630,10 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                 && (*(*yyvsp.offset(0 as libc::c_int as isize)).expr).op
                                     == 271 as libc::c_int
                             {
-                                (*yyval.expr)
-                                    .data
-                                    .constant
-                                    .value = exeval(
-                                    expr.program,
-                                    yyval.expr,
-                                    0 as *mut libc::c_void,
-                                );
+                                (*yyval.expr).data.constant.value =
+                                    exeval(expr.program, yyval.expr, 0 as *mut libc::c_void);
                                 if (*yyval.expr).type_0 == 263 as libc::c_int {
-                                    let ref mut fresh145 = (*yyval.expr)
-                                        .data
-                                        .constant
-                                        .value
-                                        .string;
+                                    let ref mut fresh145 = (*yyval.expr).data.constant.value.string;
                                     *fresh145 = vmstrdup(
                                         (*expr.program).vm,
                                         (*yyval.expr).data.constant.value.string,
@@ -10039,12 +9649,12 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                                     expr.program,
                                     (*yyvsp.offset(0 as libc::c_int as isize)).expr,
                                 );
-                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize))
-                                    .expr)
-                                    .type_0 > 258 as libc::c_int)
-                                    || !((*(*yyvsp.offset(0 as libc::c_int as isize)).expr)
-                                        .type_0 > 258 as libc::c_int)
-                                {
+                            } else if !((*(*yyvsp.offset(-(2 as libc::c_int) as isize)).expr)
+                                .type_0
+                                > 258 as libc::c_int)
+                                || !((*(*yyvsp.offset(0 as libc::c_int as isize)).expr).type_0
+                                    > 258 as libc::c_int)
+                            {
                                 checkBinary(
                                     expr.program,
                                     (*yyvsp.offset(-(2 as libc::c_int) as isize)).expr,
@@ -10061,11 +9671,7 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                             b"%s \0" as *const u8 as *const libc::c_char,
                             b"-> $$ =\0" as *const u8 as *const libc::c_char,
                         );
-                        yy_symbol_print(
-                            sfstderr,
-                            yyr1[yyn as usize] as libc::c_int,
-                            &mut yyval,
-                        );
+                        yy_symbol_print(sfstderr, yyr1[yyn as usize] as libc::c_int, &mut yyval);
                         sfprintf(sfstderr, b"\n\0" as *const u8 as *const libc::c_char);
                     }
                     yyvsp = yyvsp.offset(-(yylen as isize));
@@ -10079,14 +9685,13 @@ pub unsafe extern "C" fn ex_parse() -> libc::c_int {
                     yyn = yyr1[yyn as usize] as libc::c_int;
                     yystate = yypgoto[(yyn - 107 as libc::c_int) as usize] as libc::c_int
                         + *yyssp as libc::c_int;
-                    if 0 as libc::c_int <= yystate && yystate <= 1112 as libc::c_int
-                        && yycheck[yystate as usize] as libc::c_int
-                            == *yyssp as libc::c_int
+                    if 0 as libc::c_int <= yystate
+                        && yystate <= 1112 as libc::c_int
+                        && yycheck[yystate as usize] as libc::c_int == *yyssp as libc::c_int
                     {
                         yystate = yytable[yystate as usize] as libc::c_int;
                     } else {
-                        yystate = yydefgoto[(yyn - 107 as libc::c_int) as usize]
-                            as libc::c_int;
+                        yystate = yydefgoto[(yyn - 107 as libc::c_int) as usize] as libc::c_int;
                     }
                 }
                 _ => {}

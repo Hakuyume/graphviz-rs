@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -131,10 +139,7 @@ pub unsafe extern "C" fn PQcheck() {
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"fPQ.c\0" as *const u8 as *const libc::c_char,
                 56 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 19],
-                    &[libc::c_char; 19],
-                >(b"void PQcheck(void)\0"))
+                (*::std::mem::transmute::<&[u8; 19], &[libc::c_char; 19]>(b"void PQcheck(void)\0"))
                     .as_ptr(),
             );
         }
@@ -165,7 +170,10 @@ pub unsafe extern "C" fn PQupheap(mut k: libc::c_int) {
 #[no_mangle]
 pub unsafe extern "C" fn PQ_insert(mut np: *mut snode) -> libc::c_int {
     if PQcnt == PQsize {
-        agerr(AGERR, b"Heap overflow\n\0" as *const u8 as *const libc::c_char);
+        agerr(
+            AGERR,
+            b"Heap overflow\n\0" as *const u8 as *const libc::c_char,
+        );
         return 1 as libc::c_int;
     }
     PQcnt += 1;
@@ -217,7 +225,7 @@ pub unsafe extern "C" fn PQremove() -> *mut snode {
         PQcheck();
         return n;
     } else {
-        return 0 as *mut snode
+        return 0 as *mut snode;
     };
 }
 #[no_mangle]

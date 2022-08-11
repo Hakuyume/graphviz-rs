@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -10,11 +18,7 @@ extern "C" {
         _: libc::c_int,
         _: libc::c_ulong,
     ) -> *mut libc::c_void;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn _sfrsrv(_: *mut Sfio_t, _: ssize_t) -> *mut Sfrsrv_t;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn _sfmode(_: *mut Sfio_t, _: libc::c_int, _: libc::c_int) -> libc::c_int;
@@ -88,15 +92,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -104,22 +103,11 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 pub type Sfrsrv_t = _sfrsrv_s;
 #[no_mangle]
 pub unsafe extern "C" fn sfputr(
@@ -148,7 +136,8 @@ pub unsafe extern "C" fn sfputr(
     while *s as libc::c_int != 0 || rc >= 0 as libc::c_int {
         ps = (*f).next;
         p = ((*f).endb).offset_from(ps) as libc::c_long;
-        if p > 0 as libc::c_int as libc::c_long {} else {
+        if p > 0 as libc::c_int as libc::c_long {
+        } else {
             (*f).mode |= 0o100000 as libc::c_uint;
             p = _sfflsbuf(f, -(1 as libc::c_int)) as ssize_t;
             ps = (*f).next;
@@ -157,13 +146,12 @@ pub unsafe extern "C" fn sfputr(
             || (*f).flags as libc::c_int & 0o20000 as libc::c_int != 0
         {
             n = strlen(s) as ssize_t;
-            if p
-                >= n
-                    + (if rc < 0 as libc::c_int {
-                        0 as libc::c_int
-                    } else {
-                        1 as libc::c_int
-                    }) as libc::c_long
+            if p >= n
+                + (if rc < 0 as libc::c_int {
+                    0 as libc::c_int
+                } else {
+                    1 as libc::c_int
+                }) as libc::c_long
             {
                 if n > 0 as libc::c_int as libc::c_long {
                     memcpy(
@@ -202,9 +190,7 @@ pub unsafe extern "C" fn sfputr(
                         );
                     }
                     if rc >= 0 as libc::c_int {
-                        *((*rsrv).data)
-                            .as_mut_ptr()
-                            .offset(n as isize) = rc as libc::c_uchar;
+                        *((*rsrv).data).as_mut_ptr().offset(n as isize) = rc as libc::c_uchar;
                     }
                     (*f).mode |= 0o100000 as libc::c_uint;
                     n = sfwrite(
@@ -251,12 +237,12 @@ pub unsafe extern "C" fn sfputr(
         (*f).mode |= 0o100000 as libc::c_uint;
         _sfflsbuf(f, -(1 as libc::c_int));
     } else if (*f).flags as libc::c_int & 0o40 as libc::c_int != 0
-            && (*f).flags as libc::c_int & 0o4 as libc::c_int == 0
-            && {
-                n = ((*f).next).offset_from((*f).data) as libc::c_long;
-                n > 0 as libc::c_int as libc::c_long
-            }
-        {
+        && (*f).flags as libc::c_int & 0o4 as libc::c_int == 0
+        && {
+            n = ((*f).next).offset_from((*f).data) as libc::c_long;
+            n > 0 as libc::c_int as libc::c_long
+        }
+    {
         if n > w {
             n = w;
         }
@@ -265,9 +251,9 @@ pub unsafe extern "C" fn sfputr(
         (*f).mode |= 0o100000 as libc::c_uint;
         sfwrite(f, (*f).next as *const libc::c_void, n as size_t);
     }
-    if 0 as libc::c_int != 0 {} else {
-        (*f).mode
-            &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
+    if 0 as libc::c_int != 0 {
+    } else {
+        (*f).mode &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
         if (*f).mode == 0o1 as libc::c_int as libc::c_uint {
             let ref mut fresh8 = (*f).endr;
             *fresh8 = (*f).endb;

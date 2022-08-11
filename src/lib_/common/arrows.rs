@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -12,11 +20,7 @@ extern "C" {
     pub type gvtextlayout_engine_s;
     pub type htmllabel_t;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn sqrt(_: libc::c_double) -> libc::c_double;
     fn hypot(_: libc::c_double, _: libc::c_double) -> libc::c_double;
@@ -54,18 +58,8 @@ extern "C" {
     ) -> libc::c_double;
     fn gvrender_set_penwidth(job: *mut GVJ_t, penwidth: libc::c_double);
     fn gvrender_set_style(job: *mut GVJ_t, s: *mut *mut libc::c_char);
-    fn gvrender_ellipse(
-        job: *mut GVJ_t,
-        AF: *mut pointf,
-        n: libc::c_int,
-        filled: libc::c_int,
-    );
-    fn gvrender_polygon(
-        job: *mut GVJ_t,
-        af: *mut pointf,
-        n: libc::c_int,
-        filled: libc::c_int,
-    );
+    fn gvrender_ellipse(job: *mut GVJ_t, AF: *mut pointf, n: libc::c_int, filled: libc::c_int);
+    fn gvrender_polygon(job: *mut GVJ_t, af: *mut pointf, n: libc::c_int, filled: libc::c_int);
     fn gvrender_beziercurve(
         job: *mut GVJ_t,
         AF: *mut pointf,
@@ -77,7 +71,7 @@ extern "C" {
     fn gvrender_polyline(job: *mut GVJ_t, AF: *mut pointf, n: libc::c_int);
     fn bezier_clip(
         inside_context: *mut inside_t,
-        insidefn: Option::<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
+        insidefn: Option<unsafe extern "C" fn(*mut inside_t, pointf) -> bool>,
         sp: *mut pointf,
         left_inside: bool,
     );
@@ -230,9 +224,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -246,25 +238,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -366,7 +351,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -527,16 +513,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -552,18 +532,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -571,16 +545,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -622,9 +589,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -653,13 +619,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -692,26 +653,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -720,29 +673,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -750,8 +695,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -785,7 +730,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -811,9 +756,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -947,7 +890,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -1085,7 +1028,7 @@ pub struct arrowdir_t {
 pub struct arrowtype_t {
     pub type_0: libc::c_int,
     pub lenfact: libc::c_double,
-    pub gen: Option::<
+    pub gen: Option<
         unsafe extern "C" fn(
             *mut GVJ_t,
             pointf,
@@ -1253,24 +1196,21 @@ static mut Arrownames: [arrowname_t; 14] = [
     {
         let mut init = arrowname_t {
             name: b"inv\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            type_0: 1 as libc::c_int
-                | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
+            type_0: 1 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
         };
         init
     },
     {
         let mut init = arrowname_t {
             name: b"vee\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            type_0: 2 as libc::c_int
-                | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
+            type_0: 2 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
         };
         init
     },
     {
         let mut init = arrowname_t {
             name: b"pen\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            type_0: 2 as libc::c_int
-                | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
+            type_0: 2 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
         };
         init
     },
@@ -1291,8 +1231,7 @@ static mut Arrownames: [arrowname_t; 14] = [
     {
         let mut init = arrowname_t {
             name: b"icurve\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            type_0: 7 as libc::c_int
-                | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
+            type_0: 7 as libc::c_int | (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int,
         };
         init
     },
@@ -1498,10 +1437,7 @@ unsafe extern "C" fn arrow_match_shape(
     *flag |= f;
     return rest;
 }
-unsafe extern "C" fn arrow_match_name(
-    mut name: *mut libc::c_char,
-    mut flag: *mut libc::c_int,
-) {
+unsafe extern "C" fn arrow_match_name(mut name: *mut libc::c_char, mut flag: *mut libc::c_int) {
     let mut rest: *mut libc::c_char = name;
     let mut next: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut i: libc::c_int = 0;
@@ -1515,8 +1451,7 @@ unsafe extern "C" fn arrow_match_name(
         if f == 0 as libc::c_int {
             agerr(
                 AGWARN,
-                b"Arrow type \"%s\" unknown - ignoring\n\0" as *const u8
-                    as *const libc::c_char,
+                b"Arrow type \"%s\" unknown - ignoring\n\0" as *const u8 as *const libc::c_char,
                 next,
             );
             return;
@@ -1524,9 +1459,7 @@ unsafe extern "C" fn arrow_match_name(
         if f == 8 as libc::c_int && i == 4 as libc::c_int - 1 as libc::c_int {
             f = 0 as libc::c_int;
         }
-        if f == 8 as libc::c_int && i == 0 as libc::c_int
-            && *rest as libc::c_int == '\0' as i32
-        {
+        if f == 8 as libc::c_int && i == 0 as libc::c_int && *rest as libc::c_int == '\0' as i32 {
             f = 0 as libc::c_int;
         }
         if f != 0 as libc::c_int {
@@ -1550,12 +1483,10 @@ pub unsafe extern "C" fn arrow_flags(
     } else {
         0 as libc::c_int
     };
-    if !E_dir.is_null()
-        && {
-            attr = agxget(e as *mut libc::c_void, E_dir);
-            *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
-        }
-    {
+    if !E_dir.is_null() && {
+        attr = agxget(e as *mut libc::c_void, E_dir);
+        *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
+    } {
         arrowdir = Arrowdirs.as_mut_ptr();
         while !((*arrowdir).dir).is_null() {
             if strcmp(attr, (*arrowdir).dir) == 0 {
@@ -1574,12 +1505,10 @@ pub unsafe extern "C" fn arrow_flags(
             b"arrowhead\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             0 as *const libc::c_char,
         );
-        if !arrowhead.is_null()
-            && {
-                attr = agxget(e as *mut libc::c_void, arrowhead);
-                *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
-            }
-        {
+        if !arrowhead.is_null() && {
+            attr = agxget(e as *mut libc::c_void, arrowhead);
+            *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
+        } {
             arrow_match_name(attr, eflag);
         }
     }
@@ -1590,12 +1519,10 @@ pub unsafe extern "C" fn arrow_flags(
             b"arrowtail\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             0 as *const libc::c_char,
         );
-        if !arrowtail.is_null()
-            && {
-                attr = agxget(e as *mut libc::c_void, arrowtail);
-                *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
-            }
-        {
+        if !arrowtail.is_null() && {
+            attr = agxget(e as *mut libc::c_void, arrowtail);
+            *attr.offset(0 as libc::c_int as isize) as libc::c_int != 0
+        } {
             arrow_match_name(attr, sflag);
         }
     }
@@ -1605,31 +1532,25 @@ pub unsafe extern "C" fn arrow_flags(
         let mut e0: libc::c_int = 0;
         f = agedge(
             agraphof(
-                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
                 })
-                    .node as *mut libc::c_void,
+                .node as *mut libc::c_void,
             ),
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 2 as libc::c_int
-            {
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node,
-            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                == 3 as libc::c_int
-            {
+            .node,
+            (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                 e
             } else {
                 e.offset(1 as libc::c_int as isize)
             })
-                .node,
+            .node,
             0 as *mut libc::c_char,
             0 as libc::c_int,
         );
@@ -1638,10 +1559,7 @@ pub unsafe extern "C" fn arrow_flags(
         *sflag = *sflag | e0;
     }
 }
-unsafe extern "C" fn arrow_length(
-    mut e: *mut edge_t,
-    mut flag: libc::c_int,
-) -> libc::c_double {
+unsafe extern "C" fn arrow_length(mut e: *mut edge_t, mut flag: libc::c_int) -> libc::c_double {
     let mut lenfact: libc::c_double = 0.0f64;
     let mut f: libc::c_int = 0;
     let mut i: libc::c_int = 0;
@@ -1651,9 +1569,8 @@ unsafe extern "C" fn arrow_length(
             & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int;
         let mut j: size_t = 0 as libc::c_int as size_t;
         while j < Arrowtypes_size {
-            let mut arrowtype: *const arrowtype_t = &*Arrowtypes
-                .as_ptr()
-                .offset(j as isize) as *const arrowtype_t;
+            let mut arrowtype: *const arrowtype_t =
+                &*Arrowtypes.as_ptr().offset(j as isize) as *const arrowtype_t;
             if f == (*arrowtype).type_0 {
                 lenfact += (*arrowtype).lenfact;
                 break;
@@ -1663,8 +1580,7 @@ unsafe extern "C" fn arrow_length(
         }
         i += 1;
     }
-    return 10.0f64 * lenfact
-        * late_double(e as *mut libc::c_void, E_arrowsz, 1.0f64, 0.0f64);
+    return 10.0f64 * lenfact * late_double(e as *mut libc::c_void, E_arrowsz, 1.0f64, 0.0f64);
 }
 unsafe extern "C" fn inside(mut inside_context: *mut inside_t, mut p: pointf) -> bool {
     return (p.x - (*((*inside_context).a.p).offset(0 as libc::c_int as isize)).x)
@@ -1696,14 +1612,12 @@ pub unsafe extern "C" fn arrowEndClip(
     (*spl).eflag = eflag;
     (*spl).ep = *ps.offset((endp + 3 as libc::c_int) as isize);
     if endp > startp
-        && ((*ps.offset(endp as isize)).x
-            - (*ps.offset((endp + 3 as libc::c_int) as isize)).x)
-            * ((*ps.offset(endp as isize)).x
-                - (*ps.offset((endp + 3 as libc::c_int) as isize)).x)
-            + ((*ps.offset(endp as isize)).y
-                - (*ps.offset((endp + 3 as libc::c_int) as isize)).y)
+        && ((*ps.offset(endp as isize)).x - (*ps.offset((endp + 3 as libc::c_int) as isize)).x)
+            * ((*ps.offset(endp as isize)).x - (*ps.offset((endp + 3 as libc::c_int) as isize)).x)
+            + ((*ps.offset(endp as isize)).y - (*ps.offset((endp + 3 as libc::c_int) as isize)).y)
                 * ((*ps.offset(endp as isize)).y
-                    - (*ps.offset((endp + 3 as libc::c_int) as isize)).y) < elen2
+                    - (*ps.offset((endp + 3 as libc::c_int) as isize)).y)
+            < elen2
     {
         endp -= 3 as libc::c_int;
     }
@@ -1711,9 +1625,7 @@ pub unsafe extern "C" fn arrowEndClip(
     sp[2 as libc::c_int as usize] = *ps.offset((endp + 1 as libc::c_int) as isize);
     sp[1 as libc::c_int as usize] = *ps.offset((endp + 2 as libc::c_int) as isize);
     sp[0 as libc::c_int as usize] = (*spl).ep;
-    inside_context
-        .a
-        .p = &mut *sp.as_mut_ptr().offset(0 as libc::c_int as isize) as *mut pointf;
+    inside_context.a.p = &mut *sp.as_mut_ptr().offset(0 as libc::c_int as isize) as *mut pointf;
     inside_context.a.r = &mut elen2;
     bezier_clip(
         &mut inside_context,
@@ -1750,14 +1662,14 @@ pub unsafe extern "C" fn arrowStartClip(
     (*spl).sflag = sflag;
     (*spl).sp = *ps.offset(startp as isize);
     if endp > startp
-        && ((*ps.offset(startp as isize)).x
-            - (*ps.offset((startp + 3 as libc::c_int) as isize)).x)
+        && ((*ps.offset(startp as isize)).x - (*ps.offset((startp + 3 as libc::c_int) as isize)).x)
             * ((*ps.offset(startp as isize)).x
                 - (*ps.offset((startp + 3 as libc::c_int) as isize)).x)
             + ((*ps.offset(startp as isize)).y
                 - (*ps.offset((startp + 3 as libc::c_int) as isize)).y)
                 * ((*ps.offset(startp as isize)).y
-                    - (*ps.offset((startp + 3 as libc::c_int) as isize)).y) < slen2
+                    - (*ps.offset((startp + 3 as libc::c_int) as isize)).y)
+            < slen2
     {
         startp += 3 as libc::c_int;
     }
@@ -1765,9 +1677,7 @@ pub unsafe extern "C" fn arrowStartClip(
     sp[1 as libc::c_int as usize] = *ps.offset((startp + 2 as libc::c_int) as isize);
     sp[2 as libc::c_int as usize] = *ps.offset((startp + 1 as libc::c_int) as isize);
     sp[3 as libc::c_int as usize] = (*spl).sp;
-    inside_context
-        .a
-        .p = &mut *sp.as_mut_ptr().offset(3 as libc::c_int as isize) as *mut pointf;
+    inside_context.a.p = &mut *sp.as_mut_ptr().offset(3 as libc::c_int as isize) as *mut pointf;
     inside_context.a.r = &mut slen2;
     bezier_clip(
         &mut inside_context,
@@ -1948,24 +1858,21 @@ unsafe extern "C" fn arrow_type_normal(
             job,
             a.as_mut_ptr(),
             3 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     } else if flag & (1 as libc::c_int) << 4 as libc::c_int + 3 as libc::c_int != 0 {
         gvrender_polygon(
             job,
             &mut *a.as_mut_ptr().offset(2 as libc::c_int as isize),
             3 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     } else {
         gvrender_polygon(
             job,
             &mut *a.as_mut_ptr().offset(1 as libc::c_int as isize),
             3 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     };
 }
@@ -1994,8 +1901,7 @@ unsafe extern "C" fn arrow_type_crow(
     if penwidth > 1 as libc::c_int as libc::c_double
         && flag & (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int != 0
     {
-        shaftwidth = 0.05f64 * (penwidth - 1 as libc::c_int as libc::c_double)
-            / arrowsize;
+        shaftwidth = 0.05f64 * (penwidth - 1 as libc::c_int as libc::c_double) / arrowsize;
     }
     v.x = -u.y * arrowwidth;
     v.y = u.x * arrowwidth;
@@ -2145,8 +2051,7 @@ unsafe extern "C" fn arrow_type_box(
         job,
         a.as_mut_ptr(),
         4 as libc::c_int,
-        (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-            as libc::c_int,
+        (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
     );
     a[0 as libc::c_int as usize] = m;
     a[1 as libc::c_int as usize] = q;
@@ -2182,24 +2087,21 @@ unsafe extern "C" fn arrow_type_diamond(
             job,
             &mut *a.as_mut_ptr().offset(2 as libc::c_int as isize),
             3 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     } else if flag & (1 as libc::c_int) << 4 as libc::c_int + 3 as libc::c_int != 0 {
         gvrender_polygon(
             job,
             a.as_mut_ptr(),
             3 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     } else {
         gvrender_polygon(
             job,
             a.as_mut_ptr(),
             4 as libc::c_int,
-            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-                as libc::c_int,
+            (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
         );
     };
 }
@@ -2222,8 +2124,7 @@ unsafe extern "C" fn arrow_type_dot(
         job,
         AF.as_mut_ptr(),
         2 as libc::c_int,
-        (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0)
-            as libc::c_int,
+        (flag & (1 as libc::c_int) << 4 as libc::c_int + 0 as libc::c_int == 0) as libc::c_int,
     );
 }
 unsafe extern "C" fn arrow_type_curve(
@@ -2234,8 +2135,7 @@ unsafe extern "C" fn arrow_type_curve(
     mut penwidth: libc::c_double,
     mut flag: libc::c_int,
 ) {
-    let mut arrowwidth: libc::c_double = if penwidth > 4 as libc::c_int as libc::c_double
-    {
+    let mut arrowwidth: libc::c_double = if penwidth > 4 as libc::c_int as libc::c_double {
         0.5f64 * penwidth / 4 as libc::c_int as libc::c_double
     } else {
         0.5f64
@@ -2258,23 +2158,15 @@ unsafe extern "C" fn arrow_type_curve(
     AF[3 as libc::c_int as usize].x = p.x - v.x + w.x;
     AF[3 as libc::c_int as usize].y = p.y - v.y + w.y;
     if flag & (1 as libc::c_int) << 4 as libc::c_int + 1 as libc::c_int != 0 {
-        AF[1 as libc::c_int as usize]
-            .x = p.x + 0.95f64 * v.x + w.x + w.x * 4.0f64 / 3.0f64;
-        AF[1 as libc::c_int as usize]
-            .y = AF[0 as libc::c_int as usize].y + w.y * 4.0f64 / 3.0f64;
-        AF[2 as libc::c_int as usize]
-            .x = p.x - 0.95f64 * v.x + w.x + w.x * 4.0f64 / 3.0f64;
-        AF[2 as libc::c_int as usize]
-            .y = AF[3 as libc::c_int as usize].y + w.y * 4.0f64 / 3.0f64;
+        AF[1 as libc::c_int as usize].x = p.x + 0.95f64 * v.x + w.x + w.x * 4.0f64 / 3.0f64;
+        AF[1 as libc::c_int as usize].y = AF[0 as libc::c_int as usize].y + w.y * 4.0f64 / 3.0f64;
+        AF[2 as libc::c_int as usize].x = p.x - 0.95f64 * v.x + w.x + w.x * 4.0f64 / 3.0f64;
+        AF[2 as libc::c_int as usize].y = AF[3 as libc::c_int as usize].y + w.y * 4.0f64 / 3.0f64;
     } else {
-        AF[1 as libc::c_int as usize]
-            .x = p.x + 0.95f64 * v.x + w.x - w.x * 4.0f64 / 3.0f64;
-        AF[1 as libc::c_int as usize]
-            .y = AF[0 as libc::c_int as usize].y - w.y * 4.0f64 / 3.0f64;
-        AF[2 as libc::c_int as usize]
-            .x = p.x - 0.95f64 * v.x + w.x - w.x * 4.0f64 / 3.0f64;
-        AF[2 as libc::c_int as usize]
-            .y = AF[3 as libc::c_int as usize].y - w.y * 4.0f64 / 3.0f64;
+        AF[1 as libc::c_int as usize].x = p.x + 0.95f64 * v.x + w.x - w.x * 4.0f64 / 3.0f64;
+        AF[1 as libc::c_int as usize].y = AF[0 as libc::c_int as usize].y - w.y * 4.0f64 / 3.0f64;
+        AF[2 as libc::c_int as usize].x = p.x - 0.95f64 * v.x + w.x - w.x * 4.0f64 / 3.0f64;
+        AF[2 as libc::c_int as usize].y = AF[3 as libc::c_int as usize].y - w.y * 4.0f64 / 3.0f64;
     }
     gvrender_polyline(job, a.as_mut_ptr(), 2 as libc::c_int);
     if flag & (1 as libc::c_int) << 4 as libc::c_int + 2 as libc::c_int != 0 {
@@ -2298,8 +2190,7 @@ unsafe extern "C" fn arrow_type_curve(
         job,
         AF.as_mut_ptr(),
         (::std::mem::size_of::<[pointf; 4]>() as libc::c_ulong)
-            .wrapping_div(::std::mem::size_of::<pointf>() as libc::c_ulong)
-            as libc::c_int,
+            .wrapping_div(::std::mem::size_of::<pointf>() as libc::c_ulong) as libc::c_int,
         0 as libc::c_int,
         0 as libc::c_int,
         0 as libc::c_int,
@@ -2317,15 +2208,14 @@ unsafe extern "C" fn arrow_gen_type(
     f = flag & ((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int;
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < Arrowtypes_size {
-        let mut arrowtype: *const arrowtype_t = &*Arrowtypes.as_ptr().offset(i as isize)
-            as *const arrowtype_t;
+        let mut arrowtype: *const arrowtype_t =
+            &*Arrowtypes.as_ptr().offset(i as isize) as *const arrowtype_t;
         if f == (*arrowtype).type_0 {
             u.x *= (*arrowtype).lenfact * arrowsize;
             u.y *= (*arrowtype).lenfact * arrowsize;
-            ((*arrowtype).gen)
-                .expect(
-                    "non-null function pointer",
-                )(job, p, u, arrowsize, penwidth, flag);
+            ((*arrowtype).gen).expect("non-null function pointer")(
+                job, p, u, arrowsize, penwidth, flag,
+            );
             p.x = p.x + u.x;
             p.y = p.y + u.y;
             break;
@@ -2373,15 +2263,12 @@ pub unsafe extern "C" fn arrow_bb(
     cy = ay + u.y;
     dx = bx + u.x;
     dy = by + u.y;
-    bb
-        .UR
-        .x = if ax
+    bb.UR.x = if ax
         > (if bx > (if cx > dx { cx } else { dx }) {
             bx
         } else {
             (if cx > dx { cx } else { dx })
-        })
-    {
+        }) {
         ax
     } else if bx > (if cx > dx { cx } else { dx }) {
         bx
@@ -2390,15 +2277,12 @@ pub unsafe extern "C" fn arrow_bb(
     } else {
         dx
     };
-    bb
-        .UR
-        .y = if ay
+    bb.UR.y = if ay
         > (if by > (if cy > dy { cy } else { dy }) {
             by
         } else {
             (if cy > dy { cy } else { dy })
-        })
-    {
+        }) {
         ay
     } else if by > (if cy > dy { cy } else { dy }) {
         by
@@ -2407,15 +2291,12 @@ pub unsafe extern "C" fn arrow_bb(
     } else {
         dy
     };
-    bb
-        .LL
-        .x = if ax
+    bb.LL.x = if ax
         < (if bx < (if cx < dx { cx } else { dx }) {
             bx
         } else {
             (if cx < dx { cx } else { dx })
-        })
-    {
+        }) {
         ax
     } else if bx < (if cx < dx { cx } else { dx }) {
         bx
@@ -2424,15 +2305,12 @@ pub unsafe extern "C" fn arrow_bb(
     } else {
         dx
     };
-    bb
-        .LL
-        .y = if ay
+    bb.LL.y = if ay
         < (if by < (if cy < dy { cy } else { dy }) {
             by
         } else {
             (if cy < dy { cy } else { dy })
-        })
-    {
+        }) {
         ay
     } else if by < (if cy < dy { cy } else { dy }) {
         by

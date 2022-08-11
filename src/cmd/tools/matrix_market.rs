@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -105,17 +113,15 @@ pub const MATRIX_TYPE_REAL: C2RustUnnamed_0 = 1;
 pub type MM_typecode = [libc::c_char; 4];
 unsafe extern "C" fn mm_get_type(mut typecode: *mut libc::c_char) -> libc::c_int {
     if *typecode.offset(2 as libc::c_int as isize) as libc::c_int == 'C' as i32 {
-        return MATRIX_TYPE_COMPLEX as libc::c_int
+        return MATRIX_TYPE_COMPLEX as libc::c_int;
     } else {
         if *typecode.offset(2 as libc::c_int as isize) as libc::c_int == 'R' as i32 {
-            return MATRIX_TYPE_REAL as libc::c_int
+            return MATRIX_TYPE_REAL as libc::c_int;
         } else {
             if *typecode.offset(2 as libc::c_int as isize) as libc::c_int == 'I' as i32 {
-                return MATRIX_TYPE_INTEGER as libc::c_int
+                return MATRIX_TYPE_INTEGER as libc::c_int;
             } else {
-                if *typecode.offset(2 as libc::c_int as isize) as libc::c_int
-                    == 'P' as i32
-                {
+                if *typecode.offset(2 as libc::c_int as isize) as libc::c_int == 'P' as i32 {
                     return MATRIX_TYPE_PATTERN as libc::c_int;
                 }
             }
@@ -124,9 +130,7 @@ unsafe extern "C" fn mm_get_type(mut typecode: *mut libc::c_char) -> libc::c_int
     return MATRIX_TYPE_UNKNOWN as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
-    mut f: *mut FILE,
-) -> SparseMatrix {
+pub unsafe extern "C" fn SparseMatrix_import_matrix_market(mut f: *mut FILE) -> SparseMatrix {
     let mut ret_code: libc::c_int = 0;
     let mut type_0: libc::c_int = 0;
     let mut matcode: MM_typecode = [0; 4];
@@ -159,11 +163,10 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
             b"0\0" as *const u8 as *const libc::c_char,
             b"matrix_market.c\0" as *const u8 as *const libc::c_char,
             61 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+            ))
+            .as_ptr(),
         );
         return 0 as SparseMatrix;
     }
@@ -173,30 +176,25 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
             b"0\0" as *const u8 as *const libc::c_char,
             b"matrix_market.c\0" as *const u8 as *const libc::c_char,
             71 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 55],
-                &[libc::c_char; 55],
-            >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+            ))
+            .as_ptr(),
         );
         return 0 as SparseMatrix;
     }
     I = gmalloc(
-        (nz as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (nz as libc::c_ulong).wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
     ) as *mut libc::c_int;
     J = gmalloc(
-        (nz as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (nz as libc::c_ulong).wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
     ) as *mut libc::c_int;
     type_0 = mm_get_type(matcode.as_mut_ptr());
     match type_0 {
         1 => {
             val = malloc(
                 (nz as libc::c_ulong)
-                    .wrapping_mul(
-                        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                    ),
+                    .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
             ) as *mut libc::c_double;
             i = 0 as libc::c_int;
             while i < nz {
@@ -207,16 +205,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     &mut *J.offset(i as isize) as *mut libc::c_int,
                     &mut *val.offset(i as isize) as *mut libc::c_double,
                 );
-                if num == 3 as libc::c_int {} else {
+                if num == 3 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"num == 3\0" as *const u8 as *const libc::c_char,
                         b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                         89 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 55],
-                            &[libc::c_char; 55],
-                        >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                            .as_ptr(),
+                        (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                            b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                        ))
+                        .as_ptr(),
                     );
                 }
                 let ref mut fresh0 = *I.offset(i as isize);
@@ -229,25 +227,19 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 val = grealloc(
                     val as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_double;
                 nzold = nz;
@@ -266,42 +258,34 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 val = grealloc(
                     val as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_double;
                 nzold = nz;
                 i = 0 as libc::c_int;
                 while i < nzold {
-                    if *I.offset(i as isize) != *J.offset(i as isize) {} else {
+                    if *I.offset(i as isize) != *J.offset(i as isize) {
+                    } else {
                         __assert_fail(
                             b"I[i] != J[i]\0" as *const u8 as *const libc::c_char,
                             b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                             111 as libc::c_int as libc::c_uint,
-                            (*::std::mem::transmute::<
-                                &[u8; 55],
-                                &[libc::c_char; 55],
-                            >(
+                            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
                                 b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
                             ))
-                                .as_ptr(),
+                            .as_ptr(),
                         );
                     }
                     *I.offset(nz as isize) = *J.offset(i as isize);
@@ -311,17 +295,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     *val.offset(fresh3 as isize) = -*val.offset(i as isize);
                     i += 1;
                 }
-            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32)
-                {} else {
+            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32) {
+            } else {
                 __assert_fail(
                     b"!mm_is_hermitian(matcode)\0" as *const u8 as *const libc::c_char,
                     b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                     117 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 55],
-                        &[libc::c_char; 55],
-                    >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                        b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             vp = val as *mut libc::c_void;
@@ -340,16 +323,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     &mut *J.offset(i as isize) as *mut libc::c_int,
                     &mut *vali.offset(i as isize) as *mut libc::c_int,
                 );
-                if num_0 == 3 as libc::c_int {} else {
+                if num_0 == 3 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"num == 3\0" as *const u8 as *const libc::c_char,
                         b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                         126 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 55],
-                            &[libc::c_char; 55],
-                        >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                            .as_ptr(),
+                        (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                            b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                        ))
+                        .as_ptr(),
                     );
                 }
                 let ref mut fresh4 = *I.offset(i as isize);
@@ -362,25 +345,19 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 vali = grealloc(
                     vali as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 nzold = nz;
@@ -399,42 +376,34 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 vali = grealloc(
                     vali as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 nzold = nz;
                 i = 0 as libc::c_int;
                 while i < nzold {
-                    if *I.offset(i as isize) != *J.offset(i as isize) {} else {
+                    if *I.offset(i as isize) != *J.offset(i as isize) {
+                    } else {
                         __assert_fail(
                             b"I[i] != J[i]\0" as *const u8 as *const libc::c_char,
                             b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                             148 as libc::c_int as libc::c_uint,
-                            (*::std::mem::transmute::<
-                                &[u8; 55],
-                                &[libc::c_char; 55],
-                            >(
+                            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
                                 b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
                             ))
-                                .as_ptr(),
+                            .as_ptr(),
                         );
                     }
                     *I.offset(nz as isize) = *J.offset(i as isize);
@@ -444,17 +413,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     *vali.offset(fresh7 as isize) = -*vali.offset(i as isize);
                     i += 1;
                 }
-            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32)
-                {} else {
+            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32) {
+            } else {
                 __assert_fail(
                     b"!mm_is_hermitian(matcode)\0" as *const u8 as *const libc::c_char,
                     b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                     154 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 55],
-                        &[libc::c_char; 55],
-                    >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                        b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
             vp = vali as *mut libc::c_void;
@@ -468,16 +436,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     &mut *I.offset(i as isize) as *mut libc::c_int,
                     &mut *J.offset(i as isize) as *mut libc::c_int,
                 );
-                if num_1 == 2 as libc::c_int {} else {
+                if num_1 == 2 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"num == 2\0" as *const u8 as *const libc::c_char,
                         b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                         162 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 55],
-                            &[libc::c_char; 55],
-                        >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                            .as_ptr(),
+                        (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                            b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                        ))
+                        .as_ptr(),
                     );
                 }
                 let ref mut fresh8 = *I.offset(i as isize);
@@ -492,17 +460,13 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 nzold = nz;
@@ -516,26 +480,23 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     }
                     i += 1;
                 }
-            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32)
-                {} else {
+            } else if !(matcode[3 as libc::c_int as usize] as libc::c_int == 'H' as i32) {
+            } else {
                 __assert_fail(
                     b"!mm_is_hermitian(matcode)\0" as *const u8 as *const libc::c_char,
                     b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                     177 as libc::c_int as libc::c_uint,
-                    (*::std::mem::transmute::<
-                        &[u8; 55],
-                        &[libc::c_char; 55],
-                    >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                        .as_ptr(),
+                    (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                        b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                    ))
+                    .as_ptr(),
                 );
             }
         }
         2 => {
             val = malloc(
                 ((2 as libc::c_int * nz) as libc::c_ulong)
-                    .wrapping_mul(
-                        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                    ),
+                    .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
             ) as *mut libc::c_double;
             v = val;
             i = 0 as libc::c_int;
@@ -548,16 +509,16 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     &mut *v.offset(0 as libc::c_int as isize) as *mut libc::c_double,
                     &mut *v.offset(1 as libc::c_int as isize) as *mut libc::c_double,
                 );
-                if num_2 == 4 as libc::c_int {} else {
+                if num_2 == 4 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"num == 4\0" as *const u8 as *const libc::c_char,
                         b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                         186 as libc::c_int as libc::c_uint,
-                        (*::std::mem::transmute::<
-                            &[u8; 55],
-                            &[libc::c_char; 55],
-                        >(b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0"))
-                            .as_ptr(),
+                        (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
+                            b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
+                        ))
+                        .as_ptr(),
                     );
                 }
                 v = v.offset(2 as libc::c_int as isize);
@@ -571,25 +532,19 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 val = grealloc(
                     val as *mut libc::c_void,
                     (4 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_double;
                 nzold = nz;
@@ -598,15 +553,10 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     if *I.offset(i as isize) != *J.offset(i as isize) {
                         *I.offset(nz as isize) = *J.offset(i as isize);
                         *J.offset(nz as isize) = *I.offset(i as isize);
-                        *val
-                            .offset(
-                                (2 as libc::c_int * nz) as isize,
-                            ) = *val.offset((2 as libc::c_int * i) as isize);
-                        *val
-                            .offset(
-                                (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                            ) = *val
-                            .offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
+                        *val.offset((2 as libc::c_int * nz) as isize) =
+                            *val.offset((2 as libc::c_int * i) as isize);
+                        *val.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                            *val.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
                         nz += 1;
                     }
                     i += 1;
@@ -615,55 +565,42 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 val = grealloc(
                     val as *mut libc::c_void,
                     (4 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_double;
                 nzold = nz;
                 i = 0 as libc::c_int;
                 while i < nzold {
-                    if *I.offset(i as isize) != *J.offset(i as isize) {} else {
+                    if *I.offset(i as isize) != *J.offset(i as isize) {
+                    } else {
                         __assert_fail(
                             b"I[i] != J[i]\0" as *const u8 as *const libc::c_char,
                             b"matrix_market.c\0" as *const u8 as *const libc::c_char,
                             211 as libc::c_int as libc::c_uint,
-                            (*::std::mem::transmute::<
-                                &[u8; 55],
-                                &[libc::c_char; 55],
-                            >(
+                            (*::std::mem::transmute::<&[u8; 55], &[libc::c_char; 55]>(
                                 b"SparseMatrix SparseMatrix_import_matrix_market(FILE *)\0",
                             ))
-                                .as_ptr(),
+                            .as_ptr(),
                         );
                     }
                     *I.offset(nz as isize) = *J.offset(i as isize);
                     *J.offset(nz as isize) = *I.offset(i as isize);
-                    *val
-                        .offset(
-                            (2 as libc::c_int * nz) as isize,
-                        ) = -*val.offset((2 as libc::c_int * i) as isize);
-                    *val
-                        .offset(
-                            (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                        ) = -*val
-                        .offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
+                    *val.offset((2 as libc::c_int * nz) as isize) =
+                        -*val.offset((2 as libc::c_int * i) as isize);
+                    *val.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                        -*val.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
                     nz += 1;
                     i += 1;
                 }
@@ -671,25 +608,19 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                 I = grealloc(
                     I as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 J = grealloc(
                     J as *mut libc::c_void,
                     (2 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_int;
                 val = grealloc(
                     val as *mut libc::c_void,
                     (4 as libc::c_int as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        )
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                         .wrapping_mul(nz as libc::c_ulong),
                 ) as *mut libc::c_double;
                 nzold = nz;
@@ -698,15 +629,10 @@ pub unsafe extern "C" fn SparseMatrix_import_matrix_market(
                     if *I.offset(i as isize) != *J.offset(i as isize) {
                         *I.offset(nz as isize) = *J.offset(i as isize);
                         *J.offset(nz as isize) = *I.offset(i as isize);
-                        *val
-                            .offset(
-                                (2 as libc::c_int * nz) as isize,
-                            ) = *val.offset((2 as libc::c_int * i) as isize);
-                        *val
-                            .offset(
-                                (2 as libc::c_int * nz + 1 as libc::c_int) as isize,
-                            ) = -*val
-                            .offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
+                        *val.offset((2 as libc::c_int * nz) as isize) =
+                            *val.offset((2 as libc::c_int * i) as isize);
+                        *val.offset((2 as libc::c_int * nz + 1 as libc::c_int) as isize) =
+                            -*val.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize);
                         nz += 1;
                     }
                     i += 1;

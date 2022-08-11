@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -65,9 +73,8 @@ pub unsafe extern "C" fn IntStack_new() -> IntStack {
     (*s).max_len = max_len;
     (*s).last = 18446744073709551615 as libc::c_ulong;
     let ref mut fresh0 = (*s).stack;
-    *fresh0 = gmalloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(max_len),
-    ) as *mut libc::c_int;
+    *fresh0 = gmalloc((::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(max_len))
+        as *mut libc::c_int;
     return s;
 }
 #[no_mangle]
@@ -79,16 +86,15 @@ pub unsafe extern "C" fn IntStack_delete(mut s: IntStack) {
 }
 unsafe extern "C" fn IntStack_realloc(mut s: IntStack) -> IntStack {
     let mut max_len: size_t = (*s).max_len;
-    max_len = (max_len as libc::c_ulong)
-        .wrapping_add(
-            if 10 as libc::c_int as libc::c_ulong
-                > max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
-            {
-                10 as libc::c_int as libc::c_ulong
-            } else {
-                max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
-            },
-        ) as size_t as size_t;
+    max_len = (max_len as libc::c_ulong).wrapping_add(
+        if 10 as libc::c_int as libc::c_ulong
+            > max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
+        {
+            10 as libc::c_int as libc::c_ulong
+        } else {
+            max_len.wrapping_div(5 as libc::c_int as libc::c_ulong)
+        },
+    ) as size_t as size_t;
     (*s).max_len = max_len;
     let ref mut fresh1 = (*s).stack;
     *fresh1 = grealloc(
@@ -115,10 +121,7 @@ pub unsafe extern "C" fn IntStack_push(mut s: IntStack, mut i: libc::c_int) -> s
     return (*s).last;
 }
 #[no_mangle]
-pub unsafe extern "C" fn IntStack_pop(
-    mut s: IntStack,
-    mut flag: *mut libc::c_int,
-) -> libc::c_int {
+pub unsafe extern "C" fn IntStack_pop(mut s: IntStack, mut flag: *mut libc::c_int) -> libc::c_int {
     *flag = 0 as libc::c_int;
     if (*s).last == 18446744073709551615 as libc::c_ulong {
         *flag = -(1 as libc::c_int);

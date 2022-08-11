@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -21,8 +29,10 @@ pub unsafe extern "C" fn matinv(
     if lu_decompose(A, n) == 0 as libc::c_int {
         return 0 as libc::c_int;
     }
-    b = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    b = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
         j = 0 as libc::c_int;
@@ -40,8 +50,8 @@ pub unsafe extern "C" fn matinv(
         j = 0 as libc::c_int;
         while j < i {
             temp = *(*Ainv.offset(i as isize)).offset(j as isize);
-            *(*Ainv.offset(i as isize))
-                .offset(j as isize) = *(*Ainv.offset(j as isize)).offset(i as isize);
+            *(*Ainv.offset(i as isize)).offset(j as isize) =
+                *(*Ainv.offset(j as isize)).offset(i as isize);
             *(*Ainv.offset(j as isize)).offset(i as isize) = temp;
             j += 1;
         }

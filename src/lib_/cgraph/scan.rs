@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -34,22 +42,10 @@ extern "C" {
         _: libc::c_ulong,
         _: *mut FILE,
     ) -> libc::c_ulong;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn __errno_location() -> *mut libc::c_int;
@@ -139,17 +135,11 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agdisc_t = Agdisc_s;
 #[derive(Copy, Clone)]
@@ -163,10 +153,8 @@ pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -175,19 +163,13 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type IDTYPE = uint64_t;
 pub type Agraph_t = Agraph_s;
@@ -242,16 +224,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -267,18 +243,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -286,16 +256,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -350,9 +313,8 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -380,13 +342,8 @@ pub struct Agtag_s {
     pub c2rust_padding: [u8; 4],
     pub id: IDTYPE,
 }
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -427,11 +384,9 @@ pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -439,8 +394,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -548,9 +503,15 @@ unsafe extern "C" fn agxbmore(mut xb: *mut agxbuf, mut ssz: size_t) {
             ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
         ) as *mut libc::c_char;
     } else {
-        nbuf = gv_calloc(nsize, ::std::mem::size_of::<libc::c_char>() as libc::c_ulong)
-            as *mut libc::c_char;
-        memcpy(nbuf as *mut libc::c_void, (*xb).buf as *const libc::c_void, cnt);
+        nbuf = gv_calloc(
+            nsize,
+            ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
+        ) as *mut libc::c_char;
+        memcpy(
+            nbuf as *mut libc::c_void,
+            (*xb).buf as *const libc::c_void,
+            cnt,
+        );
         (*xb).dyna = 1 as libc::c_int;
     }
     let ref mut fresh4 = (*xb).buf;
@@ -583,8 +544,7 @@ unsafe extern "C" fn agxbprint(
         return rc;
     }
     size = (rc as size_t).wrapping_add(1 as libc::c_int as libc::c_ulong);
-    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long
-        as size_t;
+    let mut unused_space: size_t = ((*xb).eptr).offset_from((*xb).ptr) as libc::c_long as size_t;
     if unused_space < size {
         let mut extra: size_t = size.wrapping_sub(unused_space);
         agxbmore(xb, extra);
@@ -592,17 +552,16 @@ unsafe extern "C" fn agxbprint(
     result = vsnprintf((*xb).ptr, size, fmt, ap.as_va_list());
     if result == size.wrapping_sub(1 as libc::c_int as libc::c_ulong) as libc::c_int
         || result < 0 as libc::c_int
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"result == (int)(size - 1) || result < 0\0" as *const u8
-                as *const libc::c_char,
+            b"result == (int)(size - 1) || result < 0\0" as *const u8 as *const libc::c_char,
             b"./agxbuf.h\0" as *const u8 as *const libc::c_char,
             138 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 43],
-                &[libc::c_char; 43],
-            >(b"int agxbprint(agxbuf *, const char *, ...)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 43], &[libc::c_char; 43]>(
+                b"int agxbprint(agxbuf *, const char *, ...)\0",
+            ))
+            .as_ptr(),
         );
     }
     if result > 0 as libc::c_int {
@@ -630,16 +589,17 @@ unsafe extern "C" fn agxbuse(mut xb: *mut agxbuf) -> *mut libc::c_char {
     return (*xb).ptr;
 }
 #[inline]
-unsafe extern "C" fn gv_calloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+unsafe extern "C" fn gv_calloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = calloc(nmemb, size);
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;
@@ -652,41 +612,40 @@ unsafe extern "C" fn gv_recalloc(
     mut size: size_t,
 ) -> *mut libc::c_void {
     if size > 0 as libc::c_int as libc::c_ulong
-        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8
-            as *const libc::c_char)
+        && !(b"attempt to allocate array of 0-sized elements\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0"
-                as *const u8 as *const libc::c_char,
+            b"size > 0 && \"attempt to allocate array of 0-sized elements\"\0" as *const u8
+                as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     if old_nmemb < (18446744073709551615 as libc::c_ulong).wrapping_div(size)
-        && !(b"claimed previous extent is too large\0" as *const u8
-            as *const libc::c_char)
+        && !(b"claimed previous extent is too large\0" as *const u8 as *const libc::c_char)
             .is_null()
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"old_nmemb < SIZE_MAX / size && \"claimed previous extent is too large\"\0"
                 as *const u8 as *const libc::c_char,
             b"../../lib/cgraph/alloc.h\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 50],
-                &[libc::c_char; 50],
-            >(b"void *gv_recalloc(void *, size_t, size_t, size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 50], &[libc::c_char; 50]>(
+                b"void *gv_recalloc(void *, size_t, size_t, size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size))
-        as libc::c_int as libc::c_long != 0
+    if (new_nmemb > (18446744073709551615 as libc::c_ulong).wrapping_div(size)) as libc::c_int
+        as libc::c_long
+        != 0
     {
         fprintf(
             stderr,
@@ -695,7 +654,11 @@ unsafe extern "C" fn gv_recalloc(
         );
         graphviz_exit(1 as libc::c_int);
     }
-    return gv_realloc(ptr, old_nmemb.wrapping_mul(size), new_nmemb.wrapping_mul(size));
+    return gv_realloc(
+        ptr,
+        old_nmemb.wrapping_mul(size),
+        new_nmemb.wrapping_mul(size),
+    );
 }
 #[inline]
 unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
@@ -708,10 +671,13 @@ unsafe extern "C" fn gv_realloc(
     mut new_size: size_t,
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, new_size);
-    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int
-        as libc::c_long != 0
+    if (new_size > 0 as libc::c_int as libc::c_ulong && p.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if new_size > old_size {
@@ -739,10 +705,7 @@ pub unsafe extern "C" fn agsetfile(mut f: *const libc::c_char) {
     line_num = 1 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn aglexinit(
-    mut disc: *mut Agdisc_t,
-    mut ifile: *mut libc::c_void,
-) {
+pub unsafe extern "C" fn aglexinit(mut disc: *mut Agdisc_t, mut ifile: *mut libc::c_void) {
     Disc = disc;
     Ifile = ifile;
     graphType = 0 as libc::c_int;
@@ -781,15 +744,14 @@ unsafe extern "C" fn addstr(mut src: *mut libc::c_char) {
             let mut sz: libc::c_long = Send.offset_from(Sbuf) as libc::c_long;
             let mut off: libc::c_long = Sptr.offset_from(Sbuf) as libc::c_long;
             sz *= 2 as libc::c_int as libc::c_long;
-            Sbuf = realloc(Sbuf as *mut libc::c_void, sz as libc::c_ulong)
-                as *mut libc::c_char;
+            Sbuf = realloc(Sbuf as *mut libc::c_void, sz as libc::c_ulong) as *mut libc::c_char;
             Send = Sbuf.offset(sz as isize);
             Sptr = Sbuf.offset(off as isize);
         }
         if !(c != 0) {
             break;
         }
-    };
+    }
 }
 unsafe extern "C" fn endstr() {
     aaglval.str_0 = agstrdup(Ag_G_global, Sbuf);
@@ -852,14 +814,15 @@ unsafe extern "C" fn twoDots() -> bool {
     let mut dot: *const libc::c_char = strchr(aagtext, '.' as i32);
     return !dot.is_null()
         && dot
-            != &mut *aagtext.offset((aagleng - 1 as libc::c_int) as isize)
-                as *mut libc::c_char as *const libc::c_char;
+            != &mut *aagtext.offset((aagleng - 1 as libc::c_int) as isize) as *mut libc::c_char
+                as *const libc::c_char;
 }
 unsafe extern "C" fn chkNum() -> libc::c_int {
-    let mut c: libc::c_uchar = *aagtext.offset((aagleng - 1 as libc::c_int) as isize)
-        as libc::c_uchar;
+    let mut c: libc::c_uchar =
+        *aagtext.offset((aagleng - 1 as libc::c_int) as isize) as libc::c_uchar;
     if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int == 0
+        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+        == 0
         && c as libc::c_int != '.' as i32
         || c as libc::c_int == '.' as i32 && twoDots() as libc::c_int != 0
     {
@@ -879,7 +842,7 @@ unsafe extern "C" fn chkNum() -> libc::c_int {
         );
         return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 #[no_mangle]
@@ -891,7 +854,11 @@ pub unsafe extern "C" fn aagerror(mut str: *const libc::c_char) {
         eptr: 0 as *mut libc::c_char,
         dyna: 0,
     };
-    agxbinit(&mut xb, 8192 as libc::c_int as libc::c_uint, xbuf.as_mut_ptr());
+    agxbinit(
+        &mut xb,
+        8192 as libc::c_int as libc::c_uint,
+        xbuf.as_mut_ptr(),
+    );
     if !InputFile.is_null() {
         agxbprint(
             &mut xb as *mut agxbuf,
@@ -916,17 +883,14 @@ pub unsafe extern "C" fn aagerror(mut str: *const libc::c_char) {
             2 => {
                 agxbprint(
                     &mut xb as *mut agxbuf,
-                    b" scanning a quoted string (missing endquote? longer than %d?)\0"
-                        as *const u8 as *const libc::c_char,
+                    b" scanning a quoted string (missing endquote? longer than %d?)\0" as *const u8
+                        as *const libc::c_char,
                     16384 as libc::c_int,
                 );
                 if *Sbuf != 0 {
                     let mut len: size_t = strlen(Sbuf);
                     if len > 80 as libc::c_int as libc::c_ulong {
-                        *Sbuf
-                            .offset(
-                                80 as libc::c_int as isize,
-                            ) = '\0' as i32 as libc::c_char;
+                        *Sbuf.offset(80 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
                     }
                     agxbprint(
                         &mut xb as *mut agxbuf,
@@ -945,10 +909,7 @@ pub unsafe extern "C" fn aagerror(mut str: *const libc::c_char) {
                 if *Sbuf != 0 {
                     let mut len_0: size_t = strlen(Sbuf);
                     if len_0 > 80 as libc::c_int as libc::c_ulong {
-                        *Sbuf
-                            .offset(
-                                80 as libc::c_int as isize,
-                            ) = '\0' as i32 as libc::c_char;
+                        *Sbuf.offset(80 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
                     }
                     agxbprint(
                         &mut xb as *mut agxbuf,
@@ -960,8 +921,8 @@ pub unsafe extern "C" fn aagerror(mut str: *const libc::c_char) {
             1 => {
                 agxbprint(
                     &mut xb as *mut agxbuf,
-                    b" scanning a /*...*/ comment (missing '*/? longer than %d?)\0"
-                        as *const u8 as *const libc::c_char,
+                    b" scanning a /*...*/ comment (missing '*/? longer than %d?)\0" as *const u8
+                        as *const libc::c_char,
                     16384 as libc::c_int,
                 );
             }
@@ -969,7 +930,11 @@ pub unsafe extern "C" fn aagerror(mut str: *const libc::c_char) {
         }
     }
     agxbputc(&mut xb, '\n' as i32 as libc::c_char);
-    agerr(AGERR, b"%s\0" as *const u8 as *const libc::c_char, agxbuse(&mut xb));
+    agerr(
+        AGERR,
+        b"%s\0" as *const u8 as *const libc::c_char,
+        agxbuse(&mut xb),
+    );
     agxbfree(&mut xb);
     yy_start = 1 as libc::c_int + 2 as libc::c_int * 0 as libc::c_int;
 }
@@ -979,13 +944,11 @@ pub unsafe extern "C" fn aglexeof() {
 }
 #[no_mangle]
 pub unsafe extern "C" fn aglexbad() {
-    aag_flush_buffer(
-        if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        },
-    );
+    aag_flush_buffer(if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    });
 }
 #[no_mangle]
 pub unsafe extern "C" fn aagwrap() -> libc::c_int {
@@ -993,8 +956,8 @@ pub unsafe extern "C" fn aagwrap() -> libc::c_int {
 }
 static mut yy_buffer_stack_top: size_t = 0 as libc::c_int as size_t;
 static mut yy_buffer_stack_max: size_t = 0 as libc::c_int as size_t;
-static mut yy_buffer_stack: *mut YY_BUFFER_STATE = 0 as *const YY_BUFFER_STATE
-    as *mut YY_BUFFER_STATE;
+static mut yy_buffer_stack: *mut YY_BUFFER_STATE =
+    0 as *const YY_BUFFER_STATE as *mut YY_BUFFER_STATE;
 static mut yy_hold_char: libc::c_char = 0;
 static mut yy_n_chars: libc::c_int = 0;
 #[no_mangle]
@@ -2168,13 +2131,12 @@ static mut yy_chk: [flex_int16_t; 268] = [
     92 as libc::c_int as flex_int16_t,
 ];
 static mut yy_last_accepting_state: yy_state_type = 0;
-static mut yy_last_accepting_cpos: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+static mut yy_last_accepting_cpos: *mut libc::c_char =
+    0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub static mut aag_flex_debug: libc::c_int = 0 as libc::c_int;
 #[no_mangle]
-pub static mut aagtext: *mut libc::c_char = 0 as *const libc::c_char
-    as *mut libc::c_char;
+pub static mut aagtext: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 pub unsafe extern "C" fn aaglex() -> libc::c_int {
     let mut yy_amount_of_matched_text: libc::c_int = 0;
@@ -2200,7 +2162,7 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
         } else {
             0 as YY_BUFFER_STATE
         }
-            .is_null()
+        .is_null()
         {
             aagensure_buffer_stack();
             let ref mut fresh13 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
@@ -2213,8 +2175,7 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
         *yy_cp = yy_hold_char;
         yy_bp = yy_cp;
         yy_current_state = yy_start;
-        yy_current_state
-            += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
+        yy_current_state += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
         'c_8027: loop {
             loop {
                 let mut yy_c: YY_CHAR = yy_ec[*yy_cp as YY_CHAR as usize];
@@ -2223,19 +2184,19 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                     yy_last_accepting_cpos = yy_cp;
                 }
                 while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-                    + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+                    + yy_c as libc::c_int) as usize] as libc::c_int
+                    != yy_current_state
                 {
                     yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
                     if yy_current_state >= 93 as libc::c_int {
                         yy_c = yy_meta[yy_c as usize];
                     }
                 }
-                yy_current_state = yy_nxt[(yy_base[yy_current_state as usize]
-                    as libc::c_int + yy_c as libc::c_int) as usize] as yy_state_type;
+                yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
+                    + yy_c as libc::c_int) as usize]
+                    as yy_state_type;
                 yy_cp = yy_cp.offset(1);
-                if !(yy_base[yy_current_state as usize] as libc::c_int
-                    != 219 as libc::c_int)
-                {
+                if !(yy_base[yy_current_state as usize] as libc::c_int != 219 as libc::c_int) {
                     break;
                 }
             }
@@ -2264,7 +2225,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return -(1 as libc::c_int);
                         }
@@ -2273,7 +2236,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             line_num += 1;
                             break 'c_8027;
@@ -2283,10 +2248,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 1 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 1 as libc::c_int;
                             break 'c_8027;
                         }
                         4 => {
@@ -2294,7 +2260,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2303,7 +2271,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2312,10 +2282,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 0 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 0 as libc::c_int;
                             break 'c_8027;
                         }
                         7 => {
@@ -2323,7 +2294,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2332,7 +2305,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             ppDirective();
                             break 'c_8027;
@@ -2342,7 +2317,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2351,7 +2328,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2360,7 +2339,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             break 'c_8027;
                         }
@@ -2369,7 +2350,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 259 as libc::c_int;
                         }
@@ -2378,7 +2361,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 260 as libc::c_int;
                         }
@@ -2387,7 +2372,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             if graphType == 0 {
                                 graphType = 258 as libc::c_int;
@@ -2399,7 +2386,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             if graphType == 0 {
                                 graphType = 261 as libc::c_int;
@@ -2411,7 +2400,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 263 as libc::c_int;
                         }
@@ -2420,7 +2411,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             return 262 as libc::c_int;
                         }
@@ -2429,12 +2422,14 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             if graphType == 261 as libc::c_int {
-                                return 264 as libc::c_int
+                                return 264 as libc::c_int;
                             } else {
-                                return '-' as i32
+                                return '-' as i32;
                             }
                         }
                         19 => {
@@ -2442,12 +2437,14 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             if graphType == 258 as libc::c_int {
-                                return 264 as libc::c_int
+                                return 264 as libc::c_int;
                             } else {
-                                return '-' as i32
+                                return '-' as i32;
                             }
                         }
                         20 => {
@@ -2455,7 +2452,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             aaglval.str_0 = agstrdup(Ag_G_global, aagtext);
                             return 267 as libc::c_int;
@@ -2465,19 +2464,19 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             if chkNum() != 0 {
-                                let mut yyless_macro_arg: libc::c_int = aagleng
-                                    - 1 as libc::c_int;
+                                let mut yyless_macro_arg: libc::c_int = aagleng - 1 as libc::c_int;
                                 *yy_cp = yy_hold_char;
                                 yy_cp = yy_bp
                                     .offset(yyless_macro_arg as isize)
                                     .offset(-(0 as libc::c_int as isize));
                                 yy_c_buf_p = yy_cp;
                                 aagtext = yy_bp;
-                                aagleng = yy_cp.offset_from(yy_bp) as libc::c_long
-                                    as libc::c_int;
+                                aagleng = yy_cp.offset_from(yy_bp) as libc::c_long as libc::c_int;
                                 yy_hold_char = *yy_cp;
                                 *yy_cp = '\0' as i32 as libc::c_char;
                                 yy_c_buf_p = yy_cp;
@@ -2490,10 +2489,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 2 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 2 as libc::c_int;
                             beginstr();
                             break 'c_8027;
                         }
@@ -2502,10 +2502,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 0 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 0 as libc::c_int;
                             endstr();
                             return 268 as libc::c_int;
                         }
@@ -2514,11 +2515,12 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(
-                                b"\"\0" as *const u8 as *const libc::c_char
-                                    as *mut libc::c_char,
+                                b"\"\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                             );
                             break 'c_8027;
                         }
@@ -2527,11 +2529,12 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(
-                                b"\\\\\0" as *const u8 as *const libc::c_char
-                                    as *mut libc::c_char,
+                                b"\\\\\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                             );
                             break 'c_8027;
                         }
@@ -2540,7 +2543,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             line_num += 1;
                             break 'c_8027;
@@ -2550,11 +2555,12 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(
-                                b"\n\0" as *const u8 as *const libc::c_char
-                                    as *mut libc::c_char,
+                                b"\n\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                             );
                             line_num += 1;
                             break 'c_8027;
@@ -2564,7 +2570,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(aagtext);
                             break 'c_8027;
@@ -2574,10 +2582,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            yy_start = 1 as libc::c_int
-                                + 2 as libc::c_int * 3 as libc::c_int;
+                            yy_start = 1 as libc::c_int + 2 as libc::c_int * 3 as libc::c_int;
                             html_nest = 1 as libc::c_int;
                             beginstr();
                             break 'c_8027;
@@ -2587,14 +2596,15 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             html_nest -= 1;
                             if html_nest != 0 {
                                 addstr(aagtext);
                             } else {
-                                yy_start = 1 as libc::c_int
-                                    + 2 as libc::c_int * 0 as libc::c_int;
+                                yy_start = 1 as libc::c_int + 2 as libc::c_int * 0 as libc::c_int;
                                 endstr_html();
                                 return 268 as libc::c_int;
                             }
@@ -2605,7 +2615,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             html_nest += 1;
                             addstr(aagtext);
@@ -2616,7 +2628,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(aagtext);
                             line_num += 1;
@@ -2627,7 +2641,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             addstr(aagtext);
                             break 'c_8027;
@@ -2637,17 +2653,20 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
-                            return *aagtext.offset(0 as libc::c_int as isize)
-                                as libc::c_int;
+                            return *aagtext.offset(0 as libc::c_int as isize) as libc::c_int;
                         }
                         35 => {
                             if aagleng > 0 as libc::c_int {
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_at_bol = (*aagtext
                                     .offset((aagleng - 1 as libc::c_int) as isize)
-                                    as libc::c_int == '\n' as i32) as libc::c_int;
+                                    as libc::c_int
+                                    == '\n' as i32)
+                                    as libc::c_int;
                             }
                             fwrite(
                                 aagtext as *const libc::c_void,
@@ -2659,31 +2678,32 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                         }
                         37 | 38 | 39 | 40 => return 0 as libc::c_int,
                         36 => {
-                            yy_amount_of_matched_text = yy_cp.offset_from(aagtext)
-                                as libc::c_long as libc::c_int - 1 as libc::c_int;
+                            yy_amount_of_matched_text = yy_cp.offset_from(aagtext) as libc::c_long
+                                as libc::c_int
+                                - 1 as libc::c_int;
                             *yy_cp = yy_hold_char;
                             if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                                .yy_buffer_status == 0 as libc::c_int
+                                .yy_buffer_status
+                                == 0 as libc::c_int
                             {
                                 yy_n_chars = (**yy_buffer_stack
                                     .offset(yy_buffer_stack_top as isize))
-                                    .yy_n_chars;
+                                .yy_n_chars;
                                 let ref mut fresh14 = (**yy_buffer_stack
                                     .offset(yy_buffer_stack_top as isize))
-                                    .yy_input_file;
+                                .yy_input_file;
                                 *fresh14 = aagin;
                                 (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_buffer_status = 1 as libc::c_int;
                             }
                             if yy_c_buf_p
-                                <= &mut *((**yy_buffer_stack
-                                    .offset(yy_buffer_stack_top as isize))
+                                <= &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
                                     .yy_ch_buf)
-                                    .offset(yy_n_chars as isize) as *mut libc::c_char
+                                    .offset(yy_n_chars as isize)
+                                    as *mut libc::c_char
                             {
                                 yy_next_state = 0;
-                                yy_c_buf_p = aagtext
-                                    .offset(yy_amount_of_matched_text as isize);
+                                yy_c_buf_p = aagtext.offset(yy_amount_of_matched_text as isize);
                                 yy_current_state = yy_get_previous_state();
                                 yy_next_state = yy_try_NUL_trans(yy_current_state);
                                 yy_bp = aagtext.offset(0 as libc::c_int as isize);
@@ -2711,8 +2731,8 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                         }
                                     }
                                     0 => {
-                                        yy_c_buf_p = aagtext
-                                            .offset(yy_amount_of_matched_text as isize);
+                                        yy_c_buf_p =
+                                            aagtext.offset(yy_amount_of_matched_text as isize);
                                         yy_current_state = yy_get_previous_state();
                                         yy_cp = yy_c_buf_p;
                                         yy_bp = aagtext.offset(0 as libc::c_int as isize);
@@ -2721,8 +2741,9 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                                     2 => {
                                         yy_c_buf_p = &mut *((**yy_buffer_stack
                                             .offset(yy_buffer_stack_top as isize))
-                                            .yy_ch_buf)
-                                            .offset(yy_n_chars as isize) as *mut libc::c_char;
+                                        .yy_ch_buf)
+                                            .offset(yy_n_chars as isize)
+                                            as *mut libc::c_char;
                                         yy_current_state = yy_get_previous_state();
                                         yy_cp = yy_c_buf_p;
                                         yy_bp = aagtext.offset(0 as libc::c_int as isize);
@@ -2736,8 +2757,8 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                         }
                         _ => {
                             yy_fatal_error(
-                                b"fatal flex scanner internal error--no action found\0"
-                                    as *const u8 as *const libc::c_char,
+                                b"fatal flex scanner internal error--no action found\0" as *const u8
+                                    as *const libc::c_char,
                             );
                         }
                     }
@@ -2755,12 +2776,11 @@ pub unsafe extern "C" fn aaglex() -> libc::c_int {
                 }
             }
         }
-    };
+    }
 }
 unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
-    let mut dest: *mut libc::c_char = (**yy_buffer_stack
-        .offset(yy_buffer_stack_top as isize))
-        .yy_ch_buf;
+    let mut dest: *mut libc::c_char =
+        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf;
     let mut source: *mut libc::c_char = aagtext;
     let mut number_to_move: libc::c_int = 0;
     let mut i: libc::c_int = 0;
@@ -2774,15 +2794,13 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
                 as *const libc::c_char,
         );
     }
-    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_fill_buffer
-        == 0 as libc::c_int
-    {
-        if yy_c_buf_p.offset_from(aagtext) as libc::c_long
-            - 0 as libc::c_int as libc::c_long == 1 as libc::c_int as libc::c_long
+    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_fill_buffer == 0 as libc::c_int {
+        if yy_c_buf_p.offset_from(aagtext) as libc::c_long - 0 as libc::c_int as libc::c_long
+            == 1 as libc::c_int as libc::c_long
         {
-            return 1 as libc::c_int
+            return 1 as libc::c_int;
         } else {
-            return 2 as libc::c_int
+            return 2 as libc::c_int;
         }
     }
     number_to_move = (yy_c_buf_p.offset_from(aagtext) as libc::c_long
@@ -2796,20 +2814,19 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
         *fresh16 = *fresh15;
         i += 1;
     }
-    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status
-        == 2 as libc::c_int
+    if (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status == 2 as libc::c_int
     {
         yy_n_chars = 0 as libc::c_int;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     } else {
-        let mut num_to_read: libc::c_int = (**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_buf_size - number_to_move - 1 as libc::c_int;
+        let mut num_to_read: libc::c_int = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
+            .yy_buf_size
+            - number_to_move
+            - 1 as libc::c_int;
         while num_to_read <= 0 as libc::c_int {
-            let mut b: YY_BUFFER_STATE = *yy_buffer_stack
-                .offset(yy_buffer_stack_top as isize);
-            let mut yy_c_buf_p_offset: libc::c_int = yy_c_buf_p
-                .offset_from((*b).yy_ch_buf) as libc::c_long as libc::c_int;
+            let mut b: YY_BUFFER_STATE = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
+            let mut yy_c_buf_p_offset: libc::c_int =
+                yy_c_buf_p.offset_from((*b).yy_ch_buf) as libc::c_long as libc::c_int;
             if (*b).yy_is_our_buffer != 0 {
                 let mut new_size: libc::c_int = (*b).yy_buf_size * 2 as libc::c_int;
                 if new_size <= 0 as libc::c_int {
@@ -2832,27 +2849,23 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
                         as *const libc::c_char,
                 );
             }
-            yy_c_buf_p = &mut *((*b).yy_ch_buf).offset(yy_c_buf_p_offset as isize)
-                as *mut libc::c_char;
-            num_to_read = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                .yy_buf_size - number_to_move - 1 as libc::c_int;
+            yy_c_buf_p =
+                &mut *((*b).yy_ch_buf).offset(yy_c_buf_p_offset as isize) as *mut libc::c_char;
+            num_to_read = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
+                - number_to_move
+                - 1 as libc::c_int;
         }
         if num_to_read > 8192 as libc::c_int {
             num_to_read = 8192 as libc::c_int;
         }
-        yy_n_chars = ((*(*Disc).io).afread)
-            .expect(
-                "non-null function pointer",
-            )(
+        yy_n_chars = ((*(*Disc).io).afread).expect("non-null function pointer")(
             Ifile,
             &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
                 .offset(number_to_move as isize),
             num_to_read,
         );
         if yy_n_chars < 0 as libc::c_int {
-            yy_fatal_error(
-                b"input in flex scanner failed\0" as *const u8 as *const libc::c_char,
-            );
+            yy_fatal_error(b"input in flex scanner failed\0" as *const u8 as *const libc::c_char);
         }
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -2862,8 +2875,8 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
             aagrestart(aagin);
         } else {
             ret_val = 2 as libc::c_int;
-            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-                .yy_buffer_status = 2 as libc::c_int;
+            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buffer_status =
+                2 as libc::c_int;
         }
     } else {
         ret_val = 0 as libc::c_int;
@@ -2871,32 +2884,27 @@ unsafe extern "C" fn yy_get_next_buffer() -> libc::c_int {
     if yy_n_chars + number_to_move
         > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
     {
-        let mut new_size_0: libc::c_int = yy_n_chars + number_to_move
-            + (yy_n_chars >> 1 as libc::c_int);
-        let ref mut fresh19 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf;
+        let mut new_size_0: libc::c_int =
+            yy_n_chars + number_to_move + (yy_n_chars >> 1 as libc::c_int);
+        let ref mut fresh19 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf;
         *fresh19 = aagrealloc(
-            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf
-                as *mut libc::c_void,
+            (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf as *mut libc::c_void,
             new_size_0 as yy_size_t,
         ) as *mut libc::c_char;
-        if ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).is_null()
-        {
+        if ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).is_null() {
             yy_fatal_error(
                 b"out of dynamic memory in yy_get_next_buffer()\0" as *const u8
                     as *const libc::c_char,
             );
         }
-        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_size = new_size_0 - 2 as libc::c_int;
+        (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size =
+            new_size_0 - 2 as libc::c_int;
     }
     yy_n_chars += number_to_move;
     *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
         .offset(yy_n_chars as isize) = 0 as libc::c_int as libc::c_char;
     *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
-        .offset(
-            (yy_n_chars + 1 as libc::c_int) as isize,
-        ) = 0 as libc::c_int as libc::c_char;
+        .offset((yy_n_chars + 1 as libc::c_int) as isize) = 0 as libc::c_int as libc::c_char;
     aagtext = &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
         .offset(0 as libc::c_int as isize) as *mut libc::c_char;
     return ret_val;
@@ -2905,8 +2913,7 @@ unsafe extern "C" fn yy_get_previous_state() -> yy_state_type {
     let mut yy_current_state: yy_state_type = 0;
     let mut yy_cp: *mut libc::c_char = 0 as *mut libc::c_char;
     yy_current_state = yy_start;
-    yy_current_state
-        += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
+    yy_current_state += (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_at_bol;
     yy_cp = aagtext.offset(0 as libc::c_int as isize);
     while yy_cp < yy_c_buf_p {
         let mut yy_c: YY_CHAR = (if *yy_cp as libc::c_int != 0 {
@@ -2918,23 +2925,24 @@ unsafe extern "C" fn yy_get_previous_state() -> yy_state_type {
             yy_last_accepting_state = yy_current_state;
             yy_last_accepting_cpos = yy_cp;
         }
-        while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-            + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+        while yy_chk
+            [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+            as libc::c_int
+            != yy_current_state
         {
             yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
             if yy_current_state >= 93 as libc::c_int {
                 yy_c = yy_meta[yy_c as usize];
             }
         }
-        yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
-            + yy_c as libc::c_int) as usize] as yy_state_type;
+        yy_current_state = yy_nxt
+            [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+            as yy_state_type;
         yy_cp = yy_cp.offset(1);
     }
     return yy_current_state;
 }
-unsafe extern "C" fn yy_try_NUL_trans(
-    mut yy_current_state: yy_state_type,
-) -> yy_state_type {
+unsafe extern "C" fn yy_try_NUL_trans(mut yy_current_state: yy_state_type) -> yy_state_type {
     let mut yy_is_jam: libc::c_int = 0;
     let mut yy_cp: *mut libc::c_char = yy_c_buf_p;
     let mut yy_c: YY_CHAR = 1 as libc::c_int as YY_CHAR;
@@ -2942,18 +2950,24 @@ unsafe extern "C" fn yy_try_NUL_trans(
         yy_last_accepting_state = yy_current_state;
         yy_last_accepting_cpos = yy_cp;
     }
-    while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int
-        + yy_c as libc::c_int) as usize] as libc::c_int != yy_current_state
+    while yy_chk[(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+        as libc::c_int
+        != yy_current_state
     {
         yy_current_state = yy_def[yy_current_state as usize] as libc::c_int;
         if yy_current_state >= 93 as libc::c_int {
             yy_c = yy_meta[yy_c as usize];
         }
     }
-    yy_current_state = yy_nxt[(yy_base[yy_current_state as usize] as libc::c_int
-        + yy_c as libc::c_int) as usize] as yy_state_type;
+    yy_current_state = yy_nxt
+        [(yy_base[yy_current_state as usize] as libc::c_int + yy_c as libc::c_int) as usize]
+        as yy_state_type;
     yy_is_jam = (yy_current_state == 92 as libc::c_int) as libc::c_int;
-    return if yy_is_jam != 0 { 0 as libc::c_int } else { yy_current_state };
+    return if yy_is_jam != 0 {
+        0 as libc::c_int
+    } else {
+        yy_current_state
+    };
 }
 unsafe extern "C" fn yyunput(mut c: libc::c_int, mut yy_bp: *mut libc::c_char) {
     let mut yy_cp: *mut libc::c_char = 0 as *mut libc::c_char;
@@ -2964,29 +2978,22 @@ unsafe extern "C" fn yyunput(mut c: libc::c_int, mut yy_bp: *mut libc::c_char) {
             .offset(2 as libc::c_int as isize)
     {
         let mut number_to_move: libc::c_int = yy_n_chars + 2 as libc::c_int;
-        let mut dest: *mut libc::c_char = &mut *((**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf)
-            .offset(
+        let mut dest: *mut libc::c_char =
+            &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf).offset(
                 ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size
                     + 2 as libc::c_int) as isize,
             ) as *mut libc::c_char;
-        let mut source: *mut libc::c_char = &mut *((**yy_buffer_stack
-            .offset(yy_buffer_stack_top as isize))
-            .yy_ch_buf)
-            .offset(number_to_move as isize) as *mut libc::c_char;
-        while source > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf
-        {
+        let mut source: *mut libc::c_char =
+            &mut *((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
+                .offset(number_to_move as isize) as *mut libc::c_char;
+        while source > (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf {
             source = source.offset(-1);
             dest = dest.offset(-1);
             *dest = *source;
         }
-        yy_cp = yy_cp
-            .offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
-        yy_bp = yy_bp
-            .offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
-        yy_n_chars = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_size;
+        yy_cp = yy_cp.offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
+        yy_bp = yy_bp.offset(dest.offset_from(source) as libc::c_long as libc::c_int as isize);
+        yy_n_chars = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_size;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
         if yy_cp
             < ((**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_ch_buf)
@@ -3010,7 +3017,7 @@ pub unsafe extern "C" fn aagrestart(mut input_file: *mut FILE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         aagensure_buffer_stack();
         let ref mut fresh20 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
@@ -3042,11 +3049,10 @@ pub unsafe extern "C" fn aag_switch_to_buffer(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         *yy_c_buf_p = yy_hold_char;
-        let ref mut fresh21 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_pos;
+        let ref mut fresh21 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_pos;
         *fresh21 = yy_c_buf_p;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -3068,22 +3074,18 @@ pub unsafe extern "C" fn aag_create_buffer(
     mut size: libc::c_int,
 ) -> YY_BUFFER_STATE {
     let mut b: YY_BUFFER_STATE = 0 as *mut yy_buffer_state;
-    b = aagalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong)
-        as YY_BUFFER_STATE;
+    b = aagalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong) as YY_BUFFER_STATE;
     if b.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_create_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_create_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
     (*b).yy_buf_size = size;
     let ref mut fresh23 = (*b).yy_ch_buf;
-    *fresh23 = aagalloc(((*b).yy_buf_size + 2 as libc::c_int) as yy_size_t)
-        as *mut libc::c_char;
+    *fresh23 = aagalloc(((*b).yy_buf_size + 2 as libc::c_int) as yy_size_t) as *mut libc::c_char;
     if ((*b).yy_ch_buf).is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_create_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_create_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
     (*b).yy_is_our_buffer = 1 as libc::c_int;
@@ -3095,13 +3097,11 @@ pub unsafe extern "C" fn aag_delete_buffer(mut b: YY_BUFFER_STATE) {
     if b.is_null() {
         return;
     }
-    if b
-        == (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b == (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         let ref mut fresh24 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
         *fresh24 = 0 as YY_BUFFER_STATE;
     }
@@ -3116,18 +3116,15 @@ unsafe extern "C" fn aag_init_buffer(mut b: YY_BUFFER_STATE, mut file: *mut FILE
     let ref mut fresh25 = (*b).yy_input_file;
     *fresh25 = file;
     (*b).yy_fill_buffer = 1 as libc::c_int;
-    if b
-        != (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b != (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         (*b).yy_bs_lineno = 1 as libc::c_int;
         (*b).yy_bs_column = 0 as libc::c_int;
     }
-    (*b)
-        .yy_is_interactive = if !file.is_null() {
+    (*b).yy_is_interactive = if !file.is_null() {
         (gv_isatty_suppression > 0 as libc::c_int) as libc::c_int
     } else {
         0 as libc::c_int
@@ -3140,22 +3137,17 @@ pub unsafe extern "C" fn aag_flush_buffer(mut b: YY_BUFFER_STATE) {
         return;
     }
     (*b).yy_n_chars = 0 as libc::c_int;
-    *((*b).yy_ch_buf)
-        .offset(0 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
-    *((*b).yy_ch_buf)
-        .offset(1 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
+    *((*b).yy_ch_buf).offset(0 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
+    *((*b).yy_ch_buf).offset(1 as libc::c_int as isize) = 0 as libc::c_int as libc::c_char;
     let ref mut fresh26 = (*b).yy_buf_pos;
-    *fresh26 = &mut *((*b).yy_ch_buf).offset(0 as libc::c_int as isize)
-        as *mut libc::c_char;
+    *fresh26 = &mut *((*b).yy_ch_buf).offset(0 as libc::c_int as isize) as *mut libc::c_char;
     (*b).yy_at_bol = 1 as libc::c_int;
     (*b).yy_buffer_status = 0 as libc::c_int;
-    if b
-        == (if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        })
-    {
+    if b == (if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    }) {
         aag_load_buffer_state();
     }
 }
@@ -3170,11 +3162,10 @@ pub unsafe extern "C" fn aagpush_buffer_state(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         *yy_c_buf_p = yy_hold_char;
-        let ref mut fresh27 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize))
-            .yy_buf_pos;
+        let ref mut fresh27 = (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_buf_pos;
         *fresh27 = yy_c_buf_p;
         (**yy_buffer_stack.offset(yy_buffer_stack_top as isize)).yy_n_chars = yy_n_chars;
     }
@@ -3183,7 +3174,7 @@ pub unsafe extern "C" fn aagpush_buffer_state(mut new_buffer: YY_BUFFER_STATE) {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         yy_buffer_stack_top = yy_buffer_stack_top.wrapping_add(1);
     }
@@ -3199,17 +3190,15 @@ pub unsafe extern "C" fn aagpop_buffer_state() {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         return;
     }
-    aag_delete_buffer(
-        if !yy_buffer_stack.is_null() {
-            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-        } else {
-            0 as YY_BUFFER_STATE
-        },
-    );
+    aag_delete_buffer(if !yy_buffer_stack.is_null() {
+        *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+    } else {
+        0 as YY_BUFFER_STATE
+    });
     let ref mut fresh29 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
     *fresh29 = 0 as YY_BUFFER_STATE;
     if yy_buffer_stack_top > 0 as libc::c_int as libc::c_ulong {
@@ -3220,7 +3209,7 @@ pub unsafe extern "C" fn aagpop_buffer_state() {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
         aag_load_buffer_state();
         yy_did_buffer_switch_on_eof = 1 as libc::c_int;
@@ -3232,9 +3221,7 @@ unsafe extern "C" fn aagensure_buffer_stack() {
         num_to_alloc = 1 as libc::c_int as yy_size_t;
         yy_buffer_stack = aagalloc(
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         ) as *mut *mut yy_buffer_state;
         if yy_buffer_stack.is_null() {
             yy_fatal_error(
@@ -3246,25 +3233,19 @@ unsafe extern "C" fn aagensure_buffer_stack() {
             yy_buffer_stack as *mut libc::c_void,
             0 as libc::c_int,
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         );
         yy_buffer_stack_max = num_to_alloc;
         yy_buffer_stack_top = 0 as libc::c_int as size_t;
         return;
     }
-    if yy_buffer_stack_top
-        >= yy_buffer_stack_max.wrapping_sub(1 as libc::c_int as libc::c_ulong)
-    {
+    if yy_buffer_stack_top >= yy_buffer_stack_max.wrapping_sub(1 as libc::c_int as libc::c_ulong) {
         let mut grow_size: yy_size_t = 8 as libc::c_int as yy_size_t;
         num_to_alloc = yy_buffer_stack_max.wrapping_add(grow_size);
         yy_buffer_stack = aagrealloc(
             yy_buffer_stack as *mut libc::c_void,
             num_to_alloc
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+                .wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         ) as *mut *mut yy_buffer_state;
         if yy_buffer_stack.is_null() {
             yy_fatal_error(
@@ -3275,10 +3256,7 @@ unsafe extern "C" fn aagensure_buffer_stack() {
         memset(
             yy_buffer_stack.offset(yy_buffer_stack_max as isize) as *mut libc::c_void,
             0 as libc::c_int,
-            grow_size
-                .wrapping_mul(
-                    ::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong,
-                ),
+            grow_size.wrapping_mul(::std::mem::size_of::<*mut yy_buffer_state>() as libc::c_ulong),
         );
         yy_buffer_stack_max = num_to_alloc;
     }
@@ -3291,23 +3269,21 @@ pub unsafe extern "C" fn aag_scan_buffer(
     let mut b: YY_BUFFER_STATE = 0 as *mut yy_buffer_state;
     if size < 2 as libc::c_int as libc::c_ulong
         || *base.offset(size.wrapping_sub(2 as libc::c_int as libc::c_ulong) as isize)
-            as libc::c_int != 0 as libc::c_int
+            as libc::c_int
+            != 0 as libc::c_int
         || *base.offset(size.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize)
-            as libc::c_int != 0 as libc::c_int
+            as libc::c_int
+            != 0 as libc::c_int
     {
         return 0 as YY_BUFFER_STATE;
     }
-    b = aagalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong)
-        as YY_BUFFER_STATE;
+    b = aagalloc(::std::mem::size_of::<yy_buffer_state>() as libc::c_ulong) as YY_BUFFER_STATE;
     if b.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_scan_buffer()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_scan_buffer()\0" as *const u8 as *const libc::c_char,
         );
     }
-    (*b)
-        .yy_buf_size = size.wrapping_sub(2 as libc::c_int as libc::c_ulong)
-        as libc::c_int;
+    (*b).yy_buf_size = size.wrapping_sub(2 as libc::c_int as libc::c_ulong) as libc::c_int;
     let ref mut fresh30 = (*b).yy_ch_buf;
     *fresh30 = base;
     let ref mut fresh31 = (*b).yy_buf_pos;
@@ -3324,9 +3300,7 @@ pub unsafe extern "C" fn aag_scan_buffer(
     return b;
 }
 #[no_mangle]
-pub unsafe extern "C" fn aag_scan_string(
-    mut yystr: *const libc::c_char,
-) -> YY_BUFFER_STATE {
+pub unsafe extern "C" fn aag_scan_string(mut yystr: *const libc::c_char) -> YY_BUFFER_STATE {
     return aag_scan_bytes(yystr, strlen(yystr) as libc::c_int);
 }
 #[no_mangle]
@@ -3342,8 +3316,7 @@ pub unsafe extern "C" fn aag_scan_bytes(
     buf = aagalloc(n) as *mut libc::c_char;
     if buf.is_null() {
         yy_fatal_error(
-            b"out of dynamic memory in yy_scan_bytes()\0" as *const u8
-                as *const libc::c_char,
+            b"out of dynamic memory in yy_scan_bytes()\0" as *const u8 as *const libc::c_char,
         );
     }
     i = 0 as libc::c_int;
@@ -3356,9 +3329,7 @@ pub unsafe extern "C" fn aag_scan_bytes(
     *buf.offset(_yybytes_len as isize) = *fresh33;
     b = aag_scan_buffer(buf, n);
     if b.is_null() {
-        yy_fatal_error(
-            b"bad buffer in yy_scan_bytes()\0" as *const u8 as *const libc::c_char,
-        );
+        yy_fatal_error(b"bad buffer in yy_scan_bytes()\0" as *const u8 as *const libc::c_char);
     }
     (*b).yy_is_our_buffer = 1 as libc::c_int;
     return b;
@@ -3425,15 +3396,13 @@ pub unsafe extern "C" fn aaglex_destroy() -> libc::c_int {
     } else {
         0 as YY_BUFFER_STATE
     }
-        .is_null()
+    .is_null()
     {
-        aag_delete_buffer(
-            if !yy_buffer_stack.is_null() {
-                *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
-            } else {
-                0 as YY_BUFFER_STATE
-            },
-        );
+        aag_delete_buffer(if !yy_buffer_stack.is_null() {
+            *yy_buffer_stack.offset(yy_buffer_stack_top as isize)
+        } else {
+            0 as YY_BUFFER_STATE
+        });
         let ref mut fresh34 = *yy_buffer_stack.offset(yy_buffer_stack_top as isize);
         *fresh34 = 0 as YY_BUFFER_STATE;
         aagpop_buffer_state();

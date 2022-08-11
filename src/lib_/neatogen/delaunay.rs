@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -9,12 +17,7 @@ extern "C" {
     pub type _GtsConstraintClass;
     pub type _GtsConstraint;
     fn free(_: *mut libc::c_void);
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn gcalloc(nmemb: size_t, size: size_t) -> *mut libc::c_void;
     fn gmalloc(_: size_t) -> *mut libc::c_void;
     fn gts_constraint_class() -> *mut GtsConstraintClass;
@@ -33,11 +36,7 @@ extern "C" {
         e2: *mut *mut GtsEdge,
         e3: *mut *mut GtsEdge,
     );
-    fn gts_surface_foreach_face_remove(
-        s: *mut GtsSurface,
-        func: GtsFunc,
-        data: gpointer,
-    ) -> guint;
+    fn gts_surface_foreach_face_remove(s: *mut GtsSurface, func: GtsFunc, data: gpointer) -> guint;
     static mut gts_allow_floating_vertices: gboolean;
     static mut gts_allow_floating_edges: gboolean;
     fn gts_object_destroy(object: *mut GtsObject);
@@ -48,10 +47,7 @@ extern "C" {
         func: *const libc::c_char,
         expr: *const libc::c_char,
     ) -> !;
-    fn gts_delaunay_add_constraint(
-        surface: *mut GtsSurface,
-        c: *mut GtsConstraint,
-    ) -> *mut GSList;
+    fn gts_delaunay_add_constraint(surface: *mut GtsSurface, c: *mut GtsConstraint) -> *mut GSList;
     fn gts_delaunay_add_vertex(
         surface: *mut GtsSurface,
         v: *mut GtsVertex,
@@ -151,9 +147,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct v_data {
@@ -195,12 +190,12 @@ pub type GtsObjectClass = _GtsObjectClass;
 pub struct _GtsObjectClass {
     pub info: GtsObjectClassInfo,
     pub parent_class: *mut GtsObjectClass,
-    pub clone: Option::<unsafe extern "C" fn(*mut GtsObject, *mut GtsObject) -> ()>,
-    pub destroy: Option::<unsafe extern "C" fn(*mut GtsObject) -> ()>,
-    pub read: Option::<unsafe extern "C" fn(*mut *mut GtsObject, *mut GtsFile) -> ()>,
-    pub write: Option::<unsafe extern "C" fn(*mut GtsObject, *mut FILE) -> ()>,
-    pub color: Option::<unsafe extern "C" fn(*mut GtsObject) -> GtsColor>,
-    pub attributes: Option::<unsafe extern "C" fn(*mut GtsObject, *mut GtsObject) -> ()>,
+    pub clone: Option<unsafe extern "C" fn(*mut GtsObject, *mut GtsObject) -> ()>,
+    pub destroy: Option<unsafe extern "C" fn(*mut GtsObject) -> ()>,
+    pub read: Option<unsafe extern "C" fn(*mut *mut GtsObject, *mut GtsFile) -> ()>,
+    pub write: Option<unsafe extern "C" fn(*mut GtsObject, *mut FILE) -> ()>,
+    pub color: Option<unsafe extern "C" fn(*mut GtsObject) -> GtsColor>,
+    pub attributes: Option<unsafe extern "C" fn(*mut GtsObject, *mut GtsObject) -> ()>,
 }
 pub type GtsColor = _GtsColor;
 #[derive(Copy, Clone)]
@@ -266,12 +261,10 @@ pub struct _GtsObjectClassInfo {
     pub arg_set_func: GtsArgSetFunc,
     pub arg_get_func: GtsArgGetFunc,
 }
-pub type GtsArgGetFunc = Option::<unsafe extern "C" fn(*mut GtsObject) -> ()>;
-pub type GtsArgSetFunc = Option::<unsafe extern "C" fn(*mut GtsObject) -> ()>;
-pub type GtsObjectInitFunc = Option::<unsafe extern "C" fn(*mut GtsObject) -> ()>;
-pub type GtsObjectClassInitFunc = Option::<
-    unsafe extern "C" fn(*mut GtsObjectClass) -> (),
->;
+pub type GtsArgGetFunc = Option<unsafe extern "C" fn(*mut GtsObject) -> ()>;
+pub type GtsArgSetFunc = Option<unsafe extern "C" fn(*mut GtsObject) -> ()>;
+pub type GtsObjectInitFunc = Option<unsafe extern "C" fn(*mut GtsObject) -> ()>;
+pub type GtsObjectClassInitFunc = Option<unsafe extern "C" fn(*mut GtsObjectClass) -> ()>;
 pub type GtsSurface = _GtsSurface;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -289,9 +282,8 @@ pub type GtsVertexClass = _GtsVertexClass;
 #[repr(C)]
 pub struct _GtsVertexClass {
     pub parent_class: GtsPointClass,
-    pub intersection_attributes: Option::<
-        unsafe extern "C" fn(*mut GtsVertex, *mut GtsObject, *mut GtsObject) -> (),
-    >,
+    pub intersection_attributes:
+        Option<unsafe extern "C" fn(*mut GtsVertex, *mut GtsObject, *mut GtsObject) -> ()>,
 }
 pub type GtsVertex = _GtsVertex;
 #[derive(Copy, Clone)]
@@ -380,7 +372,7 @@ pub struct _GtsTriangle {
     pub e2: *mut GtsEdge,
     pub e3: *mut GtsEdge,
 }
-pub type GtsFunc = Option::<unsafe extern "C" fn(gpointer, gpointer) -> gint>;
+pub type GtsFunc = Option<unsafe extern "C" fn(gpointer, gpointer) -> gint>;
 pub type GtsConstraint = _GtsConstraint;
 pub type GtsFace = _GtsFace;
 #[derive(Copy, Clone)]
@@ -405,17 +397,16 @@ pub type GtsSurfaceClass = _GtsSurfaceClass;
 #[repr(C)]
 pub struct _GtsSurfaceClass {
     pub parent_class: GtsObjectClass,
-    pub add_face: Option::<unsafe extern "C" fn(*mut GtsSurface, *mut GtsFace) -> ()>,
-    pub remove_face: Option::<unsafe extern "C" fn(*mut GtsSurface, *mut GtsFace) -> ()>,
+    pub add_face: Option<unsafe extern "C" fn(*mut GtsSurface, *mut GtsFace) -> ()>,
+    pub remove_face: Option<unsafe extern "C" fn(*mut GtsSurface, *mut GtsFace) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GVertexClass {
     pub parent_class: GtsVertexClass,
 }
-pub type qsort_cmpf = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type qsort_cmpf =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct estate {
@@ -455,15 +446,16 @@ unsafe extern "C" fn gts_object_is_from_class(
             _g_boolean_var_ = 0 as libc::c_int;
         }
         _g_boolean_var_
-    }) as libc::c_long != 0
-    {} else {
+    }) as libc::c_long
+        != 0
+    {
+    } else {
         g_return_if_fail_warning(
             0 as *mut gchar,
-            (*::std::mem::transmute::<
-                &[u8; 25],
-                &[libc::c_char; 25],
-            >(b"gts_object_is_from_class\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 25], &[libc::c_char; 25]>(
+                b"gts_object_is_from_class\0",
+            ))
+            .as_ptr(),
             b"klass != NULL\0" as *const u8 as *const libc::c_char,
         );
         return 0 as *mut libc::c_void;
@@ -480,15 +472,16 @@ unsafe extern "C" fn gts_object_is_from_class(
             _g_boolean_var_ = 0 as libc::c_int;
         }
         _g_boolean_var_
-    }) as libc::c_long != 0
-    {} else {
+    }) as libc::c_long
+        != 0
+    {
+    } else {
         g_return_if_fail_warning(
             0 as *mut gchar,
-            (*::std::mem::transmute::<
-                &[u8; 25],
-                &[libc::c_char; 25],
-            >(b"gts_object_is_from_class\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 25], &[libc::c_char; 25]>(
+                b"gts_object_is_from_class\0",
+            ))
+            .as_ptr(),
             b"c != NULL\0" as *const u8 as *const libc::c_char,
         );
         return 0 as *mut libc::c_void;
@@ -522,18 +515,12 @@ unsafe extern "C" fn triangle_is_hole(
         &mut e2,
         &mut e3,
     );
-    if !(gts_object_is_from_class(e1 as gpointer, gts_constraint_class() as gpointer))
-        .is_null() && (*(e1 as *mut GtsSegment)).v1 != v1
-        || !(gts_object_is_from_class(
-            e2 as gpointer,
-            gts_constraint_class() as gpointer,
-        ))
-            .is_null() && (*(e2 as *mut GtsSegment)).v1 != v2
-        || !(gts_object_is_from_class(
-            e3 as gpointer,
-            gts_constraint_class() as gpointer,
-        ))
-            .is_null() && (*(e3 as *mut GtsSegment)).v1 != v3
+    if !(gts_object_is_from_class(e1 as gpointer, gts_constraint_class() as gpointer)).is_null()
+        && (*(e1 as *mut GtsSegment)).v1 != v1
+        || !(gts_object_is_from_class(e2 as gpointer, gts_constraint_class() as gpointer)).is_null()
+            && (*(e2 as *mut GtsSegment)).v1 != v2
+        || !(gts_object_is_from_class(e3 as gpointer, gts_constraint_class() as gpointer)).is_null()
+            && (*(e3 as *mut GtsSegment)).v1 != v3
     {
         return (0 as libc::c_int == 0) as libc::c_int;
     }
@@ -543,8 +530,7 @@ unsafe extern "C" fn delaunay_remove_holes(mut surface: *mut GtsSurface) -> guin
     return gts_surface_foreach_face_remove(
         surface,
         Some(
-            triangle_is_hole
-                as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
+            triangle_is_hole as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
         ),
         0 as *mut libc::c_void,
     );
@@ -554,38 +540,28 @@ unsafe extern "C" fn g_vertex_class() -> *mut GVertexClass {
     if klass.is_null() {
         let mut vertex_info: GtsObjectClassInfo = {
             let mut init = _GtsObjectClassInfo {
-                name: *::std::mem::transmute::<
-                    &[u8; 40],
-                    &mut [gchar; 40],
-                >(
+                name: *::std::mem::transmute::<&[u8; 40], &mut [gchar; 40]>(
                     b"GVertex\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
                 ),
                 object_size: ::std::mem::size_of::<GVertex>() as libc::c_ulong as guint,
-                class_size: ::std::mem::size_of::<GVertexClass>() as libc::c_ulong
-                    as guint,
-                class_init_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsObjectClassInitFunc,
-                >(0 as *mut libc::c_void),
-                object_init_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsObjectInitFunc,
-                >(0 as *mut libc::c_void),
-                arg_set_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsArgSetFunc,
-                >(0 as *mut libc::c_void),
-                arg_get_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsArgGetFunc,
-                >(0 as *mut libc::c_void),
+                class_size: ::std::mem::size_of::<GVertexClass>() as libc::c_ulong as guint,
+                class_init_func: ::std::mem::transmute::<*mut libc::c_void, GtsObjectClassInitFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                object_init_func: ::std::mem::transmute::<*mut libc::c_void, GtsObjectInitFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                arg_set_func: ::std::mem::transmute::<*mut libc::c_void, GtsArgSetFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                arg_get_func: ::std::mem::transmute::<*mut libc::c_void, GtsArgGetFunc>(
+                    0 as *mut libc::c_void,
+                ),
             };
             init
         };
-        klass = gts_object_class_new(
-            gts_vertex_class() as *mut GtsObjectClass,
-            &mut vertex_info,
-        ) as *mut GVertexClass;
+        klass = gts_object_class_new(gts_vertex_class() as *mut GtsObjectClass, &mut vertex_info)
+            as *mut GVertexClass;
     }
     return klass;
 }
@@ -594,38 +570,28 @@ unsafe extern "C" fn g_face_class() -> *mut GFaceClass {
     if klass.is_null() {
         let mut face_info: GtsObjectClassInfo = {
             let mut init = _GtsObjectClassInfo {
-                name: *::std::mem::transmute::<
-                    &[u8; 40],
-                    &mut [gchar; 40],
-                >(
+                name: *::std::mem::transmute::<&[u8; 40], &mut [gchar; 40]>(
                     b"GFace\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
                 ),
                 object_size: ::std::mem::size_of::<GFace>() as libc::c_ulong as guint,
-                class_size: ::std::mem::size_of::<GFaceClass>() as libc::c_ulong
-                    as guint,
-                class_init_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsObjectClassInitFunc,
-                >(0 as *mut libc::c_void),
-                object_init_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsObjectInitFunc,
-                >(0 as *mut libc::c_void),
-                arg_set_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsArgSetFunc,
-                >(0 as *mut libc::c_void),
-                arg_get_func: ::std::mem::transmute::<
-                    *mut libc::c_void,
-                    GtsArgGetFunc,
-                >(0 as *mut libc::c_void),
+                class_size: ::std::mem::size_of::<GFaceClass>() as libc::c_ulong as guint,
+                class_init_func: ::std::mem::transmute::<*mut libc::c_void, GtsObjectClassInitFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                object_init_func: ::std::mem::transmute::<*mut libc::c_void, GtsObjectInitFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                arg_set_func: ::std::mem::transmute::<*mut libc::c_void, GtsArgSetFunc>(
+                    0 as *mut libc::c_void,
+                ),
+                arg_get_func: ::std::mem::transmute::<*mut libc::c_void, GtsArgGetFunc>(
+                    0 as *mut libc::c_void,
+                ),
             };
             init
         };
-        klass = gts_object_class_new(
-            gts_face_class() as *mut GtsObjectClass,
-            &mut face_info,
-        ) as *mut GFaceClass;
+        klass = gts_object_class_new(gts_face_class() as *mut GtsObjectClass, &mut face_info)
+            as *mut GFaceClass;
     }
     return klass;
 }
@@ -645,14 +611,15 @@ unsafe extern "C" fn destroy(mut v: *mut GtsVertex) {
             _g_boolean_var_ = 0 as libc::c_int;
         }
         _g_boolean_var_
-    }) as libc::c_long != 0
-    {} else {
+    }) as libc::c_long
+        != 0
+    {
+    } else {
         g_assertion_message_expr(
             0 as *mut gchar,
             b"delaunay.c\0" as *const u8 as *const libc::c_char,
             128 as libc::c_int,
-            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"destroy\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 8], &[libc::c_char; 8]>(b"destroy\0")).as_ptr(),
             b"v->segments == NULL\0" as *const u8 as *const libc::c_char,
         );
     }
@@ -720,10 +687,8 @@ unsafe extern "C" fn tri(
             *vertices.offset(*segs.offset((2 as libc::c_int * i) as isize) as isize)
                 as *mut GtsVertex,
             *vertices
-                .offset(
-                    *segs.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize)
-                        as isize,
-                ) as *mut GtsVertex,
+                .offset(*segs.offset((2 as libc::c_int * i + 1 as libc::c_int) as isize) as isize)
+                as *mut GtsVertex,
         );
         i += 1;
     }
@@ -748,11 +713,7 @@ unsafe extern "C" fn tri(
     i = 0 as libc::c_int;
     while i < npt {
         let mut v4: *mut GtsVertex = *vertices.offset(i as isize) as *mut GtsVertex;
-        let mut v: *mut GtsVertex = gts_delaunay_add_vertex(
-            surface,
-            v4,
-            0 as *mut GtsFace,
-        );
+        let mut v: *mut GtsVertex = gts_delaunay_add_vertex(surface, v4, 0 as *mut GtsFace);
         if !v.is_null() {
             gts_vertex_replace(v4, v);
         }
@@ -760,10 +721,7 @@ unsafe extern "C" fn tri(
     }
     i = 0 as libc::c_int;
     while i < nsegs {
-        gts_delaunay_add_constraint(
-            surface,
-            *edges.offset(i as isize) as *mut GtsConstraint,
-        );
+        gts_delaunay_add_constraint(surface, *edges.offset(i as isize) as *mut GtsConstraint);
         i += 1;
     }
     gts_allow_floating_vertices = (0 as libc::c_int == 0) as libc::c_int;
@@ -780,22 +738,17 @@ unsafe extern "C" fn tri(
     free(vertices as *mut libc::c_void);
     return surface;
 }
-unsafe extern "C" fn cnt_edge(
-    mut edge: *mut libc::c_void,
-    mut stats: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn cnt_edge(mut edge: *mut libc::c_void, mut stats: *mut libc::c_void) -> gint {
     let mut e: *mut GtsSegment = edge as *mut GtsSegment;
     let mut sp: *mut estats = stats as *mut estats;
     let ref mut fresh3 = (*sp).n;
     *fresh3 += 1;
     if !((*sp).delaunay).is_null() {
-        let ref mut fresh4 = (*((*sp).delaunay)
-            .offset((*((*e).v1 as *mut GVertex)).idx as isize))
-            .nedges;
+        let ref mut fresh4 =
+            (*((*sp).delaunay).offset((*((*e).v1 as *mut GVertex)).idx as isize)).nedges;
         *fresh4 += 1;
-        let ref mut fresh5 = (*((*sp).delaunay)
-            .offset((*((*e).v2 as *mut GVertex)).idx as isize))
-            .nedges;
+        let ref mut fresh5 =
+            (*((*sp).delaunay).offset((*((*e).v2 as *mut GVertex)).idx as isize)).nedges;
         *fresh5 += 1;
     }
     return 0 as libc::c_int;
@@ -803,17 +756,11 @@ unsafe extern "C" fn cnt_edge(
 unsafe extern "C" fn edgeStats(mut s: *mut GtsSurface, mut sp: *mut estats) {
     gts_surface_foreach_edge(
         s,
-        Some(
-            cnt_edge
-                as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(cnt_edge as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         sp as gpointer,
     );
 }
-unsafe extern "C" fn add_edge(
-    mut edge: *mut libc::c_void,
-    mut data: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn add_edge(mut edge: *mut libc::c_void, mut data: *mut libc::c_void) -> gint {
     let mut e: *mut GtsSegment = edge as *mut GtsSegment;
     let mut delaunay: *mut v_data = data as *mut v_data;
     let mut source: libc::c_int = (*((*e).v1 as *mut GVertex)).idx;
@@ -852,8 +799,10 @@ unsafe extern "C" fn delaunay_triangulation(
     if s.is_null() {
         return 0 as *mut v_data;
     }
-    delaunay = gcalloc(n as size_t, ::std::mem::size_of::<v_data>() as libc::c_ulong)
-        as *mut v_data;
+    delaunay = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<v_data>() as libc::c_ulong,
+    ) as *mut v_data;
     i = 0 as libc::c_int;
     while i < n {
         let ref mut fresh10 = (*delaunay.offset(i as isize)).ewgts;
@@ -880,43 +829,32 @@ unsafe extern "C" fn delaunay_triangulation(
     }
     gts_surface_foreach_edge(
         s,
-        Some(
-            add_edge
-                as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(add_edge as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         delaunay as gpointer,
     );
     gts_object_destroy(s as *mut GtsObject);
     return delaunay;
 }
-unsafe extern "C" fn addEdge(
-    mut edge: *mut libc::c_void,
-    mut state: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn addEdge(mut edge: *mut libc::c_void, mut state: *mut libc::c_void) -> gint {
     let mut e: *mut GtsSegment = edge as *mut GtsSegment;
     let mut es: *mut estate = state as *mut estate;
     let mut source: libc::c_int = (*((*e).v1 as *mut GVertex)).idx;
     let mut dest: libc::c_int = (*((*e).v2 as *mut GVertex)).idx;
     *((*es).edges).offset((2 as libc::c_int * (*es).n) as isize) = source;
-    *((*es).edges)
-        .offset((2 as libc::c_int * (*es).n + 1 as libc::c_int) as isize) = dest;
+    *((*es).edges).offset((2 as libc::c_int * (*es).n + 1 as libc::c_int) as isize) = dest;
     (*es).n += 1 as libc::c_int;
     return 0 as libc::c_int;
 }
-static mut _vals: *mut libc::c_double = 0 as *const libc::c_double
-    as *mut libc::c_double;
-unsafe extern "C" fn vcmp(
-    mut a: *mut libc::c_int,
-    mut b: *mut libc::c_int,
-) -> libc::c_int {
+static mut _vals: *mut libc::c_double = 0 as *const libc::c_double as *mut libc::c_double;
+unsafe extern "C" fn vcmp(mut a: *mut libc::c_int, mut b: *mut libc::c_int) -> libc::c_int {
     let mut va: libc::c_double = *_vals.offset(*a as isize);
     let mut vb: libc::c_double = *_vals.offset(*b as isize);
     if va < vb {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else if va > vb {
-        return 1 as libc::c_int
+        return 1 as libc::c_int;
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 #[no_mangle]
@@ -961,10 +899,7 @@ pub unsafe extern "C" fn delaunay_tri(
         state.edges = edges;
         gts_surface_foreach_edge(
             s,
-            Some(
-                addEdge
-                    as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-            ),
+            Some(addEdge as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
             &mut state as *mut estate as gpointer,
         );
     } else {
@@ -998,22 +933,11 @@ pub unsafe extern "C" fn delaunay_tri(
             n as size_t,
             ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
             ::std::mem::transmute::<
-                Option::<
-                    unsafe extern "C" fn(
-                        *mut libc::c_int,
-                        *mut libc::c_int,
-                    ) -> libc::c_int,
-                >,
+                Option<unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_int) -> libc::c_int>,
                 qsort_cmpf,
-            >(
-                Some(
-                    vcmp
-                        as unsafe extern "C" fn(
-                            *mut libc::c_int,
-                            *mut libc::c_int,
-                        ) -> libc::c_int,
-                ),
-            ),
+            >(Some(
+                vcmp as unsafe extern "C" fn(*mut libc::c_int, *mut libc::c_int) -> libc::c_int,
+            )),
         );
         tl = *vs.offset(0 as libc::c_int as isize);
         i = 1 as libc::c_int;
@@ -1033,20 +957,14 @@ pub unsafe extern "C" fn delaunay_tri(
     gts_object_destroy(s as *mut GtsObject);
     return edges;
 }
-unsafe extern "C" fn cntFace(
-    mut face: *mut libc::c_void,
-    mut data: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn cntFace(mut face: *mut libc::c_void, mut data: *mut libc::c_void) -> gint {
     let mut fp: *mut GFace = face as *mut GFace;
     let mut ip: *mut libc::c_int = data as *mut libc::c_int;
     (*fp).idx = *ip;
     *ip += 1 as libc::c_int;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn addNeighbor(
-    mut face: *mut libc::c_void,
-    mut ni: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn addNeighbor(mut face: *mut libc::c_void, mut ni: *mut libc::c_void) -> gint {
     let mut f: *mut GFace = face as *mut GFace;
     let mut es: *mut ninfo = ni as *mut ninfo;
     *((*es).neigh).offset((*es).nneigh as isize) = (*f).idx;
@@ -1054,18 +972,13 @@ unsafe extern "C" fn addNeighbor(
     *fresh14 += 1;
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn addFace(
-    mut face: *mut libc::c_void,
-    mut state: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn addFace(mut face: *mut libc::c_void, mut state: *mut libc::c_void) -> gint {
     let mut f: *mut GFace = face as *mut GFace;
     let mut es: *mut fstate = state as *mut fstate;
     let mut i: libc::c_int = 0;
     let mut myid: libc::c_int = (*f).idx;
-    let mut ip: *mut libc::c_int = ((*es).faces)
-        .offset((3 as libc::c_int * myid) as isize);
-    let mut neigh: *mut libc::c_int = ((*es).neigh)
-        .offset((3 as libc::c_int * myid) as isize);
+    let mut ip: *mut libc::c_int = ((*es).faces).offset((3 as libc::c_int * myid) as isize);
+    let mut neigh: *mut libc::c_int = ((*es).neigh).offset((3 as libc::c_int * myid) as isize);
     let mut ni: ninfo = ninfo {
         nneigh: 0,
         neigh: 0 as *mut libc::c_int,
@@ -1088,10 +1001,7 @@ unsafe extern "C" fn addFace(
     gts_face_foreach_neighbor(
         f as *mut GtsFace,
         0 as *mut GtsSurface,
-        Some(
-            addNeighbor
-                as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(addNeighbor as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut ni as *mut ninfo as gpointer,
     );
     i = ni.nneigh;
@@ -1101,15 +1011,11 @@ unsafe extern "C" fn addFace(
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn addTri(
-    mut face: *mut libc::c_void,
-    mut state: *mut libc::c_void,
-) -> gint {
+unsafe extern "C" fn addTri(mut face: *mut libc::c_void, mut state: *mut libc::c_void) -> gint {
     let mut f: *mut GFace = face as *mut GFace;
     let mut es: *mut fstate = state as *mut fstate;
     let mut myid: libc::c_int = (*f).idx;
-    let mut ip: *mut libc::c_int = ((*es).faces)
-        .offset((3 as libc::c_int * myid) as isize);
+    let mut ip: *mut libc::c_int = ((*es).faces).offset((3 as libc::c_int * myid) as isize);
     let mut v1: *mut GtsVertex = 0 as *mut GtsVertex;
     let mut v2: *mut GtsVertex = 0 as *mut GtsVertex;
     let mut v3: *mut GtsVertex = 0 as *mut GtsVertex;
@@ -1167,16 +1073,12 @@ pub unsafe extern "C" fn mkSurface(
     state.edges = segs;
     gts_surface_foreach_edge(
         s,
-        Some(
-            addEdge as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(addEdge as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut state as *mut estate as gpointer,
     );
     gts_surface_foreach_face(
         s,
-        Some(
-            cntFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(cntFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut nfaces as *mut libc::c_int as gpointer,
     );
     faces = gcalloc(
@@ -1191,9 +1093,7 @@ pub unsafe extern "C" fn mkSurface(
     statf.neigh = neigh;
     gts_surface_foreach_face(
         s,
-        Some(
-            addFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(addFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut statf as *mut fstate as gpointer,
     );
     (*sf).nedges = nsegs;
@@ -1236,21 +1136,16 @@ pub unsafe extern "C" fn get_triangles(
     }
     gts_surface_foreach_face(
         s,
-        Some(
-            cntFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(cntFace as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut nfaces as *mut libc::c_int as gpointer,
     );
-    statf
-        .faces = gcalloc(
+    statf.faces = gcalloc(
         (3 as libc::c_int * nfaces) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
     gts_surface_foreach_face(
         s,
-        Some(
-            addTri as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint,
-        ),
+        Some(addTri as unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> gint),
         &mut statf as *mut fstate as gpointer,
     );
     gts_object_destroy(s as *mut GtsObject);
@@ -1274,10 +1169,8 @@ unsafe extern "C" fn remove_edge(
         if *((*graph.offset(source as isize)).edges).offset(i as isize) == dest {
             let ref mut fresh24 = (*graph.offset(source as isize)).nedges;
             *fresh24 -= 1;
-            *((*graph.offset(source as isize)).edges)
-                .offset(
-                    i as isize,
-                ) = *((*graph.offset(source as isize)).edges).offset(*fresh24 as isize);
+            *((*graph.offset(source as isize)).edges).offset(i as isize) =
+                *((*graph.offset(source as isize)).edges).offset(*fresh24 as isize);
             break;
         } else {
             i += 1;
@@ -1309,26 +1202,28 @@ pub unsafe extern "C" fn UG_graph(
             4 as libc::c_int as size_t,
             ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
-        delaunay = gcalloc(n as size_t, ::std::mem::size_of::<v_data>() as libc::c_ulong)
-            as *mut v_data;
+        delaunay = gcalloc(
+            n as size_t,
+            ::std::mem::size_of::<v_data>() as libc::c_ulong,
+        ) as *mut v_data;
         let ref mut fresh25 = (*delaunay.offset(0 as libc::c_int as isize)).ewgts;
         *fresh25 = 0 as *mut libc::c_float;
         let ref mut fresh26 = (*delaunay.offset(0 as libc::c_int as isize)).edges;
         *fresh26 = edges;
         (*delaunay.offset(0 as libc::c_int as isize)).nedges = 2 as libc::c_int;
-        *((*delaunay.offset(0 as libc::c_int as isize)).edges)
-            .offset(0 as libc::c_int as isize) = 0 as libc::c_int;
-        *((*delaunay.offset(0 as libc::c_int as isize)).edges)
-            .offset(1 as libc::c_int as isize) = 1 as libc::c_int;
+        *((*delaunay.offset(0 as libc::c_int as isize)).edges).offset(0 as libc::c_int as isize) =
+            0 as libc::c_int;
+        *((*delaunay.offset(0 as libc::c_int as isize)).edges).offset(1 as libc::c_int as isize) =
+            1 as libc::c_int;
         let ref mut fresh27 = (*delaunay.offset(1 as libc::c_int as isize)).edges;
         *fresh27 = edges.offset(2 as libc::c_int as isize);
         let ref mut fresh28 = (*delaunay.offset(1 as libc::c_int as isize)).ewgts;
         *fresh28 = 0 as *mut libc::c_float;
         (*delaunay.offset(1 as libc::c_int as isize)).nedges = 2 as libc::c_int;
-        *((*delaunay.offset(1 as libc::c_int as isize)).edges)
-            .offset(0 as libc::c_int as isize) = 1 as libc::c_int;
-        *((*delaunay.offset(1 as libc::c_int as isize)).edges)
-            .offset(1 as libc::c_int as isize) = 0 as libc::c_int;
+        *((*delaunay.offset(1 as libc::c_int as isize)).edges).offset(0 as libc::c_int as isize) =
+            1 as libc::c_int;
+        *((*delaunay.offset(1 as libc::c_int as isize)).edges).offset(1 as libc::c_int as isize) =
+            0 as libc::c_int;
         return delaunay;
     } else {
         if n == 1 as libc::c_int {
@@ -1368,23 +1263,17 @@ pub unsafe extern "C" fn UG_graph(
                     let mut removed: bool = 0 as libc::c_int != 0;
                     k = 0 as libc::c_int;
                     while k < n && !removed {
-                        dist_ik = (*x.offset(k as isize) - x_i)
-                            * (*x.offset(k as isize) - x_i)
-                            + (*y.offset(k as isize) - y_i)
-                                * (*y.offset(k as isize) - y_i);
+                        dist_ik = (*x.offset(k as isize) - x_i) * (*x.offset(k as isize) - x_i)
+                            + (*y.offset(k as isize) - y_i) * (*y.offset(k as isize) - y_i);
                         if dist_ik < dist_ij {
-                            dist_jk = (*x.offset(k as isize) - x_j)
-                                * (*x.offset(k as isize) - x_j)
-                                + (*y.offset(k as isize) - y_j)
-                                    * (*y.offset(k as isize) - y_j);
+                            dist_jk = (*x.offset(k as isize) - x_j) * (*x.offset(k as isize) - x_j)
+                                + (*y.offset(k as isize) - y_j) * (*y.offset(k as isize) - y_j);
                             if dist_jk < dist_ij {
                                 let ref mut fresh31 = (*delaunay.offset(i as isize)).nedges;
                                 *fresh31 -= 1;
-                                *((*delaunay.offset(i as isize)).edges)
-                                    .offset(
-                                        j as isize,
-                                    ) = *((*delaunay.offset(i as isize)).edges)
-                                    .offset(*fresh31 as isize);
+                                *((*delaunay.offset(i as isize)).edges).offset(j as isize) =
+                                    *((*delaunay.offset(i as isize)).edges)
+                                        .offset(*fresh31 as isize);
                                 remove_edge(delaunay, neighbor_j, i);
                                 removed = 1 as libc::c_int != 0;
                             }
@@ -1412,8 +1301,7 @@ pub unsafe extern "C" fn UG_graph(
                 let mut removed_0: bool = 0 as libc::c_int != 0;
                 k = 1 as libc::c_int;
                 while k < (*delaunay.offset(i as isize)).nedges && !removed_0 {
-                    neighbor_k = *((*delaunay.offset(i as isize)).edges)
-                        .offset(k as isize);
+                    neighbor_k = *((*delaunay.offset(i as isize)).edges).offset(k as isize);
                     dist_ik = (*x.offset(neighbor_k as isize) - x_i)
                         * (*x.offset(neighbor_k as isize) - x_i)
                         + (*y.offset(neighbor_k as isize) - y_i)
@@ -1426,11 +1314,8 @@ pub unsafe extern "C" fn UG_graph(
                         if dist_jk < dist_ij {
                             let ref mut fresh32 = (*delaunay.offset(i as isize)).nedges;
                             *fresh32 -= 1;
-                            *((*delaunay.offset(i as isize)).edges)
-                                .offset(
-                                    j as isize,
-                                ) = *((*delaunay.offset(i as isize)).edges)
-                                .offset(*fresh32 as isize);
+                            *((*delaunay.offset(i as isize)).edges).offset(j as isize) =
+                                *((*delaunay.offset(i as isize)).edges).offset(*fresh32 as isize);
                             remove_edge(delaunay, neighbor_j, i);
                             removed_0 = 1 as libc::c_int != 0;
                         }

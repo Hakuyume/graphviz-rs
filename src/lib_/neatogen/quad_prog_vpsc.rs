@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -65,10 +73,7 @@ extern "C" {
         m: libc::c_int,
         cs: *mut *mut Constraint,
     ) -> *mut VPSC;
-    fn unpackMatrix(
-        packedMat: *mut libc::c_float,
-        n: libc::c_int,
-    ) -> *mut *mut libc::c_float;
+    fn unpackMatrix(packedMat: *mut libc::c_float, n: libc::c_int) -> *mut *mut libc::c_float;
 }
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
@@ -208,10 +213,8 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
         satisfyVPSC((*e).vpsc);
         i = 0 as libc::c_int;
         while i < n {
-            *place
-                .offset(
-                    i as isize,
-                ) = getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
+            *place.offset(i as isize) =
+                getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
             i += 1;
         }
     }
@@ -227,16 +230,12 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
         i = 0 as libc::c_int;
         while i < n {
             *old_place.offset(i as isize) = *place.offset(i as isize);
-            *g
-                .offset(
-                    i as isize,
-                ) = 2 as libc::c_int as libc::c_float * *b.offset(i as isize);
+            *g.offset(i as isize) = 2 as libc::c_int as libc::c_float * *b.offset(i as isize);
             j = 0 as libc::c_int;
             while j < n {
-                *g.offset(i as isize)
-                    -= 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *place.offset(j as isize);
+                *g.offset(i as isize) -= 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *place.offset(j as isize);
                 j += 1;
             }
             i += 1;
@@ -247,10 +246,9 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
             r = 0 as libc::c_int as libc::c_float;
             j = 0 as libc::c_int;
             while j < n {
-                r
-                    += 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *g.offset(j as isize);
+                r += 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *g.offset(j as isize);
                 j += 1;
             }
             denominator -= r * *g.offset(i as isize);
@@ -278,19 +276,14 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
             satisfyVPSC((*e).vpsc);
             i = 0 as libc::c_int;
             while i < n {
-                *place
-                    .offset(
-                        i as isize,
-                    ) = getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
+                *place.offset(i as isize) =
+                    getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
                 i += 1;
             }
         }
         i = 0 as libc::c_int;
         while i < n {
-            *d
-                .offset(
-                    i as isize,
-                ) = *place.offset(i as isize) - *old_place.offset(i as isize);
+            *d.offset(i as isize) = *place.offset(i as isize) - *old_place.offset(i as isize);
             i += 1;
         }
         numerator = 0 as libc::c_int as libc::c_float;
@@ -301,10 +294,9 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
             r = 0 as libc::c_int as libc::c_float;
             j = 0 as libc::c_int;
             while j < n {
-                r
-                    += 2 as libc::c_int as libc::c_float
-                        * *(*((*e).A).offset(i as isize)).offset(j as isize)
-                        * *d.offset(j as isize);
+                r += 2 as libc::c_int as libc::c_float
+                    * *(*((*e).A).offset(i as isize)).offset(j as isize)
+                    * *d.offset(j as isize);
                 j += 1;
             }
             denominator += r * *d.offset(i as isize);
@@ -317,18 +309,13 @@ pub unsafe extern "C" fn constrained_majorization_vpsc(
         }
         i = 0 as libc::c_int;
         while i < n {
-            if beta > 0 as libc::c_int as libc::c_float
-                && (beta as libc::c_double) < 1.0f64
-            {
-                *place
-                    .offset(
-                        i as isize,
-                    ) = *old_place.offset(i as isize) + beta * *d.offset(i as isize);
+            if beta > 0 as libc::c_int as libc::c_float && (beta as libc::c_double) < 1.0f64 {
+                *place.offset(i as isize) =
+                    *old_place.offset(i as isize) + beta * *d.offset(i as isize);
             }
             test = (test as libc::c_double
                 + fabs(
-                    (*place.offset(i as isize) - *old_place.offset(i as isize))
-                        as libc::c_double,
+                    (*place.offset(i as isize) - *old_place.offset(i as isize)) as libc::c_double,
                 )) as libc::c_float;
             i += 1;
         }
@@ -350,9 +337,8 @@ pub unsafe extern "C" fn initCMajVPSC(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut nConCs: libc::c_int = 0;
-    let mut e: *mut CMajEnvVPSC = gmalloc(
-        ::std::mem::size_of::<CMajEnvVPSC>() as libc::c_ulong,
-    ) as *mut CMajEnvVPSC;
+    let mut e: *mut CMajEnvVPSC =
+        gmalloc(::std::mem::size_of::<CMajEnvVPSC>() as libc::c_ulong) as *mut CMajEnvVPSC;
     let ref mut fresh0 = (*e).A;
     *fresh0 = 0 as *mut *mut libc::c_float;
     let ref mut fresh1 = (*e).packedMat;
@@ -385,8 +371,8 @@ pub unsafe extern "C" fn initCMajVPSC(
         while i < (*e).nv {
             j = 1 as libc::c_int;
             while j < (*graph.offset(i as isize)).nedges {
-                if *((*graph.offset(i as isize)).edists).offset(j as isize)
-                    as libc::c_double > 0.01f64
+                if *((*graph.offset(i as isize)).edists).offset(j as isize) as libc::c_double
+                    > 0.01f64
                 {
                     let ref mut fresh5 = (*e).gm;
                     *fresh5 += 1;
@@ -403,8 +389,7 @@ pub unsafe extern "C" fn initCMajVPSC(
             j = 1 as libc::c_int;
             while j < (*graph.offset(i as isize)).nedges {
                 let mut u: libc::c_int = i;
-                let mut v: libc::c_int = *((*graph.offset(i as isize)).edges)
-                    .offset(j as isize);
+                let mut v: libc::c_int = *((*graph.offset(i as isize)).edges).offset(j as isize);
                 if *((*graph.offset(i as isize)).edists).offset(j as isize)
                     > 0 as libc::c_int as libc::c_float
                 {
@@ -450,9 +435,8 @@ pub unsafe extern "C" fn initCMajVPSC(
                 (*e).ndv,
             );
         }
-        (*e)
-            .gm = get_num_digcola_constraints(levels, (*e).ndv + 1 as libc::c_int)
-            + (*e).ndv - 1 as libc::c_int;
+        (*e).gm = get_num_digcola_constraints(levels, (*e).ndv + 1 as libc::c_int) + (*e).ndv
+            - 1 as libc::c_int;
         let ref mut fresh10 = (*e).gcs;
         *fresh10 = newConstraints((*e).gm);
         (*e).gm = 0 as libc::c_int;
@@ -487,10 +471,7 @@ pub unsafe extern "C" fn initCMajVPSC(
                 let ref mut fresh16 = *((*e).gcs).offset(fresh15 as isize);
                 *fresh16 = newConstraint(
                     *((*e).vs)
-                        .offset(
-                            *((*levels.offset(i as isize)).nodes).offset(j as isize)
-                                as isize,
-                        ),
+                        .offset(*((*levels.offset(i as isize)).nodes).offset(j as isize) as isize),
                     *((*e).vs).offset(cvar as isize),
                     halfgap,
                 );
@@ -504,11 +485,10 @@ pub unsafe extern "C" fn initCMajVPSC(
                 let ref mut fresh19 = *((*e).gcs).offset(fresh18 as isize);
                 *fresh19 = newConstraint(
                     *((*e).vs).offset(cvar as isize),
-                    *((*e).vs)
-                        .offset(
-                            *((*levels.offset((i + 1 as libc::c_int) as isize)).nodes)
-                                .offset(j as isize) as isize,
-                        ),
+                    *((*e).vs).offset(
+                        *((*levels.offset((i + 1 as libc::c_int) as isize)).nodes)
+                            .offset(j as isize) as isize,
+                    ),
                     halfgap,
                 );
                 j += 1;
@@ -547,17 +527,14 @@ pub unsafe extern "C" fn initCMajVPSC(
         while i < (*(*opt).clusters).nclusters {
             j = 0 as libc::c_int;
             while j < *((*(*opt).clusters).clustersizes).offset(i as isize) {
-                let mut v_0: *mut Variable = *((*e).vs)
-                    .offset(
-                        *(*((*(*opt).clusters).clusters).offset(i as isize))
-                            .offset(j as isize) as isize,
-                    );
-                let mut cl: *mut Variable = *((*e).vs)
-                    .offset(((*e).nv + 2 as libc::c_int * i) as isize);
-                let mut cr: *mut Variable = *((*e).vs)
-                    .offset(
-                        ((*e).nv + 2 as libc::c_int * i + 1 as libc::c_int) as isize,
-                    );
+                let mut v_0: *mut Variable = *((*e).vs).offset(
+                    *(*((*(*opt).clusters).clusters).offset(i as isize)).offset(j as isize)
+                        as isize,
+                );
+                let mut cl: *mut Variable =
+                    *((*e).vs).offset(((*e).nv + 2 as libc::c_int * i) as isize);
+                let mut cr: *mut Variable =
+                    *((*e).vs).offset(((*e).nv + 2 as libc::c_int * i + 1 as libc::c_int) as isize);
                 let ref mut fresh25 = (*e).gm;
                 let fresh26 = *fresh25;
                 *fresh25 = *fresh25 + 1;
@@ -652,10 +629,8 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
     let mut j: libc::c_int = 0;
     let mut mol: libc::c_int = 0 as libc::c_int;
     let mut n: libc::c_int = (*e).nv + (*e).nldv;
-    let mut bb: *mut boxf = gcalloc(
-        n as size_t,
-        ::std::mem::size_of::<boxf>() as libc::c_ulong,
-    ) as *mut boxf;
+    let mut bb: *mut boxf =
+        gcalloc(n as size_t, ::std::mem::size_of::<boxf>() as libc::c_ulong) as *mut boxf;
     let mut genclusters: bool = (*(*opt).clusters).nclusters > 0 as libc::c_int;
     if genclusters {
         n -= 2 as libc::c_int * (*(*opt).clusters).nclusters;
@@ -665,30 +640,22 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
     }
     i = 0 as libc::c_int;
     while i < n {
-        (*bb.offset(i as isize))
-            .LL
-            .x = *(*coords.offset(0 as libc::c_int as isize)).offset(i as isize)
-            as libc::c_double
-            - nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).x
-                / 2.0f64 - (*opt).gap.x / 2.0f64;
-        (*bb.offset(i as isize))
-            .UR
-            .x = *(*coords.offset(0 as libc::c_int as isize)).offset(i as isize)
-            as libc::c_double
-            + nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).x
-                / 2.0f64 + (*opt).gap.x / 2.0f64;
-        (*bb.offset(i as isize))
-            .LL
-            .y = *(*coords.offset(1 as libc::c_int as isize)).offset(i as isize)
-            as libc::c_double
-            - nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).y
-                / 2.0f64 - (*opt).gap.y / 2.0f64;
-        (*bb.offset(i as isize))
-            .UR
-            .y = *(*coords.offset(1 as libc::c_int as isize)).offset(i as isize)
-            as libc::c_double
-            + nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).y
-                / 2.0f64 + (*opt).gap.y / 2.0f64;
+        (*bb.offset(i as isize)).LL.x = *(*coords.offset(0 as libc::c_int as isize))
+            .offset(i as isize) as libc::c_double
+            - nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).x / 2.0f64
+            - (*opt).gap.x / 2.0f64;
+        (*bb.offset(i as isize)).UR.x = *(*coords.offset(0 as libc::c_int as isize))
+            .offset(i as isize) as libc::c_double
+            + nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).x / 2.0f64
+            + (*opt).gap.x / 2.0f64;
+        (*bb.offset(i as isize)).LL.y = *(*coords.offset(1 as libc::c_int as isize))
+            .offset(i as isize) as libc::c_double
+            - nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).y / 2.0f64
+            - (*opt).gap.y / 2.0f64;
+        (*bb.offset(i as isize)).UR.y = *(*coords.offset(1 as libc::c_int as isize))
+            .offset(i as isize) as libc::c_double
+            + nsizeScale as libc::c_double * (*((*opt).nsize).offset(i as isize)).y / 2.0f64
+            + (*opt).gap.y / 2.0f64;
         i += 1;
     }
     if genclusters {
@@ -702,8 +669,7 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
         ) as *mut libc::c_int;
         i = 0 as libc::c_int;
         while i < (*(*opt).clusters).nclusters {
-            let mut cn: libc::c_int = *((*(*opt).clusters).clustersizes)
-                .offset(i as isize);
+            let mut cn: libc::c_int = *((*(*opt).clusters).clustersizes).offset(i as isize);
             let mut cvs: *mut *mut Variable = gcalloc(
                 (cn + 2 as libc::c_int) as size_t,
                 ::std::mem::size_of::<*mut Variable>() as libc::c_ulong,
@@ -722,39 +688,30 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
             container.UR.x = container.UR.y;
             j = 0 as libc::c_int;
             while j < cn {
-                let mut iv: libc::c_int = *(*((*(*opt).clusters).clusters)
-                    .offset(i as isize))
-                    .offset(j as isize);
+                let mut iv: libc::c_int =
+                    *(*((*(*opt).clusters).clusters).offset(i as isize)).offset(j as isize);
                 let ref mut fresh38 = *cvs.offset(j as isize);
                 *fresh38 = *((*e).vs).offset(iv as isize);
                 (*cbb.offset(j as isize)).LL.x = (*bb.offset(iv as isize)).LL.x;
                 (*cbb.offset(j as isize)).LL.y = (*bb.offset(iv as isize)).LL.y;
                 (*cbb.offset(j as isize)).UR.x = (*bb.offset(iv as isize)).UR.x;
                 (*cbb.offset(j as isize)).UR.y = (*bb.offset(iv as isize)).UR.y;
-                container
-                    .LL
-                    .x = (if container.LL.x < (*bb.offset(iv as isize)).LL.x {
+                container.LL.x = (if container.LL.x < (*bb.offset(iv as isize)).LL.x {
                     container.LL.x
                 } else {
                     (*bb.offset(iv as isize)).LL.x
                 });
-                container
-                    .LL
-                    .y = (if container.LL.y < (*bb.offset(iv as isize)).LL.y {
+                container.LL.y = (if container.LL.y < (*bb.offset(iv as isize)).LL.y {
                     container.LL.y
                 } else {
                     (*bb.offset(iv as isize)).LL.y
                 });
-                container
-                    .UR
-                    .x = (if container.UR.x > (*bb.offset(iv as isize)).UR.x {
+                container.UR.x = (if container.UR.x > (*bb.offset(iv as isize)).UR.x {
                     container.UR.x
                 } else {
                     (*bb.offset(iv as isize)).UR.x
                 });
-                container
-                    .UR
-                    .y = (if container.UR.y > (*bb.offset(iv as isize)).UR.y {
+                container.UR.y = (if container.UR.y > (*bb.offset(iv as isize)).UR.y {
                     container.UR.y
                 } else {
                     (*bb.offset(iv as isize)).UR.y
@@ -768,8 +725,7 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
             let ref mut fresh39 = *cvs.offset(cn as isize);
             *fresh39 = *((*e).vs).offset((n + 2 as libc::c_int * i) as isize);
             let ref mut fresh40 = *cvs.offset((cn + 1 as libc::c_int) as isize);
-            *fresh40 = *((*e).vs)
-                .offset((n + 2 as libc::c_int * i + 1 as libc::c_int) as isize);
+            *fresh40 = *((*e).vs).offset((n + 2 as libc::c_int * i + 1 as libc::c_int) as isize);
             (*cbb.offset(cn as isize)).LL.x = container.LL.x;
             (*cbb.offset(cn as isize)).LL.y = container.LL.y;
             (*cbb.offset(cn as isize)).UR.x = container.UR.x;
@@ -780,13 +736,8 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
             (*cbb.offset((cn + 1 as libc::c_int) as isize)).UR.y = container.UR.y;
             if k == 0 as libc::c_int {
                 (*cbb.offset(cn as isize)).UR.x = container.LL.x + 0.0001f64;
-                (*cbb.offset((cn + 1 as libc::c_int) as isize))
-                    .LL
-                    .x = container.UR.x - 0.0001f64;
-                *cm
-                    .offset(
-                        i as isize,
-                    ) = genXConstraints(
+                (*cbb.offset((cn + 1 as libc::c_int) as isize)).LL.x = container.UR.x - 0.0001f64;
+                *cm.offset(i as isize) = genXConstraints(
                     cn + 2 as libc::c_int,
                     cbb,
                     cvs,
@@ -795,13 +746,8 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
                 );
             } else {
                 (*cbb.offset(cn as isize)).UR.y = container.LL.y + 0.0001f64;
-                (*cbb.offset((cn + 1 as libc::c_int) as isize))
-                    .LL
-                    .y = container.UR.y - 0.0001f64;
-                *cm
-                    .offset(
-                        i as isize,
-                    ) = genYConstraints(
+                (*cbb.offset((cn + 1 as libc::c_int) as isize)).LL.y = container.UR.y - 0.0001f64;
+                *cm.offset(i as isize) = genYConstraints(
                     cn + 2 as libc::c_int,
                     cbb,
                     cvs,
@@ -813,8 +759,7 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
             free(cbb as *mut libc::c_void);
             i += 1;
         }
-        let mut cn_0: libc::c_int = (*(*opt).clusters).ntoplevel
-            + (*(*opt).clusters).nclusters;
+        let mut cn_0: libc::c_int = (*(*opt).clusters).ntoplevel + (*(*opt).clusters).nclusters;
         let mut cvs_0: *mut *mut Variable = gcalloc(
             cn_0 as size_t,
             ::std::mem::size_of::<*mut Variable>() as libc::c_ulong,
@@ -825,8 +770,7 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
         ) as *mut boxf;
         i = 0 as libc::c_int;
         while i < (*(*opt).clusters).ntoplevel {
-            let mut iv_0: libc::c_int = *((*(*opt).clusters).toplevel)
-                .offset(i as isize);
+            let mut iv_0: libc::c_int = *((*(*opt).clusters).toplevel).offset(i as isize);
             let ref mut fresh41 = *cvs_0.offset(i as isize);
             *fresh41 = *((*e).vs).offset(iv_0 as isize);
             (*cbb_0.offset(i as isize)).LL.x = (*bb.offset(iv_0 as isize)).LL.x;
@@ -844,26 +788,15 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
                 1 as libc::c_int as libc::c_double,
             );
             j = i - (*(*opt).clusters).ntoplevel;
-            (*cbb_0.offset(i as isize))
-                .LL
-                .x = (*((*(*opt).clusters).bb).offset(j as isize)).LL.x;
-            (*cbb_0.offset(i as isize))
-                .LL
-                .y = (*((*(*opt).clusters).bb).offset(j as isize)).LL.y;
-            (*cbb_0.offset(i as isize))
-                .UR
-                .x = (*((*(*opt).clusters).bb).offset(j as isize)).UR.x;
-            (*cbb_0.offset(i as isize))
-                .UR
-                .y = (*((*(*opt).clusters).bb).offset(j as isize)).UR.y;
+            (*cbb_0.offset(i as isize)).LL.x = (*((*(*opt).clusters).bb).offset(j as isize)).LL.x;
+            (*cbb_0.offset(i as isize)).LL.y = (*((*(*opt).clusters).bb).offset(j as isize)).LL.y;
+            (*cbb_0.offset(i as isize)).UR.x = (*((*(*opt).clusters).bb).offset(j as isize)).UR.x;
+            (*cbb_0.offset(i as isize)).UR.y = (*((*(*opt).clusters).bb).offset(j as isize)).UR.y;
             i += 1;
         }
         i = (*(*opt).clusters).nclusters;
         if k == 0 as libc::c_int {
-            *cm
-                .offset(
-                    i as isize,
-                ) = genXConstraints(
+            *cm.offset(i as isize) = genXConstraints(
                 cn_0,
                 cbb_0,
                 cvs_0,
@@ -871,21 +804,19 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
                 transitiveClosure,
             );
         } else {
-            *cm
-                .offset(
-                    i as isize,
-                ) = genYConstraints(cn_0, cbb_0, cvs_0, &mut *cscl.offset(i as isize));
+            *cm.offset(i as isize) =
+                genYConstraints(cn_0, cbb_0, cvs_0, &mut *cscl.offset(i as isize));
         }
         i = (*(*opt).clusters).ntoplevel;
         while i < cn_0 {
             let mut dgap: libc::c_double = 0.;
             j = i - (*(*opt).clusters).ntoplevel;
             if k == 0 as libc::c_int {
-                dgap = -((*cbb_0.offset(i as isize)).UR.x
-                    - (*cbb_0.offset(i as isize)).LL.x) / 2.0f64;
+                dgap =
+                    -((*cbb_0.offset(i as isize)).UR.x - (*cbb_0.offset(i as isize)).LL.x) / 2.0f64;
             } else {
-                dgap = -((*cbb_0.offset(i as isize)).UR.y
-                    - (*cbb_0.offset(i as isize)).LL.y) / 2.0f64;
+                dgap =
+                    -((*cbb_0.offset(i as isize)).UR.y - (*cbb_0.offset(i as isize)).LL.y) / 2.0f64;
             }
             remapInConstraints(
                 *cvs_0.offset(i as isize),
@@ -894,8 +825,7 @@ pub unsafe extern "C" fn generateNonoverlapConstraints(
             );
             remapOutConstraints(
                 *cvs_0.offset(i as isize),
-                *((*e).vs)
-                    .offset((n + 2 as libc::c_int * j + 1 as libc::c_int) as isize),
+                *((*e).vs).offset((n + 2 as libc::c_int * j + 1 as libc::c_int) as isize),
                 dgap,
             );
             deleteVariable(*cvs_0.offset(i as isize));
@@ -993,10 +923,8 @@ pub unsafe extern "C" fn removeoverlaps(
     solveVPSC((*e).vpsc);
     i = 0 as libc::c_int;
     while i < n {
-        *(*coords.offset(0 as libc::c_int as isize))
-            .offset(
-                i as isize,
-            ) = getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
+        *(*coords.offset(0 as libc::c_int as isize)).offset(i as isize) =
+            getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
         i += 1;
     }
     generateNonoverlapConstraints(
@@ -1010,10 +938,8 @@ pub unsafe extern "C" fn removeoverlaps(
     solveVPSC((*e).vpsc);
     i = 0 as libc::c_int;
     while i < n {
-        *(*coords.offset(1 as libc::c_int as isize))
-            .offset(
-                i as isize,
-            ) = getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
+        *(*coords.offset(1 as libc::c_int as isize)).offset(i as isize) =
+            getVariablePos(*((*e).vs).offset(i as isize)) as libc::c_float;
         i += 1;
     }
     deleteCMajEnvVPSC(e);
@@ -1031,8 +957,8 @@ pub unsafe extern "C" fn assign_digcola_levels(
         (num_divisions + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<DigColaLevel>() as libc::c_ulong,
     ) as *mut DigColaLevel;
-    (*l.offset(0 as libc::c_int as isize))
-        .num_nodes = *level_inds.offset(0 as libc::c_int as isize);
+    (*l.offset(0 as libc::c_int as isize)).num_nodes =
+        *level_inds.offset(0 as libc::c_int as isize);
     let ref mut fresh49 = (*l.offset(0 as libc::c_int as isize)).nodes;
     *fresh49 = gcalloc(
         (*l.offset(0 as libc::c_int as isize)).num_nodes as size_t,
@@ -1040,15 +966,14 @@ pub unsafe extern "C" fn assign_digcola_levels(
     ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < (*l.offset(0 as libc::c_int as isize)).num_nodes {
-        *((*l.offset(0 as libc::c_int as isize)).nodes)
-            .offset(i as isize) = *ordering.offset(i as isize);
+        *((*l.offset(0 as libc::c_int as isize)).nodes).offset(i as isize) =
+            *ordering.offset(i as isize);
         i += 1;
     }
     i = 1 as libc::c_int;
     while i < num_divisions {
-        (*l.offset(i as isize))
-            .num_nodes = *level_inds.offset(i as isize)
-            - *level_inds.offset((i - 1 as libc::c_int) as isize);
+        (*l.offset(i as isize)).num_nodes =
+            *level_inds.offset(i as isize) - *level_inds.offset((i - 1 as libc::c_int) as isize);
         let ref mut fresh50 = (*l.offset(i as isize)).nodes;
         *fresh50 = gcalloc(
             (*l.offset(i as isize)).num_nodes as size_t,
@@ -1056,21 +981,15 @@ pub unsafe extern "C" fn assign_digcola_levels(
         ) as *mut libc::c_int;
         j = 0 as libc::c_int;
         while j < (*l.offset(i as isize)).num_nodes {
-            *((*l.offset(i as isize)).nodes)
-                .offset(
-                    j as isize,
-                ) = *ordering
-                .offset(
-                    (*level_inds.offset((i - 1 as libc::c_int) as isize) + j) as isize,
-                );
+            *((*l.offset(i as isize)).nodes).offset(j as isize) = *ordering
+                .offset((*level_inds.offset((i - 1 as libc::c_int) as isize) + j) as isize);
             j += 1;
         }
         i += 1;
     }
     if num_divisions > 0 as libc::c_int {
-        (*l.offset(num_divisions as isize))
-            .num_nodes = n
-            - *level_inds.offset((num_divisions - 1 as libc::c_int) as isize);
+        (*l.offset(num_divisions as isize)).num_nodes =
+            n - *level_inds.offset((num_divisions - 1 as libc::c_int) as isize);
         let ref mut fresh51 = (*l.offset(num_divisions as isize)).nodes;
         *fresh51 = gcalloc(
             (*l.offset(num_divisions as isize)).num_nodes as size_t,
@@ -1078,14 +997,9 @@ pub unsafe extern "C" fn assign_digcola_levels(
         ) as *mut libc::c_int;
         i = 0 as libc::c_int;
         while i < (*l.offset(num_divisions as isize)).num_nodes {
-            *((*l.offset(num_divisions as isize)).nodes)
-                .offset(
-                    i as isize,
-                ) = *ordering
-                .offset(
-                    (*level_inds.offset((num_divisions - 1 as libc::c_int) as isize) + i)
-                        as isize,
-                );
+            *((*l.offset(num_divisions as isize)).nodes).offset(i as isize) = *ordering.offset(
+                (*level_inds.offset((num_divisions - 1 as libc::c_int) as isize) + i) as isize,
+            );
             i += 1;
         }
     }
@@ -1115,7 +1029,11 @@ pub unsafe extern "C" fn print_digcola_levels(
     fprintf(logfile, b"levels:\n\0" as *const u8 as *const libc::c_char);
     i = 0 as libc::c_int;
     while i < num_levels {
-        fprintf(logfile, b"  l[%d]:\0" as *const u8 as *const libc::c_char, i);
+        fprintf(
+            logfile,
+            b"  l[%d]:\0" as *const u8 as *const libc::c_char,
+            i,
+        );
         j = 0 as libc::c_int;
         while j < (*levels.offset(i as isize)).num_nodes {
             fprintf(
@@ -1138,13 +1056,11 @@ pub unsafe extern "C" fn get_num_digcola_constraints(
     let mut nc: libc::c_int = 0 as libc::c_int;
     i = 1 as libc::c_int;
     while i < num_levels {
-        nc
-            += (*levels.offset(i as isize)).num_nodes
-                + (*levels.offset((i - 1 as libc::c_int) as isize)).num_nodes;
+        nc += (*levels.offset(i as isize)).num_nodes
+            + (*levels.offset((i - 1 as libc::c_int) as isize)).num_nodes;
         i += 1;
     }
-    nc
-        += (*levels.offset(0 as libc::c_int as isize)).num_nodes
-            + (*levels.offset((num_levels - 1 as libc::c_int) as isize)).num_nodes;
+    nc += (*levels.offset(0 as libc::c_int as isize)).num_nodes
+        + (*levels.offset((num_levels - 1 as libc::c_int) as isize)).num_nodes;
     return nc;
 }

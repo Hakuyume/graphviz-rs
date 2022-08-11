@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -7,16 +15,8 @@ extern "C" {
     pub type _IO_marker;
     static mut stderr: *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
@@ -61,11 +61,13 @@ pub struct _IO_FILE {
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
 #[no_mangle]
-pub static mut lt__alloc_die: Option::<unsafe extern "C" fn() -> ()> = unsafe {
-    Some(alloc_die_default as unsafe extern "C" fn() -> ())
-};
+pub static mut lt__alloc_die: Option<unsafe extern "C" fn() -> ()> =
+    unsafe { Some(alloc_die_default as unsafe extern "C" fn() -> ()) };
 unsafe extern "C" fn alloc_die_default() {
-    fprintf(stderr, b"Out of memory.\n\0" as *const u8 as *const libc::c_char);
+    fprintf(
+        stderr,
+        b"Out of memory.\n\0" as *const u8 as *const libc::c_char,
+    );
     exit(1 as libc::c_int);
 }
 #[no_mangle]
@@ -112,9 +114,7 @@ pub unsafe extern "C" fn lt__memdup(
     return 0 as *mut libc::c_void;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt__strdup(
-    mut string: *const libc::c_char,
-) -> *mut libc::c_char {
+pub unsafe extern "C" fn lt__strdup(mut string: *const libc::c_char) -> *mut libc::c_char {
     return lt__memdup(
         string as *const libc::c_void,
         (strlen(string)).wrapping_add(1 as libc::c_int as libc::c_ulong),

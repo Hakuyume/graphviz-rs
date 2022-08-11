@@ -1,13 +1,17 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
     fn strtod(_: *const libc::c_char, _: *mut *mut libc::c_char) -> libc::c_double;
-    fn strtol(
-        _: *const libc::c_char,
-        _: *mut *mut libc::c_char,
-        _: libc::c_int,
-    ) -> libc::c_long;
+    fn strtol(_: *const libc::c_char, _: *mut *mut libc::c_char, _: libc::c_int) -> libc::c_long;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
@@ -20,11 +24,7 @@ extern "C" {
         _: ...
     ) -> libc::c_int;
     fn sscanf(_: *const libc::c_char, _: *const libc::c_char, _: ...) -> libc::c_int;
-    fn sfopen(
-        _: *mut Sfio_t,
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-    ) -> *mut Sfio_t;
+    fn sfopen(_: *mut Sfio_t, _: *const libc::c_char, _: *const libc::c_char) -> *mut Sfio_t;
     fn sfstack(_: *mut Sfio_t, _: *mut Sfio_t) -> *mut Sfio_t;
     fn sfsync(_: *mut Sfio_t) -> libc::c_int;
     fn sfclose(_: *mut Sfio_t) -> libc::c_int;
@@ -32,34 +32,19 @@ extern "C" {
     fn sfputr(_: *mut Sfio_t, _: *const libc::c_char, _: libc::c_int) -> ssize_t;
     fn sfprintf(_: *mut Sfio_t, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn _sfflsbuf(_: *mut Sfio_t, _: libc::c_int) -> libc::c_int;
-    fn strncpy(
-        _: *mut libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_char;
+    fn strncpy(_: *mut libc::c_char, _: *const libc::c_char, _: libc::c_ulong)
+        -> *mut libc::c_char;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     static mut AgMemDisc: Agmemdisc_t;
     static mut AgIdDisc: Agiddisc_t;
-    fn agopen(
-        name: *mut libc::c_char,
-        desc: Agdesc_t,
-        disc: *mut Agdisc_t,
-    ) -> *mut Agraph_t;
+    fn agopen(name: *mut libc::c_char, desc: Agdesc_t, disc: *mut Agdisc_t) -> *mut Agraph_t;
     fn agread(chan: *mut libc::c_void, disc: *mut Agdisc_t) -> *mut Agraph_t;
     fn agisdirected(g: *mut Agraph_t) -> libc::c_int;
     fn agisstrict(g: *mut Agraph_t) -> libc::c_int;
-    fn agnode(
-        g: *mut Agraph_t,
-        name: *mut libc::c_char,
-        createflag: libc::c_int,
-    ) -> *mut Agnode_t;
+    fn agnode(g: *mut Agraph_t, name: *mut libc::c_char, createflag: libc::c_int) -> *mut Agnode_t;
     fn agfstnode(g: *mut Agraph_t) -> *mut Agnode_t;
     fn agnxtnode(g: *mut Agraph_t, n: *mut Agnode_t) -> *mut Agnode_t;
     fn agedge(
@@ -88,11 +73,7 @@ extern "C" {
         value: *const libc::c_char,
     ) -> *mut Agsym_t;
     fn agattrsym(obj: *mut libc::c_void, name: *mut libc::c_char) -> *mut Agsym_t;
-    fn agnxtattr(
-        g: *mut Agraph_t,
-        kind: libc::c_int,
-        attr: *mut Agsym_t,
-    ) -> *mut Agsym_t;
+    fn agnxtattr(g: *mut Agraph_t, kind: libc::c_int, attr: *mut Agsym_t) -> *mut Agsym_t;
     fn agbindrec(
         obj: *mut libc::c_void,
         name: *const libc::c_char,
@@ -112,16 +93,9 @@ extern "C" {
         move_to_front: libc::c_int,
     );
     fn agxget(obj: *mut libc::c_void, sym: *mut Agsym_t) -> *mut libc::c_char;
-    fn agxset(
-        obj: *mut libc::c_void,
-        sym: *mut Agsym_t,
-        value: *const libc::c_char,
-    ) -> libc::c_int;
-    fn agsubg(
-        g: *mut Agraph_t,
-        name: *mut libc::c_char,
-        cflag: libc::c_int,
-    ) -> *mut Agraph_t;
+    fn agxset(obj: *mut libc::c_void, sym: *mut Agsym_t, value: *const libc::c_char)
+        -> libc::c_int;
+    fn agsubg(g: *mut Agraph_t, name: *mut libc::c_char, cflag: libc::c_int) -> *mut Agraph_t;
     fn agfstsubg(g: *mut Agraph_t) -> *mut Agraph_t;
     fn agnxtsubg(subg: *mut Agraph_t) -> *mut Agraph_t;
     fn agparent(g: *mut Agraph_t) -> *mut Agraph_t;
@@ -212,11 +186,7 @@ extern "C" {
     ) -> *mut Agraph_t;
     fn compare(_: *mut Agobj_t, _: *mut Agobj_t) -> libc::c_int;
     fn sfioWrite(_: *mut Agraph_t, _: *mut Sfio_t, _: *mut Agiodisc_t) -> libc::c_int;
-    fn writeFile(
-        _: *mut Agraph_t,
-        _: *mut libc::c_char,
-        _: *mut Agiodisc_t,
-    ) -> libc::c_int;
+    fn writeFile(_: *mut Agraph_t, _: *mut libc::c_char, _: *mut Agiodisc_t) -> libc::c_int;
     fn fwriteFile(
         _: *mut Expr_t,
         _: *mut Agraph_t,
@@ -225,25 +195,13 @@ extern "C" {
     ) -> libc::c_int;
     fn readFile(_: *mut libc::c_char) -> *mut Agraph_t;
     fn freadFile(_: *mut Expr_t, _: libc::c_int) -> *mut Agraph_t;
-    fn openFile(
-        _: *mut Expr_t,
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-    ) -> libc::c_int;
+    fn openFile(_: *mut Expr_t, _: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn closeFile(_: *mut Expr_t, _: libc::c_int) -> libc::c_int;
     fn readLine(_: *mut Expr_t, _: libc::c_int) -> *mut libc::c_char;
     fn canon(pgm: *mut Expr_t, _: *mut libc::c_char) -> *mut libc::c_char;
     fn toHtml(_: *mut Agraph_t, _: *mut libc::c_char) -> *mut libc::c_char;
-    fn toLower(
-        pgm: *mut Expr_t,
-        _: *mut libc::c_char,
-        _: *mut Sfio_t,
-    ) -> *mut libc::c_char;
-    fn toUpper(
-        pgm: *mut Expr_t,
-        _: *mut libc::c_char,
-        _: *mut Sfio_t,
-    ) -> *mut libc::c_char;
+    fn toLower(pgm: *mut Expr_t, _: *mut libc::c_char, _: *mut Sfio_t) -> *mut libc::c_char;
+    fn toUpper(pgm: *mut Expr_t, _: *mut libc::c_char, _: *mut Sfio_t) -> *mut libc::c_char;
     fn deleteObj(g: *mut Agraph_t, obj: *mut Agobj_t) -> libc::c_int;
     fn colorx(
         ex: *mut Expr_t,
@@ -346,13 +304,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -377,16 +330,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -406,10 +353,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -417,16 +363,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -507,17 +446,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -550,26 +483,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -578,29 +503,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -608,8 +525,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -765,15 +682,9 @@ pub struct C2RustUnnamed_5 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_6 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -784,7 +695,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -795,7 +706,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -805,7 +716,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -815,27 +726,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -846,7 +744,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -857,7 +755,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -869,7 +767,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -884,9 +782,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -898,7 +794,7 @@ pub struct Expr_s {
     pub file: [*mut Sfio_t; 10],
     pub vm: *mut Vmalloc_t,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -907,7 +803,7 @@ pub type Exerror_f = Option::<
         ...
     ) -> libc::c_int,
 >;
-pub type gvpruserfn = Option::<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
+pub type gvpruserfn = Option<unsafe extern "C" fn(*mut libc::c_char) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvprbinding {
@@ -1221,10 +1117,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1251,10 +1146,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$G\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$G\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1281,10 +1175,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$NG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$NG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1311,10 +1204,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$T\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$T\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1341,10 +1233,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$O\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$O\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1371,10 +1262,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$tgtname\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$tgtname\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1401,10 +1291,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1431,10 +1320,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$tvroot\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$tvroot\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1461,10 +1349,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$tvnext\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$tvnext\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1491,10 +1378,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$tvedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$tvedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1521,10 +1407,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"$tvtype\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"$tvtype\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1551,10 +1436,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"ARGC\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"ARGC\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1581,10 +1465,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"degree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"degree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1611,10 +1494,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"X\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"X\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1641,10 +1523,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"Y\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"Y\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1671,10 +1552,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"head\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"head\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1701,10 +1581,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"tail\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"tail\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1731,10 +1610,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"name\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"name\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1761,10 +1639,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"indegree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"indegree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1791,10 +1668,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"outdegree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"outdegree\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1821,10 +1697,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"root\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"root\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1851,10 +1726,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"parent\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"parent\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1881,10 +1755,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"n_edges\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"n_edges\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1911,10 +1784,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"n_nodes\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"n_nodes\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1941,10 +1813,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"directed\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"directed\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -1971,10 +1842,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"strict\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"strict\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2001,10 +1871,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"node_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"node_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2031,10 +1900,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"edge_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"edge_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2061,10 +1929,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"graph_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"graph_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2091,10 +1958,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"obj_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"obj_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2121,10 +1987,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"tvtype_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"tvtype_t\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2153,10 +2018,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"ARGV\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"ARGV\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2186,10 +2050,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"graph\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"graph\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2219,10 +2082,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"subg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"subg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2252,10 +2114,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isSubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isSubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2284,10 +2145,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstsubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstsubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2316,10 +2176,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtsubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtsubg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2349,10 +2208,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"node\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"node\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2382,10 +2240,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"subnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"subnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2414,10 +2271,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2446,10 +2302,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2479,10 +2334,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtnode_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtnode_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2512,10 +2366,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isNode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isNode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2545,10 +2398,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isSubnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isSubnode\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2578,10 +2430,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"indegreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"indegreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2611,10 +2462,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"outdegreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"outdegreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2644,10 +2494,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"degreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"degreeOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2677,10 +2526,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isIn\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isIn\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2711,10 +2559,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"edge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"edge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2746,10 +2593,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"edge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"edge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2779,10 +2625,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"subedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"subedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2812,10 +2657,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"opp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"opp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2844,10 +2688,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstout\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstout\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2876,10 +2719,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtout\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtout\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2908,10 +2750,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2940,10 +2781,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -2972,10 +2812,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3005,10 +2844,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3038,10 +2876,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstout_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstout_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3071,10 +2908,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtout_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtout_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3104,10 +2940,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstin_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstin_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3137,10 +2972,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtin_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtin_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3170,10 +3004,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstedge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstedge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3204,10 +3037,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtedge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtedge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3237,10 +3069,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"compOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"compOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3269,10 +3100,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"kindOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"kindOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3302,10 +3132,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"index\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"index\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3335,10 +3164,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"rindex\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"rindex\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3369,10 +3197,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isEdge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isEdge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3404,10 +3231,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isEdge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isEdge_sg\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3437,10 +3263,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isSubedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isSubedge\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3469,10 +3294,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"length\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"length\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3502,10 +3326,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"match\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"match\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3534,10 +3357,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"write\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"write\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3567,10 +3389,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"writeG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"writeG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3599,10 +3420,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"readG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"readG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3632,10 +3452,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fwriteG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fwriteG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3664,10 +3483,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"freadG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"freadG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3697,10 +3515,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"openF\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"openF\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3729,10 +3546,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"closeF\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"closeF\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3761,10 +3577,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"readL\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"readL\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3793,10 +3608,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"induce\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"induce\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3825,10 +3639,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isDirect\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isDirect\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3857,10 +3670,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isStrict\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isStrict\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3890,10 +3702,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"delete\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"delete\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3923,10 +3734,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"clone\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"clone\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3956,10 +3766,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"cloneG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"cloneG\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -3989,10 +3798,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"copy\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"copy\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4022,10 +3830,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"copyA\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"copyA\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4055,10 +3862,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"lock\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"lock\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4087,10 +3893,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nNodes\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nNodes\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4119,10 +3924,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nEdges\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nEdges\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4151,10 +3955,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"sqrt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"sqrt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4183,10 +3986,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"cos\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"cos\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4215,10 +4017,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"sin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"sin\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4248,10 +4049,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"atan2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"atan2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4280,10 +4080,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"exp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"exp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4313,10 +4112,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"pow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"pow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4345,10 +4143,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"log\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"log\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4378,10 +4175,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"MIN\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"MIN\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4411,10 +4207,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"MAX\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"MAX\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4443,10 +4238,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"system\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"system\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4475,10 +4269,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"xOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"xOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4507,10 +4300,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"yOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"yOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4539,10 +4331,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"llOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"llOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4571,10 +4362,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"urOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"urOf\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4604,10 +4394,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"html\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"html\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4636,10 +4425,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"ishtml\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"ishtml\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4668,10 +4456,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"canon\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"canon\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4701,10 +4488,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"aget\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"aget\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4735,10 +4521,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"aset\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"aset\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4769,10 +4554,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"getDflt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"getDflt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4804,10 +4588,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"setDflt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"setDflt\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4837,10 +4620,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"hasAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"hasAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4871,10 +4653,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"isAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"isAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4904,10 +4685,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"fstAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"fstAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4938,10 +4718,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"nxtAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"nxtAttr\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -4970,10 +4749,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"tolower\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"tolower\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5002,10 +4780,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"toupper\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"toupper\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5035,10 +4812,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"strcmp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"strcmp\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5067,10 +4843,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"atoi\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"atoi\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5099,10 +4874,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"atof\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"atof\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5132,10 +4906,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"colorx\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"colorx\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5165,10 +4938,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"call\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"call\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5195,10 +4967,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_flat\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_flat\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5225,10 +4996,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_ne\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_ne\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5255,10 +5025,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_en\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_en\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5285,10 +5054,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_bfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_bfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5315,10 +5083,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_dfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_dfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5345,10 +5112,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_fwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_fwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5375,10 +5141,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_rev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_rev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5405,10 +5170,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_postdfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_postdfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5435,10 +5199,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_postfwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_postfwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5465,10 +5228,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_postrev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_postrev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5495,10 +5257,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_prepostdfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_prepostdfs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5525,10 +5286,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_prepostfwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_prepostfwd\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5555,10 +5315,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"TV_prepostrev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"TV_prepostrev\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5585,10 +5344,9 @@ static mut symbols: [Exid_t; 139] = unsafe {
                     init
                 },
                 isstatic: 0 as libc::c_int as libc::c_long,
-                name: *::std::mem::transmute::<
-                    &[u8; 32],
-                    &mut [libc::c_char; 32],
-                >(b"NULL\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"),
+                name: *::std::mem::transmute::<&[u8; 32], &mut [libc::c_char; 32]>(
+                    b"NULL\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+                ),
             };
             init
         },
@@ -5669,17 +5427,50 @@ static mut tchk: [[tctype; 2]; 27] = [
             | (1 as libc::c_int) << 0x5 as libc::c_int
             | (1 as libc::c_int) << 0x6 as libc::c_int) as tctype,
     ],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0o3 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0o3 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x5 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0x8 as libc::c_int) as tctype],
-    [0 as libc::c_int as tctype, ((1 as libc::c_int) << 0o2 as libc::c_int) as tctype],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0o3 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0o3 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x5 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0x8 as libc::c_int) as tctype,
+    ],
+    [
+        0 as libc::c_int as tctype,
+        ((1 as libc::c_int) << 0o2 as libc::c_int) as tctype,
+    ],
     [
         ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype,
         ((1 as libc::c_int) << 0o2 as libc::c_int) as tctype,
@@ -6876,14 +6667,9 @@ static mut gprIoDisc: Agiodisc_t = unsafe {
             ),
             putstr: Some(
                 ioputstr
-                    as unsafe extern "C" fn(
-                        *mut libc::c_void,
-                        *const libc::c_char,
-                    ) -> libc::c_int,
+                    as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
             ),
-            flush: Some(
-                ioflush as unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int,
-            ),
+            flush: Some(ioflush as unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int),
         };
         init
     }
@@ -6913,9 +6699,7 @@ unsafe extern "C" fn nameOf(
         _ => {
             e = obj as *mut Agedge_t;
             key = agnameof(
-                (if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                    == 2 as libc::c_int
-                {
+                (if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                     e
                 } else {
                     e.offset(-(1 as libc::c_int as isize))
@@ -6924,14 +6708,12 @@ unsafe extern "C" fn nameOf(
             sfputr(
                 tmps,
                 agnameof(
-                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 3 as libc::c_int
-                    {
+                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
                         e
                     } else {
                         e.offset(1 as libc::c_int as isize)
                     })
-                        .node as *mut libc::c_void,
+                    .node as *mut libc::c_void,
                 ),
                 -(1 as libc::c_int),
             );
@@ -6951,14 +6733,12 @@ unsafe extern "C" fn nameOf(
             sfputr(
                 tmps,
                 agnameof(
-                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-                        == 2 as libc::c_int
-                    {
+                    (*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
                         e
                     } else {
                         e.offset(-(1 as libc::c_int as isize))
                     })
-                        .node as *mut libc::c_void,
+                    .node as *mut libc::c_void,
                 ),
                 -(1 as libc::c_int),
             );
@@ -7096,7 +6876,7 @@ unsafe extern "C" fn posOf(
         *v = p[idx as usize];
         return 0 as libc::c_int;
     } else {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     };
 }
 unsafe extern "C" fn xargs(mut args: *mut libc::c_char) -> Agdesc_t {
@@ -7161,7 +6941,7 @@ unsafe extern "C" fn deref(
 ) -> *mut Agobj_t {
     let mut ptr: *mut libc::c_void = 0 as *mut libc::c_void;
     if ref_0.is_null() {
-        return objp
+        return objp;
     } else {
         if (*(*ref_0).symbol).lex == 275 as libc::c_int as libc::c_long {
             ptr = int2ptr(
@@ -7173,15 +6953,14 @@ unsafe extern "C" fn deref(
             );
             if ptr.is_null() {
                 exerror(
-                    b"null reference %s in expression %s.%s\0" as *const u8
-                        as *const libc::c_char,
+                    b"null reference %s in expression %s.%s\0" as *const u8 as *const libc::c_char,
                     ((*(*ref_0).symbol).name).as_mut_ptr(),
                     ((*(*ref_0).symbol).name).as_mut_ptr(),
                     deparse(pgm, x, (*state).tmp),
                 );
                 return ptr as *mut Agobj_t;
             } else {
-                return deref(pgm, x, (*ref_0).next, ptr as *mut Agobj_t, state)
+                return deref(pgm, x, (*ref_0).next, ptr as *mut Agobj_t, state);
             }
         } else {
             match (*(*ref_0).symbol).index {
@@ -7250,15 +7029,12 @@ unsafe extern "C" fn deref(
                     );
                 }
                 16 => {
-                    if objp.is_null()
-                        && {
-                            objp = (*state).curobj;
-                            objp.is_null()
-                        }
-                    {
+                    if objp.is_null() && {
+                        objp = (*state).curobj;
+                        objp.is_null()
+                    } {
                         exerror(
-                            b"Current object $ not defined\0" as *const u8
-                                as *const libc::c_char,
+                            b"Current object $ not defined\0" as *const u8 as *const libc::c_char,
                         );
                         return 0 as *mut Agobj_t;
                     }
@@ -7267,32 +7043,28 @@ unsafe extern "C" fn deref(
                             pgm,
                             x,
                             (*ref_0).next,
-                            (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag)
-                                .objtype() as libc::c_int == 2 as libc::c_int
+                            (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag).objtype()
+                                as libc::c_int
+                                == 2 as libc::c_int
                             {
                                 objp as *mut Agedge_t
                             } else {
                                 (objp as *mut Agedge_t).offset(-(1 as libc::c_int as isize))
                             })
-                                .node as *mut Agobj_t,
+                            .node as *mut Agobj_t,
                             state,
-                        )
-                    } else {
-                        exerror(
-                            b"head of non-edge\0" as *const u8 as *const libc::c_char,
                         );
+                    } else {
+                        exerror(b"head of non-edge\0" as *const u8 as *const libc::c_char);
                     }
                 }
                 17 => {
-                    if objp.is_null()
-                        && {
-                            objp = (*state).curobj;
-                            objp.is_null()
-                        }
-                    {
+                    if objp.is_null() && {
+                        objp = (*state).curobj;
+                        objp.is_null()
+                    } {
                         exerror(
-                            b"Current object $ not defined\0" as *const u8
-                                as *const libc::c_char,
+                            b"Current object $ not defined\0" as *const u8 as *const libc::c_char,
                         );
                         return 0 as *mut Agobj_t;
                     }
@@ -7301,16 +7073,17 @@ unsafe extern "C" fn deref(
                             pgm,
                             x,
                             (*ref_0).next,
-                            (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag)
-                                .objtype() as libc::c_int == 3 as libc::c_int
+                            (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag).objtype()
+                                as libc::c_int
+                                == 3 as libc::c_int
                             {
                                 objp as *mut Agedge_t
                             } else {
                                 (objp as *mut Agedge_t).offset(1 as libc::c_int as isize)
                             })
-                                .node as *mut Agobj_t,
+                            .node as *mut Agobj_t,
                             state,
-                        )
+                        );
                     } else {
                         exerror(
                             b"tail of non-edge %p\0" as *const u8 as *const libc::c_char,
@@ -7334,12 +7107,10 @@ unsafe extern "C" fn assignable(mut objp: *mut Agobj_t, mut name: *mut libc::c_u
     let mut rv: libc::c_int = 0;
     let mut p: *mut libc::c_uchar = name;
     TFA_State = 0 as libc::c_int as libc::c_short;
-    while TFA_State as libc::c_int >= 0 as libc::c_int
-        && {
-            ch = *p as libc::c_uint;
-            ch != 0
-        }
-    {
+    while TFA_State as libc::c_int >= 0 as libc::c_int && {
+        ch = *p as libc::c_uint;
+        ch != 0
+    } {
         let mut current_block_9: u64;
         let mut c: libc::c_char = (if ch > 127 as libc::c_int as libc::c_uint {
             127 as libc::c_int as libc::c_uint
@@ -7348,7 +7119,8 @@ unsafe extern "C" fn assignable(mut objp: *mut Agobj_t, mut name: *mut libc::c_u
         }) as libc::c_char;
         if TFA_State as libc::c_int >= 0 as libc::c_int {
             if *(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
-                & _ISupper as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISupper as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
             {
                 c = ({
                     let mut __res: libc::c_int = 0;
@@ -7357,9 +7129,7 @@ unsafe extern "C" fn assignable(mut objp: *mut Agobj_t, mut name: *mut libc::c_u
                     {
                         if 0 != 0 {
                             let mut __c: libc::c_int = c as libc::c_int;
-                            __res = if __c < -(128 as libc::c_int)
-                                || __c > 255 as libc::c_int
-                            {
+                            __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                                 __c
                             } else {
                                 *(*__ctype_tolower_loc()).offset(__c as isize)
@@ -7368,17 +7138,16 @@ unsafe extern "C" fn assignable(mut objp: *mut Agobj_t, mut name: *mut libc::c_u
                             __res = tolower(c as libc::c_int);
                         }
                     } else {
-                        __res = *(*__ctype_tolower_loc())
-                            .offset(c as libc::c_int as isize);
+                        __res = *(*__ctype_tolower_loc()).offset(c as libc::c_int as isize);
                     }
                     __res
                 }) as libc::c_char;
                 current_block_9 = 13183875560443969876;
-            } else if !(*(*__ctype_b_loc()).offset(c as libc::c_int as isize)
-                    as libc::c_int
-                    & _ISlower as libc::c_int as libc::c_ushort as libc::c_int != 0
-                    || c as libc::c_int == '_' as i32)
-                {
+            } else if !(*(*__ctype_b_loc()).offset(c as libc::c_int as isize) as libc::c_int
+                & _ISlower as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
+                || c as libc::c_int == '_' as i32)
+            {
                 TFA_State = -(1 as libc::c_int) as libc::c_short;
                 current_block_9 = 8457315219000651999;
             } else {
@@ -7388,13 +7157,11 @@ unsafe extern "C" fn assignable(mut objp: *mut Agobj_t, mut name: *mut libc::c_u
                 8457315219000651999 => {}
                 _ => {
                     if TrieStateTbl[TFA_State as usize].mask
-                        & CharMask[(c as libc::c_int - '_' as i32) as usize] != 0
+                        & CharMask[(c as libc::c_int - '_' as i32) as usize]
+                        != 0
                     {
-                        let mut i: libc::c_short = TrieStateTbl[TFA_State as usize]
-                            .trans_base;
-                        while TrieTransTbl[i as usize].c as libc::c_int
-                            != c as libc::c_int
-                        {
+                        let mut i: libc::c_short = TrieStateTbl[TFA_State as usize].trans_base;
+                        while TrieTransTbl[i as usize].c as libc::c_int != c as libc::c_int {
                             i += 1;
                         }
                         TFA_State = TrieTransTbl[i as usize].next_state;
@@ -7489,16 +7256,16 @@ unsafe extern "C" fn lookup(
         match (*sym).index {
             16 => {
                 if isedge(objp) != 0 {
-                    (*v)
-                        .integer = ptr2int(
+                    (*v).integer = ptr2int(
                         (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 2 as libc::c_int
+                            as libc::c_int
+                            == 2 as libc::c_int
                         {
                             objp as *mut Agedge_t
                         } else {
                             (objp as *mut Agedge_t).offset(-(1 as libc::c_int as isize))
                         })
-                            .node as *const libc::c_void,
+                        .node as *const libc::c_void,
                     );
                 } else {
                     _err_msg(
@@ -7510,16 +7277,16 @@ unsafe extern "C" fn lookup(
             }
             17 => {
                 if isedge(objp) != 0 {
-                    (*v)
-                        .integer = ptr2int(
+                    (*v).integer = ptr2int(
                         (*if ((*(objp as *mut Agedge_t as *mut Agobj_t)).tag).objtype()
-                            as libc::c_int == 3 as libc::c_int
+                            as libc::c_int
+                            == 3 as libc::c_int
                         {
                             objp as *mut Agedge_t
                         } else {
                             (objp as *mut Agedge_t).offset(1 as libc::c_int as isize)
                         })
-                            .node as *const libc::c_void,
+                        .node as *const libc::c_void,
                     );
                 } else {
                     _err_msg(
@@ -7535,40 +7302,33 @@ unsafe extern "C" fn lookup(
             }
             19 => {
                 if ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int {
-                    (*v)
-                        .integer = agdegree(
+                    (*v).integer = agdegree(
                         agroot(objp as *mut libc::c_void),
                         objp as *mut Agnode_t,
                         1 as libc::c_int,
                         0 as libc::c_int,
                     ) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"indegree of non-node\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"indegree of non-node\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             20 => {
                 if ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int {
-                    (*v)
-                        .integer = agdegree(
+                    (*v).integer = agdegree(
                         agroot(objp as *mut libc::c_void),
                         objp as *mut Agnode_t,
                         0 as libc::c_int,
                         1 as libc::c_int,
                     ) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"outdegree of non-node\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"outdegree of non-node\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             13 => {
                 if ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int {
-                    (*v)
-                        .integer = agdegree(
+                    (*v).integer = agdegree(
                         agroot(objp as *mut libc::c_void),
                         objp as *mut Agnode_t,
                         1 as libc::c_int,
@@ -7581,9 +7341,7 @@ unsafe extern "C" fn lookup(
             }
             14 => {
                 if ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int {
-                    if posOf(objp as *mut Agnode_t, 0 as libc::c_int, &mut (*v).floating)
-                        != 0
-                    {
+                    if posOf(objp as *mut Agnode_t, 0 as libc::c_int, &mut (*v).floating) != 0 {
                         exerror(
                             b"no x coordinate for node \"%s\"\0" as *const u8
                                 as *const libc::c_char,
@@ -7591,17 +7349,13 @@ unsafe extern "C" fn lookup(
                         );
                     }
                 } else {
-                    exerror(
-                        b"x coordinate of non-node\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"x coordinate of non-node\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             15 => {
                 if ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int {
-                    if posOf(objp as *mut Agnode_t, 1 as libc::c_int, &mut (*v).floating)
-                        != 0
-                    {
+                    if posOf(objp as *mut Agnode_t, 1 as libc::c_int, &mut (*v).floating) != 0 {
                         exerror(
                             b"no y coordinate for node \"%s\"\0" as *const u8
                                 as *const libc::c_char,
@@ -7609,39 +7363,28 @@ unsafe extern "C" fn lookup(
                         );
                     }
                 } else {
-                    exerror(
-                        b"x coordinate of non-node\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"x coordinate of non-node\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             22 => {
                 if ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int {
-                    (*v)
-                        .integer = ptr2int(
-                        agparent(objp as *mut Agraph_t) as *const libc::c_void,
-                    );
+                    (*v).integer = ptr2int(agparent(objp as *mut Agraph_t) as *const libc::c_void);
                 } else {
-                    exerror(
-                        b"parent of non-graph\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"parent of non-graph\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             21 => {
-                (*v)
-                    .integer = ptr2int(
-                    agroot(agraphof(objp as *mut libc::c_void) as *mut libc::c_void)
-                        as *const libc::c_void,
-                );
+                (*v).integer = ptr2int(agroot(
+                    agraphof(objp as *mut libc::c_void) as *mut libc::c_void
+                ) as *const libc::c_void);
             }
             23 => {
                 if ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int {
                     (*v).integer = agnedges(objp as *mut Agraph_t) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"n_edges of non-graph\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"n_edges of non-graph\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
@@ -7649,21 +7392,15 @@ unsafe extern "C" fn lookup(
                 if ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int {
                     (*v).integer = agnnodes(objp as *mut Agraph_t) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"n_nodes of non-graph\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"n_nodes of non-graph\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
             25 => {
                 if ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int {
-                    (*v)
-                        .integer = agisdirected(objp as *mut Agraph_t)
-                        as libc::c_longlong;
+                    (*v).integer = agisdirected(objp as *mut Agraph_t) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"directed of non-graph\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"directed of non-graph\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
@@ -7671,9 +7408,7 @@ unsafe extern "C" fn lookup(
                 if ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int {
                     (*v).integer = agisstrict(objp as *mut Agraph_t) as libc::c_longlong;
                 } else {
-                    exerror(
-                        b"strict of non-graph\0" as *const u8 as *const libc::c_char,
-                    );
+                    exerror(b"strict of non-graph\0" as *const u8 as *const libc::c_char);
                     return -(1 as libc::c_int);
                 }
             }
@@ -7687,10 +7422,8 @@ unsafe extern "C" fn lookup(
             }
         }
     } else {
-        let mut gsym: *mut Agsym_t = agattrsym(
-            objp as *mut libc::c_void,
-            ((*sym).name).as_mut_ptr(),
-        );
+        let mut gsym: *mut Agsym_t =
+            agattrsym(objp as *mut libc::c_void, ((*sym).name).as_mut_ptr());
         if gsym.is_null() {
             gsym = agattr(
                 agroot(agraphof(objp as *mut libc::c_void) as *mut libc::c_void),
@@ -7700,8 +7433,8 @@ unsafe extern "C" fn lookup(
             );
             _err_msg(
                 1 as libc::c_int,
-                b"Using value of uninitialized %s attribute \"%s\" of \"%s\"\0"
-                    as *const u8 as *const libc::c_char,
+                b"Using value of uninitialized %s attribute \"%s\" of \"%s\"\0" as *const u8
+                    as *const libc::c_char,
                 kindOf(objp),
                 ((*sym).name).as_mut_ptr(),
                 nameOf(pgm, objp, (*state).tmp),
@@ -7712,14 +7445,10 @@ unsafe extern "C" fn lookup(
     }
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn getArg(
-    mut n: libc::c_int,
-    mut state: *mut Gpr_t,
-) -> *mut libc::c_char {
+unsafe extern "C" fn getArg(mut n: libc::c_int, mut state: *mut Gpr_t) -> *mut libc::c_char {
     if n >= (*state).argc {
         exerror(
-            b"program references ARGV[%d] - undefined\0" as *const u8
-                as *const libc::c_char,
+            b"program references ARGV[%d] - undefined\0" as *const u8 as *const libc::c_char,
             n,
         );
         return 0 as *mut libc::c_char;
@@ -7746,8 +7475,7 @@ unsafe extern "C" fn setDfltAttr(
         _ => {
             _err_msg(
                 1 as libc::c_int,
-                b"Unknown kind \"%s\" passed to setDflt()\0" as *const u8
-                    as *const libc::c_char,
+                b"Unknown kind \"%s\" passed to setDflt()\0" as *const u8 as *const libc::c_char,
                 k,
             );
             return 1 as libc::c_int;
@@ -7756,10 +7484,7 @@ unsafe extern "C" fn setDfltAttr(
     agattr(gp, kind, name, value);
     return 0 as libc::c_int;
 }
-unsafe extern "C" fn toKind(
-    mut k: *mut libc::c_char,
-    mut fn_0: *mut libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn toKind(mut k: *mut libc::c_char, mut fn_0: *mut libc::c_char) -> libc::c_int {
     let mut kind: libc::c_int = 0;
     match *k as libc::c_int {
         71 => {
@@ -7773,8 +7498,7 @@ unsafe extern "C" fn toKind(
         }
         _ => {
             exerror(
-                b"Unknown kind \"%s\" passed to %s()\0" as *const u8
-                    as *const libc::c_char,
+                b"Unknown kind \"%s\" passed to %s()\0" as *const u8 as *const libc::c_char,
                 k,
                 fn_0,
             );
@@ -7810,9 +7534,9 @@ unsafe extern "C" fn nxtAttr(
     }
     sym = agnxtattr(gp, kind, sym);
     if !sym.is_null() {
-        return (*sym).name
+        return (*sym).name;
     } else {
-        return b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char
+        return b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     };
 }
 unsafe extern "C" fn getDfltAttr(
@@ -7829,8 +7553,7 @@ unsafe extern "C" fn getDfltAttr(
         sym = agattr(gp, kind, name, b"\0" as *const u8 as *const libc::c_char);
         _err_msg(
             1 as libc::c_int,
-            b"Uninitialized %s attribute \"%s\" in %s\0" as *const u8
-                as *const libc::c_char,
+            b"Uninitialized %s attribute \"%s\" in %s\0" as *const u8 as *const libc::c_char,
             kindToStr(kind),
             name,
             b"getDflt\0" as *const u8 as *const libc::c_char,
@@ -7861,7 +7584,8 @@ unsafe extern "C" fn getval(
     let mut ep: *mut Agedge_t = 0 as *mut Agedge_t;
     let mut name: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut bp: *mut gvprbinding = 0 as *mut gvprbinding;
-    if (*sym).lex != 271 as libc::c_int as libc::c_long {} else {
+    if (*sym).lex != 271 as libc::c_int as libc::c_long {
+    } else {
         __assert_fail(
             b"sym->lex != CONSTANT\0" as *const u8 as *const libc::c_char,
             b"compile.c\0" as *const u8 as *const libc::c_char,
@@ -7887,147 +7611,121 @@ unsafe extern "C" fn getval(
                 v.integer = ptr2int(gp as *const libc::c_void);
             }
             34 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     gp = openSubg(gp, (*args.offset(1 as libc::c_int as isize)).string);
                     v.integer = ptr2int(gp as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to subg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to subg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             35 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    v
-                        .integer = ptr2int(
-                        agsubg(
-                            gp,
-                            (*args.offset(1 as libc::c_int as isize)).string,
-                            0 as libc::c_int,
-                        ) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(agsubg(
+                        gp,
+                        (*args.offset(1 as libc::c_int as isize)).string,
+                        0 as libc::c_int,
+                    ) as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to isSubg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to isSubg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             36 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     gp = agfstsubg(gp);
                     v.integer = ptr2int(gp as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to fstsubg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to fstsubg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             37 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     gp = agnxtsubg(gp);
                     v.integer = ptr2int(gp as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to nxtsubg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to nxtsubg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             38 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     np = openNode(gp, (*args.offset(1 as libc::c_int as isize)).string);
                     v.integer = ptr2int(np as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to node()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to node()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             39 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to addNode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to addNode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to addNode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to addNode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = ptr2int(
-                        addNode(gp, np, 1 as libc::c_int) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(addNode(gp, np, 1 as libc::c_int) as *const libc::c_void);
                 }
             }
             40 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     np = agfstnode(gp);
                     v.integer = ptr2int(np as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to fstnode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to fstnode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             41 => {
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if !np.is_null() {
                     np = agnxtnode(agroot(np as *mut libc::c_void), np);
                     v.integer = ptr2int(np as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to nxtnode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to nxtnode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             42 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
@@ -8037,160 +7735,126 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to nxtnode_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to nxtnode_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             43 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    v
-                        .integer = ptr2int(
-                        agnode(
-                            gp,
-                            (*args.offset(1 as libc::c_int as isize)).string,
-                            0 as libc::c_int,
-                        ) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(agnode(
+                        gp,
+                        (*args.offset(1 as libc::c_int as isize)).string,
+                        0 as libc::c_int,
+                    ) as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to isNode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to isNode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             44 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
                 if !np.is_null() {
-                    v
-                        .integer = ptr2int(
-                        addNode(gp, np, 0 as libc::c_int) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(addNode(gp, np, 0 as libc::c_int) as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to isSubnode()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to isSubnode()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             45 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
                 if !np.is_null() {
-                    v
-                        .integer = agdegree(gp, np, 1 as libc::c_int, 0 as libc::c_int)
-                        as libc::c_longlong;
+                    v.integer =
+                        agdegree(gp, np, 1 as libc::c_int, 0 as libc::c_int) as libc::c_longlong;
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to indegreeOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to indegreeOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             46 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
                 if !np.is_null() {
-                    v
-                        .integer = agdegree(gp, np, 0 as libc::c_int, 1 as libc::c_int)
-                        as libc::c_longlong;
+                    v.integer =
+                        agdegree(gp, np, 0 as libc::c_int, 1 as libc::c_int) as libc::c_longlong;
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to outdegreeOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to outdegreeOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             47 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
                 if !np.is_null() {
-                    v
-                        .integer = agdegree(gp, np, 1 as libc::c_int, 1 as libc::c_int)
-                        as libc::c_longlong;
+                    v.integer =
+                        agdegree(gp, np, 1 as libc::c_int, 1 as libc::c_int) as libc::c_longlong;
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to degreeOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to degreeOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             48 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to isIn()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to isIn()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if objp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to isIn()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to isIn()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = agcontains(gp, objp as *mut libc::c_void)
-                        as libc::c_longlong;
+                    v.integer = agcontains(gp, objp as *mut libc::c_void) as libc::c_longlong;
                 }
             }
             65 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to compOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to compOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to compOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to compOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8198,30 +7862,25 @@ unsafe extern "C" fn getval(
                 }
             }
             66 => {
-                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if objp.is_null() {
                     exerror(
-                        b"NULL object passed to kindOf()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to kindOf()\0" as *const u8 as *const libc::c_char,
                     );
                     v.string = 0 as *mut libc::c_char;
                 } else {
                     match ((*objp).tag).objtype() as libc::c_int {
                         0 => {
-                            v
-                                .string = b"G\0" as *const u8 as *const libc::c_char
-                                as *mut libc::c_char;
+                            v.string =
+                                b"G\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                         }
                         1 => {
-                            v
-                                .string = b"N\0" as *const u8 as *const libc::c_char
-                                as *mut libc::c_char;
+                            v.string =
+                                b"N\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                         }
                         3 | 2 => {
-                            v
-                                .string = b"E\0" as *const u8 as *const libc::c_char
-                                as *mut libc::c_char;
+                            v.string =
+                                b"E\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                         }
                         _ => {}
                     }
@@ -8232,22 +7891,18 @@ unsafe extern "C" fn getval(
                 if *key as libc::c_int == '\0' as i32 {
                     key = 0 as *mut libc::c_char;
                 }
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
-                hp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
+                hp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL tail node passed to edge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL tail node passed to edge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if hp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL head node passed to edge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL head node passed to edge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8260,24 +7915,19 @@ unsafe extern "C" fn getval(
                 if *key as libc::c_int == '\0' as i32 {
                     key = 0 as *mut libc::c_char;
                 }
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
-                hp = int2ptr((*args.offset(2 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
+                hp = int2ptr((*args.offset(2 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL tail node passed to edge_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL tail node passed to edge_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if hp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL head node passed to edge_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL head node passed to edge_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8286,48 +7936,37 @@ unsafe extern "C" fn getval(
                 }
             }
             51 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to addEdge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to addEdge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if ep.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to addEdge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to addEdge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = ptr2int(
-                        addEdge(gp, ep, 1 as libc::c_int) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(addEdge(gp, ep, 1 as libc::c_int) as *const libc::c_void);
                 }
             }
             52 => {
-                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agedge_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if ep.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to opp()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to opp()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to opp()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to opp()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8338,7 +7977,8 @@ unsafe extern "C" fn getval(
                     } else {
                         ep.offset(-(1 as libc::c_int as isize))
                     }))
-                        .node == np
+                    .node
+                        == np
                     {
                         np = (*if ((*(ep as *mut Agobj_t)).tag).objtype() as libc::c_int
                             == 3 as libc::c_int
@@ -8347,7 +7987,7 @@ unsafe extern "C" fn getval(
                         } else {
                             ep.offset(1 as libc::c_int as isize)
                         })
-                            .node;
+                        .node;
                     } else {
                         np = (*if ((*(ep as *mut Agobj_t)).tag).objtype() as libc::c_int
                             == 2 as libc::c_int
@@ -8356,7 +7996,7 @@ unsafe extern "C" fn getval(
                         } else {
                             ep.offset(-(1 as libc::c_int as isize))
                         })
-                            .node;
+                        .node;
                     }
                     v.integer = ptr2int(np as *const libc::c_void);
                 }
@@ -8366,30 +8006,24 @@ unsafe extern "C" fn getval(
                 if *key as libc::c_int == '\0' as i32 {
                     key = 0 as *mut libc::c_char;
                 }
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
-                hp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
+                hp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL tail node passed to isEdge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL tail node passed to isEdge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if hp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL head node passed to isEdge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL head node passed to isEdge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = ptr2int(
-                        isEdge(agroot(np as *mut libc::c_void), np, hp, key)
-                            as *const libc::c_void,
-                    );
+                    v.integer =
+                        ptr2int(isEdge(agroot(np as *mut libc::c_void), np, hp, key)
+                            as *const libc::c_void);
                 }
             }
             70 => {
@@ -8397,12 +8031,9 @@ unsafe extern "C" fn getval(
                 if *key as libc::c_int == '\0' as i32 {
                     key = 0 as *mut libc::c_char;
                 }
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
-                hp = int2ptr((*args.offset(2 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
+                hp = int2ptr((*args.offset(2 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
@@ -8425,47 +8056,37 @@ unsafe extern "C" fn getval(
                 }
             }
             71 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if gp.is_null() {
                     gp = agroot(ep as *mut libc::c_void);
                 }
                 if !ep.is_null() {
-                    v
-                        .integer = ptr2int(
-                        addEdge(gp, ep, 0 as libc::c_int) as *const libc::c_void,
-                    );
+                    v.integer = ptr2int(addEdge(gp, ep, 0 as libc::c_int) as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to isSubedge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to isSubedge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             53 => {
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if !np.is_null() {
                     ep = agfstout(agroot(np as *mut libc::c_void), np);
                     v.integer = ptr2int(ep as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstout()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstout()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             59 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
@@ -8475,32 +8096,27 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstout_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstout_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             54 => {
-                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if !ep.is_null() {
                     ep = agnxtout(agroot(ep as *mut libc::c_void), ep);
                     v.integer = ptr2int(ep as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtout()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtout()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             60 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if gp.is_null() {
                     gp = agroot(ep as *mut libc::c_void);
                 }
@@ -8510,32 +8126,27 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtout_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtout_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             55 => {
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if !np.is_null() {
                     ep = agfstin(agroot(np as *mut libc::c_void), np);
                     v.integer = ptr2int(ep as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstin()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstin()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             61 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
@@ -8545,32 +8156,27 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstin_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstin_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             56 => {
-                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if !ep.is_null() {
                     ep = agnxtin(agroot(ep as *mut libc::c_void), ep);
                     v.integer = ptr2int(ep as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtin()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtin()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             62 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agedge_t;
                 if gp.is_null() {
                     gp = agroot(ep as *mut libc::c_void);
                 }
@@ -8580,32 +8186,27 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtin_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtin_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             57 => {
-                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                np = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if !np.is_null() {
                     ep = agfstedge(agroot(np as *mut libc::c_void), np);
                     v.integer = ptr2int(ep as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstedge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstedge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             63 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
@@ -8615,29 +8216,24 @@ unsafe extern "C" fn getval(
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to fstedge_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to fstedge_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             58 => {
-                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
-                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                ep = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agedge_t;
+                np = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if ep.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtedge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtedge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to nxtedge()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to nxtedge()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8646,27 +8242,22 @@ unsafe extern "C" fn getval(
                 }
             }
             64 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agedge_t;
-                np = int2ptr((*args.offset(2 as libc::c_int as isize)).integer)
-                    as *mut Agnode_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                ep = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agedge_t;
+                np = int2ptr((*args.offset(2 as libc::c_int as isize)).integer) as *mut Agnode_t;
                 if gp.is_null() {
                     gp = agroot(np as *mut libc::c_void);
                 }
                 if ep.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL edge passed to nxtedge_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL edge passed to nxtedge_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else if np.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL node passed to nxtedge_sg()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL node passed to nxtedge_sg()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8675,15 +8266,12 @@ unsafe extern "C" fn getval(
                 }
             }
             88 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if objp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to clone()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to clone()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8691,15 +8279,12 @@ unsafe extern "C" fn getval(
                 }
             }
             86 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if objp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to clone()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to clone()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8707,30 +8292,25 @@ unsafe extern "C" fn getval(
                 }
             }
             87 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
                     gp = cloneG(gp, (*args.offset(1 as libc::c_int as isize)).string);
                     v.integer = ptr2int(gp as *const libc::c_void);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to cloneG()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to cloneG()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             89 => {
-                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
-                objp1 = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agobj_t;
+                objp1 = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if !(!objp.is_null() && !objp1.is_null()) {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to copyA()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to copyA()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8738,13 +8318,11 @@ unsafe extern "C" fn getval(
                 }
             }
             82 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to induce()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to induce()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8753,34 +8331,28 @@ unsafe extern "C" fn getval(
                 }
             }
             74 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to write()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to write()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = sfioWrite(gp, (*state).outFile, (*state).dfltIO)
-                        as libc::c_longlong;
+                    v.integer =
+                        sfioWrite(gp, (*state).outFile, (*state).dfltIO) as libc::c_longlong;
                 }
             }
             75 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to writeG()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to writeG()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = writeFile(
+                    v.integer = writeFile(
                         gp,
                         (*args.offset(1 as libc::c_int as isize)).string,
                         (*state).dfltIO,
@@ -8792,18 +8364,15 @@ unsafe extern "C" fn getval(
                 v.integer = ptr2int(gp as *const libc::c_void);
             }
             77 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to fwriteG()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to fwriteG()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else {
-                    v
-                        .integer = fwriteFile(
+                    v.integer = fwriteFile(
                         pgm,
                         gp,
                         (*args.offset(1 as libc::c_int as isize)).integer as libc::c_int,
@@ -8819,35 +8388,30 @@ unsafe extern "C" fn getval(
                 v.integer = ptr2int(gp as *const libc::c_void);
             }
             79 => {
-                v
-                    .integer = openFile(
+                v.integer = openFile(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*args.offset(1 as libc::c_int as isize)).string,
                 ) as libc::c_longlong;
             }
             80 => {
-                v
-                    .integer = closeFile(
+                v.integer = closeFile(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).integer as libc::c_int,
                 ) as libc::c_longlong;
             }
             81 => {
-                v
-                    .string = readLine(
+                v.string = readLine(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).integer as libc::c_int,
                 );
             }
             83 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to isDirect()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to isDirect()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8855,13 +8419,11 @@ unsafe extern "C" fn getval(
                 }
             }
             84 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to isStrict()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to isStrict()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8869,29 +8431,24 @@ unsafe extern "C" fn getval(
                 }
             }
             85 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
-                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
+                objp = int2ptr((*args.offset(1 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if objp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to delete()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to delete()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else if objp == (*state).curgraph as *mut Agobj_t {
                     _err_msg(
                         1 as libc::c_int,
-                        b"cannot delete current graph $G\0" as *const u8
-                            as *const libc::c_char,
+                        b"cannot delete current graph $G\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else if objp == (*state).target as *mut Agobj_t {
                     _err_msg(
                         1 as libc::c_int,
-                        b"cannot delete target graph $T\0" as *const u8
-                            as *const libc::c_char,
+                        b"cannot delete target graph $T\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else if objp == (*state).curobj {
@@ -8905,31 +8462,26 @@ unsafe extern "C" fn getval(
                 }
             }
             90 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to lock()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to lock()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = -(1 as libc::c_int) as libc::c_longlong;
                 } else {
-                    v
-                        .integer = lockGraph(
+                    v.integer = lockGraph(
                         gp,
                         (*args.offset(1 as libc::c_int as isize)).integer as libc::c_int,
                     ) as libc::c_longlong;
                 }
             }
             91 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to nNodes()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to nNodes()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8937,13 +8489,11 @@ unsafe extern "C" fn getval(
                 }
             }
             92 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if gp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to nEdges()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to nEdges()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
@@ -8951,9 +8501,8 @@ unsafe extern "C" fn getval(
                 }
             }
             121 => {
-                v
-                    .integer = atoi((*args.offset(0 as libc::c_int as isize)).string)
-                    as libc::c_longlong;
+                v.integer =
+                    atoi((*args.offset(0 as libc::c_int as isize)).string) as libc::c_longlong;
             }
             122 => {
                 v.floating = atof((*args.offset(0 as libc::c_int as isize)).string);
@@ -8968,8 +8517,7 @@ unsafe extern "C" fn getval(
                 v.floating = sin((*args.offset(0 as libc::c_int as isize)).floating);
             }
             96 => {
-                v
-                    .floating = atan2(
+                v.floating = atan2(
                     (*args.offset(0 as libc::c_int as isize)).floating,
                     (*args.offset(1 as libc::c_int as isize)).floating,
                 );
@@ -8978,8 +8526,7 @@ unsafe extern "C" fn getval(
                 v.floating = exp((*args.offset(0 as libc::c_int as isize)).floating);
             }
             98 => {
-                v
-                    .floating = pow(
+                v.floating = pow(
                     (*args.offset(0 as libc::c_int as isize)).floating,
                     (*args.offset(1 as libc::c_int as isize)).floating,
                 );
@@ -8988,8 +8535,7 @@ unsafe extern "C" fn getval(
                 v.floating = log((*args.offset(0 as libc::c_int as isize)).floating);
             }
             100 => {
-                v
-                    .floating = if (*args.offset(0 as libc::c_int as isize)).floating
+                v.floating = if (*args.offset(0 as libc::c_int as isize)).floating
                     < (*args.offset(1 as libc::c_int as isize)).floating
                 {
                     (*args.offset(0 as libc::c_int as isize)).floating
@@ -8998,8 +8544,7 @@ unsafe extern "C" fn getval(
                 };
             }
             101 => {
-                v
-                    .floating = if (*args.offset(0 as libc::c_int as isize)).floating
+                v.floating = if (*args.offset(0 as libc::c_int as isize)).floating
                     > (*args.offset(1 as libc::c_int as isize)).floating
                 {
                     (*args.offset(0 as libc::c_int as isize)).floating
@@ -9008,13 +8553,11 @@ unsafe extern "C" fn getval(
                 };
             }
             102 => {
-                v
-                    .integer = system((*args.offset(0 as libc::c_int as isize)).string)
-                    as libc::c_longlong;
+                v.integer =
+                    system((*args.offset(0 as libc::c_int as isize)).string) as libc::c_longlong;
             }
             114 | 110 => {
-                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 name = (*args.offset(1 as libc::c_int as isize)).string;
                 if objp.is_null() {
                     exerror(
@@ -9029,20 +8572,14 @@ unsafe extern "C" fn getval(
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 } else {
-                    let mut gsym: *mut Agsym_t = agattrsym(
-                        objp as *mut libc::c_void,
-                        name,
-                    );
+                    let mut gsym: *mut Agsym_t = agattrsym(objp as *mut libc::c_void, name);
                     if (*sym).index == F_hasattr as libc::c_int as libc::c_long {
-                        v
-                            .integer = (gsym != 0 as *mut libc::c_void as *mut Agsym_t)
-                            as libc::c_int as libc::c_longlong;
+                        v.integer = (gsym != 0 as *mut libc::c_void as *mut Agsym_t) as libc::c_int
+                            as libc::c_longlong;
                     } else {
                         if gsym.is_null() {
                             gsym = agattr(
-                                agroot(
-                                    agraphof(objp as *mut libc::c_void) as *mut libc::c_void,
-                                ),
+                                agroot(agraphof(objp as *mut libc::c_void) as *mut libc::c_void),
                                 ((*objp).tag).objtype() as libc::c_int,
                                 name,
                                 b"\0" as *const u8 as *const libc::c_char,
@@ -9061,34 +8598,28 @@ unsafe extern "C" fn getval(
                 }
             }
             111 => {
-                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agobj_t;
+                objp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agobj_t;
                 if objp.is_null() {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL object passed to aset()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL object passed to aset()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 1 as libc::c_int as libc::c_longlong;
                 } else {
-                    let mut name_0: *mut libc::c_char = (*args
-                        .offset(1 as libc::c_int as isize))
-                        .string;
-                    let mut value: *mut libc::c_char = (*args
-                        .offset(2 as libc::c_int as isize))
-                        .string;
+                    let mut name_0: *mut libc::c_char =
+                        (*args.offset(1 as libc::c_int as isize)).string;
+                    let mut value: *mut libc::c_char =
+                        (*args.offset(2 as libc::c_int as isize)).string;
                     if name_0.is_null() {
                         _err_msg(
                             1 as libc::c_int,
-                            b"NULL name passed to aset()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL name passed to aset()\0" as *const u8 as *const libc::c_char,
                         );
                         v.integer = 1 as libc::c_int as libc::c_longlong;
                     } else if value.is_null() {
                         _err_msg(
                             1 as libc::c_int,
-                            b"NULL value passed to aset()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL value passed to aset()\0" as *const u8 as *const libc::c_char,
                         );
                         v.integer = 1 as libc::c_int as libc::c_longlong;
                     } else {
@@ -9097,65 +8628,52 @@ unsafe extern "C" fn getval(
                 }
             }
             113 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    let mut kind: *mut libc::c_char = (*args
-                        .offset(1 as libc::c_int as isize))
-                        .string;
-                    let mut name_1: *mut libc::c_char = (*args
-                        .offset(2 as libc::c_int as isize))
-                        .string;
-                    let mut value_0: *mut libc::c_char = (*args
-                        .offset(3 as libc::c_int as isize))
-                        .string;
+                    let mut kind: *mut libc::c_char =
+                        (*args.offset(1 as libc::c_int as isize)).string;
+                    let mut name_1: *mut libc::c_char =
+                        (*args.offset(2 as libc::c_int as isize)).string;
+                    let mut value_0: *mut libc::c_char =
+                        (*args.offset(3 as libc::c_int as isize)).string;
                     if name_1.is_null() {
                         _err_msg(
                             1 as libc::c_int,
-                            b"NULL name passed to setDflt()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL name passed to setDflt()\0" as *const u8 as *const libc::c_char,
                         );
                         v.integer = 1 as libc::c_int as libc::c_longlong;
                     } else if value_0.is_null() {
                         _err_msg(
                             1 as libc::c_int,
-                            b"NULL value passed to setDflt()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL value passed to setDflt()\0" as *const u8 as *const libc::c_char,
                         );
                         v.integer = 1 as libc::c_int as libc::c_longlong;
                     } else if kind.is_null() {
                         _err_msg(
                             1 as libc::c_int,
-                            b"NULL kind passed to setDflt()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL kind passed to setDflt()\0" as *const u8 as *const libc::c_char,
                         );
                         v.integer = 1 as libc::c_int as libc::c_longlong;
                     } else {
-                        v
-                            .integer = setDfltAttr(gp, kind, name_1, value_0)
-                            as libc::c_longlong;
+                        v.integer = setDfltAttr(gp, kind, name_1, value_0) as libc::c_longlong;
                     }
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to node()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to node()\0" as *const u8 as *const libc::c_char,
                     );
                     v.integer = 0 as libc::c_int as libc::c_longlong;
                 }
             }
             116 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    let mut kind_0: *mut libc::c_char = (*args
-                        .offset(1 as libc::c_int as isize))
-                        .string;
+                    let mut kind_0: *mut libc::c_char =
+                        (*args.offset(1 as libc::c_int as isize)).string;
                     if kind_0.is_null() {
                         _err_msg(
                             2 as libc::c_int,
-                            b"NULL kind passed to fstAttr()\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL kind passed to fstAttr()\0" as *const u8 as *const libc::c_char,
                         );
                         v.string = 0 as *mut libc::c_char;
                     } else {
@@ -9163,45 +8681,38 @@ unsafe extern "C" fn getval(
                     }
                 } else {
                     exerror(
-                        b"NULL graph passed to fstAttr()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to fstAttr()\0" as *const u8 as *const libc::c_char,
                     );
                     v.string = 0 as *mut libc::c_char;
                 }
             }
             117 | 115 | 112 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    let mut kind_1: *mut libc::c_char = (*args
-                        .offset(1 as libc::c_int as isize))
-                        .string;
-                    let mut name_2: *mut libc::c_char = (*args
-                        .offset(2 as libc::c_int as isize))
-                        .string;
+                    let mut kind_1: *mut libc::c_char =
+                        (*args.offset(1 as libc::c_int as isize)).string;
+                    let mut name_2: *mut libc::c_char =
+                        (*args.offset(2 as libc::c_int as isize)).string;
                     if name_2.is_null() {
                         exerror(
-                            b"NULL name passed to %s\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL name passed to %s\0" as *const u8 as *const libc::c_char,
                             ((*sym).name).as_mut_ptr(),
                         );
                         v.string = 0 as *mut libc::c_char;
                     } else if kind_1.is_null() {
                         exerror(
-                            b"NULL kind passed to %s\0" as *const u8
-                                as *const libc::c_char,
+                            b"NULL kind passed to %s\0" as *const u8 as *const libc::c_char,
                             ((*sym).name).as_mut_ptr(),
                         );
                         v.string = 0 as *mut libc::c_char;
                     } else if (*sym).index == F_isattr as libc::c_int as libc::c_long {
-                        v
-                            .integer = (agattr(
+                        v.integer = (agattr(
                             gp,
                             toKind(kind_1, ((*sym).name).as_mut_ptr()),
                             name_2,
                             0 as *const libc::c_char,
-                        ) != 0 as *mut libc::c_void as *mut Agsym_t) as libc::c_int
-                            as libc::c_longlong;
+                        ) != 0 as *mut libc::c_void as *mut Agsym_t)
+                            as libc::c_int as libc::c_longlong;
                     } else if (*sym).index == F_nxtattr as libc::c_int as libc::c_long {
                         v.string = nxtAttr(gp, kind_1, name_2);
                     } else {
@@ -9219,40 +8730,30 @@ unsafe extern "C" fn getval(
                 v.string = canon(pgm, (*args.offset(0 as libc::c_int as isize)).string);
             }
             108 => {
-                v
-                    .integer = aghtmlstr(
-                    (*args.offset(0 as libc::c_int as isize)).string,
-                ) as libc::c_longlong;
+                v.integer =
+                    aghtmlstr((*args.offset(0 as libc::c_int as isize)).string) as libc::c_longlong;
             }
             107 => {
-                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer)
-                    as *mut Agraph_t;
+                gp = int2ptr((*args.offset(0 as libc::c_int as isize)).integer) as *mut Agraph_t;
                 if !gp.is_null() {
-                    v
-                        .string = toHtml(
-                        gp,
-                        (*args.offset(1 as libc::c_int as isize)).string,
-                    );
+                    v.string = toHtml(gp, (*args.offset(1 as libc::c_int as isize)).string);
                 } else {
                     _err_msg(
                         1 as libc::c_int,
-                        b"NULL graph passed to html()\0" as *const u8
-                            as *const libc::c_char,
+                        b"NULL graph passed to html()\0" as *const u8 as *const libc::c_char,
                     );
                     v.string = 0 as *mut libc::c_char;
                 }
             }
             118 => {
-                v
-                    .string = toLower(
+                v.string = toLower(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*state).tmp,
                 );
             }
             123 => {
-                v
-                    .string = colorx(
+                v.string = colorx(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*args.offset(1 as libc::c_int as isize)).string,
@@ -9262,8 +8763,7 @@ unsafe extern "C" fn getval(
             120 => {
                 if !((*args.offset(0 as libc::c_int as isize)).string).is_null() {
                     if !((*args.offset(1 as libc::c_int as isize)).string).is_null() {
-                        v
-                            .integer = strcmp(
+                        v.integer = strcmp(
                             (*args.offset(0 as libc::c_int as isize)).string,
                             (*args.offset(1 as libc::c_int as isize)).string,
                         ) as libc::c_longlong;
@@ -9277,83 +8777,68 @@ unsafe extern "C" fn getval(
                 }
             }
             119 => {
-                v
-                    .string = toUpper(
+                v.string = toUpper(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*state).tmp,
                 );
             }
             103 => {
-                v
-                    .string = xyOf(
+                v.string = xyOf(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     1 as libc::c_int != 0,
                 );
             }
             104 => {
-                v
-                    .string = xyOf(
+                v.string = xyOf(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     0 as libc::c_int != 0,
                 );
             }
             105 => {
-                v
-                    .string = bbOf(
+                v.string = bbOf(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     1 as libc::c_int != 0,
                 );
             }
             106 => {
-                v
-                    .string = bbOf(
+                v.string = bbOf(
                     pgm,
                     (*args.offset(0 as libc::c_int as isize)).string,
                     0 as libc::c_int != 0,
                 );
             }
             72 => {
-                v
-                    .integer = strlen((*args.offset(0 as libc::c_int as isize)).string)
-                    as libc::c_longlong;
+                v.integer =
+                    strlen((*args.offset(0 as libc::c_int as isize)).string) as libc::c_longlong;
             }
             67 => {
-                v
-                    .integer = indexOf(
+                v.integer = indexOf(
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*args.offset(1 as libc::c_int as isize)).string,
                 ) as libc::c_longlong;
             }
             68 => {
-                v
-                    .integer = rindexOf(
+                v.integer = rindexOf(
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*args.offset(1 as libc::c_int as isize)).string,
                 ) as libc::c_longlong;
             }
             73 => {
-                v
-                    .integer = match_0(
+                v.integer = match_0(
                     (*args.offset(0 as libc::c_int as isize)).string,
                     (*args.offset(1 as libc::c_int as isize)).string,
                 ) as libc::c_longlong;
             }
             124 => {
-                bp = findBinding(
-                    state,
-                    (*args.offset(0 as libc::c_int as isize)).string,
-                );
+                bp = findBinding(state, (*args.offset(0 as libc::c_int as isize)).string);
                 if !bp.is_null() {
-                    v
-                        .integer = ((*bp).fn_0)
-                        .expect(
-                            "non-null function pointer",
-                        )((*args.offset(1 as libc::c_int as isize)).string)
-                        as libc::c_longlong;
+                    v.integer = ((*bp).fn_0).expect("non-null function pointer")(
+                        (*args.offset(1 as libc::c_int as isize)).string,
+                    ) as libc::c_longlong;
                 } else {
                     v.integer = -(1 as libc::c_int) as libc::c_longlong;
                 }
@@ -9373,8 +8858,7 @@ unsafe extern "C" fn getval(
             state = (*disc).user as *mut Gpr_t;
             match (*sym).index {
                 32 => {
-                    v
-                        .string = getArg(
+                    v.string = getArg(
                         (*args.offset(0 as libc::c_int as isize)).integer as libc::c_int,
                         state,
                     );
@@ -9400,8 +8884,8 @@ unsafe extern "C" fn getval(
             );
         }
     } else if (*sym).lex == 283 as libc::c_int as libc::c_long
-            && (*sym).index <= LAST_V as libc::c_int as libc::c_long
-        {
+        && (*sym).index <= LAST_V as libc::c_int as libc::c_long
+    {
         match (*sym).index {
             1 => {
                 v.integer = ptr2int((*state).curobj as *const libc::c_void);
@@ -9465,10 +8949,7 @@ unsafe extern "C" fn getval(
     }
     return v;
 }
-unsafe extern "C" fn typeName(
-    mut pg: *mut Expr_t,
-    mut op: libc::c_int,
-) -> *mut libc::c_char {
+unsafe extern "C" fn typeName(mut pg: *mut Expr_t, mut op: libc::c_int) -> *mut libc::c_char {
     return typenames[(op - (LAST_M as libc::c_int + 1 as libc::c_int)) as usize];
 }
 unsafe extern "C" fn setval(
@@ -9498,8 +8979,8 @@ unsafe extern "C" fn setval(
             return -(1 as libc::c_int);
         }
     } else if MINNAME as libc::c_int as libc::c_long <= (*sym).index
-            && (*sym).index <= MAXNAME as libc::c_int as libc::c_long
-        {
+        && (*sym).index <= MAXNAME as libc::c_int as libc::c_long
+    {
         match (*sym).index {
             5 => {
                 let ref mut fresh14 = (*state).outgraph;
@@ -9586,7 +9067,8 @@ unsafe extern "C" fn typeChk(mut intype: tctype, mut sym: *mut Exid_t) -> tctype
                 30 => {
                     rng = ((1 as libc::c_int) << 0x4 as libc::c_int
                         | (1 as libc::c_int) << 0x5 as libc::c_int
-                        | (1 as libc::c_int) << 0x6 as libc::c_int) as tctype;
+                        | (1 as libc::c_int) << 0x6 as libc::c_int)
+                        as tctype;
                 }
                 27 => {
                     rng = ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype;
@@ -9620,23 +9102,20 @@ unsafe extern "C" fn typeChk(mut intype: tctype, mut sym: *mut Exid_t) -> tctype
             if (*sym).index <= MAXNAME as libc::c_int as libc::c_long {
                 match (*sym).index {
                     8 | 1 | 2 | 3 => {
-                        if !(1 as libc::c_int <= codePhase
-                            && codePhase <= 4 as libc::c_int)
-                        {
+                        if !(1 as libc::c_int <= codePhase && codePhase <= 4 as libc::c_int) {
                             exerror(
-                                b"keyword %s cannot be used in BEGIN/END statements\0"
-                                    as *const u8 as *const libc::c_char,
+                                b"keyword %s cannot be used in BEGIN/END statements\0" as *const u8
+                                    as *const libc::c_char,
                                 ((*sym).name).as_mut_ptr(),
                             );
                         }
                     }
                     4 => {
-                        if !(2 as libc::c_int <= codePhase
-                            && codePhase <= 4 as libc::c_int)
-                        {
+                        if !(2 as libc::c_int <= codePhase && codePhase <= 4 as libc::c_int) {
                             exerror(
                                 b"keyword %s cannot be used in BEGIN/BEG_G/END statements\0"
-                                    as *const u8 as *const libc::c_char,
+                                    as *const u8
+                                    as *const libc::c_char,
                                 ((*sym).name).as_mut_ptr(),
                             );
                         }
@@ -9653,9 +9132,7 @@ unsafe extern "C" fn typeChk(mut intype: tctype, mut sym: *mut Exid_t) -> tctype
             }
         }
         287 => {
-            if intype == 0
-                && !(1 as libc::c_int <= codePhase && codePhase <= 4 as libc::c_int)
-            {
+            if intype == 0 && !(1 as libc::c_int <= codePhase && codePhase <= 4 as libc::c_int) {
                 exerror(
                     b"undeclared, unmodified names like \"%s\" cannot be\nused in BEGIN and END statements\0"
                         as *const u8 as *const libc::c_char,
@@ -9690,10 +9167,7 @@ unsafe extern "C" fn typeChk(mut intype: tctype, mut sym: *mut Exid_t) -> tctype
     }
     return rng;
 }
-unsafe extern "C" fn typeChkExp(
-    mut ref_0: *mut Exref_t,
-    mut sym: *mut Exid_t,
-) -> tctype {
+unsafe extern "C" fn typeChkExp(mut ref_0: *mut Exref_t, mut sym: *mut Exid_t) -> tctype {
     let mut ty: tctype = 0;
     if !ref_0.is_null() {
         ty = typeChk(0 as libc::c_int as tctype, (*ref_0).symbol);
@@ -9818,66 +9292,42 @@ unsafe extern "C" fn binary(
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li == ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li == ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             326 => {
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li != ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li != ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             60 => {
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li < ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li < ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             327 => {
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li <= ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li <= ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             328 => {
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li >= ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li >= ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             62 => {
                 if arg != 0 {
                     return 0 as libc::c_int;
                 }
-                (*l)
-                    .data
-                    .constant
-                    .value
-                    .integer = (li > ri) as libc::c_int as libc::c_longlong;
+                (*l).data.constant.value.integer = (li > ri) as libc::c_int as libc::c_longlong;
                 ret = 0 as libc::c_int;
             }
             _ => {}
@@ -9897,12 +9347,8 @@ unsafe extern "C" fn binary(
             if arg != 0 {
                 return 0 as libc::c_int;
             }
-            (*l)
-                .data
-                .constant
-                .value
-                .integer = (compare(lobjp, robjp) == 0) as libc::c_int
-                as libc::c_longlong;
+            (*l).data.constant.value.integer =
+                (compare(lobjp, robjp) == 0) as libc::c_int as libc::c_longlong;
             ret = 0 as libc::c_int;
         }
         326 => {
@@ -9916,48 +9362,32 @@ unsafe extern "C" fn binary(
             if arg != 0 {
                 return 0 as libc::c_int;
             }
-            (*l)
-                .data
-                .constant
-                .value
-                .integer = (compare(lobjp, robjp) < 0 as libc::c_int) as libc::c_int
-                as libc::c_longlong;
+            (*l).data.constant.value.integer =
+                (compare(lobjp, robjp) < 0 as libc::c_int) as libc::c_int as libc::c_longlong;
             ret = 0 as libc::c_int;
         }
         327 => {
             if arg != 0 {
                 return 0 as libc::c_int;
             }
-            (*l)
-                .data
-                .constant
-                .value
-                .integer = (compare(lobjp, robjp) <= 0 as libc::c_int) as libc::c_int
-                as libc::c_longlong;
+            (*l).data.constant.value.integer =
+                (compare(lobjp, robjp) <= 0 as libc::c_int) as libc::c_int as libc::c_longlong;
             ret = 0 as libc::c_int;
         }
         328 => {
             if arg != 0 {
                 return 0 as libc::c_int;
             }
-            (*l)
-                .data
-                .constant
-                .value
-                .integer = (compare(lobjp, robjp) >= 0 as libc::c_int) as libc::c_int
-                as libc::c_longlong;
+            (*l).data.constant.value.integer =
+                (compare(lobjp, robjp) >= 0 as libc::c_int) as libc::c_int as libc::c_longlong;
             ret = 0 as libc::c_int;
         }
         62 => {
             if arg != 0 {
                 return 0 as libc::c_int;
             }
-            (*l)
-                .data
-                .constant
-                .value
-                .integer = (compare(lobjp, robjp) > 0 as libc::c_int) as libc::c_int
-                as libc::c_longlong;
+            (*l).data.constant.value.integer =
+                (compare(lobjp, robjp) > 0 as libc::c_int) as libc::c_int as libc::c_longlong;
             ret = 0 as libc::c_int;
         }
         _ => {}
@@ -10002,15 +9432,13 @@ unsafe extern "C" fn strToTvtype(mut s: *mut libc::c_char) -> libc::c_int {
             rt = TV_prepostrev as libc::c_int;
         } else {
             exerror(
-                b"illegal string \"%s\" for type tvtype_t\0" as *const u8
-                    as *const libc::c_char,
+                b"illegal string \"%s\" for type tvtype_t\0" as *const u8 as *const libc::c_char,
                 s,
             );
         }
     } else {
         exerror(
-            b"illegal string \"%s\" for type tvtype_t\0" as *const u8
-                as *const libc::c_char,
+            b"illegal string \"%s\" for type tvtype_t\0" as *const u8 as *const libc::c_char,
             s,
         );
     }
@@ -10050,21 +9478,17 @@ unsafe extern "C" fn tvtypeToStr(mut v: libc::c_int) -> *mut libc::c_char {
             s = b"TV_postrev\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         }
         10 => {
-            s = b"TV_prepostdfs\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char;
+            s = b"TV_prepostdfs\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         }
         11 => {
-            s = b"TV_prepostfwd\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char;
+            s = b"TV_prepostfwd\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         }
         12 => {
-            s = b"TV_prepostrev\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char;
+            s = b"TV_prepostrev\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
         }
         _ => {
             exerror(
-                b"Unexpected value %d for type tvtype_t\0" as *const u8
-                    as *const libc::c_char,
+                b"Unexpected value %d for type tvtype_t\0" as *const u8 as *const libc::c_char,
                 v,
             );
         }
@@ -10092,8 +9516,7 @@ unsafe extern "C" fn stringOf(
         objp = int2ptr((*x).data.constant.value.integer) as *mut Agobj_t;
         if objp.is_null() {
             exerror(
-                b"cannot generate name for NULL %s\0" as *const u8
-                    as *const libc::c_char,
+                b"cannot generate name for NULL %s\0" as *const u8 as *const libc::c_char,
                 typeName(prog, (*x).type_0),
             );
             rv = -(1 as libc::c_int);
@@ -10136,15 +9559,13 @@ unsafe extern "C" fn convert(
             objp = int2ptr((*x).data.constant.value.integer) as *mut Agobj_t;
             match type_0 {
                 29 => {
-                    if objp.is_null()
-                        || ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int
+                    if objp.is_null() || ((*objp).tag).objtype() as libc::c_int == 0 as libc::c_int
                     {
                         ret = 0 as libc::c_int;
                     }
                 }
                 27 => {
-                    if objp.is_null()
-                        || ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int
+                    if objp.is_null() || ((*objp).tag).objtype() as libc::c_int == 1 as libc::c_int
                     {
                         ret = 0 as libc::c_int;
                     }
@@ -10260,9 +9681,8 @@ unsafe extern "C" fn initDisc(mut state: *mut Gpr_t) -> *mut Exdisc_t {
         return 0 as *mut Exdisc_t;
     }
     (*dp).version = 20000101 as libc::c_long as uint64_t;
-    (*dp)
-        .flags = ((1 as libc::c_int) << 0 as libc::c_int
-        | (1 as libc::c_int) << 9 as libc::c_int) as uint64_t;
+    (*dp).flags = ((1 as libc::c_int) << 0 as libc::c_int | (1 as libc::c_int) << 9 as libc::c_int)
+        as uint64_t;
     let ref mut fresh21 = (*dp).symbols;
     *fresh21 = symbols.as_mut_ptr();
     let ref mut fresh22 = (*dp).convertf;
@@ -10300,16 +9720,15 @@ unsafe extern "C" fn initDisc(mut state: *mut Gpr_t) -> *mut Exdisc_t {
             ) -> libc::c_int,
     );
     let ref mut fresh25 = (*dp).typename;
-    *fresh25 = Some(
-        typeName as unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
-    );
+    *fresh25 =
+        Some(typeName as unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char);
     if ((*state).errf).is_some() {
         let ref mut fresh26 = (*dp).errorf;
         *fresh26 = (*state).errf;
     } else {
         let ref mut fresh27 = (*dp).errorf;
         *fresh27 = ::std::mem::transmute::<
-            Option::<
+            Option<
                 unsafe extern "C" fn(
                     *mut libc::c_void,
                     *mut libc::c_void,
@@ -10319,28 +9738,21 @@ unsafe extern "C" fn initDisc(mut state: *mut Gpr_t) -> *mut Exdisc_t {
                 ) -> (),
             >,
             Exerror_f,
-        >(
-            Some(
-                errorf
-                    as unsafe extern "C" fn(
-                        *mut libc::c_void,
-                        *mut libc::c_void,
-                        libc::c_int,
-                        *const libc::c_char,
-                        ...
-                    ) -> (),
-            ),
-        );
+        >(Some(
+            errorf
+                as unsafe extern "C" fn(
+                    *mut libc::c_void,
+                    *mut libc::c_void,
+                    libc::c_int,
+                    *const libc::c_char,
+                    ...
+                ) -> (),
+        ));
     }
     let ref mut fresh28 = (*dp).keyf;
     *fresh28 = Some(
         keyval
-            as unsafe extern "C" fn(
-                *mut Expr_t,
-                Extype_t,
-                libc::c_int,
-                *mut Exdisc_t,
-            ) -> Extype_t,
+            as unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t,
     );
     let ref mut fresh29 = (*dp).getf;
     *fresh29 = Some(
@@ -10419,7 +9831,11 @@ unsafe extern "C" fn compile(
     let mut prefix: *mut Sfio_t = 0 as *mut Sfio_t;
     let mut rv: libc::c_int = 0;
     if !sfx.is_null() {
-        sf = sfopen(0 as *mut Sfio_t, sfx, b"rs\0" as *const u8 as *const libc::c_char);
+        sf = sfopen(
+            0 as *mut Sfio_t,
+            sfx,
+            b"rs\0" as *const u8 as *const libc::c_char,
+        );
         if !input.is_null() {
             prefix = sfopen(
                 0 as *mut Sfio_t,
@@ -10442,13 +9858,16 @@ unsafe extern "C" fn compile(
             b"sr+\0" as *const u8 as *const libc::c_char,
         );
         sfprintf(prefix, b"%s:\n\0" as *const u8 as *const libc::c_char, lbl);
-        sfseek(prefix, 0 as libc::c_int as libc::c_longlong, 0 as libc::c_int);
+        sfseek(
+            prefix,
+            0 as libc::c_int as libc::c_longlong,
+            0 as libc::c_int,
+        );
         sfstack(sf, prefix);
         line -= 1;
     }
     if src.is_null() {
-        src = b"<command line>\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        src = b"<command line>\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     }
     rv = excomp(prog, src, line, 0 as *const libc::c_char, sf);
     sfclose(sf);
@@ -10482,12 +9901,10 @@ unsafe extern "C" fn mkStmts(
 ) -> *mut case_stmt {
     let mut cs: *mut case_stmt = 0 as *mut case_stmt;
     let mut i: libc::c_int = 0;
-    static mut LONGEST_CALLER_PREFIX: [libc::c_char; 10] = unsafe {
-        *::std::mem::transmute::<&[u8; 10], &[libc::c_char; 10]>(b"_begin_g_\0")
-    };
-    static mut LONGEST_INFIX: [libc::c_char; 4] = unsafe {
-        *::std::mem::transmute::<&[u8; 4], &[libc::c_char; 4]>(b"__a\0")
-    };
+    static mut LONGEST_CALLER_PREFIX: [libc::c_char; 10] =
+        unsafe { *::std::mem::transmute::<&[u8; 10], &[libc::c_char; 10]>(b"_begin_g_\0") };
+    static mut LONGEST_INFIX: [libc::c_char; 4] =
+        unsafe { *::std::mem::transmute::<&[u8; 4], &[libc::c_char; 4]>(b"__a\0") };
     let mut tmp: [libc::c_char; 35] = [0; 35];
     if (strlen(lbl))
         .wrapping_add(::std::mem::size_of::<[libc::c_char; 4]>() as libc::c_ulong)
@@ -10496,7 +9913,8 @@ unsafe extern "C" fn mkStmts(
         .wrapping_sub(1 as libc::c_int as libc::c_ulong)
         .wrapping_add(1 as libc::c_int as libc::c_ulong)
         <= ::std::mem::size_of::<[libc::c_char; 35]>() as libc::c_ulong
-    {} else {
+    {
+    } else {
         __assert_fail(
             b"strlen(lbl) + sizeof(LONGEST_INFIX) - 1 + CHARS_FOR_NUL_TERM_INT - 1 + 1 <= sizeof(tmp)\0"
                 as *const u8 as *const libc::c_char,
@@ -10606,9 +10024,8 @@ unsafe extern "C" fn mkBlock(
     let mut rv: libc::c_int = 0 as libc::c_int;
     codePhase = 1 as libc::c_int;
     if !((*inp).begg_stmt).is_null() {
-        static mut PREFIX: [libc::c_char; 10] = unsafe {
-            *::std::mem::transmute::<&[u8; 10], &[libc::c_char; 10]>(b"_begin_g_\0")
-        };
+        static mut PREFIX: [libc::c_char; 10] =
+            unsafe { *::std::mem::transmute::<&[u8; 10], &[libc::c_char; 10]>(b"_begin_g_\0") };
         let mut label: [libc::c_char; 21] = [0; 21];
         snprintf(
             label.as_mut_ptr(),
@@ -10617,11 +10034,9 @@ unsafe extern "C" fn mkBlock(
             PREFIX.as_ptr(),
             i,
         );
-        symbols[0 as libc::c_int as usize]
-            .type_0 = T_graph as libc::c_int as libc::c_long;
-        tchk[V_this as libc::c_int
-            as usize][1 as libc::c_int
-            as usize] = ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype;
+        symbols[0 as libc::c_int as usize].type_0 = T_graph as libc::c_int as libc::c_long;
+        tchk[V_this as libc::c_int as usize][1 as libc::c_int as usize] =
+            ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype;
         let ref mut fresh40 = (*bp).begg_stmt;
         *fresh40 = compile(
             prog,
@@ -10645,15 +10060,12 @@ unsafe extern "C" fn mkBlock(
         3276175668257526147 => {
             codePhase = 2 as libc::c_int;
             if !((*inp).node_stmts).is_null() {
-                static mut PREFIX_0: [libc::c_char; 4] = unsafe {
-                    *::std::mem::transmute::<&[u8; 4], &[libc::c_char; 4]>(b"_nd\0")
-                };
+                static mut PREFIX_0: [libc::c_char; 4] =
+                    unsafe { *::std::mem::transmute::<&[u8; 4], &[libc::c_char; 4]>(b"_nd\0") };
                 let mut label_0: [libc::c_char; 15] = [0; 15];
-                symbols[0 as libc::c_int as usize]
-                    .type_0 = T_node as libc::c_int as libc::c_long;
-                tchk[V_this as libc::c_int
-                    as usize][1 as libc::c_int
-                    as usize] = ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype;
+                symbols[0 as libc::c_int as usize].type_0 = T_node as libc::c_int as libc::c_long;
+                tchk[V_this as libc::c_int as usize][1 as libc::c_int as usize] =
+                    ((1 as libc::c_int) << 0x4 as libc::c_int) as tctype;
                 (*bp).n_nstmts = (*inp).n_nstmts;
                 snprintf(
                     label_0.as_mut_ptr(),
@@ -10685,18 +10097,13 @@ unsafe extern "C" fn mkBlock(
                     codePhase = 3 as libc::c_int;
                     if !((*inp).edge_stmts).is_null() {
                         static mut PREFIX_1: [libc::c_char; 4] = unsafe {
-                            *::std::mem::transmute::<
-                                &[u8; 4],
-                                &[libc::c_char; 4],
-                            >(b"_eg\0")
+                            *::std::mem::transmute::<&[u8; 4], &[libc::c_char; 4]>(b"_eg\0")
                         };
                         let mut label_1: [libc::c_char; 15] = [0; 15];
-                        symbols[0 as libc::c_int as usize]
-                            .type_0 = T_edge as libc::c_int as libc::c_long;
-                        tchk[V_this as libc::c_int
-                            as usize][1 as libc::c_int
-                            as usize] = ((1 as libc::c_int) << 0x5 as libc::c_int)
-                            as tctype;
+                        symbols[0 as libc::c_int as usize].type_0 =
+                            T_edge as libc::c_int as libc::c_long;
+                        tchk[V_this as libc::c_int as usize][1 as libc::c_int as usize] =
+                            ((1 as libc::c_int) << 0x5 as libc::c_int) as tctype;
                         (*bp).n_estmts = (*inp).n_estmts;
                         snprintf(
                             label_1.as_mut_ptr(),
@@ -10760,17 +10167,16 @@ pub unsafe extern "C" fn compileProg(
     if (8 as libc::c_int as libc::c_ulong)
         .wrapping_mul(::std::mem::size_of::<tctype>() as libc::c_ulong)
         >= ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_ulong
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"BITS_PER_BYTE * sizeof(tctype) >= (1 << TBITS)\0" as *const u8
-                as *const libc::c_char,
+            b"BITS_PER_BYTE * sizeof(tctype) >= (1 << TBITS)\0" as *const u8 as *const libc::c_char,
             b"compile.c\0" as *const u8 as *const libc::c_char,
             2473 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 51],
-                &[libc::c_char; 51],
-            >(b"comp_prog *compileProg(parse_prog *, Gpr_t *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 51], &[libc::c_char; 51]>(
+                b"comp_prog *compileProg(parse_prog *, Gpr_t *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     p = if 0 as libc::c_int != 0 {
@@ -10872,12 +10278,11 @@ pub unsafe extern "C" fn compileProg(
                                 (*p).flags = useflags;
                                 codePhase = 4 as libc::c_int;
                                 if !((*inp).endg_stmt).is_null() || !endg_sfx.is_null() {
-                                    symbols[0 as libc::c_int as usize]
-                                        .type_0 = T_graph as libc::c_int as libc::c_long;
-                                    tchk[V_this as libc::c_int
-                                        as usize][1 as libc::c_int
-                                        as usize] = ((1 as libc::c_int) << 0x6 as libc::c_int)
-                                        as tctype;
+                                    symbols[0 as libc::c_int as usize].type_0 =
+                                        T_graph as libc::c_int as libc::c_long;
+                                    tchk[V_this as libc::c_int as usize]
+                                        [1 as libc::c_int as usize] =
+                                        ((1 as libc::c_int) << 0x6 as libc::c_int) as tctype;
                                     let ref mut fresh50 = (*p).endg_stmt;
                                     *fresh50 = compile(
                                         (*p).prog,
@@ -10901,8 +10306,8 @@ pub unsafe extern "C" fn compileProg(
                                     _ => {
                                         codePhase = 5 as libc::c_int;
                                         if !((*inp).end_stmt).is_null() {
-                                            symbols[0 as libc::c_int as usize]
-                                                .type_0 = T_obj as libc::c_int as libc::c_long;
+                                            symbols[0 as libc::c_int as usize].type_0 =
+                                                T_obj as libc::c_int as libc::c_long;
                                             let ref mut fresh51 = (*p).end_stmt;
                                             *fresh51 = compile(
                                                 (*p).prog,
@@ -11001,10 +10406,7 @@ pub unsafe extern "C" fn readG(mut fp: *mut Sfio_t) -> *mut Agraph_t {
     return g;
 }
 #[no_mangle]
-pub unsafe extern "C" fn openG(
-    mut name: *mut libc::c_char,
-    mut desc: Agdesc_t,
-) -> *mut Agraph_t {
+pub unsafe extern "C" fn openG(mut name: *mut libc::c_char, mut desc: Agdesc_t) -> *mut Agraph_t {
     let mut g: *mut Agraph_t = 0 as *mut Agraph_t;
     g = agopen(name, desc, &mut gprDisc);
     if !g.is_null() {
@@ -11030,7 +10432,7 @@ pub unsafe extern "C" fn openSubg(
             b"userval\0" as *const u8 as *const libc::c_char,
             0 as libc::c_int,
         ))
-            .is_null()
+        .is_null()
     {
         agbindrec(
             sg as *mut libc::c_void,
@@ -11054,7 +10456,7 @@ pub unsafe extern "C" fn openNode(
             b"userval\0" as *const u8 as *const libc::c_char,
             0 as libc::c_int,
         ))
-            .is_null()
+        .is_null()
     {
         agbindrec(
             np as *mut libc::c_void,
@@ -11088,10 +10490,9 @@ pub unsafe extern "C" fn openEdge(
             g as *mut libc::c_void,
             root as *mut libc::c_void,
             b"openEdge\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            b"subgraph and nodes\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            b"subgraph and nodes\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         ))
-            .is_null()
+        .is_null()
         {
             return 0 as *mut Agedge_t;
         }
@@ -11105,7 +10506,7 @@ pub unsafe extern "C" fn openEdge(
             b"userval\0" as *const u8 as *const libc::c_char,
             0 as libc::c_int,
         ))
-            .is_null()
+        .is_null()
     {
         agbindrec(
             ep as *mut libc::c_void,

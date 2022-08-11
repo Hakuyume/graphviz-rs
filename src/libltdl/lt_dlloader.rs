@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -9,17 +17,17 @@ extern "C" {
         __function: *const libc::c_char,
     ) -> !;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    static mut lt__alloc_die: Option::<unsafe extern "C" fn() -> ()>;
+    static mut lt__alloc_die: Option<unsafe extern "C" fn() -> ()>;
     fn lt__slist_concat(head: *mut SList, tail: *mut SList) -> *mut SList;
     fn lt__slist_cons(item: *mut SList, slist: *mut SList) -> *mut SList;
     fn lt__slist_remove(
         phead: *mut *mut SList,
-        find: Option::<SListCallback>,
+        find: Option<SListCallback>,
         matchdata: *mut libc::c_void,
     ) -> *mut SList;
     fn lt__slist_find(
         slist: *mut SList,
-        find: Option::<SListCallback>,
+        find: Option<SListCallback>,
         matchdata: *mut libc::c_void,
     ) -> *mut libc::c_void;
     fn lt__slist_box(userdata: *const libc::c_void) -> *mut SList;
@@ -31,7 +39,7 @@ extern "C" {
     fn lt_dlhandle_iterate(iface: lt_dlinterface_id, place: lt_dlhandle) -> lt_dlhandle;
     fn lt_dlinterface_register(
         id_string: *const libc::c_char,
-        iface: Option::<lt_dlhandle_interface>,
+        iface: Option<lt_dlhandle_interface>,
     ) -> lt_dlinterface_id;
 }
 #[derive(Copy, Clone)]
@@ -41,10 +49,7 @@ pub struct slist {
     pub userdata: *const libc::c_void,
 }
 pub type SList = slist;
-pub type SListCallback = unsafe extern "C" fn(
-    *mut SList,
-    *mut libc::c_void,
-) -> *mut libc::c_void;
+pub type SListCallback = unsafe extern "C" fn(*mut SList, *mut libc::c_void) -> *mut libc::c_void;
 pub type C2RustUnnamed = libc::c_uint;
 pub const LT_ERROR_MAX: C2RustUnnamed = 20;
 pub const LT_ERROR_CONFLICTING_FLAGS: C2RustUnnamed = 19;
@@ -83,17 +88,11 @@ pub struct lt__advise {
     pub c2rust_padding: [u8; 3],
 }
 pub type lt_dladvise = *mut lt__advise;
-pub type lt_module_open = unsafe extern "C" fn(
-    lt_user_data,
-    *const libc::c_char,
-    lt_dladvise,
-) -> lt_module;
+pub type lt_module_open =
+    unsafe extern "C" fn(lt_user_data, *const libc::c_char, lt_dladvise) -> lt_module;
 pub type lt_module_close = unsafe extern "C" fn(lt_user_data, lt_module) -> libc::c_int;
-pub type lt_find_sym = unsafe extern "C" fn(
-    lt_user_data,
-    lt_module,
-    *const libc::c_char,
-) -> *mut libc::c_void;
+pub type lt_find_sym =
+    unsafe extern "C" fn(lt_user_data, lt_module, *const libc::c_char) -> *mut libc::c_void;
 pub type lt_dlloader_init = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_exit = unsafe extern "C" fn(lt_user_data) -> libc::c_int;
 pub type lt_dlloader_priority = libc::c_uint;
@@ -104,11 +103,11 @@ pub const LT_DLLOADER_PREPEND: lt_dlloader_priority = 0;
 pub struct lt_dlvtable {
     pub name: *const libc::c_char,
     pub sym_prefix: *const libc::c_char,
-    pub module_open: Option::<lt_module_open>,
-    pub module_close: Option::<lt_module_close>,
-    pub find_sym: Option::<lt_find_sym>,
-    pub dlloader_init: Option::<lt_dlloader_init>,
-    pub dlloader_exit: Option::<lt_dlloader_exit>,
+    pub module_open: Option<lt_module_open>,
+    pub module_close: Option<lt_module_close>,
+    pub find_sym: Option<lt_find_sym>,
+    pub dlloader_init: Option<lt_dlloader_init>,
+    pub dlloader_exit: Option<lt_dlloader_exit>,
     pub dlloader_data: lt_user_data,
     pub priority: lt_dlloader_priority,
 }
@@ -146,10 +145,8 @@ pub struct lt_dlinfo {
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 3],
 }
-pub type lt_dlhandle_interface = unsafe extern "C" fn(
-    lt_dlhandle,
-    *const libc::c_char,
-) -> libc::c_int;
+pub type lt_dlhandle_interface =
+    unsafe extern "C" fn(lt_dlhandle, *const libc::c_char) -> libc::c_int;
 static mut loaders: *mut SList = 0 as *const SList as *mut SList;
 unsafe extern "C" fn loader_callback(
     mut item: *mut SList,
@@ -157,16 +154,16 @@ unsafe extern "C" fn loader_callback(
 ) -> *mut libc::c_void {
     let mut vtable: *const lt_dlvtable = (*item).userdata as *const lt_dlvtable;
     let mut name: *const libc::c_char = userdata as *const libc::c_char;
-    if !vtable.is_null() {} else {
+    if !vtable.is_null() {
+    } else {
         __assert_fail(
             b"vtable\0" as *const u8 as *const libc::c_char,
             b"lt_dlloader.c\0" as *const u8 as *const libc::c_char,
             54 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"void *loader_callback(SList *, void *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"void *loader_callback(SList *, void *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return if strcmp((*vtable).name, name) == 0 as libc::c_int {
@@ -178,10 +175,11 @@ unsafe extern "C" fn loader_callback(
 #[no_mangle]
 pub unsafe extern "C" fn lt_dlloader_add(mut vtable: *const lt_dlvtable) -> libc::c_int {
     let mut item: *mut SList = 0 as *mut SList;
-    if vtable.is_null() || ((*vtable).module_open).is_none()
-        || ((*vtable).module_close).is_none() || ((*vtable).find_sym).is_none()
-        || (*vtable).priority as libc::c_uint
-            != LT_DLLOADER_PREPEND as libc::c_int as libc::c_uint
+    if vtable.is_null()
+        || ((*vtable).module_open).is_none()
+        || ((*vtable).module_close).is_none()
+        || ((*vtable).find_sym).is_none()
+        || (*vtable).priority as libc::c_uint != LT_DLLOADER_PREPEND as libc::c_int as libc::c_uint
             && (*vtable).priority as libc::c_uint
                 != LT_DLLOADER_APPEND as libc::c_int as libc::c_uint
     {
@@ -194,24 +192,19 @@ pub unsafe extern "C" fn lt_dlloader_add(mut vtable: *const lt_dlvtable) -> libc
             .expect("non-null function pointer")();
         return 1 as libc::c_int;
     }
-    if (*vtable).priority as libc::c_uint
-        == LT_DLLOADER_PREPEND as libc::c_int as libc::c_uint
-    {
+    if (*vtable).priority as libc::c_uint == LT_DLLOADER_PREPEND as libc::c_int as libc::c_uint {
         loaders = lt__slist_cons(item, loaders);
     } else {
-        if (*vtable).priority as libc::c_uint
-            == LT_DLLOADER_APPEND as libc::c_int as libc::c_uint
-        {} else {
+        if (*vtable).priority as libc::c_uint == LT_DLLOADER_APPEND as libc::c_int as libc::c_uint {
+        } else {
             __assert_fail(
-                b"vtable->priority == LT_DLLOADER_APPEND\0" as *const u8
-                    as *const libc::c_char,
+                b"vtable->priority == LT_DLLOADER_APPEND\0" as *const u8 as *const libc::c_char,
                 b"lt_dlloader.c\0" as *const u8 as *const libc::c_char,
                 94 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 41],
-                    &[libc::c_char; 41],
-                >(b"int lt_dlloader_add(const lt_dlvtable *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                    b"int lt_dlloader_add(const lt_dlvtable *)\0",
+                ))
+                .as_ptr(),
             );
         }
         loaders = lt__slist_concat(loaders, item);
@@ -221,7 +214,11 @@ pub unsafe extern "C" fn lt_dlloader_add(mut vtable: *const lt_dlvtable) -> libc
 #[no_mangle]
 pub unsafe extern "C" fn lt_dlloader_next(mut loader: lt_dlloader) -> lt_dlloader {
     let mut item: *mut SList = loader as *mut SList;
-    return (if !item.is_null() { (*item).next } else { loaders }) as lt_dlloader;
+    return (if !item.is_null() {
+        (*item).next
+    } else {
+        loaders
+    }) as lt_dlloader;
 }
 #[no_mangle]
 pub unsafe extern "C" fn lt_dlloader_get(mut loader: lt_dlloader) -> *const lt_dlvtable {
@@ -232,9 +229,7 @@ pub unsafe extern "C" fn lt_dlloader_get(mut loader: lt_dlloader) -> *const lt_d
     }) as *const lt_dlvtable;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt_dlloader_remove(
-    mut name: *const libc::c_char,
-) -> *mut lt_dlvtable {
+pub unsafe extern "C" fn lt_dlloader_remove(mut name: *const libc::c_char) -> *mut lt_dlvtable {
     let mut vtable: *const lt_dlvtable = lt_dlloader_find(name);
     static mut id_string: [libc::c_char; 19] = unsafe {
         *::std::mem::transmute::<&[u8; 19], &[libc::c_char; 19]>(b"lt_dlloader_remove\0")
@@ -276,35 +271,23 @@ pub unsafe extern "C" fn lt_dlloader_remove(
             return 0 as *mut lt_dlvtable;
         }
     }
-    return lt__slist_unbox(
-        lt__slist_remove(
-            &mut loaders,
-            Some(
-                loader_callback
-                    as unsafe extern "C" fn(
-                        *mut SList,
-                        *mut libc::c_void,
-                    ) -> *mut libc::c_void,
-            ),
-            name as *mut libc::c_void,
+    return lt__slist_unbox(lt__slist_remove(
+        &mut loaders,
+        Some(
+            loader_callback
+                as unsafe extern "C" fn(*mut SList, *mut libc::c_void) -> *mut libc::c_void,
         ),
-    ) as *mut lt_dlvtable;
+        name as *mut libc::c_void,
+    )) as *mut lt_dlvtable;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lt_dlloader_find(
-    mut name: *const libc::c_char,
-) -> *const lt_dlvtable {
-    return lt_dlloader_get(
-        lt__slist_find(
-            loaders,
-            Some(
-                loader_callback
-                    as unsafe extern "C" fn(
-                        *mut SList,
-                        *mut libc::c_void,
-                    ) -> *mut libc::c_void,
-            ),
-            name as *mut libc::c_void,
+pub unsafe extern "C" fn lt_dlloader_find(mut name: *const libc::c_char) -> *const lt_dlvtable {
+    return lt_dlloader_get(lt__slist_find(
+        loaders,
+        Some(
+            loader_callback
+                as unsafe extern "C" fn(*mut SList, *mut libc::c_void) -> *mut libc::c_void,
         ),
-    );
+        name as *mut libc::c_void,
+    ));
 }

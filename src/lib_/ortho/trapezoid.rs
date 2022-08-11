@@ -1,15 +1,19 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
     pub type _IO_wide_data;
     pub type _IO_codecvt;
     pub type _IO_marker;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn __assert_fail(
         __assertion: *const libc::c_char,
         __file: *const libc::c_char,
@@ -125,10 +129,7 @@ unsafe extern "C" fn newnode() -> libc::c_int {
             b"0\0" as *const u8 as *const libc::c_char,
             b"trapezoid.c\0" as *const u8 as *const libc::c_char,
             71 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 18],
-                &[libc::c_char; 18],
-            >(b"int newnode(void)\0"))
+            (*::std::mem::transmute::<&[u8; 18], &[libc::c_char; 18]>(b"int newnode(void)\0"))
                 .as_ptr(),
         );
         return -(1 as libc::c_int);
@@ -145,28 +146,20 @@ unsafe extern "C" fn newtrap(mut tr: *mut trap_t) -> libc::c_int {
     } else {
         fprintf(
             stderr,
-            b"newtrap: Trapezoid-table overflow %d\n\0" as *const u8
-                as *const libc::c_char,
+            b"newtrap: Trapezoid-table overflow %d\n\0" as *const u8 as *const libc::c_char,
             tr_idx,
         );
         __assert_fail(
             b"0\0" as *const u8 as *const libc::c_char,
             b"trapezoid.c\0" as *const u8 as *const libc::c_char,
             87 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 22],
-                &[libc::c_char; 22],
-            >(b"int newtrap(trap_t *)\0"))
+            (*::std::mem::transmute::<&[u8; 22], &[libc::c_char; 22]>(b"int newtrap(trap_t *)\0"))
                 .as_ptr(),
         );
         return -(1 as libc::c_int);
     };
 }
-unsafe extern "C" fn _max(
-    mut yval: *mut pointf,
-    mut v0: *mut pointf,
-    mut v1: *mut pointf,
-) {
+unsafe extern "C" fn _max(mut yval: *mut pointf, mut v0: *mut pointf, mut v1: *mut pointf) {
     if (*v0).y > (*v1).y + 1.0e-7f64 {
         *yval = *v0;
     } else if fabs((*v0).y - (*v1).y) <= 1.0e-7f64 {
@@ -179,11 +172,7 @@ unsafe extern "C" fn _max(
         *yval = *v1;
     };
 }
-unsafe extern "C" fn _min(
-    mut yval: *mut pointf,
-    mut v0: *mut pointf,
-    mut v1: *mut pointf,
-) {
+unsafe extern "C" fn _min(mut yval: *mut pointf, mut v0: *mut pointf, mut v1: *mut pointf) {
     if (*v0).y < (*v1).y - 1.0e-7f64 {
         *yval = *v0;
     } else if fabs((*v0).y - (*v1).y) <= 1.0e-7f64 {
@@ -196,16 +185,13 @@ unsafe extern "C" fn _min(
         *yval = *v1;
     };
 }
-unsafe extern "C" fn _greater_than_equal_to(
-    mut v0: *mut pointf,
-    mut v1: *mut pointf,
-) -> bool {
+unsafe extern "C" fn _greater_than_equal_to(mut v0: *mut pointf, mut v1: *mut pointf) -> bool {
     if (*v0).y > (*v1).y + 1.0e-7f64 {
-        return 0 as libc::c_int == 0
+        return 0 as libc::c_int == 0;
     } else if (*v0).y < (*v1).y - 1.0e-7f64 {
-        return 0 as libc::c_int != 0
+        return 0 as libc::c_int != 0;
     } else {
-        return (*v0).x >= (*v1).x
+        return (*v0).x >= (*v1).x;
     };
 }
 unsafe extern "C" fn _less_than(mut v0: *mut pointf, mut v1: *mut pointf) -> bool {
@@ -232,7 +218,11 @@ unsafe extern "C" fn init_query_structure(
     let mut s: *mut segment_t = &mut *seg.offset(segnum as isize) as *mut segment_t;
     i1 = newnode();
     (*qs.offset(i1 as isize)).nodetype = 2 as libc::c_int;
-    _max(&mut (*qs.offset(i1 as isize)).yval, &mut (*s).v0, &mut (*s).v1);
+    _max(
+        &mut (*qs.offset(i1 as isize)).yval,
+        &mut (*s).v0,
+        &mut (*s).v1,
+    );
     root = i1;
     i2 = newnode();
     (*qs.offset(i1 as isize)).right = i2;
@@ -241,7 +231,11 @@ unsafe extern "C" fn init_query_structure(
     i3 = newnode();
     (*qs.offset(i1 as isize)).left = i3;
     (*qs.offset(i3 as isize)).nodetype = 2 as libc::c_int;
-    _min(&mut (*qs.offset(i3 as isize)).yval, &mut (*s).v0, &mut (*s).v1);
+    _min(
+        &mut (*qs.offset(i3 as isize)).yval,
+        &mut (*s).v0,
+        &mut (*s).v1,
+    );
     (*qs.offset(i3 as isize)).parent = i1;
     i4 = newnode();
     (*qs.offset(i3 as isize)).left = i4;
@@ -274,19 +268,11 @@ unsafe extern "C" fn init_query_structure(
     let ref mut fresh5 = (*tr.offset(t2 as isize)).lo;
     *fresh5 = *fresh4;
     (*tr.offset(t1 as isize)).lo = *fresh5;
-    (*tr.offset(t4 as isize))
-        .hi
-        .y = ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
-    (*tr.offset(t4 as isize))
-        .hi
-        .x = ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
-    (*tr.offset(t3 as isize))
-        .lo
-        .y = -(1 as libc::c_int) as libc::c_double
+    (*tr.offset(t4 as isize)).hi.y = ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
+    (*tr.offset(t4 as isize)).hi.x = ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
+    (*tr.offset(t3 as isize)).lo.y = -(1 as libc::c_int) as libc::c_double
         * ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
-    (*tr.offset(t3 as isize))
-        .lo
-        .x = -(1 as libc::c_int) as libc::c_double
+    (*tr.offset(t3 as isize)).lo.x = -(1 as libc::c_int) as libc::c_double
         * ((1 as libc::c_int) << 30 as libc::c_int) as libc::c_double;
     let ref mut fresh6 = (*tr.offset(t2 as isize)).lseg;
     *fresh6 = segnum;
@@ -375,9 +361,9 @@ unsafe extern "C" fn inserted(
     mut whichpt: libc::c_int,
 ) -> bool {
     if whichpt == 1 as libc::c_int {
-        return (*seg.offset((*seg.offset(segnum as isize)).prev as isize)).is_inserted
+        return (*seg.offset((*seg.offset(segnum as isize)).prev as isize)).is_inserted;
     } else {
-        return (*seg.offset((*seg.offset(segnum as isize)).next as isize)).is_inserted
+        return (*seg.offset((*seg.offset(segnum as isize)).next as isize)).is_inserted;
     };
 }
 unsafe extern "C" fn locate_endpoint(
@@ -399,10 +385,10 @@ unsafe extern "C" fn locate_endpoint(
                 ((*v).x > (*rptr).yval.x) as libc::c_int
             } != 0
             {
-                return locate_endpoint(v, vo, (*rptr).right, seg, qs)
+                return locate_endpoint(v, vo, (*rptr).right, seg, qs);
             } else if fabs((*v).y - (*rptr).yval.y) <= 1.0e-7f64
-                    && fabs((*v).x - (*rptr).yval.x) <= 1.0e-7f64
-                {
+                && fabs((*v).x - (*rptr).yval.x) <= 1.0e-7f64
+            {
                 if if (*vo).y > (*rptr).yval.y + 1.0e-7f64 {
                     1 as libc::c_int
                 } else if (*vo).y < (*rptr).yval.y - 1.0e-7f64 {
@@ -411,57 +397,50 @@ unsafe extern "C" fn locate_endpoint(
                     ((*vo).x > (*rptr).yval.x) as libc::c_int
                 } != 0
                 {
-                    return locate_endpoint(v, vo, (*rptr).right, seg, qs)
+                    return locate_endpoint(v, vo, (*rptr).right, seg, qs);
                 } else {
-                    return locate_endpoint(v, vo, (*rptr).left, seg, qs)
+                    return locate_endpoint(v, vo, (*rptr).left, seg, qs);
                 }
             } else {
-                return locate_endpoint(v, vo, (*rptr).left, seg, qs)
+                return locate_endpoint(v, vo, (*rptr).left, seg, qs);
             }
         }
         1 => {
             if fabs((*v).y - (*seg.offset((*rptr).segnum as isize)).v0.y) <= 1.0e-7f64
-                && fabs((*v).x - (*seg.offset((*rptr).segnum as isize)).v0.x)
-                    <= 1.0e-7f64
-                || fabs((*v).y - (*seg.offset((*rptr).segnum as isize)).v1.y)
-                    <= 1.0e-7f64
-                    && fabs((*v).x - (*seg.offset((*rptr).segnum as isize)).v1.x)
-                        <= 1.0e-7f64
+                && fabs((*v).x - (*seg.offset((*rptr).segnum as isize)).v0.x) <= 1.0e-7f64
+                || fabs((*v).y - (*seg.offset((*rptr).segnum as isize)).v1.y) <= 1.0e-7f64
+                    && fabs((*v).x - (*seg.offset((*rptr).segnum as isize)).v1.x) <= 1.0e-7f64
             {
                 if fabs((*v).y - (*vo).y) <= 1.0e-7f64 {
                     if (*vo).x < (*v).x {
-                        return locate_endpoint(v, vo, (*rptr).left, seg, qs)
+                        return locate_endpoint(v, vo, (*rptr).left, seg, qs);
                     } else {
-                        return locate_endpoint(v, vo, (*rptr).right, seg, qs)
+                        return locate_endpoint(v, vo, (*rptr).right, seg, qs);
                     }
                 } else if is_left_of((*rptr).segnum, seg, vo) {
-                    return locate_endpoint(v, vo, (*rptr).left, seg, qs)
+                    return locate_endpoint(v, vo, (*rptr).left, seg, qs);
                 } else {
-                    return locate_endpoint(v, vo, (*rptr).right, seg, qs)
+                    return locate_endpoint(v, vo, (*rptr).right, seg, qs);
                 }
             } else if is_left_of((*rptr).segnum, seg, v) {
-                return locate_endpoint(v, vo, (*rptr).left, seg, qs)
+                return locate_endpoint(v, vo, (*rptr).left, seg, qs);
             } else {
-                return locate_endpoint(v, vo, (*rptr).right, seg, qs)
+                return locate_endpoint(v, vo, (*rptr).right, seg, qs);
             }
         }
         _ => {
             fprintf(
                 stderr,
-                b"unexpected case in locate_endpoint\n\0" as *const u8
-                    as *const libc::c_char,
+                b"unexpected case in locate_endpoint\n\0" as *const u8 as *const libc::c_char,
             );
             __assert_fail(
                 b"0\0" as *const u8 as *const libc::c_char,
                 b"trapezoid.c\0" as *const u8 as *const libc::c_char,
                 336 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 69],
-                    &[libc::c_char; 69],
-                >(
+                (*::std::mem::transmute::<&[u8; 69], &[libc::c_char; 69]>(
                     b"int locate_endpoint(pointf *, pointf *, int, segment_t *, qnode_t *)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
     }
@@ -481,38 +460,31 @@ unsafe extern "C" fn merge_trapezoids(
         && _greater_than_equal_to(
             &mut (*tr.offset(t as isize)).lo,
             &mut (*tr.offset(tlast as isize)).lo,
-        ) as libc::c_int != 0
+        ) as libc::c_int
+            != 0
     {
         let mut tnext: libc::c_int = 0;
         let mut ptnext: libc::c_int = 0;
         let mut cond: bool = false;
         if side == 1 as libc::c_int {
             tnext = (*tr.offset(t as isize)).d0;
-            cond = tnext > 0 as libc::c_int
-                && (*tr.offset(tnext as isize)).rseg == segnum
-                || {
-                    tnext = (*tr.offset(t as isize)).d1;
-                    tnext > 0 as libc::c_int
-                        && (*tr.offset(tnext as isize)).rseg == segnum
-                };
+            cond = tnext > 0 as libc::c_int && (*tr.offset(tnext as isize)).rseg == segnum || {
+                tnext = (*tr.offset(t as isize)).d1;
+                tnext > 0 as libc::c_int && (*tr.offset(tnext as isize)).rseg == segnum
+            };
         } else {
             tnext = (*tr.offset(t as isize)).d0;
-            cond = tnext > 0 as libc::c_int
-                && (*tr.offset(tnext as isize)).lseg == segnum
-                || {
-                    tnext = (*tr.offset(t as isize)).d1;
-                    tnext > 0 as libc::c_int
-                        && (*tr.offset(tnext as isize)).lseg == segnum
-                };
+            cond = tnext > 0 as libc::c_int && (*tr.offset(tnext as isize)).lseg == segnum || {
+                tnext = (*tr.offset(t as isize)).d1;
+                tnext > 0 as libc::c_int && (*tr.offset(tnext as isize)).lseg == segnum
+            };
         }
         if cond {
             if (*tr.offset(t as isize)).lseg == (*tr.offset(tnext as isize)).lseg
                 && (*tr.offset(t as isize)).rseg == (*tr.offset(tnext as isize)).rseg
             {
                 ptnext = (*qs.offset((*tr.offset(tnext as isize)).sink as isize)).parent;
-                if (*qs.offset(ptnext as isize)).left
-                    == (*tr.offset(tnext as isize)).sink
-                {
+                if (*qs.offset(ptnext as isize)).left == (*tr.offset(tnext as isize)).sink {
                     (*qs.offset(ptnext as isize)).left = (*tr.offset(t as isize)).sink;
                 } else {
                     (*qs.offset(ptnext as isize)).right = (*tr.offset(t as isize)).sink;
@@ -522,9 +494,7 @@ unsafe extern "C" fn merge_trapezoids(
                 if *fresh13 > 0 as libc::c_int {
                     if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 == tnext {
                         (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 = t;
-                    } else if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1
-                            == tnext
-                        {
+                    } else if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 == tnext {
                         (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 = t;
                     }
                 }
@@ -533,9 +503,7 @@ unsafe extern "C" fn merge_trapezoids(
                 if *fresh14 > 0 as libc::c_int {
                     if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 == tnext {
                         (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 = t;
-                    } else if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1
-                            == tnext
-                        {
+                    } else if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 == tnext {
                         (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 = t;
                     }
                 }
@@ -604,7 +572,11 @@ unsafe extern "C" fn add_segment(
     if !inserted(
         segnum,
         seg,
-        if is_swapped != 0 { 2 as libc::c_int } else { 1 as libc::c_int },
+        if is_swapped != 0 {
+            2 as libc::c_int
+        } else {
+            1 as libc::c_int
+        },
     ) {
         let mut tmp_d: libc::c_int = 0;
         tu = locate_endpoint(&mut s.v0, &mut s.v1, s.root0, seg, qs);
@@ -660,7 +632,11 @@ unsafe extern "C" fn add_segment(
     if !inserted(
         segnum,
         seg,
-        if is_swapped != 0 { 1 as libc::c_int } else { 2 as libc::c_int },
+        if is_swapped != 0 {
+            1 as libc::c_int
+        } else {
+            2 as libc::c_int
+        },
     ) {
         let mut tmp_d_0: libc::c_int = 0;
         tu = locate_endpoint(&mut s.v1, &mut s.v0, s.root1, seg, qs);
@@ -719,7 +695,8 @@ unsafe extern "C" fn add_segment(
         && _greater_than_equal_to(
             &mut (*tr.offset(t as isize)).lo,
             &mut (*tr.offset(tlast as isize)).lo,
-        ) as libc::c_int != 0
+        ) as libc::c_int
+            != 0
     {
         let mut t_sav: libc::c_int = 0;
         let mut tn_sav: libc::c_int = 0;
@@ -741,10 +718,8 @@ unsafe extern "C" fn add_segment(
         if t == tfirst {
             tfirstr = tn;
         }
-        if fabs((*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y)
-            <= 1.0e-7f64
-            && fabs((*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x)
-                <= 1.0e-7f64
+        if fabs((*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y) <= 1.0e-7f64
+            && fabs((*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x) <= 1.0e-7f64
         {
             tlastr = tn;
         }
@@ -772,8 +747,7 @@ unsafe extern "C" fn add_segment(
                         if (*tr.offset(t as isize)).uside == 1 as libc::c_int {
                             (*tr.offset(tn as isize)).u0 = (*tr.offset(t as isize)).u1;
                             (*tr.offset(t as isize)).u1 = -(1 as libc::c_int);
-                            (*tr.offset(tn as isize))
-                                .u1 = (*tr.offset(t as isize)).usave;
+                            (*tr.offset(tn as isize)).u1 = (*tr.offset(t as isize)).usave;
                             (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d0 = t;
                             (*tr.offset((*tr.offset(tn as isize)).u0 as isize)).d0 = tn;
                             (*tr.offset((*tr.offset(tn as isize)).u1 as isize)).d0 = tn;
@@ -801,18 +775,12 @@ unsafe extern "C" fn add_segment(
                     let mut td0: libc::c_int = 0;
                     let mut td1: libc::c_int = 0;
                     td0 = (*tr.offset(tmp_u as isize)).d0;
-                    if td0 > 0 as libc::c_int
-                        && {
-                            td1 = (*tr.offset(tmp_u as isize)).d1;
-                            td1 > 0 as libc::c_int
-                        }
-                    {
+                    if td0 > 0 as libc::c_int && {
+                        td1 = (*tr.offset(tmp_u as isize)).d1;
+                        td1 > 0 as libc::c_int
+                    } {
                         if (*tr.offset(td0 as isize)).rseg > 0 as libc::c_int
-                            && !is_left_of(
-                                (*tr.offset(td0 as isize)).rseg,
-                                seg,
-                                &mut s.v1,
-                            )
+                            && !is_left_of((*tr.offset(td0 as isize)).rseg, seg, &mut s.v1)
                         {
                             let ref mut fresh21 = (*tr.offset(tn as isize)).u1;
                             *fresh21 = -(1 as libc::c_int);
@@ -833,12 +801,11 @@ unsafe extern "C" fn add_segment(
                         (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d1 = tn;
                     }
                 }
-                if fabs(
-                    (*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y,
-                ) <= 1.0e-7f64
-                    && fabs(
-                        (*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x,
-                    ) <= 1.0e-7f64 && tribot != 0
+                if fabs((*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y)
+                    <= 1.0e-7f64
+                    && fabs((*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x)
+                        <= 1.0e-7f64
+                    && tribot != 0
                 {
                     if is_swapped != 0 {
                         tmptriseg = (*seg.offset(segnum as isize)).prev;
@@ -859,23 +826,19 @@ unsafe extern "C" fn add_segment(
                         (*tr.offset(t as isize)).d0 = *fresh26;
                     }
                 } else {
-                    if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0
-                        > 0 as libc::c_int
-                        && (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1
-                            > 0 as libc::c_int
+                    if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 > 0 as libc::c_int
+                        && (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 > 0 as libc::c_int
                     {
                         if (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 == t {
-                            (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .usave = (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .u1;
-                            (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .uside = 1 as libc::c_int;
+                            (*tr.offset((*tr.offset(t as isize)).d0 as isize)).usave =
+                                (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1;
+                            (*tr.offset((*tr.offset(t as isize)).d0 as isize)).uside =
+                                1 as libc::c_int;
                         } else {
-                            (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .usave = (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .u0;
-                            (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                                .uside = 2 as libc::c_int;
+                            (*tr.offset((*tr.offset(t as isize)).d0 as isize)).usave =
+                                (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0;
+                            (*tr.offset((*tr.offset(t as isize)).d0 as isize)).uside =
+                                2 as libc::c_int;
                         }
                     }
                     (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 = t;
@@ -883,8 +846,8 @@ unsafe extern "C" fn add_segment(
                 }
                 t = (*tr.offset(t as isize)).d0;
             } else if (*tr.offset(t as isize)).d0 <= 0 as libc::c_int
-                    && (*tr.offset(t as isize)).d1 > 0 as libc::c_int
-                {
+                && (*tr.offset(t as isize)).d1 > 0 as libc::c_int
+            {
                 if (*tr.offset(t as isize)).u0 > 0 as libc::c_int
                     && (*tr.offset(t as isize)).u1 > 0 as libc::c_int
                 {
@@ -892,8 +855,7 @@ unsafe extern "C" fn add_segment(
                         if (*tr.offset(t as isize)).uside == 1 as libc::c_int {
                             (*tr.offset(tn as isize)).u0 = (*tr.offset(t as isize)).u1;
                             (*tr.offset(t as isize)).u1 = -(1 as libc::c_int);
-                            (*tr.offset(tn as isize))
-                                .u1 = (*tr.offset(t as isize)).usave;
+                            (*tr.offset(tn as isize)).u1 = (*tr.offset(t as isize)).usave;
                             (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d0 = t;
                             (*tr.offset((*tr.offset(tn as isize)).u0 as isize)).d0 = tn;
                             (*tr.offset((*tr.offset(tn as isize)).u1 as isize)).d0 = tn;
@@ -921,18 +883,12 @@ unsafe extern "C" fn add_segment(
                     let mut td0_0: libc::c_int = 0;
                     let mut td1_0: libc::c_int = 0;
                     td0_0 = (*tr.offset(tmp_u_0 as isize)).d0;
-                    if td0_0 > 0 as libc::c_int
-                        && {
-                            td1_0 = (*tr.offset(tmp_u_0 as isize)).d1;
-                            td1_0 > 0 as libc::c_int
-                        }
-                    {
+                    if td0_0 > 0 as libc::c_int && {
+                        td1_0 = (*tr.offset(tmp_u_0 as isize)).d1;
+                        td1_0 > 0 as libc::c_int
+                    } {
                         if (*tr.offset(td0_0 as isize)).rseg > 0 as libc::c_int
-                            && !is_left_of(
-                                (*tr.offset(td0_0 as isize)).rseg,
-                                seg,
-                                &mut s.v1,
-                            )
+                            && !is_left_of((*tr.offset(td0_0 as isize)).rseg, seg, &mut s.v1)
                         {
                             let ref mut fresh29 = (*tr.offset(tn as isize)).u1;
                             *fresh29 = -(1 as libc::c_int);
@@ -953,12 +909,11 @@ unsafe extern "C" fn add_segment(
                         (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d1 = tn;
                     }
                 }
-                if fabs(
-                    (*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y,
-                ) <= 1.0e-7f64
-                    && fabs(
-                        (*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x,
-                    ) <= 1.0e-7f64 && tribot != 0
+                if fabs((*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y)
+                    <= 1.0e-7f64
+                    && fabs((*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x)
+                        <= 1.0e-7f64
+                    && tribot != 0
                 {
                     if is_swapped != 0 {
                         tmptriseg = (*seg.offset(segnum as isize)).prev;
@@ -979,23 +934,19 @@ unsafe extern "C" fn add_segment(
                         (*tr.offset(t as isize)).d0 = *fresh34;
                     }
                 } else {
-                    if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0
-                        > 0 as libc::c_int
-                        && (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1
-                            > 0 as libc::c_int
+                    if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 > 0 as libc::c_int
+                        && (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 > 0 as libc::c_int
                     {
                         if (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 == t {
-                            (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .usave = (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .u1;
-                            (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .uside = 1 as libc::c_int;
+                            (*tr.offset((*tr.offset(t as isize)).d1 as isize)).usave =
+                                (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1;
+                            (*tr.offset((*tr.offset(t as isize)).d1 as isize)).uside =
+                                1 as libc::c_int;
                         } else {
-                            (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .usave = (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .u0;
-                            (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                                .uside = 2 as libc::c_int;
+                            (*tr.offset((*tr.offset(t as isize)).d1 as isize)).usave =
+                                (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0;
+                            (*tr.offset((*tr.offset(t as isize)).d1 as isize)).uside =
+                                2 as libc::c_int;
                         }
                     }
                     (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 = t;
@@ -1035,8 +986,7 @@ unsafe extern "C" fn add_segment(
                         if (*tr.offset(t as isize)).uside == 1 as libc::c_int {
                             (*tr.offset(tn as isize)).u0 = (*tr.offset(t as isize)).u1;
                             (*tr.offset(t as isize)).u1 = -(1 as libc::c_int);
-                            (*tr.offset(tn as isize))
-                                .u1 = (*tr.offset(t as isize)).usave;
+                            (*tr.offset(tn as isize)).u1 = (*tr.offset(t as isize)).usave;
                             (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d0 = t;
                             (*tr.offset((*tr.offset(tn as isize)).u0 as isize)).d0 = tn;
                             (*tr.offset((*tr.offset(tn as isize)).u1 as isize)).d0 = tn;
@@ -1063,18 +1013,12 @@ unsafe extern "C" fn add_segment(
                     let mut td0_1: libc::c_int = 0;
                     let mut td1_1: libc::c_int = 0;
                     td0_1 = (*tr.offset(tmp_u_1 as isize)).d0;
-                    if td0_1 > 0 as libc::c_int
-                        && {
-                            td1_1 = (*tr.offset(tmp_u_1 as isize)).d1;
-                            td1_1 > 0 as libc::c_int
-                        }
-                    {
+                    if td0_1 > 0 as libc::c_int && {
+                        td1_1 = (*tr.offset(tmp_u_1 as isize)).d1;
+                        td1_1 > 0 as libc::c_int
+                    } {
                         if (*tr.offset(td0_1 as isize)).rseg > 0 as libc::c_int
-                            && !is_left_of(
-                                (*tr.offset(td0_1 as isize)).rseg,
-                                seg,
-                                &mut s.v1,
-                            )
+                            && !is_left_of((*tr.offset(td0_1 as isize)).rseg, seg, &mut s.v1)
                         {
                             let ref mut fresh36 = (*tr.offset(tn as isize)).u1;
                             *fresh36 = -(1 as libc::c_int);
@@ -1095,19 +1039,16 @@ unsafe extern "C" fn add_segment(
                         (*tr.offset((*tr.offset(t as isize)).u0 as isize)).d1 = tn;
                     }
                 }
-                if fabs(
-                    (*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y,
-                ) <= 1.0e-7f64
-                    && fabs(
-                        (*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x,
-                    ) <= 1.0e-7f64 && tribot != 0
+                if fabs((*tr.offset(t as isize)).lo.y - (*tr.offset(tlast as isize)).lo.y)
+                    <= 1.0e-7f64
+                    && fabs((*tr.offset(t as isize)).lo.x - (*tr.offset(tlast as isize)).lo.x)
+                        <= 1.0e-7f64
+                    && tribot != 0
                 {
                     (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 = t;
-                    (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                        .u1 = -(1 as libc::c_int);
+                    (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 = -(1 as libc::c_int);
                     (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 = tn;
-                    (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                        .u1 = -(1 as libc::c_int);
+                    (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 = -(1 as libc::c_int);
                     (*tr.offset(tn as isize)).d0 = (*tr.offset(t as isize)).d1;
                     let ref mut fresh40 = (*tr.offset(tn as isize)).d1;
                     *fresh40 = -(1 as libc::c_int);
@@ -1117,14 +1058,12 @@ unsafe extern "C" fn add_segment(
                     (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 = t;
                     (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 = tn;
                     (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 = tn;
-                    (*tr.offset((*tr.offset(t as isize)).d1 as isize))
-                        .u1 = -(1 as libc::c_int);
+                    (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 = -(1 as libc::c_int);
                     (*tr.offset(t as isize)).d1 = -(1 as libc::c_int);
                     tnext = (*tr.offset(t as isize)).d0;
                 } else {
                     (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u0 = t;
-                    (*tr.offset((*tr.offset(t as isize)).d0 as isize))
-                        .u1 = -(1 as libc::c_int);
+                    (*tr.offset((*tr.offset(t as isize)).d0 as isize)).u1 = -(1 as libc::c_int);
                     (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u0 = t;
                     (*tr.offset((*tr.offset(t as isize)).d1 as isize)).u1 = tn;
                     (*tr.offset(tn as isize)).d0 = (*tr.offset(t as isize)).d1;
@@ -1206,8 +1145,7 @@ pub unsafe extern "C" fn construct_trapezoids(
     memset(
         tr as *mut libc::c_void,
         0 as libc::c_int,
-        (ntraps as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<trap_t>() as libc::c_ulong),
+        (ntraps as libc::c_ulong).wrapping_mul(::std::mem::size_of::<trap_t>() as libc::c_ulong),
     );
     let fresh42 = segi;
     segi = segi + 1;

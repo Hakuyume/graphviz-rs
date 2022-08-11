@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -78,15 +86,10 @@ pub struct _sfdisc_s {
     pub disc: *mut Sfdisc_t,
 }
 pub type Sfdisc_t = _sfdisc_s;
-pub type Sfexcept_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Sfdisc_t,
-    ) -> libc::c_int,
+pub type Sfexcept_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, libc::c_int, *mut libc::c_void, *mut Sfdisc_t) -> libc::c_int,
 >;
-pub type Sfseek_f = Option::<
+pub type Sfseek_f = Option<
     unsafe extern "C" fn(
         *mut Sfio_t,
         libc::c_longlong,
@@ -94,48 +97,28 @@ pub type Sfseek_f = Option::<
         *mut Sfdisc_t,
     ) -> libc::c_longlong,
 >;
-pub type Sfwrite_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *const libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
+pub type Sfwrite_f = Option<
+    unsafe extern "C" fn(*mut Sfio_t, *const libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t,
 >;
-pub type Sfread_f = Option::<
-    unsafe extern "C" fn(
-        *mut Sfio_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Sfdisc_t,
-    ) -> ssize_t,
->;
+pub type Sfread_f =
+    Option<unsafe extern "C" fn(*mut Sfio_t, *mut libc::c_void, size_t, *mut Sfdisc_t) -> ssize_t>;
 pub type Sfextern_t = _sfextern_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _sfextern_s {
     pub sf_page: ssize_t,
     pub sf_pool: _sfpool_s,
-    pub sf_pmove: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int,
-    >,
-    pub sf_stack: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t,
-    >,
-    pub sf_notify: Option::<
-        unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> (),
-    >,
-    pub sf_stdsync: Option::<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
+    pub sf_pmove: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int) -> libc::c_int>,
+    pub sf_stack: Option<unsafe extern "C" fn(*mut Sfio_t, *mut Sfio_t) -> *mut Sfio_t>,
+    pub sf_notify: Option<unsafe extern "C" fn(*mut Sfio_t, libc::c_int, libc::c_int) -> ()>,
+    pub sf_stdsync: Option<unsafe extern "C" fn(*mut Sfio_t) -> libc::c_int>,
     pub sf_udisc: _sfdisc_s,
-    pub sf_cleanup: Option::<unsafe extern "C" fn() -> ()>,
+    pub sf_cleanup: Option<unsafe extern "C" fn() -> ()>,
     pub sf_exiting: libc::c_int,
     pub sf_done: libc::c_int,
 }
 #[no_mangle]
-pub unsafe extern "C" fn sfswap(
-    mut f1: *mut Sfio_t,
-    mut f2: *mut Sfio_t,
-) -> *mut Sfio_t {
+pub unsafe extern "C" fn sfswap(mut f1: *mut Sfio_t, mut f2: *mut Sfio_t) -> *mut Sfio_t {
     let mut tmp: Sfio_t = Sfio_t {
         next: 0 as *mut libc::c_uchar,
         endw: 0 as *mut libc::c_uchar,
@@ -167,9 +150,10 @@ pub unsafe extern "C" fn sfswap(
     let mut f1flags: libc::c_int = 0;
     let mut f2flags: libc::c_int = 0;
     let mut f2mode: libc::c_uint = 0;
-    if f1.is_null() || (*f1).mode & 0o20000 as libc::c_uint != 0
-        || (if (*f1).mode
-            & (0o100 as libc::c_uint | 0o40 as libc::c_uint | 0o400 as libc::c_uint) != 0
+    if f1.is_null()
+        || (*f1).mode & 0o20000 as libc::c_uint != 0
+        || (if (*f1).mode & (0o100 as libc::c_uint | 0o40 as libc::c_uint | 0o400 as libc::c_uint)
+            != 0
         {
             1 as libc::c_int
         } else {
@@ -179,13 +163,14 @@ pub unsafe extern "C" fn sfswap(
             } else {
                 0 as libc::c_int
             })
-        }) != 0 && (*f1).mode & 0o100 as libc::c_uint != 0
+        }) != 0
+            && (*f1).mode & 0o100 as libc::c_uint != 0
     {
         return 0 as *mut Sfio_t;
     }
     if !f2.is_null()
-        && (if (*f2).mode
-            & (0o100 as libc::c_uint | 0o40 as libc::c_uint | 0o400 as libc::c_uint) != 0
+        && (if (*f2).mode & (0o100 as libc::c_uint | 0o40 as libc::c_uint | 0o400 as libc::c_uint)
+            != 0
         {
             1 as libc::c_int
         } else {
@@ -195,7 +180,8 @@ pub unsafe extern "C" fn sfswap(
             } else {
                 0 as libc::c_int
             })
-        }) != 0 && (*f2).mode & 0o100 as libc::c_uint != 0
+        }) != 0
+        && (*f2).mode & 0o100 as libc::c_uint != 0
     {
         return 0 as *mut Sfio_t;
     }
@@ -231,19 +217,17 @@ pub unsafe extern "C" fn sfswap(
             f2 = malloc(::std::mem::size_of::<Sfio_t>() as libc::c_ulong) as *mut Sfio_t;
             if f2.is_null() {
                 (*f1).mode = f1mode as libc::c_uint;
-                if 0 as libc::c_int != 0 {} else {
-                    (*f1).mode
-                        &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint
-                            | 0o20 as libc::c_uint);
+                if 0 as libc::c_int != 0 {
+                } else {
+                    (*f1).mode &=
+                        !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
                     if (*f1).mode == 0o1 as libc::c_int as libc::c_uint {
                         let ref mut fresh4 = (*f1).endr;
                         *fresh4 = (*f1).endb;
                     } else {
                         if (*f1).mode == 0o2 as libc::c_int as libc::c_uint {
                             let ref mut fresh5 = (*f1).endw;
-                            *fresh5 = (if (*f1).flags as libc::c_int
-                                & 0o40 as libc::c_int != 0
-                            {
+                            *fresh5 = (if (*f1).flags as libc::c_int & 0o40 as libc::c_int != 0 {
                                 (*f1).data
                             } else {
                                 (*f1).endb
@@ -355,17 +339,16 @@ pub unsafe extern "C" fn sfswap(
         }
     } else {
         (*f1).mode = f2mode;
-        if 0 as libc::c_int != 0 {} else {
-            (*f1).mode
-                &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
+        if 0 as libc::c_int != 0 {
+        } else {
+            (*f1).mode &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
             if (*f1).mode == 0o1 as libc::c_int as libc::c_uint {
                 let ref mut fresh25 = (*f1).endr;
                 *fresh25 = (*f1).endb;
             } else {
                 if (*f1).mode == 0o2 as libc::c_int as libc::c_uint {
                     let ref mut fresh26 = (*f1).endw;
-                    *fresh26 = (if (*f1).flags as libc::c_int & 0o40 as libc::c_int != 0
-                    {
+                    *fresh26 = (if (*f1).flags as libc::c_int & 0o40 as libc::c_int != 0 {
                         (*f1).data
                     } else {
                         (*f1).endb
@@ -380,9 +363,9 @@ pub unsafe extern "C" fn sfswap(
         };
     }
     (*f2).mode = f1mode as libc::c_uint;
-    if 0 as libc::c_int != 0 {} else {
-        (*f2).mode
-            &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
+    if 0 as libc::c_int != 0 {
+    } else {
+        (*f2).mode &= !(0o40 as libc::c_uint | 0o10 as libc::c_uint | 0o20 as libc::c_uint);
         if (*f2).mode == 0o1 as libc::c_int as libc::c_uint {
             let ref mut fresh29 = (*f2).endr;
             *fresh29 = (*f2).endb;

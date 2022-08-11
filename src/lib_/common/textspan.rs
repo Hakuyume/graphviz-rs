@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -79,9 +87,8 @@ pub struct _IO_FILE {
 }
 pub type _IO_lock_t = ();
 pub type FILE = _IO_FILE;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _dtlink_s {
@@ -108,13 +115,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -139,16 +141,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -168,10 +164,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -179,16 +174,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type uint64_t = __uint64_t;
 #[derive(Copy, Clone)]
@@ -299,9 +287,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -315,25 +301,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -435,7 +414,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -583,9 +563,8 @@ pub struct C2RustUnnamed_3 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -614,13 +593,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -653,26 +627,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -681,29 +647,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -711,8 +669,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -746,7 +704,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -772,9 +730,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -900,7 +856,7 @@ pub struct textspan_t {
     pub str_0: *mut libc::c_char,
     pub font: *mut textfont_t,
     pub layout: *mut libc::c_void,
-    pub free_layout: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free_layout: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub yoffset_layout: libc::c_double,
     pub yoffset_centerline: libc::c_double,
     pub size: pointf,
@@ -922,7 +878,9 @@ unsafe extern "C" fn bsearch(
     __l = 0 as libc::c_int as size_t;
     __u = __nmemb;
     while __l < __u {
-        __idx = __l.wrapping_add(__u).wrapping_div(2 as libc::c_int as libc::c_ulong);
+        __idx = __l
+            .wrapping_add(__u)
+            .wrapping_div(2 as libc::c_int as libc::c_ulong);
         __p = (__base as *const libc::c_char).offset(__idx.wrapping_mul(__size) as isize)
             as *const libc::c_void;
         __comparison = (Some(__compar.expect("non-null function pointer")))
@@ -932,7 +890,7 @@ unsafe extern "C" fn bsearch(
         } else if __comparison > 0 as libc::c_int {
             __l = __idx.wrapping_add(1 as libc::c_int as libc::c_ulong);
         } else {
-            return __p as *mut libc::c_void
+            return __p as *mut libc::c_void;
         }
     }
     return 0 as *mut libc::c_void;
@@ -943,10 +901,8 @@ unsafe extern "C" fn estimate_textspan_size(
 ) {
     let mut fontsize: libc::c_double = 0.;
     let mut flags: libc::c_int = (*(*span).font).flags() as libc::c_int;
-    let mut bold: bool = flags & (1 as libc::c_int) << 0 as libc::c_int
-        != 0 as libc::c_int;
-    let mut italic: bool = flags & (1 as libc::c_int) << 1 as libc::c_int
-        != 0 as libc::c_int;
+    let mut bold: bool = flags & (1 as libc::c_int) << 0 as libc::c_int != 0 as libc::c_int;
+    let mut italic: bool = flags & (1 as libc::c_int) << 1 as libc::c_int != 0 as libc::c_int;
     fontsize = (*(*span).font).size;
     (*span).size.x = 0.0f64;
     (*span).size.y = fontsize * 1.20f64;
@@ -956,22 +912,18 @@ unsafe extern "C" fn estimate_textspan_size(
     *fresh0 = 0 as *mut libc::c_void;
     let ref mut fresh1 = (*span).free_layout;
     *fresh1 = None;
-    (*span)
-        .size
-        .x = fontsize
-        * estimate_text_width_1pt((*(*span).font).name, (*span).str_0, bold, italic);
+    (*span).size.x =
+        fontsize * estimate_text_width_1pt((*(*span).font).name, (*span).str_0, bold, italic);
     if !fontpath.is_null() {
-        *fontpath = b"[internal hard-coded]\0" as *const u8 as *const libc::c_char
-            as *mut libc::c_char;
+        *fontpath =
+            b"[internal hard-coded]\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     }
 }
 static mut postscript_alias: [PostscriptAlias; 35] = [
     {
         let mut init = _PostscriptAlias {
-            name: b"AvantGarde-Book\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"AvantGarde-Book\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"book\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
@@ -987,8 +939,7 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"AvantGarde-BookOblique\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"book\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -996,25 +947,21 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"AvantGarde-Demi\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"AvantGarde-Demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 6 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
@@ -1023,70 +970,55 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"AvantGarde-DemiOblique\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"URW Gothic L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 7 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Bookman-Demi\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Bookman-Demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 10 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Bookman-DemiItalic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Bookman-DemiItalic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"demi\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 11 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Bookman-Light\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Bookman-Light\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"light\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 8 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1094,27 +1026,22 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Bookman-LightItalic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Bookman-LightItalic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"URW Bookman L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"light\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 9 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
             name: b"Courier\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            family: b"Courier\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"Courier\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
@@ -1128,47 +1055,38 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Courier-Bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Courier\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Courier-Bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Courier\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 14 as libc::c_int,
             svg_font_family: b"monospace\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Courier-BoldOblique\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Courier\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Courier-BoldOblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Courier\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 15 as libc::c_int,
             svg_font_family: b"monospace\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Courier-Oblique\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Courier\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Courier-Oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Courier\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1176,17 +1094,14 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             svg_font_family: b"monospace\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
@@ -1200,18 +1115,15 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Helvetica-Bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Helvetica-Bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 18 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
@@ -1220,30 +1132,24 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"Helvetica-BoldOblique\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 19 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Helvetica-Narrow\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Helvetica-Narrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
-            stretch: b"condensed\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            stretch: b"condensed\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 20 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
@@ -1257,17 +1163,14 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"Helvetica-Narrow-Bold\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            stretch: b"condensed\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            stretch: b"condensed\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 22 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
@@ -1276,19 +1179,15 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"Helvetica-Narrow-BoldOblique\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-            stretch: b"condensed\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            stretch: b"condensed\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 23 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
@@ -1296,27 +1195,22 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"Helvetica-Narrow-Oblique\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
-            stretch: b"condensed\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            stretch: b"condensed\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 21 as libc::c_int,
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Helvetica-Oblique\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Helvetica\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Helvetica-Oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Helvetica\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"oblique\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1324,8 +1218,7 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             svg_font_family: b"sans-Serif\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
@@ -1339,10 +1232,8 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 26 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
@@ -1357,12 +1248,9 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 27 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
@@ -1376,11 +1264,9 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 25 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
@@ -1394,8 +1280,7 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 24 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1403,71 +1288,55 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Palatino-Bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Palatino-Bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 30 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Palatino-BoldItalic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Palatino-BoldItalic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 31 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Palatino-Italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Palatino-Italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 29 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Palatino-Roman\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Palatino-Roman\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Palatino Linotype\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"roman\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 28 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1481,8 +1350,7 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 32 as libc::c_int,
-            svg_font_family: b"fantasy\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"fantasy\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1490,67 +1358,55 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Times-Bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Times-Bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             family: b"Times\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 2 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Times-BoldItalic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Times-BoldItalic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             family: b"Times\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 3 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_weight: b"bold\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Times-Italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Times-Italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             family: b"Times\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 1 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"Times-Roman\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"Times-Roman\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             family: b"Times\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 0 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1560,32 +1416,26 @@ static mut postscript_alias: [PostscriptAlias; 35] = [
         let mut init = _PostscriptAlias {
             name: b"ZapfChancery-MediumItalic\0" as *const u8 as *const libc::c_char
                 as *mut libc::c_char,
-            family: b"URW Chancery L\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            family: b"URW Chancery L\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: b"medium\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 33 as libc::c_int,
-            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"serif\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
-            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_style: b"italic\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         };
         init
     },
     {
         let mut init = _PostscriptAlias {
-            name: b"ZapfDingbats\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
-            family: b"Dingbats\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            name: b"ZapfDingbats\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            family: b"Dingbats\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             weight: 0 as *const libc::c_char as *mut libc::c_char,
             stretch: 0 as *const libc::c_char as *mut libc::c_char,
             style: 0 as *const libc::c_char as *mut libc::c_char,
             xfig_code: 34 as libc::c_int,
-            svg_font_family: b"fantasy\0" as *const u8 as *const libc::c_char
-                as *mut libc::c_char,
+            svg_font_family: b"fantasy\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
             svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
         };
@@ -1615,8 +1465,7 @@ unsafe extern "C" fn translate_postscript_fontname(
         svg_font_weight: 0 as *const libc::c_char as *mut libc::c_char,
         svg_font_style: 0 as *const libc::c_char as *mut libc::c_char,
     };
-    static mut result: *mut PostscriptAlias = 0 as *const PostscriptAlias
-        as *mut PostscriptAlias;
+    static mut result: *mut PostscriptAlias = 0 as *const PostscriptAlias as *mut PostscriptAlias;
     if (key.name).is_null() || strcasecmp(key.name, fontname) != 0 {
         free(key.name as *mut libc::c_void);
         key.name = strdup(fontname);
@@ -1638,36 +1487,33 @@ unsafe extern "C" fn translate_postscript_fontname(
     return result;
 }
 #[no_mangle]
-pub unsafe extern "C" fn textspan_size(
-    mut gvc: *mut GVC_t,
-    mut span: *mut textspan_t,
-) -> pointf {
+pub unsafe extern "C" fn textspan_size(mut gvc: *mut GVC_t, mut span: *mut textspan_t) -> pointf {
     let mut fpp: *mut *mut libc::c_char = 0 as *mut *mut libc::c_char;
     let mut fontpath: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut font: *mut textfont_t = 0 as *mut textfont_t;
-    if !((*span).font).is_null() {} else {
+    if !((*span).font).is_null() {
+    } else {
         __assert_fail(
             b"span->font\0" as *const u8 as *const libc::c_char,
             b"textspan.c\0" as *const u8 as *const libc::c_char,
             77 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"pointf textspan_size(GVC_t *, textspan_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"pointf textspan_size(GVC_t *, textspan_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     font = (*span).font;
-    if !((*font).name).is_null() {} else {
+    if !((*font).name).is_null() {
+    } else {
         __assert_fail(
             b"font->name\0" as *const u8 as *const libc::c_char,
             b"textspan.c\0" as *const u8 as *const libc::c_char,
             80 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"pointf textspan_size(GVC_t *, textspan_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"pointf textspan_size(GVC_t *, textspan_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if ((*font).postscript_alias).is_null() {
@@ -1684,16 +1530,14 @@ pub unsafe extern "C" fn textspan_size(
         if !fontpath.is_null() {
             fprintf(
                 stderr,
-                b"fontname: \"%s\" resolved to: %s\n\0" as *const u8
-                    as *const libc::c_char,
+                b"fontname: \"%s\" resolved to: %s\n\0" as *const u8 as *const libc::c_char,
                 (*font).name,
                 fontpath,
             );
         } else {
             fprintf(
                 stderr,
-                b"fontname: unable to resolve \"%s\"\n\0" as *const u8
-                    as *const libc::c_char,
+                b"fontname: unable to resolve \"%s\"\n\0" as *const u8 as *const libc::c_char,
                 (*font).name,
             );
         }
@@ -1782,9 +1626,7 @@ unsafe extern "C" fn textfont_comparf(
 #[no_mangle]
 pub unsafe extern "C" fn textfont_dict_open(mut gvc: *mut GVC_t) -> *mut Dt_t {
     (*gvc).textfont_disc.key = 0 as libc::c_int;
-    (*gvc)
-        .textfont_disc
-        .size = ::std::mem::size_of::<textfont_t>() as libc::c_ulong as libc::c_int;
+    (*gvc).textfont_disc.size = ::std::mem::size_of::<textfont_t>() as libc::c_ulong as libc::c_int;
     (*gvc).textfont_disc.link = -(1 as libc::c_int);
     let ref mut fresh6 = (*gvc).textfont_disc.makef;
     *fresh6 = Some(
@@ -1797,8 +1639,7 @@ pub unsafe extern "C" fn textfont_dict_open(mut gvc: *mut GVC_t) -> *mut Dt_t {
     );
     let ref mut fresh7 = (*gvc).textfont_disc.freef;
     *fresh7 = Some(
-        textfont_freef
-            as unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
+        textfont_freef as unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
     );
     let ref mut fresh8 = (*gvc).textfont_disc.comparf;
     *fresh8 = Some(

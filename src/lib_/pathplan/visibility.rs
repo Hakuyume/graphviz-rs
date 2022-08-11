@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -42,8 +50,10 @@ unsafe extern "C" fn allocArray(mut V: libc::c_int, mut extra: libc::c_int) -> a
         ((V + extra) as libc::c_ulong)
             .wrapping_mul(::std::mem::size_of::<*mut COORD>() as libc::c_ulong),
     ) as array2;
-    p = calloc((V * V) as libc::c_ulong, ::std::mem::size_of::<COORD>() as libc::c_ulong)
-        as *mut COORD;
+    p = calloc(
+        (V * V) as libc::c_ulong,
+        ::std::mem::size_of::<COORD>() as libc::c_ulong,
+    ) as *mut COORD;
     i = 0 as libc::c_int;
     while i < V {
         let ref mut fresh0 = *arr.offset(i as isize);
@@ -60,19 +70,11 @@ unsafe extern "C" fn allocArray(mut V: libc::c_int, mut extra: libc::c_int) -> a
     return arr;
 }
 #[no_mangle]
-pub unsafe extern "C" fn area2(
-    mut a: Ppoint_t,
-    mut b: Ppoint_t,
-    mut c: Ppoint_t,
-) -> COORD {
+pub unsafe extern "C" fn area2(mut a: Ppoint_t, mut b: Ppoint_t, mut c: Ppoint_t) -> COORD {
     return (a.y - b.y) * (c.x - b.x) - (c.y - b.y) * (a.x - b.x);
 }
 #[no_mangle]
-pub unsafe extern "C" fn wind(
-    mut a: Ppoint_t,
-    mut b: Ppoint_t,
-    mut c: Ppoint_t,
-) -> libc::c_int {
+pub unsafe extern "C" fn wind(mut a: Ppoint_t, mut b: Ppoint_t, mut c: Ppoint_t) -> libc::c_int {
     let mut w: COORD = 0.;
     w = (a.y - b.y) * (c.x - b.x) - (c.y - b.y) * (a.x - b.x);
     return if w > 0.0001f64 {
@@ -83,15 +85,11 @@ pub unsafe extern "C" fn wind(
         0 as libc::c_int
     };
 }
-unsafe extern "C" fn inBetween(
-    mut a: Ppoint_t,
-    mut b: Ppoint_t,
-    mut c: Ppoint_t,
-) -> bool {
+unsafe extern "C" fn inBetween(mut a: Ppoint_t, mut b: Ppoint_t, mut c: Ppoint_t) -> bool {
     if a.x != b.x {
-        return a.x < c.x && c.x < b.x || b.x < c.x && c.x < a.x
+        return a.x < c.x && c.x < b.x || b.x < c.x && c.x < a.x;
     } else {
-        return a.y < c.y && c.y < b.y || b.y < c.y && c.y < a.y
+        return a.y < c.y && c.y < b.y || b.y < c.y && c.y < a.y;
     };
 }
 unsafe extern "C" fn intersect(
@@ -125,9 +123,9 @@ unsafe extern "C" fn in_cone(
     let mut m: libc::c_int = wind(b, a0, a1);
     let mut p: libc::c_int = wind(b, a1, a2);
     if wind(a0, a1, a2) > 0 as libc::c_int {
-        return m >= 0 as libc::c_int && p >= 0 as libc::c_int
+        return m >= 0 as libc::c_int && p >= 0 as libc::c_int;
     } else {
-        return m >= 0 as libc::c_int || p >= 0 as libc::c_int
+        return m >= 0 as libc::c_int || p >= 0 as libc::c_int;
     };
 }
 #[no_mangle]
@@ -223,7 +221,8 @@ unsafe extern "C" fn compVis(mut conf: *mut vconfig_t, mut start: libc::c_int) {
                     pts,
                     nextPt,
                     prevPt,
-                ) as libc::c_int != 0
+                ) as libc::c_int
+                    != 0
             {
                 d = dist(*pts.offset(i as isize), *pts.offset(j as isize));
                 *(*wadj.offset(i as isize)).offset(j as isize) = d;
@@ -248,11 +247,9 @@ unsafe extern "C" fn polyhit(mut conf: *mut vconfig_t, mut p: Ppoint_t) -> libc:
     };
     i = 0 as libc::c_int;
     while i < (*conf).Npoly {
-        poly
-            .ps = &mut *((*conf).P).offset(*((*conf).start).offset(i as isize) as isize)
-            as *mut Ppoint_t;
-        poly
-            .pn = *((*conf).start).offset((i + 1 as libc::c_int) as isize)
+        poly.ps =
+            &mut *((*conf).P).offset(*((*conf).start).offset(i as isize) as isize) as *mut Ppoint_t;
+        poly.pn = *((*conf).start).offset((i + 1 as libc::c_int) as isize)
             - *((*conf).start).offset(i as isize);
         if in_poly(poly, p) != 0 {
             return i;
@@ -299,7 +296,8 @@ pub unsafe extern "C" fn ptVis(
             pk,
             *pts.offset(*nextPt.offset(k as isize) as isize),
             p,
-        ) as libc::c_int != 0
+        ) as libc::c_int
+            != 0
             && clear(p, pk, start, end, V, pts, nextPt, prevPt) as libc::c_int != 0
         {
             d = dist(p, pk);
@@ -322,7 +320,8 @@ pub unsafe extern "C" fn ptVis(
             pk,
             *pts.offset(*nextPt.offset(k as isize) as isize),
             p,
-        ) as libc::c_int != 0
+        ) as libc::c_int
+            != 0
             && clear(p, pk, start, end, V, pts, nextPt, prevPt) as libc::c_int != 0
         {
             d = dist(p, pk);

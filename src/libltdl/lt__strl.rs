@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -20,40 +28,40 @@ pub unsafe extern "C" fn lt_strlcat(
     let mut length: size_t = 0;
     let mut p: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut q: *const libc::c_char = 0 as *const libc::c_char;
-    if !dst.is_null() {} else {
+    if !dst.is_null() {
+    } else {
         __assert_fail(
             b"dst != NULL\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             57 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcat(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcat(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !src.is_null() {} else {
+    if !src.is_null() {
+    } else {
         __assert_fail(
             b"src != (const char *) NULL\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             58 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcat(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcat(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if dstsize >= 1 as libc::c_int as libc::c_ulong {} else {
+    if dstsize >= 1 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"dstsize >= 1\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             59 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcat(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcat(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     length = strlen(dst);
@@ -87,40 +95,40 @@ pub unsafe extern "C" fn lt_strlcpy(
     let mut length: size_t = 0 as libc::c_int as size_t;
     let mut p: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut q: *const libc::c_char = 0 as *const libc::c_char;
-    if !dst.is_null() {} else {
+    if !dst.is_null() {
+    } else {
         __assert_fail(
             b"dst != NULL\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             105 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcpy(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcpy(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !src.is_null() {} else {
+    if !src.is_null() {
+    } else {
         __assert_fail(
             b"src != (const char *) NULL\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             106 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcpy(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcpy(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if dstsize >= 1 as libc::c_int as libc::c_ulong {} else {
+    if dstsize >= 1 as libc::c_int as libc::c_ulong {
+    } else {
         __assert_fail(
             b"dstsize >= 1\0" as *const u8 as *const libc::c_char,
             b"lt__strl.c\0" as *const u8 as *const libc::c_char,
             107 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 54],
-                &[libc::c_char; 54],
-            >(b"size_t lt_strlcpy(char *, const char *, const size_t)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 54], &[libc::c_char; 54]>(
+                b"size_t lt_strlcpy(char *, const char *, const size_t)\0",
+            ))
+            .as_ptr(),
         );
     }
     p = dst;

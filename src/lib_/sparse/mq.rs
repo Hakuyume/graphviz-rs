@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -33,19 +41,11 @@ extern "C" {
         jcn: libc::c_int,
         val: *mut libc::c_void,
     ) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
     fn SparseMatrix_transpose(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_copy(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_set_entries_to_real_one(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_from_coordinate_format(A: SparseMatrix) -> SparseMatrix;
@@ -58,12 +58,9 @@ extern "C" {
     fn SingleLinkedList_new_int(i: libc::c_int) -> SingleLinkedList;
     fn SingleLinkedList_delete(
         head: SingleLinkedList,
-        linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+        linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     );
-    fn SingleLinkedList_prepend_int(
-        l: SingleLinkedList,
-        i: libc::c_int,
-    ) -> SingleLinkedList;
+    fn SingleLinkedList_prepend_int(l: SingleLinkedList, i: libc::c_int) -> SingleLinkedList;
     fn SingleLinkedList_get_data(l: SingleLinkedList) -> *mut libc::c_void;
     fn SingleLinkedList_get_next(l: SingleLinkedList) -> SingleLinkedList;
 }
@@ -186,33 +183,29 @@ unsafe extern "C" fn get_mq(
     let mut Vj: libc::c_double = 0.;
     let mut c: libc::c_int = 0;
     let mut dout: *mut libc::c_double = 0 as *mut libc::c_double;
-    if SparseMatrix_is_symmetric(A, test_pattern_symmetry_only) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, test_pattern_symmetry_only) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, test_pattern_symmetry_only)\0" as *const u8
                 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             83 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 73],
-                &[libc::c_char; 73],
-            >(
+            (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                 b"double get_mq(SparseMatrix, int *, int *, double *, double *, double **)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if (*A).n == n {} else {
+    if (*A).n == n {
+    } else {
         __assert_fail(
             b"A->n == n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             84 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 73],
-                &[libc::c_char; 73],
-            >(
+            (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                 b"double get_mq(SparseMatrix, int *, int *, double *, double *, double **)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
@@ -224,21 +217,17 @@ unsafe extern "C" fn get_mq(
     ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < n {
-        if *assignment.offset(i as isize) >= 0 as libc::c_int
-            && *assignment.offset(i as isize) < n
-        {} else {
+        if *assignment.offset(i as isize) >= 0 as libc::c_int && *assignment.offset(i as isize) < n
+        {
+        } else {
             __assert_fail(
-                b"assignment[i] >= 0 && assignment[i] < n\0" as *const u8
-                    as *const libc::c_char,
+                b"assignment[i] >= 0 && assignment[i] < n\0" as *const u8 as *const libc::c_char,
                 b"mq.c\0" as *const u8 as *const libc::c_char,
                 90 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 73],
-                    &[libc::c_char; 73],
-                >(
+                (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                     b"double get_mq(SparseMatrix, int *, int *, double *, double *, double **)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         if *counts.offset(*assignment.offset(i as isize) as isize) == 0 as libc::c_int {
@@ -249,34 +238,30 @@ unsafe extern "C" fn get_mq(
         i += 1;
     }
     k = ncluster;
-    if ncluster <= n {} else {
+    if ncluster <= n {
+    } else {
         __assert_fail(
             b"ncluster <= n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             95 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 73],
-                &[libc::c_char; 73],
-            >(
+            (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                 b"double get_mq(SparseMatrix, int *, int *, double *, double *, double **)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     i = 0 as libc::c_int;
     while i < n {
-        if *assignment.offset(i as isize) < ncluster {} else {
+        if *assignment.offset(i as isize) < ncluster {
+        } else {
             __assert_fail(
                 b"assignment[i] < ncluster\0" as *const u8 as *const libc::c_char,
                 b"mq.c\0" as *const u8 as *const libc::c_char,
                 98 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 73],
-                    &[libc::c_char; 73],
-                >(
+                (*::std::mem::transmute::<&[u8; 73], &[libc::c_char; 73]>(
                     b"double get_mq(SparseMatrix, int *, int *, double *, double *, double **)\0",
                 ))
-                    .as_ptr(),
+                .as_ptr(),
             );
         }
         c = *assignment.offset(i as isize);
@@ -285,7 +270,8 @@ unsafe extern "C" fn get_mq(
         while j < *ia.offset((i + 1 as libc::c_int) as isize) {
             jj = *ja.offset(j as isize);
             if !(jj >= i) {
-                if *assignment.offset(jj as isize) < ncluster {} else {
+                if *assignment.offset(jj as isize) < ncluster {
+                } else {
                     __assert_fail(
                         b"assignment[jj] < ncluster\0" as *const u8
                             as *const libc::c_char,
@@ -300,8 +286,7 @@ unsafe extern "C" fn get_mq(
                             .as_ptr(),
                     );
                 }
-                Vj = *counts.offset(*assignment.offset(jj as isize) as isize)
-                    as libc::c_double;
+                Vj = *counts.offset(*assignment.offset(jj as isize) as isize) as libc::c_double;
                 if *assignment.offset(jj as isize) == c {
                     if !a.is_null() {
                         mq_in += *a.offset(j as isize) / (Vi * Vi);
@@ -319,8 +304,7 @@ unsafe extern "C" fn get_mq(
         i += 1;
     }
     dout = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
@@ -330,15 +314,13 @@ unsafe extern "C" fn get_mq(
             jj = *ja.offset(j as isize);
             if !(jj == i) {
                 if !a.is_null() {
-                    *dout.offset(i as isize)
-                        += *a.offset(j as isize)
-                            / *counts.offset(*assignment.offset(jj as isize) as isize)
-                                as libc::c_double;
+                    *dout.offset(i as isize) += *a.offset(j as isize)
+                        / *counts.offset(*assignment.offset(jj as isize) as isize)
+                            as libc::c_double;
                 } else {
-                    *dout.offset(i as isize)
-                        += 1.0f64
-                            / *counts.offset(*assignment.offset(jj as isize) as isize)
-                                as libc::c_double;
+                    *dout.offset(i as isize) += 1.0f64
+                        / *counts.offset(*assignment.offset(jj as isize) as isize)
+                            as libc::c_double;
                 }
             }
             j += 1;
@@ -353,9 +335,9 @@ unsafe extern "C" fn get_mq(
     if k > 1 as libc::c_int {
         return 2 as libc::c_int as libc::c_double
             * (mq_in / k as libc::c_double
-                - mq_out / (k * (k - 1 as libc::c_int)) as libc::c_double)
+                - mq_out / (k * (k - 1 as libc::c_int)) as libc::c_double);
     } else {
-        return 2 as libc::c_int as libc::c_double * mq_in
+        return 2 as libc::c_int as libc::c_double * mq_in;
     };
 }
 unsafe extern "C" fn Multilevel_MQ_Clustering_init(
@@ -366,54 +348,47 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_init(
     let mut n: libc::c_int = (*A).n;
     let mut i: libc::c_int = 0;
     let mut matching: *mut libc::c_int = 0 as *mut libc::c_int;
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             157 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 74],
-                &[libc::c_char; 74],
-            >(
+            (*::std::mem::transmute::<&[u8; 74], &[libc::c_char; 74]>(
                 b"Multilevel_MQ_Clustering Multilevel_MQ_Clustering_init(SparseMatrix, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             158 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 74],
-                &[libc::c_char; 74],
-            >(
+            (*::std::mem::transmute::<&[u8; 74], &[libc::c_char; 74]>(
                 b"Multilevel_MQ_Clustering Multilevel_MQ_Clustering_init(SparseMatrix, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     if A.is_null() {
         return 0 as Multilevel_MQ_Clustering;
     }
-    if (*A).m == n {} else {
+    if (*A).m == n {
+    } else {
         __assert_fail(
             b"A->m == n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
             161 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 74],
-                &[libc::c_char; 74],
-            >(
+            (*::std::mem::transmute::<&[u8; 74], &[libc::c_char; 74]>(
                 b"Multilevel_MQ_Clustering Multilevel_MQ_Clustering_init(SparseMatrix, int)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    grid = malloc(
-        ::std::mem::size_of::<Multilevel_MQ_Clustering_struct>() as libc::c_ulong,
-    ) as Multilevel_MQ_Clustering;
+    grid = malloc(::std::mem::size_of::<Multilevel_MQ_Clustering_struct>() as libc::c_ulong)
+        as Multilevel_MQ_Clustering;
     (*grid).level = level;
     (*grid).n = n;
     let ref mut fresh1 = (*grid).A;
@@ -429,8 +404,7 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_init(
     (*grid).delete_top_level_A = 0 as libc::c_int;
     let ref mut fresh6 = (*grid).matching;
     *fresh6 = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_int;
     matching = *fresh6;
     let ref mut fresh7 = (*grid).deg_intra;
@@ -471,7 +445,14 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_init(
             *matching.offset(i as isize) = i;
             i += 1;
         }
-        mq = get_mq(A, matching, &mut ncluster, &mut mq_in, &mut mq_out, &mut dout);
+        mq = get_mq(
+            A,
+            matching,
+            &mut ncluster,
+            &mut mq_in,
+            &mut mq_out,
+            &mut dout,
+        );
         fprintf(
             stderr,
             b"ncluster = %d, mq = %f\n\0" as *const u8 as *const libc::c_char,
@@ -487,9 +468,7 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_init(
     }
     return grid;
 }
-unsafe extern "C" fn Multilevel_MQ_Clustering_delete(
-    mut grid: Multilevel_MQ_Clustering,
-) {
+unsafe extern "C" fn Multilevel_MQ_Clustering_delete(mut grid: Multilevel_MQ_Clustering) {
     if grid.is_null() {
         return;
     }
@@ -576,31 +555,27 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
     mq_in = (*grid).mq_in;
     mq_out = (*grid).mq_out;
     deg_intra_new = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     wgt_new = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     deg_inter = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     mask = malloc(
-        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_int>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_int;
     dout_new = malloc(
-        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-            .wrapping_mul(n as libc::c_ulong),
+        (::std::mem::size_of::<libc::c_double>() as libc::c_ulong).wrapping_mul(n as libc::c_ulong),
     ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
         *mask.offset(i as isize) = -(1 as libc::c_int);
         i += 1;
     }
-    if n == (*A).n {} else {
+    if n == (*A).n {
+    } else {
         __assert_fail(
             b"n == A->n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
@@ -656,15 +631,12 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                         deg_in_j = *deg_intra.offset(jj as isize);
                         dout_j = *dout.offset(jj as isize);
                         current_block_70 = 3392087639489470149;
-                    } else if *deg_inter.offset(jc as isize)
-                            < 0 as libc::c_int as libc::c_double
-                        {
+                    } else if *deg_inter.offset(jc as isize) < 0 as libc::c_int as libc::c_double {
                         current_block_70 = 1345366029464561491;
                     } else {
                         a_ij = *deg_inter.offset(jc as isize);
                         wgt_j = *wgt_new.offset(jc as isize);
-                        *deg_inter
-                            .offset(jc as isize) = -(1 as libc::c_int) as libc::c_double;
+                        *deg_inter.offset(jc as isize) = -(1 as libc::c_int) as libc::c_double;
                         deg_in_j = *deg_intra_new.offset(jc as isize);
                         dout_j = *dout_new.offset(jc as isize);
                         current_block_70 = 3392087639489470149;
@@ -685,7 +657,8 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                                         / (nclusters - 1 as libc::c_int) as libc::c_double
                                         - mq_out_new
                                             / ((nclusters - 1 as libc::c_int)
-                                                * (nclusters - 2 as libc::c_int)) as libc::c_double);
+                                                * (nclusters - 2 as libc::c_int))
+                                                as libc::c_double);
                             } else {
                                 mq_new = 2 as libc::c_int as libc::c_double * mq_in_new
                                     / (nclusters - 1 as libc::c_int) as libc::c_double;
@@ -695,7 +668,8 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                                 fprintf(
                                     stderr,
                                     b"gain in merging node %d with node %d = %f-%f = %f\n\0"
-                                        as *const u8 as *const libc::c_char,
+                                        as *const u8
+                                        as *const libc::c_char,
                                     i,
                                     jj,
                                     mq,
@@ -726,8 +700,7 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                 if jc == UNMATCHED as libc::c_int {
                     fprintf(
                         stderr,
-                        b"maxgain=%f, merge %d, %d\n\0" as *const u8
-                            as *const libc::c_char,
+                        b"maxgain=%f, merge %d, %d\n\0" as *const u8 as *const libc::c_char,
                         maxgain,
                         i,
                         jmax,
@@ -735,43 +708,31 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                     let ref mut fresh14 = *neighbors.offset(nc as isize);
                     *fresh14 = SingleLinkedList_new_int(jmax);
                     let ref mut fresh15 = *neighbors.offset(nc as isize);
-                    *fresh15 = SingleLinkedList_prepend_int(
-                        *neighbors.offset(nc as isize),
-                        i,
-                    );
+                    *fresh15 = SingleLinkedList_prepend_int(*neighbors.offset(nc as isize), i);
                     *dout_new.offset(nc as isize) = dout_i + dout_max;
                     let ref mut fresh16 = *matching.offset(jmax as isize);
                     *fresh16 = nc;
                     *matching.offset(i as isize) = *fresh16;
-                    *wgt_new
-                        .offset(
-                            nc as isize,
-                        ) = *wgt.offset(i as isize) + *wgt.offset(jmax as isize);
-                    *deg_intra_new
-                        .offset(
-                            nc as isize,
-                        ) = *deg_intra.offset(i as isize)
-                        + *deg_intra.offset(jmax as isize) + amax;
+                    *wgt_new.offset(nc as isize) =
+                        *wgt.offset(i as isize) + *wgt.offset(jmax as isize);
+                    *deg_intra_new.offset(nc as isize) =
+                        *deg_intra.offset(i as isize) + *deg_intra.offset(jmax as isize) + amax;
                     nc += 1;
                 } else {
                     fprintf(
                         stderr,
-                        b"maxgain=%f, merge with existing cluster %d, %d\n\0"
-                            as *const u8 as *const libc::c_char,
+                        b"maxgain=%f, merge with existing cluster %d, %d\n\0" as *const u8
+                            as *const libc::c_char,
                         maxgain,
                         i,
                         jc,
                     );
                     let ref mut fresh17 = *neighbors.offset(jc as isize);
-                    *fresh17 = SingleLinkedList_prepend_int(
-                        *neighbors.offset(jc as isize),
-                        i,
-                    );
+                    *fresh17 = SingleLinkedList_prepend_int(*neighbors.offset(jc as isize), i);
                     *dout_new.offset(jc as isize) = dout_i + dout_max;
                     *wgt_new.offset(jc as isize) += *wgt.offset(i as isize);
                     *matching.offset(i as isize) = jc;
-                    *deg_intra_new.offset(jc as isize)
-                        += *deg_intra.offset(i as isize) + amax;
+                    *deg_intra_new.offset(jc as isize) += *deg_intra.offset(i as isize) + amax;
                 }
                 mq = mq_max;
                 mq_in = mq_in_max;
@@ -785,7 +746,8 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                     maxgain,
                     i,
                 );
-                if maxgain <= 0 as libc::c_int as libc::c_double {} else {
+                if maxgain <= 0 as libc::c_int as libc::c_double {
+                } else {
                     __assert_fail(
                         b"maxgain <= 0\0" as *const u8 as *const libc::c_char,
                         b"mq.c\0" as *const u8 as *const libc::c_char,
@@ -809,10 +771,8 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
             jc = *matching.offset(i as isize);
             lst = *neighbors.offset(jc as isize);
             loop {
-                *mask
-                    .offset(
-                        *(SingleLinkedList_get_data(lst) as *mut libc::c_int) as isize,
-                    ) = n + i;
+                *mask.offset(*(SingleLinkedList_get_data(lst) as *mut libc::c_int) as isize) =
+                    n + i;
                 lst = SingleLinkedList_get_next(lst);
                 if lst.is_null() {
                     break;
@@ -828,22 +788,18 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                         jc = *matching.offset(jj as isize);
                         if jc == UNMATCHED as libc::c_int {
                             if k == i {
-                                *dout.offset(jj as isize)
-                                    += -*a.offset(j as isize) / wgt_i
-                                        + *a.offset(j as isize) / (wgt_i + wgt_jmax);
+                                *dout.offset(jj as isize) += -*a.offset(j as isize) / wgt_i
+                                    + *a.offset(j as isize) / (wgt_i + wgt_jmax);
                             } else {
-                                *dout.offset(jj as isize)
-                                    += -*a.offset(j as isize) / wgt_jmax
-                                        + *a.offset(j as isize) / (wgt_i + wgt_jmax);
+                                *dout.offset(jj as isize) += -*a.offset(j as isize) / wgt_jmax
+                                    + *a.offset(j as isize) / (wgt_i + wgt_jmax);
                             }
                         } else if k == i {
-                            *dout_new.offset(jc as isize)
-                                += -*a.offset(j as isize) / wgt_i
-                                    + *a.offset(j as isize) / (wgt_i + wgt_jmax);
+                            *dout_new.offset(jc as isize) += -*a.offset(j as isize) / wgt_i
+                                + *a.offset(j as isize) / (wgt_i + wgt_jmax);
                         } else {
-                            *dout_new.offset(jc as isize)
-                                += -*a.offset(j as isize) / wgt_jmax
-                                    + *a.offset(j as isize) / (wgt_i + wgt_jmax);
+                            *dout_new.offset(jc as isize) += -*a.offset(j as isize) / wgt_jmax
+                                + *a.offset(j as isize) / (wgt_i + wgt_jmax);
                         }
                     }
                     j += 1;
@@ -876,17 +832,14 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
             mq_out,
         );
     }
-    if nc >= 1 as libc::c_int
-        && (total_gain > 0 as libc::c_int as libc::c_double || nc < n)
-    {
+    if nc >= 1 as libc::c_int && (total_gain > 0 as libc::c_int as libc::c_double || nc < n) {
         let mut P: SparseMatrix = 0 as *mut SparseMatrix_struct;
         let mut R: SparseMatrix = 0 as *mut SparseMatrix_struct;
         let mut R0: SparseMatrix = 0 as *mut SparseMatrix_struct;
         let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
         let mut cA: SparseMatrix = 0 as *mut SparseMatrix_struct;
         let mut one: libc::c_double = 1.0f64;
-        let mut cgrid: Multilevel_MQ_Clustering = 0
-            as *mut Multilevel_MQ_Clustering_struct;
+        let mut cgrid: Multilevel_MQ_Clustering = 0 as *mut Multilevel_MQ_Clustering_struct;
         R0 = SparseMatrix_new(
             nc,
             n,
@@ -930,16 +883,12 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                 deg_intra_new = realloc(
                     deg_intra_new as *mut libc::c_void,
                     (nc as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        ),
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
                 ) as *mut libc::c_double;
                 wgt_new = realloc(
                     wgt_new as *mut libc::c_void,
                     (nc as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        ),
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
                 ) as *mut libc::c_double;
                 let ref mut fresh21 = (*cgrid).deg_intra;
                 *fresh21 = deg_intra_new;
@@ -949,9 +898,7 @@ unsafe extern "C" fn Multilevel_MQ_Clustering_establish(
                 dout_new = realloc(
                     dout_new as *mut libc::c_void,
                     (nc as libc::c_ulong)
-                        .wrapping_mul(
-                            ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                        ),
+                        .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
                 ) as *mut libc::c_double;
                 let ref mut fresh23 = (*cgrid).dout;
                 *fresh23 = dout_new;
@@ -1020,7 +967,8 @@ unsafe extern "C" fn hierachical_mq_clustering(
     let mut i: libc::c_int = 0;
     let mut P: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut u: *mut libc::c_double = 0 as *mut libc::c_double;
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,
@@ -1047,10 +995,7 @@ unsafe extern "C" fn hierachical_mq_clustering(
     ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < (*cgrid).n {
-        *u
-            .offset(
-                i as isize,
-            ) = *((*cgrid).matching).offset(i as isize) as libc::c_double;
+        *u.offset(i as isize) = *((*cgrid).matching).offset(i as isize) as libc::c_double;
         i += 1;
     }
     *nclusters = (*cgrid).n;
@@ -1093,7 +1038,8 @@ pub unsafe extern "C" fn mq_clustering(
 ) {
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     *flag = 0 as libc::c_int;
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"mq.c\0" as *const u8 as *const libc::c_char,

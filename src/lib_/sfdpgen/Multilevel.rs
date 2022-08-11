@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -7,12 +15,7 @@ extern "C" {
     pub type _IO_marker;
     fn fputs(__s: *const libc::c_char, __stream: *mut FILE) -> libc::c_int;
     static mut stderr: *mut FILE;
-    fn qsort(
-        __base: *mut libc::c_void,
-        __nmemb: size_t,
-        __size: size_t,
-        __compar: __compar_fn_t,
-    );
+    fn qsort(__base: *mut libc::c_void, __nmemb: size_t, __size: size_t, __compar: __compar_fn_t);
     fn free(_: *mut libc::c_void);
     fn SparseMatrix_decompose_to_supervariables(
         A: SparseMatrix,
@@ -41,15 +44,8 @@ extern "C" {
     ) -> SparseMatrix;
     fn SparseMatrix_delete(A: SparseMatrix);
     fn SparseMatrix_multiply(A: SparseMatrix, B: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_multiply3(
-        A: SparseMatrix,
-        B: SparseMatrix,
-        C: SparseMatrix,
-    ) -> SparseMatrix;
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
+    fn SparseMatrix_multiply3(A: SparseMatrix, B: SparseMatrix, C: SparseMatrix) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
     fn SparseMatrix_transpose(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_symmetrize_nodiag(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_multiply_vector(
@@ -59,16 +55,10 @@ extern "C" {
     );
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
     fn SparseMatrix_divide_row_by_degree(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn PriorityQueue_new(n: libc::c_int, ngain: libc::c_int) -> PriorityQueue;
     fn PriorityQueue_delete(q: PriorityQueue);
-    fn PriorityQueue_push(
-        q: PriorityQueue,
-        i: libc::c_int,
-        gain: libc::c_int,
-    ) -> PriorityQueue;
+    fn PriorityQueue_push(q: PriorityQueue, i: libc::c_int, gain: libc::c_int) -> PriorityQueue;
     fn PriorityQueue_pop(
         q: PriorityQueue,
         i: *mut libc::c_int,
@@ -80,9 +70,8 @@ extern "C" {
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
 pub type __off64_t = libc::c_long;
-pub type __compar_fn_t = Option::<
-    unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int,
->;
+pub type __compar_fn_t =
+    Option<unsafe extern "C" fn(*const libc::c_void, *const libc::c_void) -> libc::c_int>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct _IO_FILE {
@@ -254,16 +243,16 @@ unsafe extern "C" fn Multilevel_init(
     if A.is_null() {
         return 0 as Multilevel;
     }
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             49 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 65],
-                &[libc::c_char; 65],
-            >(b"Multilevel Multilevel_init(SparseMatrix, SparseMatrix, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 65], &[libc::c_char; 65]>(
+                b"Multilevel Multilevel_init(SparseMatrix, SparseMatrix, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     grid = gmalloc(::std::mem::size_of::<Multilevel_struct>() as libc::c_ulong)
@@ -330,55 +319,50 @@ unsafe extern "C" fn maximal_independent_vertex_set(
     let mut m: libc::c_int = 0;
     let mut n: libc::c_int = 0;
     let mut p: *mut libc::c_int = 0 as *mut libc::c_int;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             87 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 77],
-                &[libc::c_char; 77],
-            >(
+            (*::std::mem::transmute::<&[u8; 77], &[libc::c_char; 77]>(
                 b"void maximal_independent_vertex_set(SparseMatrix, int, int **, int *, int *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
-            b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
-                as *const libc::c_char,
+            b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             88 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 77],
-                &[libc::c_char; 77],
-            >(
+            (*::std::mem::transmute::<&[u8; 77], &[libc::c_char; 77]>(
                 b"void maximal_independent_vertex_set(SparseMatrix, int, int **, int *, int *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
     ia = (*A).ia;
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             93 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 77],
-                &[libc::c_char; 77],
-            >(
+            (*::std::mem::transmute::<&[u8; 77], &[libc::c_char; 77]>(
                 b"void maximal_independent_vertex_set(SparseMatrix, int, int **, int *, int *)\0",
             ))
-                .as_ptr(),
+            .as_ptr(),
         );
     }
-    *vset = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    *vset = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *(*vset).offset(i as isize) = MAX_IND_VTX_SET_U as libc::c_int;
@@ -396,10 +380,8 @@ unsafe extern "C" fn maximal_independent_vertex_set(
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if !(i == *ja.offset(j as isize)) {
-                        *(*vset)
-                            .offset(
-                                *ja.offset(j as isize) as isize,
-                            ) = MAX_IND_VTX_SET_F as libc::c_int;
+                        *(*vset).offset(*ja.offset(j as isize) as isize) =
+                            MAX_IND_VTX_SET_F as libc::c_int;
                         *nzc += 1;
                     }
                     j += 1;
@@ -419,10 +401,8 @@ unsafe extern "C" fn maximal_independent_vertex_set(
                 j = *ia.offset(i as isize);
                 while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                     if !(i == *ja.offset(j as isize)) {
-                        *(*vset)
-                            .offset(
-                                *ja.offset(j as isize) as isize,
-                            ) = MAX_IND_VTX_SET_F as libc::c_int;
+                        *(*vset).offset(*ja.offset(j as isize) as isize) =
+                            MAX_IND_VTX_SET_F as libc::c_int;
                         *nzc += 1;
                     }
                     j += 1;
@@ -455,7 +435,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
     let mut removed: libc::c_int = 0;
     let mut nf: libc::c_int = 0 as libc::c_int;
     let mut q: PriorityQueue = 0 as *mut PriorityQueue_struct;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -469,7 +450,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -488,7 +470,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -502,8 +485,10 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
                 .as_ptr(),
         );
     }
-    *vset = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    *vset = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *(*vset).offset(i as isize) = MAX_IND_VTX_SET_U as libc::c_int;
@@ -537,7 +522,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
         free(p as *mut libc::c_void);
     }
     while PriorityQueue_pop(q, &mut i, &mut gain) != 0 {
-        if *(*vset).offset(i as isize) == MAX_IND_VTX_SET_U as libc::c_int {} else {
+        if *(*vset).offset(i as isize) == MAX_IND_VTX_SET_U as libc::c_int {
+        } else {
             __assert_fail(
                 b"(*vset)[i] == MAX_IND_VTX_SET_U\0" as *const u8 as *const libc::c_char,
                 b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -559,7 +545,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
             jj = *ja.offset(j as isize);
             if *(*vset).offset(jj as isize) == MAX_IND_VTX_SET_U as libc::c_int
                 || *(*vset).offset(jj as isize) == MAX_IND_VTX_SET_F as libc::c_int
-            {} else {
+            {
+            } else {
                 __assert_fail(
                     b"(*vset)[jj] == MAX_IND_VTX_SET_U || (*vset)[jj] == MAX_IND_VTX_SET_F\0"
                         as *const u8 as *const libc::c_char,
@@ -577,7 +564,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
             if !(i == jj) {
                 if *(*vset).offset(jj as isize) == MAX_IND_VTX_SET_U as libc::c_int {
                     removed = PriorityQueue_remove(q, jj);
-                    if removed != 0 {} else {
+                    if removed != 0 {
+                    } else {
                         __assert_fail(
                             b"removed\0" as *const u8 as *const libc::c_char,
                             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -600,7 +588,8 @@ unsafe extern "C" fn maximal_independent_vertex_set_RS(
                                 == MAX_IND_VTX_SET_U as libc::c_int
                             {
                                 gain = PriorityQueue_get_gain(q, *ja.offset(k as isize));
-                                if gain >= 0 as libc::c_int {} else {
+                                if gain >= 0 as libc::c_int {
+                                } else {
                                     __assert_fail(
                                         b"gain >= 0\0" as *const u8 as *const libc::c_char,
                                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -646,45 +635,44 @@ unsafe extern "C" fn maximal_independent_edge_set(
     let mut m: libc::c_int = 0;
     let mut n: libc::c_int = 0;
     let mut p: *mut libc::c_int = 0 as *mut libc::c_int;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             205 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 68],
-                &[libc::c_char; 68],
-            >(b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 68], &[libc::c_char; 68]>(
+                b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
-            b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
-                as *const libc::c_char,
+            b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             206 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 68],
-                &[libc::c_char; 68],
-            >(b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 68], &[libc::c_char; 68]>(
+                b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     ia = (*A).ia;
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
             211 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 68],
-                &[libc::c_char; 68],
-            >(b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 68], &[libc::c_char; 68]>(
+                b"void maximal_independent_edge_set(SparseMatrix, int, int **, int *)\0",
+            ))
+            .as_ptr(),
         );
     }
     *matching = gcalloc(
@@ -704,7 +692,8 @@ unsafe extern "C" fn maximal_independent_edge_set(
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 if !(i == *ja.offset(j as isize)) {
                     if *(*matching).offset(*ja.offset(j as isize) as isize)
-                        == *ja.offset(j as isize) && *(*matching).offset(i as isize) == i
+                        == *ja.offset(j as isize)
+                        && *(*matching).offset(i as isize) == i
                     {
                         *(*matching).offset(*ja.offset(j as isize) as isize) = i;
                         *(*matching).offset(i as isize) = *ja.offset(j as isize);
@@ -724,7 +713,8 @@ unsafe extern "C" fn maximal_independent_edge_set(
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 if !(i == *ja.offset(j as isize)) {
                     if *(*matching).offset(*ja.offset(j as isize) as isize)
-                        == *ja.offset(j as isize) && *(*matching).offset(i as isize) == i
+                        == *ja.offset(j as isize)
+                        && *(*matching).offset(i as isize) == i
                     {
                         *(*matching).offset(*ja.offset(j as isize) as isize) = i;
                         *(*matching).offset(i as isize) = *ja.offset(j as isize);
@@ -756,7 +746,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
     let mut amax: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut first: libc::c_int = (0 as libc::c_int == 0) as libc::c_int;
     let mut jamax: libc::c_int = 0 as libc::c_int;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -770,7 +761,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -789,7 +781,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -813,7 +806,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
         i += 1;
     }
     *nmatch = n;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -827,7 +821,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
                 .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -850,7 +845,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode(
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 if !(i == *ja.offset(j as isize)) {
                     if *(*matching).offset(*ja.offset(j as isize) as isize)
-                        == *ja.offset(j as isize) && *(*matching).offset(i as isize) == i
+                        == *ja.offset(j as isize)
+                        && *(*matching).offset(i as isize) == i
                     {
                         if first != 0 {
                             amax = *a.offset(j as isize);
@@ -934,7 +930,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
     let mut nz0: libc::c_int = 0;
     let mut nzz: libc::c_int = 0;
     let mut k: libc::c_int = 0;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -948,7 +945,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -967,7 +965,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -989,14 +988,17 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
         (m + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
-    matched = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    matched = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *matched.offset(i as isize) = i;
         i += 1;
     }
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1010,7 +1012,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                 .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1036,7 +1039,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                     != 1 as libc::c_int)
             {
                 q = *ja.offset(*ia.offset(i as isize) as isize);
-                if *matched.offset(q as isize) != MATCHED_1 as libc::c_int {} else {
+                if *matched.offset(q as isize) != MATCHED_1 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"matched[q] != MATCHED\0" as *const u8 as *const libc::c_char,
                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1057,19 +1061,15 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                 j = *ia.offset(q as isize);
                 while j < *ia.offset((q + 1 as libc::c_int) as isize) {
                     if !(q == *ja.offset(j as isize)) {
-                        if *ia
-                            .offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                        if *ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
                             - *ia.offset(*ja.offset(j as isize) as isize)
                             == 1 as libc::c_int
                         {
-                            *matched
-                                .offset(
-                                    *ja.offset(j as isize) as isize,
-                                ) = MATCHED_1 as libc::c_int;
+                            *matched.offset(*ja.offset(j as isize) as isize) =
+                                MATCHED_1 as libc::c_int;
                             let fresh11 = nz;
                             nz = nz + 1;
-                            *(*cluster)
-                                .offset(fresh11 as isize) = *ja.offset(j as isize);
+                            *(*cluster).offset(fresh11 as isize) = *ja.offset(j as isize);
                         }
                     }
                     j += 1;
@@ -1149,7 +1149,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
             }
             i += 1;
         }
-        if nz == n {} else {
+        if nz == n {
+        } else {
             __assert_fail(
                 b"nz == n\0" as *const u8 as *const libc::c_char,
                 b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1173,7 +1174,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                     != 1 as libc::c_int)
             {
                 q = *ja.offset(*ia.offset(i as isize) as isize);
-                if *matched.offset(q as isize) != MATCHED_1 as libc::c_int {} else {
+                if *matched.offset(q as isize) != MATCHED_1 as libc::c_int {
+                } else {
                     __assert_fail(
                         b"matched[q] != MATCHED\0" as *const u8 as *const libc::c_char,
                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1194,19 +1196,15 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_leaves_fi
                 j = *ia.offset(q as isize);
                 while j < *ia.offset((q + 1 as libc::c_int) as isize) {
                     if !(q == *ja.offset(j as isize)) {
-                        if *ia
-                            .offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                        if *ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
                             - *ia.offset(*ja.offset(j as isize) as isize)
                             == 1 as libc::c_int
                         {
-                            *matched
-                                .offset(
-                                    *ja.offset(j as isize) as isize,
-                                ) = MATCHED_1 as libc::c_int;
+                            *matched.offset(*ja.offset(j as isize) as isize) =
+                                MATCHED_1 as libc::c_int;
                             let fresh16 = nz;
                             nz = nz + 1;
-                            *(*cluster)
-                                .offset(fresh16 as isize) = *ja.offset(j as isize);
+                            *(*cluster).offset(fresh16 as isize) = *ja.offset(j as isize);
                         }
                     }
                     j += 1;
@@ -1316,7 +1314,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
     let mut nsuper: libc::c_int = 0;
     let mut super_0: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut superp: *mut libc::c_int = 0 as *mut libc::c_int;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1330,7 +1329,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -1349,7 +1349,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1371,14 +1372,17 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
         (m + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
-    matched = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    matched = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < m {
         *matched.offset(i as isize) = i;
         i += 1;
     }
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1392,7 +1396,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
                 .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1419,10 +1424,7 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
             nz0 = *(*clusterp).offset(*ncluster as isize);
             j = *superp.offset(i as isize);
             while j < *superp.offset((i + 1 as libc::c_int) as isize) {
-                *matched
-                    .offset(
-                        *super_0.offset(j as isize) as isize,
-                    ) = MATCHED_0 as libc::c_int;
+                *matched.offset(*super_0.offset(j as isize) as isize) = MATCHED_0 as libc::c_int;
                 let fresh20 = nz;
                 nz = nz + 1;
                 *(*cluster).offset(fresh20 as isize) = *super_0.offset(j as isize);
@@ -1490,7 +1492,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_supernode
             }
             i += 1;
         }
-        if nz == n {} else {
+        if nz == n {
+        } else {
             __assert_fail(
                 b"nz == n\0" as *const u8 as *const libc::c_char,
                 b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1569,11 +1572,9 @@ unsafe extern "C" fn scomp(
     let mut ss1: *const libc::c_double = s1 as *const libc::c_double;
     let mut ss2: *const libc::c_double = s2 as *const libc::c_double;
     if *ss1.offset(1 as libc::c_int as isize) > *ss2.offset(1 as libc::c_int as isize) {
-        return -(1 as libc::c_int)
+        return -(1 as libc::c_int);
     } else {
-        if *ss1.offset(1 as libc::c_int as isize)
-            < *ss2.offset(1 as libc::c_int as isize)
-        {
+        if *ss1.offset(1 as libc::c_int as isize) < *ss2.offset(1 as libc::c_int as isize) {
             return 1 as libc::c_int;
         }
     }
@@ -1605,7 +1606,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
     let mut k: libc::c_int = 0;
     let mut nv: libc::c_int = 0;
     let mut vlist: *mut libc::c_double = 0 as *mut libc::c_double;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1619,7 +1621,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -1638,7 +1641,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1660,8 +1664,10 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
         (m + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
-    matched = gcalloc(m as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    matched = gcalloc(
+        m as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     vlist = gcalloc(
         (2 as libc::c_int * m) as size_t,
         ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
@@ -1671,7 +1677,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
         *matched.offset(i as isize) = i;
         i += 1;
     }
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1685,7 +1692,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
                 .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1712,7 +1720,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
                 != 1 as libc::c_int)
         {
             q = *ja.offset(*ia.offset(i as isize) as isize);
-            if *matched.offset(q as isize) != MATCHED as libc::c_int {} else {
+            if *matched.offset(q as isize) != MATCHED as libc::c_int {
+            } else {
                 __assert_fail(
                     b"matched[q] != MATCHED\0" as *const u8 as *const libc::c_char,
                     b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1734,12 +1743,10 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
             while j < *ia.offset((q + 1 as libc::c_int) as isize) {
                 if !(q == *ja.offset(j as isize)) {
                     if *ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
-                        - *ia.offset(*ja.offset(j as isize) as isize) == 1 as libc::c_int
+                        - *ia.offset(*ja.offset(j as isize) as isize)
+                        == 1 as libc::c_int
                     {
-                        *matched
-                            .offset(
-                                *ja.offset(j as isize) as isize,
-                            ) = MATCHED as libc::c_int;
+                        *matched.offset(*ja.offset(j as isize) as isize) = MATCHED as libc::c_int;
                         let fresh28 = nz;
                         nz = nz + 1;
                         *(*cluster).offset(fresh28 as isize) = *ja.offset(j as isize);
@@ -1776,18 +1783,13 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_cluster_pernode_leaves
             j = *ia.offset(i as isize);
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 if !(i == *ja.offset(j as isize)) {
-                    if *matched.offset(*ja.offset(j as isize) as isize)
-                        != MATCHED as libc::c_int
+                    if *matched.offset(*ja.offset(j as isize) as isize) != MATCHED as libc::c_int
                         && *matched.offset(i as isize) != MATCHED as libc::c_int
                     {
-                        *vlist
-                            .offset(
-                                (2 as libc::c_int * nv) as isize,
-                            ) = *ja.offset(j as isize) as libc::c_double;
-                        *vlist
-                            .offset(
-                                (2 as libc::c_int * nv + 1 as libc::c_int) as isize,
-                            ) = *a.offset(j as isize);
+                        *vlist.offset((2 as libc::c_int * nv) as isize) =
+                            *ja.offset(j as isize) as libc::c_double;
+                        *vlist.offset((2 as libc::c_int * nv + 1 as libc::c_int) as isize) =
+                            *a.offset(j as isize);
                         nv += 1;
                     }
                 }
@@ -1864,7 +1866,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
     let mut amax: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut first: libc::c_int = (0 as libc::c_int == 0) as libc::c_int;
     let mut jamax: libc::c_int = 0 as libc::c_int;
-    if !A.is_null() {} else {
+    if !A.is_null() {
+    } else {
         __assert_fail(
             b"A\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1878,7 +1881,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
                 .as_ptr(),
         );
     }
-    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {} else {
+    if (*A).property & MATRIX_PATTERN_SYMMETRIC as libc::c_int != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_known_strucural_symmetric(A)\0" as *const u8
                 as *const libc::c_char,
@@ -1897,7 +1901,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
     ja = (*A).ja;
     m = (*A).m;
     n = (*A).n;
-    if n == m {} else {
+    if n == m {
+    } else {
         __assert_fail(
             b"n == m\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1921,7 +1926,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
         i += 1;
     }
     *nmatch = n;
-    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {} else {
+    if SparseMatrix_is_symmetric(A, 0 as libc::c_int != 0) != 0 {
+    } else {
         __assert_fail(
             b"SparseMatrix_is_symmetric(A, false)\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1935,7 +1941,8 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
                 .as_ptr(),
         );
     }
-    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {} else {
+    if (*A).type_0 == MATRIX_TYPE_REAL as libc::c_int {
+    } else {
         __assert_fail(
             b"A->type == MATRIX_TYPE_REAL\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -1958,35 +1965,33 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
             while j < *ia.offset((i + 1 as libc::c_int) as isize) {
                 if !(i == *ja.offset(j as isize)) {
                     if *(*matching).offset(*ja.offset(j as isize) as isize)
-                        == *ja.offset(j as isize) && *(*matching).offset(i as isize) == i
+                        == *ja.offset(j as isize)
+                        && *(*matching).offset(i as isize) == i
                     {
                         if first != 0 {
                             amax = *a.offset(j as isize)
                                 / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                    - *ia.offset(i as isize)) as libc::c_double
-                                / (*ia
-                                    .offset(
-                                        (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                    ) - *ia.offset(*ja.offset(j as isize) as isize))
+                                    - *ia.offset(i as isize))
+                                    as libc::c_double
+                                / (*ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                                    - *ia.offset(*ja.offset(j as isize) as isize))
                                     as libc::c_double;
                             jamax = *ja.offset(j as isize);
                             first = 0 as libc::c_int;
                         } else if *a.offset(j as isize)
-                                / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                    - *ia.offset(i as isize)) as libc::c_double
-                                / (*ia
-                                    .offset(
-                                        (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                    ) - *ia.offset(*ja.offset(j as isize) as isize))
-                                    as libc::c_double > amax
-                            {
+                            / (*ia.offset((i + 1 as libc::c_int) as isize) - *ia.offset(i as isize))
+                                as libc::c_double
+                            / (*ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                                - *ia.offset(*ja.offset(j as isize) as isize))
+                                as libc::c_double
+                            > amax
+                        {
                             amax = *a.offset(j as isize)
                                 / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                    - *ia.offset(i as isize)) as libc::c_double
-                                / (*ia
-                                    .offset(
-                                        (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                    ) - *ia.offset(*ja.offset(j as isize) as isize))
+                                    - *ia.offset(i as isize))
+                                    as libc::c_double
+                                / (*ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                                    - *ia.offset(*ja.offset(j as isize) as isize))
                                     as libc::c_double;
                             jamax = *ja.offset(j as isize);
                         }
@@ -2018,30 +2023,30 @@ unsafe extern "C" fn maximal_independent_edge_set_heavest_edge_pernode_scaled(
                             if first != 0 {
                                 amax = *a.offset(j as isize)
                                     / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                        - *ia.offset(i as isize)) as libc::c_double
-                                    / (*ia
-                                        .offset(
-                                            (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                        ) - *ia.offset(*ja.offset(j as isize) as isize))
+                                        - *ia.offset(i as isize))
+                                        as libc::c_double
+                                    / (*ia.offset(
+                                        (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
+                                    ) - *ia.offset(*ja.offset(j as isize) as isize))
                                         as libc::c_double;
                                 jamax = *ja.offset(j as isize);
                                 first = 0 as libc::c_int;
                             } else if *a.offset(j as isize)
-                                    / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                        - *ia.offset(i as isize)) as libc::c_double
-                                    / (*ia
-                                        .offset(
-                                            (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                        ) - *ia.offset(*ja.offset(j as isize) as isize))
-                                        as libc::c_double > amax
-                                {
+                                / (*ia.offset((i + 1 as libc::c_int) as isize)
+                                    - *ia.offset(i as isize))
+                                    as libc::c_double
+                                / (*ia.offset((*ja.offset(j as isize) + 1 as libc::c_int) as isize)
+                                    - *ia.offset(*ja.offset(j as isize) as isize))
+                                    as libc::c_double
+                                > amax
+                            {
                                 amax = *a.offset(j as isize)
                                     / (*ia.offset((i + 1 as libc::c_int) as isize)
-                                        - *ia.offset(i as isize)) as libc::c_double
-                                    / (*ia
-                                        .offset(
-                                            (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
-                                        ) - *ia.offset(*ja.offset(j as isize) as isize))
+                                        - *ia.offset(i as isize))
+                                        as libc::c_double
+                                    / (*ia.offset(
+                                        (*ja.offset(j as isize) + 1 as libc::c_int) as isize,
+                                    ) - *ia.offset(*ja.offset(j as isize) as isize))
                                         as libc::c_double;
                                 jamax = *ja.offset(j as isize);
                             }
@@ -2073,13 +2078,10 @@ unsafe extern "C" fn DistanceMatrix_restrict_filtering(
         b"0\0" as *const u8 as *const libc::c_char,
         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
         821 as libc::c_int as libc::c_uint,
-        (*::std::mem::transmute::<
-            &[u8; 78],
-            &[libc::c_char; 78],
-        >(
+        (*::std::mem::transmute::<&[u8; 78], &[libc::c_char; 78]>(
             b"SparseMatrix DistanceMatrix_restrict_filtering(int *, int, int, SparseMatrix)\0",
         ))
-            .as_ptr(),
+        .as_ptr(),
     );
     return 0 as SparseMatrix;
 }
@@ -2115,7 +2117,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
     let mut cluster: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut clusterp: *mut libc::c_int = 0 as *mut libc::c_int;
     let mut ncluster: libc::c_int = 0;
-    if (*A).m == (*A).n {} else {
+    if (*A).m == (*A).n {
+    } else {
         __assert_fail(
             b"A->m == A->n\0" as *const u8 as *const libc::c_char,
             b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2138,8 +2141,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
     match (*ctrl).coarsen_scheme {
         12 => {
             let ref mut fresh32 = (*ctrl).coarsen_scheme;
-            *fresh32 = COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_LEAVES_FIRST
-                as libc::c_int;
+            *fresh32 =
+                COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_LEAVES_FIRST as libc::c_int;
             *coarsen_scheme_used = *fresh32;
             Multilevel_coarsen_internal(
                 A,
@@ -2208,8 +2211,7 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
             }
             if (*cA).is_null() {
                 let ref mut fresh36 = (*ctrl).coarsen_scheme;
-                *fresh36 = COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE
-                    as libc::c_int;
+                *fresh36 = COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE as libc::c_int;
                 *coarsen_scheme_used = *fresh36;
                 Multilevel_coarsen_internal(
                     A,
@@ -2229,8 +2231,7 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
         }
         4 | 6 | 3 => {
             if (*ctrl).coarsen_scheme
-                == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_LEAVES_FIRST
-                    as libc::c_int
+                == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_LEAVES_FIRST as libc::c_int
             {
                 maximal_independent_edge_set_heavest_edge_pernode_leaves_first(
                     A,
@@ -2240,9 +2241,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     &mut ncluster,
                 );
             } else if (*ctrl).coarsen_scheme
-                    == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_SUPERNODES_FIRST
-                        as libc::c_int
-                {
+                == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_SUPERNODES_FIRST as libc::c_int
+            {
                 maximal_independent_edge_set_heavest_edge_pernode_supernodes_first(
                     A,
                     (*ctrl).randomize,
@@ -2260,7 +2260,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     &mut ncluster,
                 );
             }
-            if ncluster <= n {} else {
+            if ncluster <= n {
+            } else {
                 __assert_fail(
                     b"ncluster <= n\0" as *const u8 as *const libc::c_char,
                     b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2276,8 +2277,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
             }
             nc = ncluster;
             if (*ctrl).coarsen_mode == COARSEN_MODE_GENTLE as libc::c_int
-                && nc as libc::c_double
-                    > (*ctrl).min_coarsen_factor * n as libc::c_double || nc == n
+                && nc as libc::c_double > (*ctrl).min_coarsen_factor * n as libc::c_double
+                || nc == n
                 || nc < (*ctrl).minsize
             {
                 current_block = 13133327569201511773;
@@ -2301,7 +2302,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     while j < *clusterp.offset((i + 1 as libc::c_int) as isize) {
                         if *clusterp.offset((i + 1 as libc::c_int) as isize)
                             > *clusterp.offset(i as isize)
-                        {} else {
+                        {
+                        } else {
                             __assert_fail(
                                 b"clusterp[i+1] > clusterp[i]\0" as *const u8
                                     as *const libc::c_char,
@@ -2325,7 +2327,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     }
                     i += 1;
                 }
-                if nzc == n {} else {
+                if nzc == n {
+                } else {
                     __assert_fail(
                         b"nzc == n\0" as *const u8 as *const libc::c_char,
                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2358,21 +2361,14 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     SparseMatrix_multiply_vector(*R, node_wgt, cnode_wgt);
                     *R = SparseMatrix_divide_row_by_degree(*R);
                     (**cA).property = (**cA).property | MATRIX_SYMMETRIC as libc::c_int;
-                    (**cA)
-                        .property = (**cA).property
-                        | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
+                    (**cA).property = (**cA).property | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
                     *cA = SparseMatrix_remove_diagonal(*cA);
                     current_block = 13133327569201511773;
                 }
             }
         }
         1 => {
-            maximal_independent_edge_set(
-                A,
-                (*ctrl).randomize,
-                &mut matching,
-                &mut nmatch,
-            );
+            maximal_independent_edge_set(A, (*ctrl).randomize, &mut matching, &mut nmatch);
             current_block = 15612923873456120061;
         }
         2 => {
@@ -2403,8 +2399,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
             ja = (*A).ja;
             nc = nvset;
             if (*ctrl).coarsen_mode == COARSEN_MODE_GENTLE as libc::c_int
-                && nc as libc::c_double
-                    > (*ctrl).min_coarsen_factor * n as libc::c_double || nc == n
+                && nc as libc::c_double > (*ctrl).min_coarsen_factor * n as libc::c_double
+                || nc == n
                 || nc < (*ctrl).minsize
             {
                 current_block = 13133327569201511773;
@@ -2435,7 +2431,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                             }
                             j += 1;
                         }
-                        if ncov > 0 as libc::c_int {} else {
+                        if ncov > 0 as libc::c_int {
+                        } else {
                             __assert_fail(
                                 b"ncov > 0\0" as *const u8 as *const libc::c_char,
                                 b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2455,20 +2452,17 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                                 >= MAX_IND_VTX_SET_C as libc::c_int
                             {
                                 *irn.offset(nzc as isize) = i;
-                                *jcn
-                                    .offset(
-                                        nzc as isize,
-                                    ) = *vset.offset(*ja.offset(j as isize) as isize);
+                                *jcn.offset(nzc as isize) =
+                                    *vset.offset(*ja.offset(j as isize) as isize);
                                 let fresh41 = nzc;
                                 nzc = nzc + 1;
-                                *val
-                                    .offset(fresh41 as isize) = 1.0f64 / ncov as libc::c_double;
+                                *val.offset(fresh41 as isize) = 1.0f64 / ncov as libc::c_double;
                             }
                             j += 1;
                         }
                     } else {
-                        if *vset.offset(i as isize) >= MAX_IND_VTX_SET_C as libc::c_int
-                        {} else {
+                        if *vset.offset(i as isize) >= MAX_IND_VTX_SET_C as libc::c_int {
+                        } else {
                             __assert_fail(
                                 b"vset[i] >= MAX_IND_VTX_SET_C\0" as *const u8
                                     as *const libc::c_char,
@@ -2508,9 +2502,7 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                 } else {
                     SparseMatrix_multiply_vector(*R, node_wgt, cnode_wgt);
                     (**cA).property = (**cA).property | MATRIX_SYMMETRIC as libc::c_int;
-                    (**cA)
-                        .property = (**cA).property
-                        | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
+                    (**cA).property = (**cA).property | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
                     *cA = SparseMatrix_remove_diagonal(*cA);
                     *cD = DistanceMatrix_restrict_filtering(
                         vset,
@@ -2545,8 +2537,7 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
     match current_block {
         3825971548398956300 => {
             if (*ctrl).coarsen_scheme
-                == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_DEGREE_SCALED
-                    as libc::c_int
+                == COARSEN_INDEPENDENT_EDGE_SET_HEAVEST_EDGE_PERNODE_DEGREE_SCALED as libc::c_int
             {
                 maximal_independent_edge_set_heavest_edge_pernode_scaled(
                     A,
@@ -2557,8 +2548,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
             }
             nc = nmatch;
             if !((*ctrl).coarsen_mode == COARSEN_MODE_GENTLE as libc::c_int
-                && nc as libc::c_double
-                    > (*ctrl).min_coarsen_factor * n as libc::c_double || nc == n
+                && nc as libc::c_double > (*ctrl).min_coarsen_factor * n as libc::c_double
+                || nc == n
                 || nc < (*ctrl).minsize)
             {
                 irn = gcalloc(
@@ -2589,29 +2580,22 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                             *jcn.offset(nzc as isize) = nc;
                             let fresh39 = nzc;
                             nzc = nzc + 1;
-                            *val
-                                .offset(
-                                    fresh39 as isize,
-                                ) = 1 as libc::c_int as libc::c_double;
+                            *val.offset(fresh39 as isize) = 1 as libc::c_int as libc::c_double;
                             *irn.offset(nzc as isize) = *matching.offset(i as isize);
                             *jcn.offset(nzc as isize) = nc;
                             let fresh40 = nzc;
                             nzc = nzc + 1;
-                            *val
-                                .offset(
-                                    fresh40 as isize,
-                                ) = 1 as libc::c_int as libc::c_double;
-                            *matching
-                                .offset(
-                                    *matching.offset(i as isize) as isize,
-                                ) = -(1 as libc::c_int);
+                            *val.offset(fresh40 as isize) = 1 as libc::c_int as libc::c_double;
+                            *matching.offset(*matching.offset(i as isize) as isize) =
+                                -(1 as libc::c_int);
                         }
                         nc += 1;
                         *matching.offset(i as isize) = -(1 as libc::c_int);
                     }
                     i += 1;
                 }
-                if nc == nmatch {} else {
+                if nc == nmatch {
+                } else {
                     __assert_fail(
                         b"nc == nmatch\0" as *const u8 as *const libc::c_char,
                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2625,7 +2609,8 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                             .as_ptr(),
                     );
                 }
-                if nzc == n {} else {
+                if nzc == n {
+                } else {
                     __assert_fail(
                         b"nzc == n\0" as *const u8 as *const libc::c_char,
                         b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2655,9 +2640,7 @@ unsafe extern "C" fn Multilevel_coarsen_internal(
                     SparseMatrix_multiply_vector(*R, node_wgt, cnode_wgt);
                     *R = SparseMatrix_divide_row_by_degree(*R);
                     (**cA).property = (**cA).property | MATRIX_SYMMETRIC as libc::c_int;
-                    (**cA)
-                        .property = (**cA).property
-                        | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
+                    (**cA).property = (**cA).property | MATRIX_PATTERN_SYMMETRIC as libc::c_int;
                     *cA = SparseMatrix_remove_diagonal(*cA);
                     *cD = 0 as SparseMatrix;
                 }
@@ -2722,7 +2705,8 @@ pub unsafe extern "C" fn Multilevel_coarsen(
         }
         nc = (*cA0).n;
         if !(*P).is_null() {
-            if !(*R).is_null() {} else {
+            if !(*R).is_null() {
+            } else {
                 __assert_fail(
                     b"*R\0" as *const u8 as *const libc::c_char,
                     b"Multilevel.c\0" as *const u8 as *const libc::c_char,
@@ -2769,7 +2753,7 @@ pub unsafe extern "C" fn Multilevel_coarsen(
         {
             break;
         }
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn print_padding(mut n: libc::c_int) {

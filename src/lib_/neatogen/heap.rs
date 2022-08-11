@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -83,15 +91,13 @@ pub unsafe extern "C" fn PQinsert(
     ref_0(v);
     (*he).ystar = (*v).coord.y + offset;
     last = &mut *PQhash
-        .offset(
-            (PQbucket as unsafe extern "C" fn(*mut Halfedge) -> libc::c_int)(he) as isize,
-        ) as *mut Halfedge;
+        .offset((PQbucket as unsafe extern "C" fn(*mut Halfedge) -> libc::c_int)(he) as isize)
+        as *mut Halfedge;
     loop {
         next = (*last).PQnext;
         if !(!next.is_null()
             && ((*he).ystar > (*next).ystar
-                || (*he).ystar == (*next).ystar
-                    && (*v).coord.x > (*(*next).vertex).coord.x))
+                || (*he).ystar == (*next).ystar && (*v).coord.x > (*(*next).vertex).coord.x))
         {
             break;
         }
@@ -108,10 +114,8 @@ pub unsafe extern "C" fn PQdelete(mut he: *mut Halfedge) {
     let mut last: *mut Halfedge = 0 as *mut Halfedge;
     if !((*he).vertex).is_null() {
         last = &mut *PQhash
-            .offset(
-                (PQbucket as unsafe extern "C" fn(*mut Halfedge) -> libc::c_int)(he)
-                    as isize,
-            ) as *mut Halfedge;
+            .offset((PQbucket as unsafe extern "C" fn(*mut Halfedge) -> libc::c_int)(he) as isize)
+            as *mut Halfedge;
         while (*last).PQnext != he {
             last = (*last).PQnext;
         }

@@ -1,5 +1,5 @@
 pub mod dot;
-pub mod gvmap;
-pub mod tools;
-pub mod gvpr;
 pub mod edgepaint;
+pub mod gvmap;
+pub mod gvpr;
+pub mod tools;

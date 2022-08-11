@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -10,11 +18,7 @@ extern "C" {
     fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
     static mut stderr: *mut FILE;
     fn free(_: *mut libc::c_void);
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn __assert_fail(
         __assertion: *const libc::c_char,
         __file: *const libc::c_char,
@@ -109,9 +113,8 @@ unsafe extern "C" fn dist(
     let mut d: libc::c_double = 0 as libc::c_int as libc::c_double;
     k = 0 as libc::c_int;
     while k < dim {
-        d
-            += (*x.offset(k as isize) - *y.offset(k as isize))
-                * (*x.offset(k as isize) - *y.offset(k as isize));
+        d += (*x.offset(k as isize) - *y.offset(k as isize))
+            * (*x.offset(k as isize) - *y.offset(k as isize));
         k += 1;
     }
     return sqrt(d);
@@ -133,7 +136,11 @@ unsafe extern "C" fn distance_to_group(
             if i == 0 as libc::c_int {
                 dist_min = distance;
             } else {
-                dist_min = if dist_min < distance { dist_min } else { distance };
+                dist_min = if dist_min < distance {
+                    dist_min
+                } else {
+                    distance
+                };
             }
             i += 1;
         }
@@ -241,7 +248,8 @@ pub unsafe extern "C" fn furtherest_point(
         i = 0 as libc::c_int;
         while i < ncandidates {
             qt = *candidates.offset(i as isize);
-            if ((*qt).qts).is_null() {} else {
+            if ((*qt).qts).is_null() {
+            } else {
                 __assert_fail(
                     b"!(qt->qts)\0" as *const u8 as *const libc::c_char,
                     b"furtherest_point.c\0" as *const u8 as *const libc::c_char,
@@ -278,8 +286,7 @@ pub unsafe extern "C" fn furtherest_point(
                 );
             }
             distance = (*qt).total_weight;
-            if !(distance + wmax * sqrt(dim as libc::c_double) * (*qt).width < *dist_max)
-            {
+            if !(distance + wmax * sqrt(dim as libc::c_double) * (*qt).width < *dist_max) {
                 let ref mut fresh2 = (*qt).qts;
                 *fresh2 = gmalloc(
                     (::std::mem::size_of::<QuadTree>() as libc::c_ulong)
@@ -309,8 +316,7 @@ pub unsafe extern "C" fn furtherest_point(
                         if Verbose as libc::c_int > 10 as libc::c_int {
                             fprintf(
                                 stderr,
-                                b"new distmax=%f, pt={\0" as *const u8
-                                    as *const libc::c_char,
+                                b"new distmax=%f, pt={\0" as *const u8 as *const libc::c_char,
                                 *dist_max,
                             );
                             j = 0 as libc::c_int;
@@ -323,34 +329,30 @@ pub unsafe extern "C" fn furtherest_point(
                                 );
                                 j += 1;
                             }
-                            fprintf(
-                                stderr,
-                                b"}\n\0" as *const u8 as *const libc::c_char,
-                            );
+                            fprintf(stderr, b"}\n\0" as *const u8 as *const libc::c_char);
                         }
                         memcpy(
                             *argmax as *mut libc::c_void,
-                            (**((*qt).qts).offset(ii as isize)).center
-                                as *const libc::c_void,
+                            (**((*qt).qts).offset(ii as isize)).center as *const libc::c_void,
                             (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                                 .wrapping_mul(dim as libc::c_ulong),
                         );
                     } else if (distance
-                            + wmax * sqrt(dim as libc::c_double) * (*qt).width
-                                / 2 as libc::c_int as libc::c_double) < *dist_max
-                        {
+                        + wmax * sqrt(dim as libc::c_double) * (*qt).width
+                            / 2 as libc::c_int as libc::c_double)
+                        < *dist_max
+                    {
                         pruned = (0 as libc::c_int == 0) as libc::c_int;
                     }
                     if pruned == 0 {
                         if ncandidates2 >= ncandidates2_max {
-                            ncandidates2_max
-                                += (if 0.2f64 * ncandidates2_max as libc::c_double
-                                    > 10 as libc::c_int as libc::c_double
-                                {
-                                    0.2f64 * ncandidates2_max as libc::c_double
-                                } else {
-                                    10 as libc::c_int as libc::c_double
-                                }) as libc::c_int;
+                            ncandidates2_max += (if 0.2f64 * ncandidates2_max as libc::c_double
+                                > 10 as libc::c_int as libc::c_double
+                            {
+                                0.2f64 * ncandidates2_max as libc::c_double
+                            } else {
+                                10 as libc::c_int as libc::c_double
+                            }) as libc::c_int;
                             candidates2 = grealloc(
                                 candidates2 as *mut libc::c_void,
                                 (::std::mem::size_of::<QuadTree>() as libc::c_ulong)
@@ -497,8 +499,11 @@ pub unsafe extern "C" fn furtherest_point_in_list(
             distance = (*qt).total_weight;
             if !((*qt).n == 1 as libc::c_int
                 || distance
-                    + wmax * 2 as libc::c_int as libc::c_double
-                        * sqrt(dim as libc::c_double) * (*qt).width < *dist_max)
+                    + wmax
+                        * 2 as libc::c_int as libc::c_double
+                        * sqrt(dim as libc::c_double)
+                        * (*qt).width
+                    < *dist_max)
             {
                 if !((*qt).qts).is_null() {
                     ii = 0 as libc::c_int;
@@ -532,10 +537,7 @@ pub unsafe extern "C" fn furtherest_point_in_list(
                                         );
                                         j += 1;
                                     }
-                                    fprintf(
-                                        stderr,
-                                        b"}\n\0" as *const u8 as *const libc::c_char,
-                                    );
+                                    fprintf(stderr, b"}\n\0" as *const u8 as *const libc::c_char);
                                 }
                                 memcpy(
                                     *argmax as *mut libc::c_void,
@@ -544,16 +546,15 @@ pub unsafe extern "C" fn furtherest_point_in_list(
                                     (::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
                                         .wrapping_mul(dim as libc::c_ulong),
                                 );
-                            } else if distance
-                                    + wmax * sqrt(dim as libc::c_double) * (*qt).width
-                                    < *dist_max
-                                {
+                            } else if distance + wmax * sqrt(dim as libc::c_double) * (*qt).width
+                                < *dist_max
+                            {
                                 pruned = (0 as libc::c_int == 0) as libc::c_int;
                             }
                             if pruned == 0 {
                                 if ncandidates2 >= ncandidates2_max {
-                                    ncandidates2_max
-                                        += (if 0.2f64 * ncandidates2_max as libc::c_double
+                                    ncandidates2_max +=
+                                        (if 0.2f64 * ncandidates2_max as libc::c_double
                                             > 10 as libc::c_int as libc::c_double
                                         {
                                             0.2f64 * ncandidates2_max as libc::c_double
@@ -564,7 +565,8 @@ pub unsafe extern "C" fn furtherest_point_in_list(
                                         candidates2 as *mut libc::c_void,
                                         (::std::mem::size_of::<QuadTree>() as libc::c_ulong)
                                             .wrapping_mul(ncandidates2_max as libc::c_ulong),
-                                    ) as *mut QuadTree;
+                                    )
+                                        as *mut QuadTree;
                                 }
                                 let fresh8 = ncandidates2;
                                 ncandidates2 = ncandidates2 + 1;

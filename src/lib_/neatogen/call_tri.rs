@@ -1,12 +1,17 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
     fn free(_: *mut libc::c_void);
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_coordinate_form_add_entry(
         A: SparseMatrix,
         irn: libc::c_int,
@@ -96,10 +101,7 @@ pub unsafe extern "C" fn call_tri(
     i = 0 as libc::c_int;
     while i < n {
         *xv.offset(i as isize) = *x.offset((i * 2 as libc::c_int) as isize);
-        *yv
-            .offset(
-                i as isize,
-            ) = *x.offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize);
+        *yv.offset(i as isize) = *x.offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize);
         i += 1;
     }
     if n > 2 as libc::c_int {
@@ -168,10 +170,14 @@ pub unsafe extern "C" fn call_tri2(
     let mut A: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut B: SparseMatrix = 0 as *mut SparseMatrix_struct;
     let mut one: libc::c_double = 1 as libc::c_int as libc::c_double;
-    x = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
-    y = gcalloc(n as size_t, ::std::mem::size_of::<libc::c_double>() as libc::c_ulong)
-        as *mut libc::c_double;
+    x = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
+    y = gcalloc(
+        n as size_t,
+        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
+    ) as *mut libc::c_double;
     i = 0 as libc::c_int;
     while i < n {
         *x.offset(i as isize) = *xx.offset((dim * i) as isize);

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -64,8 +72,8 @@ pub type RTree_t = RTree;
 pub type Branch_t = Branch;
 #[no_mangle]
 pub unsafe extern "C" fn RTreeNewNode() -> *mut Node_t {
-    let mut n: *mut Node_t = malloc(::std::mem::size_of::<Node_t>() as libc::c_ulong)
-        as *mut Node_t;
+    let mut n: *mut Node_t =
+        malloc(::std::mem::size_of::<Node_t>() as libc::c_ulong) as *mut Node_t;
     InitNode(n);
     return n;
 }
@@ -88,16 +96,16 @@ pub unsafe extern "C" fn InitBranch(mut b: *mut Branch_t) {
 #[no_mangle]
 pub unsafe extern "C" fn NodeCover(mut n: *mut Node_t) -> Rect_t {
     let mut r: Rect_t = Rect_t { boundary: [0; 4] };
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             82 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 27],
-                &[libc::c_char; 27],
-            >(b"Rect_t NodeCover(Node_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 27], &[libc::c_char; 27]>(
+                b"Rect_t NodeCover(Node_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     InitRect(&mut r);
@@ -120,10 +128,7 @@ pub unsafe extern "C" fn NodeCover(mut n: *mut Node_t) -> Rect_t {
     return r;
 }
 #[no_mangle]
-pub unsafe extern "C" fn PickBranch(
-    mut r: *mut Rect_t,
-    mut n: *mut Node_t,
-) -> libc::c_int {
+pub unsafe extern "C" fn PickBranch(mut r: *mut Rect_t, mut n: *mut Node_t) -> libc::c_int {
     let mut rr: *mut Rect_t = 0 as *mut Rect_t;
     let mut flag: libc::c_int = 1 as libc::c_int;
     let mut increase: libc::c_int = 0 as libc::c_int;
@@ -131,16 +136,16 @@ pub unsafe extern "C" fn PickBranch(
     let mut area: libc::c_int = 0 as libc::c_int;
     let mut bestArea: libc::c_int = 0 as libc::c_int;
     let mut best: libc::c_int = 0 as libc::c_int;
-    if !r.is_null() && !n.is_null() {} else {
+    if !r.is_null() && !n.is_null() {
+    } else {
         __assert_fail(
             b"r && n\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             108 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 35],
-                &[libc::c_char; 35],
-            >(b"int PickBranch(Rect_t *, Node_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 35], &[libc::c_char; 35]>(
+                b"int PickBranch(Rect_t *, Node_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut i: libc::c_int = 0 as libc::c_int;
@@ -150,8 +155,7 @@ pub unsafe extern "C" fn PickBranch(
             rr = &mut (*((*n).branch).as_mut_ptr().offset(i as isize)).rect;
             area = RectArea(rr) as libc::c_int;
             rect = CombineRect(r, rr);
-            increase = (RectArea(&mut rect)).wrapping_sub(area as libc::c_uint)
-                as libc::c_int;
+            increase = (RectArea(&mut rect)).wrapping_sub(area as libc::c_uint) as libc::c_int;
             if increase < bestIncr || flag != 0 {
                 best = i;
                 bestArea = area;
@@ -174,28 +178,28 @@ pub unsafe extern "C" fn AddBranch(
     mut n: *mut Node_t,
     mut new: *mut *mut Node_t,
 ) -> libc::c_int {
-    if !b.is_null() {} else {
+    if !b.is_null() {
+    } else {
         __assert_fail(
             b"b\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             148 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !n.is_null() {} else {
+    if !n.is_null() {
+    } else {
         __assert_fail(
             b"n\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             149 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 58],
-                &[libc::c_char; 58],
-            >(b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0",
+            ))
+            .as_ptr(),
         );
     }
     if (*n).count < 64 as libc::c_int {
@@ -211,30 +215,30 @@ pub unsafe extern "C" fn AddBranch(
                 i = i.wrapping_add(1);
             }
         }
-        if i < 64 as libc::c_int as libc::c_ulong {} else {
+        if i < 64 as libc::c_int as libc::c_ulong {
+        } else {
             __assert_fail(
                 b"i < NODECARD\0" as *const u8 as *const libc::c_char,
                 b"node.c\0" as *const u8 as *const libc::c_char,
                 160 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 58],
-                    &[libc::c_char; 58],
-                >(b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                    b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0",
+                ))
+                .as_ptr(),
             );
         }
         return 0 as libc::c_int;
     } else {
-        if !new.is_null() {} else {
+        if !new.is_null() {
+        } else {
             __assert_fail(
                 b"new\0" as *const u8 as *const libc::c_char,
                 b"node.c\0" as *const u8 as *const libc::c_char,
                 163 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 58],
-                    &[libc::c_char; 58],
-                >(b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 58], &[libc::c_char; 58]>(
+                    b"int AddBranch(RTree_t *, Branch_t *, Node_t *, Node_t **)\0",
+                ))
+                .as_ptr(),
             );
         }
         SplitNode(rtp, n, b, new);
@@ -243,28 +247,28 @@ pub unsafe extern "C" fn AddBranch(
 }
 #[no_mangle]
 pub unsafe extern "C" fn DisconBranch(mut n: *mut Node_t, mut i: libc::c_int) {
-    if !n.is_null() && i >= 0 as libc::c_int && i < 64 as libc::c_int {} else {
+    if !n.is_null() && i >= 0 as libc::c_int && i < 64 as libc::c_int {
+    } else {
         __assert_fail(
             b"n && i >= 0 && i < NODECARD\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             173 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 33],
-                &[libc::c_char; 33],
-            >(b"void DisconBranch(Node_t *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 33], &[libc::c_char; 33]>(
+                b"void DisconBranch(Node_t *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if !((*n).branch[i as usize].child).is_null() {} else {
+    if !((*n).branch[i as usize].child).is_null() {
+    } else {
         __assert_fail(
             b"n->branch[i].child\0" as *const u8 as *const libc::c_char,
             b"node.c\0" as *const u8 as *const libc::c_char,
             174 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 33],
-                &[libc::c_char; 33],
-            >(b"void DisconBranch(Node_t *, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 33], &[libc::c_char; 33]>(
+                b"void DisconBranch(Node_t *, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     InitBranch(&mut *((*n).branch).as_mut_ptr().offset(i as isize));

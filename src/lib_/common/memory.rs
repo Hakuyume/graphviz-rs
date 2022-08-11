@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -11,11 +19,7 @@ extern "C" {
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
 }
 pub type size_t = libc::c_ulong;
 pub type __off_t = libc::c_long;
@@ -75,13 +79,15 @@ pub unsafe extern "C" fn zrealloc(
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, size.wrapping_mul(elt));
     if (p.is_null() && size != 0) as libc::c_int as libc::c_long != 0 {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     if osize < size {
         memset(
-            (p as *mut libc::c_char).offset(osize.wrapping_mul(elt) as isize)
-                as *mut libc::c_void,
+            (p as *mut libc::c_char).offset(osize.wrapping_mul(elt) as isize) as *mut libc::c_void,
             '\0' as i32,
             size.wrapping_sub(osize).wrapping_mul(elt),
         );
@@ -89,16 +95,17 @@ pub unsafe extern "C" fn zrealloc(
     return p;
 }
 #[no_mangle]
-pub unsafe extern "C" fn gcalloc(
-    mut nmemb: size_t,
-    mut size: size_t,
-) -> *mut libc::c_void {
+pub unsafe extern "C" fn gcalloc(mut nmemb: size_t, mut size: size_t) -> *mut libc::c_void {
     let mut rv: *mut libc::c_char = calloc(nmemb, size) as *mut libc::c_char;
     if (nmemb > 0 as libc::c_int as libc::c_ulong
-        && size > 0 as libc::c_int as libc::c_ulong && rv.is_null()) as libc::c_int
-        as libc::c_long != 0
+        && size > 0 as libc::c_int as libc::c_ulong
+        && rv.is_null()) as libc::c_int as libc::c_long
+        != 0
     {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return rv as *mut libc::c_void;
@@ -110,10 +117,11 @@ pub unsafe extern "C" fn gmalloc(mut nbytes: size_t) -> *mut libc::c_void {
         return 0 as *mut libc::c_void;
     }
     rv = malloc(nbytes) as *mut libc::c_char;
-    if (rv == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long
-        != 0
-    {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+    if (rv == 0 as *mut libc::c_void as *mut libc::c_char) as libc::c_int as libc::c_long != 0 {
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return rv as *mut libc::c_void;
@@ -125,7 +133,10 @@ pub unsafe extern "C" fn grealloc(
 ) -> *mut libc::c_void {
     let mut p: *mut libc::c_void = realloc(ptr, size);
     if (p.is_null() && size != 0) as libc::c_int as libc::c_long != 0 {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
         graphviz_exit(1 as libc::c_int);
     }
     return p;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -24,18 +32,10 @@ extern "C" {
     ) -> !;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
@@ -60,11 +60,8 @@ extern "C" {
     );
     fn agget(obj: *mut libc::c_void, name: *mut libc::c_char) -> *mut libc::c_char;
     fn agxget(obj: *mut libc::c_void, sym: *mut Agsym_t) -> *mut libc::c_char;
-    fn agxset(
-        obj: *mut libc::c_void,
-        sym: *mut Agsym_t,
-        value: *const libc::c_char,
-    ) -> libc::c_int;
+    fn agxset(obj: *mut libc::c_void, sym: *mut Agsym_t, value: *const libc::c_char)
+        -> libc::c_int;
     fn agfstsubg(g: *mut Agraph_t) -> *mut Agraph_t;
     fn agnxtsubg(subg: *mut Agraph_t) -> *mut Agraph_t;
     fn agnnodes(g: *mut Agraph_t) -> libc::c_int;
@@ -197,13 +194,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -228,16 +220,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -257,10 +243,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -268,16 +253,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -358,17 +336,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -401,26 +373,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -429,29 +393,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -459,8 +415,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -609,53 +565,52 @@ unsafe extern "C" fn color_string(
             b"0\0" as *const u8 as *const libc::c_char,
             b"DotIO.c\0" as *const u8 as *const libc::c_char,
             33 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 46],
-                &[libc::c_char; 46],
-            >(b"void color_string(int, char *, int, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                b"void color_string(int, char *, int, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if slen_0 >= 3 as libc::c_int {} else {
+    if slen_0 >= 3 as libc::c_int {
+    } else {
         __assert_fail(
             b"slen >= 3\0" as *const u8 as *const libc::c_char,
             b"DotIO.c\0" as *const u8 as *const libc::c_char,
             35 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 46],
-                &[libc::c_char; 46],
-            >(b"void color_string(int, char *, int, double *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 46], &[libc::c_char; 46]>(
+                b"void color_string(int, char *, int, double *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if dim == 3 as libc::c_int {
         sprintf(
             buf,
             b"#%02x%02x%02x\0" as *const u8 as *const libc::c_char,
-            if ((*color.offset(0 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(0 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
-            if ((*color.offset(1 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(1 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(1 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(1 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
-            if ((*color.offset(2 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(2 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(2 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(2 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
@@ -664,30 +619,30 @@ unsafe extern "C" fn color_string(
         sprintf(
             buf,
             b"#%02x%02x%02x\0" as *const u8 as *const libc::c_char,
-            if ((*color.offset(0 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(0 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
-            if ((*color.offset(0 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(0 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
-            if ((*color.offset(0 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(0 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
@@ -696,22 +651,22 @@ unsafe extern "C" fn color_string(
         sprintf(
             buf,
             b"#%02x%02x%02x\0" as *const u8 as *const libc::c_char,
-            if ((*color.offset(0 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(0 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(0 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
             0 as libc::c_int,
-            if ((*color.offset(1 as libc::c_int as isize)
-                * 255 as libc::c_int as libc::c_double) as libc::c_uint)
+            if ((*color.offset(1 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                as libc::c_uint)
                 < 255 as libc::c_int as libc::c_uint
             {
-                (*color.offset(1 as libc::c_int as isize)
-                    * 255 as libc::c_int as libc::c_double) as libc::c_uint
+                (*color.offset(1 as libc::c_int as isize) * 255 as libc::c_int as libc::c_double)
+                    as libc::c_uint
             } else {
                 255 as libc::c_int as libc::c_uint
             },
@@ -756,7 +711,7 @@ pub unsafe extern "C" fn attach_edge_colors(
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node)
+            .node)
                 .base
                 .data as *mut Agnodeinfo_t))
                 .id;
@@ -866,17 +821,14 @@ pub unsafe extern "C" fn SparseMatrix_import_dot(
         e = agfstout(g, n);
         while !e.is_null() {
             *I.offset(i as isize) = row;
-            *J
-                .offset(
-                    i as isize,
-                ) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+            *J.offset(i as isize) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                 == 2 as libc::c_int
             {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node)
+            .node)
                 .base
                 .data as *mut Agnodeinfo_t))
                 .id as libc::c_int;
@@ -932,67 +884,51 @@ pub unsafe extern "C" fn SparseMatrix_import_dot(
                 n as *mut libc::c_void,
                 b"width\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             ))
-                .is_null()
+            .is_null()
                 && !(agget(
                     n as *mut libc::c_void,
                     b"height\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 ))
-                    .is_null()
+                .is_null()
             {
                 sscanf(
                     agget(
                         n as *mut libc::c_void,
-                        b"width\0" as *const u8 as *const libc::c_char
-                            as *mut libc::c_char,
+                        b"width\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     ),
                     b"%lf\0" as *const u8 as *const libc::c_char,
                     &mut sz as *mut libc::c_double,
                 );
-                *(*label_sizes)
-                    .offset(
-                        (i * 2 as libc::c_int) as isize,
-                    ) = 72 as libc::c_int as libc::c_double * sz * 0.5f64
-                    + padding * 0.5f64;
+                *(*label_sizes).offset((i * 2 as libc::c_int) as isize) =
+                    72 as libc::c_int as libc::c_double * sz * 0.5f64 + padding * 0.5f64;
                 sscanf(
                     agget(
                         n as *mut libc::c_void,
-                        b"height\0" as *const u8 as *const libc::c_char
-                            as *mut libc::c_char,
+                        b"height\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     ),
                     b"%lf\0" as *const u8 as *const libc::c_char,
                     &mut sz as *mut libc::c_double,
                 );
-                *(*label_sizes)
-                    .offset(
-                        (i * 2 as libc::c_int + 1 as libc::c_int) as isize,
-                    ) = 72 as libc::c_int as libc::c_double * sz * 0.5f64
-                    + padding * 0.5f64;
+                *(*label_sizes).offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+                    72 as libc::c_int as libc::c_double * sz * 0.5f64 + padding * 0.5f64;
             } else {
-                *(*label_sizes)
-                    .offset(
-                        (i * 2 as libc::c_int) as isize,
-                    ) = (4 as libc::c_int * 72 as libc::c_int) as libc::c_double
-                    * 0.75f64 * 0.5f64;
-                *(*label_sizes)
-                    .offset(
-                        (i * 2 as libc::c_int + 1 as libc::c_int) as isize,
-                    ) = (4 as libc::c_int * 72 as libc::c_int) as libc::c_double * 0.5f64
-                    * 0.5f64;
+                *(*label_sizes).offset((i * 2 as libc::c_int) as isize) =
+                    (4 as libc::c_int * 72 as libc::c_int) as libc::c_double * 0.75f64 * 0.5f64;
+                *(*label_sizes).offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+                    (4 as libc::c_int * 72 as libc::c_int) as libc::c_double * 0.5f64 * 0.5f64;
             }
         }
         n = agnxtnode(g, n);
     }
-    if !x.is_null()
-        && {
-            psym = agattr(
-                g,
-                1 as libc::c_int,
-                b"pos\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
-                0 as *const libc::c_char,
-            );
-            !psym.is_null()
-        }
-    {
+    if !x.is_null() && {
+        psym = agattr(
+            g,
+            1 as libc::c_int,
+            b"pos\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            0 as *const libc::c_char,
+        );
+        !psym.is_null()
+    } {
         let mut has_positions: bool = 1 as libc::c_int != 0;
         let mut pval: *mut libc::c_char = 0 as *mut libc::c_char;
         if (*x).is_null() {
@@ -1001,7 +937,8 @@ pub unsafe extern "C" fn SparseMatrix_import_dot(
                     .wrapping_mul(dim as libc::c_ulong)
                     .wrapping_mul(nnodes as libc::c_ulong),
             ) as *mut libc::c_double;
-            if !(*x).is_null() {} else {
+            if !(*x).is_null() {
+            } else {
                 __assert_fail(
                     b"*x\0" as *const u8 as *const libc::c_char,
                     b"DotIO.c\0" as *const u8 as *const libc::c_char,
@@ -1124,8 +1061,7 @@ pub unsafe extern "C" fn SparseMatrix_import_dot(
                 has_positions = 0 as libc::c_int != 0;
                 agerr(
                     AGERR,
-                    b"Node \"%s\" lacks position info\0" as *const u8
-                        as *const libc::c_char,
+                    b"Node \"%s\" lacks position info\0" as *const u8 as *const libc::c_char,
                     agnameof(n as *mut libc::c_void),
                 );
             }
@@ -1253,8 +1189,8 @@ unsafe extern "C" fn hex2int(mut h: libc::c_char) -> libc::c_int {
 }
 unsafe extern "C" fn hexcol2rgb(mut h: *mut libc::c_char) -> libc::c_float {
     return ((hex2int(*h.offset(0 as libc::c_int as isize)) * 16 as libc::c_int
-        + hex2int(*h.offset(1 as libc::c_int as isize))) as libc::c_double / 255.0f64)
-        as libc::c_float;
+        + hex2int(*h.offset(1 as libc::c_int as isize))) as libc::c_double
+        / 255.0f64) as libc::c_float;
 }
 #[no_mangle]
 pub unsafe extern "C" fn Dot_SetClusterColor(
@@ -1346,22 +1282,22 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             pal = &mut *(*palette_blue_to_yellow
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         3 => {
             pal = &mut *(*palette_white_to_red
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         4 => {
             pal = &mut *(*palette_grey_to_red
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         10 => {
             pal = &mut *(*palette_grey.as_mut_ptr().offset(0 as libc::c_int as isize))
@@ -1369,37 +1305,41 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
                 .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         1 => {
-            pal = &mut *(*palette_pastel.as_mut_ptr().offset(0 as libc::c_int as isize))
+            pal = &mut *(*palette_pastel
                 .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+                .offset(0 as libc::c_int as isize))
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         6 => {
             fprintf(stderr, b" HERE!\n\0" as *const u8 as *const libc::c_char);
             pal = &mut *(*palette_sequential_singlehue_red
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         9 => {
             fprintf(stderr, b" HERE!\n\0" as *const u8 as *const libc::c_char);
             pal = &mut *(*palette_sequential_singlehue_red_lighter
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         5 => {
-            pal = &mut *(*palette_primary.as_mut_ptr().offset(0 as libc::c_int as isize))
+            pal = &mut *(*palette_primary
                 .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+                .offset(0 as libc::c_int as isize))
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         8 => {
             pal = &mut *(*palette_adam_blend
                 .as_mut_ptr()
                 .offset(0 as libc::c_int as isize))
-                .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
         7 => {
             pal = &mut *(*palette_adam.as_mut_ptr().offset(0 as libc::c_int as isize))
@@ -1411,9 +1351,11 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             pal = 0 as *mut libc::c_float;
         }
         _ => {
-            pal = &mut *(*palette_pastel.as_mut_ptr().offset(0 as libc::c_int as isize))
+            pal = &mut *(*palette_pastel
                 .as_mut_ptr()
-                .offset(0 as libc::c_int as isize) as *mut libc::c_float;
+                .offset(0 as libc::c_int as isize))
+            .as_mut_ptr()
+            .offset(0 as libc::c_int as isize) as *mut libc::c_float;
         }
     }
     if g.is_null() {
@@ -1467,17 +1409,14 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
         e = agfstout(g, n);
         while !e.is_null() {
             *I.offset(i as isize) = row;
-            *J
-                .offset(
-                    i as isize,
-                ) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+            *J.offset(i as isize) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                 == 2 as libc::c_int
             {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node)
+            .node)
                 .base
                 .data as *mut Agnodeinfo_t))
                 .id as libc::c_int;
@@ -1539,8 +1478,8 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
                     if *(*clusters).offset(i as isize) != 0 {
                         fprintf(
                             stderr,
-                            b"Warning: node %s appears in multiple clusters.\n\0"
-                                as *const u8 as *const libc::c_char,
+                            b"Warning: node %s appears in multiple clusters.\n\0" as *const u8
+                                as *const libc::c_char,
                             agnameof(n as *mut libc::c_void),
                         );
                     } else {
@@ -1710,12 +1649,12 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             n as *mut libc::c_void,
             b"width\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         ))
-            .is_null()
+        .is_null()
             && !(agget(
                 n as *mut libc::c_void,
                 b"height\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             ))
-                .is_null()
+            .is_null()
         {
             sscanf(
                 agget(
@@ -1725,10 +1664,8 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
                 b"%lf\0" as *const u8 as *const libc::c_char,
                 &mut sz as *mut libc::c_double,
             );
-            *(*label_sizes)
-                .offset(
-                    (i * 2 as libc::c_int) as isize,
-                ) = 72 as libc::c_int as libc::c_double * (sz * 0.5f64);
+            *(*label_sizes).offset((i * 2 as libc::c_int) as isize) =
+                72 as libc::c_int as libc::c_double * (sz * 0.5f64);
             sscanf(
                 agget(
                     n as *mut libc::c_void,
@@ -1737,33 +1674,25 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
                 b"%lf\0" as *const u8 as *const libc::c_char,
                 &mut sz as *mut libc::c_double,
             );
-            *(*label_sizes)
-                .offset(
-                    (i * 2 as libc::c_int + 1 as libc::c_int) as isize,
-                ) = 72 as libc::c_int as libc::c_double * (sz * 0.5f64);
+            *(*label_sizes).offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+                72 as libc::c_int as libc::c_double * (sz * 0.5f64);
         } else {
-            *(*label_sizes)
-                .offset(
-                    (i * 2 as libc::c_int) as isize,
-                ) = 72 as libc::c_int as libc::c_double
+            *(*label_sizes).offset((i * 2 as libc::c_int) as isize) = 72 as libc::c_int
+                as libc::c_double
                 * (0.75f64 / 2 as libc::c_int as libc::c_double);
-            *(*label_sizes)
-                .offset(
-                    (i * 2 as libc::c_int + 1 as libc::c_int) as isize,
-                ) = 72 as libc::c_int as libc::c_double
-                * (0.5f64 * 2 as libc::c_int as libc::c_double);
+            *(*label_sizes).offset((i * 2 as libc::c_int + 1 as libc::c_int) as isize) =
+                72 as libc::c_int as libc::c_double * (0.5f64 * 2 as libc::c_int as libc::c_double);
         }
         if !(agget(
             n as *mut libc::c_void,
             b"fontsize\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         ))
-            .is_null()
+        .is_null()
         {
             sscanf(
                 agget(
                     n as *mut libc::c_void,
-                    b"fontsize\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char,
+                    b"fontsize\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 ),
                 b"%f\0" as *const u8 as *const libc::c_char,
                 &mut ff as *mut libc::c_float,
@@ -1776,7 +1705,7 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             n as *mut libc::c_void,
             b"label\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
         ))
-            .is_null()
+        .is_null()
             && strcmp(
                 agget(
                     n as *mut libc::c_void,
@@ -1815,80 +1744,59 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             j = (j - MIN_GRPS) % max_color;
         }
         if !pal.is_null() {
-            *(*rgb_r)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = *pal.offset((3 as libc::c_int * j + 0 as libc::c_int) as isize);
-            *(*rgb_g)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = *pal.offset((3 as libc::c_int * j + 1 as libc::c_int) as isize);
-            *(*rgb_b)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = *pal.offset((3 as libc::c_int * j + 2 as libc::c_int) as isize);
+            *(*rgb_r).offset(*(*clusters).offset(i as isize) as isize) =
+                *pal.offset((3 as libc::c_int * j + 0 as libc::c_int) as isize);
+            *(*rgb_g).offset(*(*clusters).offset(i as isize) as isize) =
+                *pal.offset((3 as libc::c_int * j + 1 as libc::c_int) as isize);
+            *(*rgb_b).offset(*(*clusters).offset(i as isize) as isize) =
+                *pal.offset((3 as libc::c_int * j + 2 as libc::c_int) as isize);
         }
-        if !noclusterinfo && !clust_clr_sym.is_null()
+        if !noclusterinfo
+            && !clust_clr_sym.is_null()
             && colorxlate(
                 agxget(n as *mut libc::c_void, clust_clr_sym),
                 &mut color,
                 RGBA_DOUBLE,
             ) == 0 as libc::c_int
         {
-            *(*rgb_r)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = color.u.RGBA[0 as libc::c_int as usize] as libc::c_float;
-            *(*rgb_g)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = color.u.RGBA[1 as libc::c_int as usize] as libc::c_float;
-            *(*rgb_b)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = color.u.RGBA[2 as libc::c_int as usize] as libc::c_float;
+            *(*rgb_r).offset(*(*clusters).offset(i as isize) as isize) =
+                color.u.RGBA[0 as libc::c_int as usize] as libc::c_float;
+            *(*rgb_g).offset(*(*clusters).offset(i as isize) as isize) =
+                color.u.RGBA[1 as libc::c_int as usize] as libc::c_float;
+            *(*rgb_b).offset(*(*clusters).offset(i as isize) as isize) =
+                color.u.RGBA[2 as libc::c_int as usize] as libc::c_float;
         }
         if !noclusterinfo
             && !(agget(
                 n as *mut libc::c_void,
                 b"cluster\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             ))
-                .is_null()
+            .is_null()
             && !(agget(
                 n as *mut libc::c_void,
-                b"clustercolor\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                b"clustercolor\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             ))
-                .is_null()
-            && strlen(
-                agget(
-                    n as *mut libc::c_void,
-                    b"clustercolor\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char,
-                ),
-            ) >= 7 as libc::c_int as libc::c_ulong && !pal.is_null()
+            .is_null()
+            && strlen(agget(
+                n as *mut libc::c_void,
+                b"clustercolor\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            )) >= 7 as libc::c_int as libc::c_ulong
+            && !pal.is_null()
         {
             let mut cc: [libc::c_char; 10] = [0; 10];
             strcpy(
                 cc.as_mut_ptr(),
                 agget(
                     n as *mut libc::c_void,
-                    b"clustercolor\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char,
+                    b"clustercolor\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 ),
             );
-            *(*rgb_r)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = hexcol2rgb(cc.as_mut_ptr().offset(1 as libc::c_int as isize));
-            *(*rgb_g)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = hexcol2rgb(cc.as_mut_ptr().offset(3 as libc::c_int as isize));
-            *(*rgb_b)
-                .offset(
-                    *(*clusters).offset(i as isize) as isize,
-                ) = hexcol2rgb(cc.as_mut_ptr().offset(5 as libc::c_int as isize));
+            *(*rgb_r).offset(*(*clusters).offset(i as isize) as isize) =
+                hexcol2rgb(cc.as_mut_ptr().offset(1 as libc::c_int as isize));
+            *(*rgb_g).offset(*(*clusters).offset(i as isize) as isize) =
+                hexcol2rgb(cc.as_mut_ptr().offset(3 as libc::c_int as isize));
+            *(*rgb_b).offset(*(*clusters).offset(i as isize) as isize) =
+                hexcol2rgb(cc.as_mut_ptr().offset(5 as libc::c_int as isize));
         }
         n = agnxtnode(g, n);
     }
@@ -1908,7 +1816,7 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
                 n as *mut libc::c_void,
                 b"pos\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
             ))
-                .is_null()
+            .is_null()
             {
                 has_position = 1 as libc::c_int != 0;
                 sscanf(
@@ -1925,15 +1833,13 @@ pub unsafe extern "C" fn Import_coord_clusters_from_dot(
             } else {
                 fprintf(
                     stderr,
-                    b"WARNING: pos field missing for node %d, set to origin\n\0"
-                        as *const u8 as *const libc::c_char,
+                    b"WARNING: pos field missing for node %d, set to origin\n\0" as *const u8
+                        as *const libc::c_char,
                     i,
                 );
                 *(*x).offset((i * dim) as isize) = 0 as libc::c_int as libc::c_double;
-                *(*x)
-                    .offset(
-                        (i * dim + 1 as libc::c_int) as isize,
-                    ) = 0 as libc::c_int as libc::c_double;
+                *(*x).offset((i * dim + 1 as libc::c_int) as isize) =
+                    0 as libc::c_int as libc::c_double;
             }
             n = agnxtnode(g, n);
         }
@@ -2014,17 +1920,14 @@ pub unsafe extern "C" fn attached_clustering(
         e = agfstout(g, n);
         while !e.is_null() {
             *I.offset(i as isize) = row;
-            *J
-                .offset(
-                    i as isize,
-                ) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
+            *J.offset(i as isize) = (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
                 == 2 as libc::c_int
             {
                 e
             } else {
                 e.offset(-(1 as libc::c_int as isize))
             })
-                .node)
+            .node)
                 .base
                 .data as *mut Agnodeinfo_t))
                 .id as libc::c_int;
@@ -2098,11 +2001,10 @@ pub unsafe extern "C" fn attached_clustering(
             b"0\0" as *const u8 as *const libc::c_char,
             b"DotIO.c\0" as *const u8 as *const libc::c_char,
             674 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 47],
-                &[libc::c_char; 47],
-            >(b"void attached_clustering(Agraph_t *, int, int)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 47], &[libc::c_char; 47]>(
+                b"void attached_clustering(Agraph_t *, int, int)\0",
+            ))
+            .as_ptr(),
         );
     }
     i = 0 as libc::c_int;

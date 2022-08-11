@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -238,10 +246,7 @@ unsafe extern "C" fn genSegments(
         j += 1;
     }
 }
-unsafe extern "C" fn generateRandomOrdering(
-    mut n: libc::c_int,
-    mut permute: *mut libc::c_int,
-) {
+unsafe extern "C" fn generateRandomOrdering(mut n: libc::c_int, mut permute: *mut libc::c_int) {
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut tmp: libc::c_int = 0;
@@ -252,8 +257,8 @@ unsafe extern "C" fn generateRandomOrdering(
     }
     i = 1 as libc::c_int;
     while i <= n {
-        j = (i as libc::c_double
-            + drand48() * (n + 1 as libc::c_int - i) as libc::c_double) as libc::c_int;
+        j = (i as libc::c_double + drand48() * (n + 1 as libc::c_int - i) as libc::c_double)
+            as libc::c_int;
         if j != i {
             tmp = *permute.offset(i as isize);
             *permute.offset(i as isize) = *permute.offset(j as isize);
@@ -262,10 +267,7 @@ unsafe extern "C" fn generateRandomOrdering(
         i += 1;
     }
 }
-unsafe extern "C" fn inside_polygon(
-    mut t: *mut trap_t,
-    mut seg: *mut segment_t,
-) -> bool {
+unsafe extern "C" fn inside_polygon(mut t: *mut trap_t, mut seg: *mut segment_t) -> bool {
     let mut rseg: libc::c_int = (*t).rseg;
     if (*t).state == 2 as libc::c_int {
         return 0 as libc::c_int != 0;
@@ -276,17 +278,14 @@ unsafe extern "C" fn inside_polygon(
     if (*t).u0 <= 0 as libc::c_int && (*t).u1 <= 0 as libc::c_int
         || (*t).d0 <= 0 as libc::c_int && (*t).d1 <= 0 as libc::c_int
     {
-        return if (*seg.offset(rseg as isize)).v1.y
-            > (*seg.offset(rseg as isize)).v0.y + 1.0e-7f64
+        return if (*seg.offset(rseg as isize)).v1.y > (*seg.offset(rseg as isize)).v0.y + 1.0e-7f64
         {
             1 as libc::c_int
-        } else if (*seg.offset(rseg as isize)).v1.y
-                < (*seg.offset(rseg as isize)).v0.y - 1.0e-7f64
-            {
+        } else if (*seg.offset(rseg as isize)).v1.y < (*seg.offset(rseg as isize)).v0.y - 1.0e-7f64
+        {
             0 as libc::c_int
         } else {
-            ((*seg.offset(rseg as isize)).v1.x > (*seg.offset(rseg as isize)).v0.x)
-                as libc::c_int
+            ((*seg.offset(rseg as isize)).v1.x > (*seg.offset(rseg as isize)).v0.x) as libc::c_int
         } != 0;
     }
     return 0 as libc::c_int != 0;
@@ -303,10 +302,10 @@ unsafe extern "C" fn get_angle(
     v1.x = (*vp1).x - (*vp0).x;
     v1.y = (*vp1).y - (*vp0).y;
     if v0.x * v1.y - v1.x * v0.y >= 0 as libc::c_int as libc::c_double {
-        return (v0.x * v1.x + v0.y * v1.y) / hypot(v0.x, v0.y) / hypot(v1.x, v1.y)
+        return (v0.x * v1.x + v0.y * v1.y) / hypot(v0.x, v0.y) / hypot(v1.x, v1.y);
     } else {
-        return -1.0f64 * (v0.x * v1.x + v0.y * v1.y) / hypot(v0.x, v0.y)
-            / hypot(v1.x, v1.y) - 2 as libc::c_int as libc::c_double
+        return -1.0f64 * (v0.x * v1.x + v0.y * v1.y) / hypot(v0.x, v0.y) / hypot(v1.x, v1.y)
+            - 2 as libc::c_int as libc::c_double;
     };
 }
 unsafe extern "C" fn get_vertex_positions(
@@ -330,9 +329,7 @@ unsafe extern "C" fn get_vertex_positions(
         if !((*vp0).vnext[i as usize] <= 0 as libc::c_int) {
             temp = get_angle(
                 &mut (*vp0).pt,
-                &mut (*vert
-                    .offset(*((*vp0).vnext).as_mut_ptr().offset(i as isize) as isize))
-                    .pt,
+                &mut (*vert.offset(*((*vp0).vnext).as_mut_ptr().offset(i as isize) as isize)).pt,
                 &mut (*vp1).pt,
             );
             if temp > angle {
@@ -349,9 +346,7 @@ unsafe extern "C" fn get_vertex_positions(
         if !((*vp1).vnext[i as usize] <= 0 as libc::c_int) {
             temp = get_angle(
                 &mut (*vp1).pt,
-                &mut (*vert
-                    .offset(*((*vp1).vnext).as_mut_ptr().offset(i as isize) as isize))
-                    .pt,
+                &mut (*vert.offset(*((*vp1).vnext).as_mut_ptr().offset(i as isize) as isize)).pt,
                 &mut (*vp0).pt,
             );
             if temp > angle {
@@ -403,9 +398,7 @@ unsafe extern "C" fn make_new_monotone_poly(
     nf1 = (*vp1).nextfree;
     (*vp0).vnext[ip as usize] = v1;
     (*vp0).vpos[nf0 as usize] = i;
-    (*vp0)
-        .vnext[nf0
-        as usize] = (*mchain.offset((*mchain.offset(i as isize)).next as isize)).vnum;
+    (*vp0).vnext[nf0 as usize] = (*mchain.offset((*mchain.offset(i as isize)).next as isize)).vnum;
     (*vp1).vpos[nf1 as usize] = j;
     (*vp1).vnext[nf1 as usize] = v0;
     let ref mut fresh1 = (*vp0).nextfree;
@@ -438,32 +431,20 @@ unsafe extern "C" fn traverse_polygon(
     t = &mut *tr.offset(trnum as isize) as *mut trap_t;
     *visited.offset(trnum as isize) = (0 as libc::c_int == 0) as libc::c_int;
     if (*t).hi.y > (*t).lo.y + 1.0e-7f64
-        && fabs(
-            (*seg.offset((*t).lseg as isize)).v0.x
-                - (*seg.offset((*t).lseg as isize)).v1.x,
-        ) <= 1.0e-7f64
-        && fabs(
-            (*seg.offset((*t).rseg as isize)).v0.x
-                - (*seg.offset((*t).rseg as isize)).v1.x,
-        ) <= 1.0e-7f64
+        && fabs((*seg.offset((*t).lseg as isize)).v0.x - (*seg.offset((*t).lseg as isize)).v1.x)
+            <= 1.0e-7f64
+        && fabs((*seg.offset((*t).rseg as isize)).v0.x - (*seg.offset((*t).rseg as isize)).v1.x)
+            <= 1.0e-7f64
     {
         if flip != 0 {
             (*decomp.offset(size as isize)).LL.x = (*t).lo.y;
-            (*decomp.offset(size as isize))
-                .LL
-                .y = -(*seg.offset((*t).rseg as isize)).v0.x;
+            (*decomp.offset(size as isize)).LL.y = -(*seg.offset((*t).rseg as isize)).v0.x;
             (*decomp.offset(size as isize)).UR.x = (*t).hi.y;
-            (*decomp.offset(size as isize))
-                .UR
-                .y = -(*seg.offset((*t).lseg as isize)).v0.x;
+            (*decomp.offset(size as isize)).UR.y = -(*seg.offset((*t).lseg as isize)).v0.x;
         } else {
-            (*decomp.offset(size as isize))
-                .LL
-                .x = (*seg.offset((*t).lseg as isize)).v0.x;
+            (*decomp.offset(size as isize)).LL.x = (*seg.offset((*t).lseg as isize)).v0.x;
             (*decomp.offset(size as isize)).LL.y = (*t).lo.y;
-            (*decomp.offset(size as isize))
-                .UR
-                .x = (*seg.offset((*t).rseg as isize)).v0.x;
+            (*decomp.offset(size as isize)).UR.x = (*seg.offset((*t).rseg as isize)).v0.x;
             (*decomp.offset(size as isize)).UR.y = (*t).hi.y;
         }
         size += 1;
@@ -790,8 +771,8 @@ unsafe extern "C" fn traverse_polygon(
                 );
             }
         } else if fabs((*t).lo.y - (*seg.offset((*t).lseg as isize)).v1.y) <= 1.0e-7f64
-                && fabs((*t).lo.x - (*seg.offset((*t).lseg as isize)).v1.x) <= 1.0e-7f64
-            {
+            && fabs((*t).lo.x - (*seg.offset((*t).lseg as isize)).v1.x) <= 1.0e-7f64
+        {
             v0 = (*tr.offset((*t).u0 as isize)).rseg;
             v1 = (*seg.offset((*t).lseg as isize)).next;
             if dir == 1 as libc::c_int && (*t).u0 == from {
@@ -1214,11 +1195,10 @@ unsafe extern "C" fn traverse_polygon(
                 }
             }
         } else if fabs((*t).hi.y - (*seg.offset((*t).lseg as isize)).v0.y) <= 1.0e-7f64
-                && fabs((*t).hi.x - (*seg.offset((*t).lseg as isize)).v0.x) <= 1.0e-7f64
-                && (fabs((*t).lo.y - (*seg.offset((*t).rseg as isize)).v0.y) <= 1.0e-7f64
-                    && fabs((*t).lo.x - (*seg.offset((*t).rseg as isize)).v0.x)
-                        <= 1.0e-7f64)
-            {
+            && fabs((*t).hi.x - (*seg.offset((*t).lseg as isize)).v0.x) <= 1.0e-7f64
+            && (fabs((*t).lo.y - (*seg.offset((*t).rseg as isize)).v0.y) <= 1.0e-7f64
+                && fabs((*t).lo.x - (*seg.offset((*t).rseg as isize)).v0.x) <= 1.0e-7f64)
+        {
             v0 = (*t).rseg;
             v1 = (*t).lseg;
             if dir == 1 as libc::c_int {
@@ -1323,11 +1303,10 @@ unsafe extern "C" fn traverse_polygon(
                 );
             }
         } else if fabs((*t).hi.y - (*seg.offset((*t).rseg as isize)).v1.y) <= 1.0e-7f64
-                && fabs((*t).hi.x - (*seg.offset((*t).rseg as isize)).v1.x) <= 1.0e-7f64
-                && (fabs((*t).lo.y - (*seg.offset((*t).lseg as isize)).v1.y) <= 1.0e-7f64
-                    && fabs((*t).lo.x - (*seg.offset((*t).lseg as isize)).v1.x)
-                        <= 1.0e-7f64)
-            {
+            && fabs((*t).hi.x - (*seg.offset((*t).rseg as isize)).v1.x) <= 1.0e-7f64
+            && (fabs((*t).lo.y - (*seg.offset((*t).lseg as isize)).v1.y) <= 1.0e-7f64
+                && fabs((*t).lo.x - (*seg.offset((*t).lseg as isize)).v1.x) <= 1.0e-7f64)
+        {
             v0 = (*seg.offset((*t).rseg as isize)).next;
             v1 = (*seg.offset((*t).lseg as isize)).next;
             if dir == 1 as libc::c_int {
@@ -1507,8 +1486,10 @@ unsafe extern "C" fn monotonate_trapezoids(
         (nsegs + 1 as libc::c_int) as size_t,
         ::std::mem::size_of::<vertexchain_t>() as libc::c_ulong,
     ) as *mut vertexchain_t;
-    mon = gcalloc(nsegs as size_t, ::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    mon = gcalloc(
+        nsegs as size_t,
+        ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
+    ) as *mut libc::c_int;
     i = 0 as libc::c_int;
     while i < 5 as libc::c_int * nsegs + 1 as libc::c_int {
         if inside_polygon(&mut *tr.offset(i as isize), seg) {
@@ -1523,8 +1504,8 @@ unsafe extern "C" fn monotonate_trapezoids(
         (*mchain.offset(i as isize)).next = (*seg.offset(i as isize)).next;
         (*mchain.offset(i as isize)).vnum = i;
         (*vert.offset(i as isize)).pt = (*seg.offset(i as isize)).v0;
-        (*vert.offset(i as isize))
-            .vnext[0 as libc::c_int as usize] = (*seg.offset(i as isize)).next;
+        (*vert.offset(i as isize)).vnext[0 as libc::c_int as usize] =
+            (*seg.offset(i as isize)).next;
         (*vert.offset(i as isize)).vpos[0 as libc::c_int as usize] = i;
         (*vert.offset(i as isize)).nextfree = 1 as libc::c_int;
         i += 1;
@@ -1646,8 +1627,7 @@ pub unsafe extern "C" fn partition(
     }
     rs = grealloc(
         rs as *mut libc::c_void,
-        (cnt as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<boxf>() as libc::c_ulong),
+        (cnt as libc::c_ulong).wrapping_mul(::std::mem::size_of::<boxf>() as libc::c_ulong),
     ) as *mut boxf;
     free(segs as *mut libc::c_void);
     free(permute as *mut libc::c_void);

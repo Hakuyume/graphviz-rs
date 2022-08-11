@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -47,8 +55,7 @@ pub static mut lt_preloaded_symbols: [lt_symlist_t; 7] = unsafe {
     [
         {
             let mut init = lt_symlist_t {
-                name: b"gvplugin_dot_layout_LTX_library\0" as *const u8
-                    as *const libc::c_char,
+                name: b"gvplugin_dot_layout_LTX_library\0" as *const u8 as *const libc::c_char,
                 address: &gvplugin_dot_layout_LTX_library as *const gvplugin_library_t
                     as *mut gvplugin_library_t as *mut libc::c_void,
             };
@@ -56,8 +63,7 @@ pub static mut lt_preloaded_symbols: [lt_symlist_t; 7] = unsafe {
         },
         {
             let mut init = lt_symlist_t {
-                name: b"gvplugin_neato_layout_LTX_library\0" as *const u8
-                    as *const libc::c_char,
+                name: b"gvplugin_neato_layout_LTX_library\0" as *const u8 as *const libc::c_char,
                 address: &gvplugin_neato_layout_LTX_library as *const gvplugin_library_t
                     as *mut gvplugin_library_t as *mut libc::c_void,
             };
@@ -65,8 +71,7 @@ pub static mut lt_preloaded_symbols: [lt_symlist_t; 7] = unsafe {
         },
         {
             let mut init = lt_symlist_t {
-                name: b"gvplugin_pango_LTX_library\0" as *const u8
-                    as *const libc::c_char,
+                name: b"gvplugin_pango_LTX_library\0" as *const u8 as *const libc::c_char,
                 address: &gvplugin_pango_LTX_library as *const gvplugin_library_t
                     as *mut gvplugin_library_t as *mut libc::c_void,
             };

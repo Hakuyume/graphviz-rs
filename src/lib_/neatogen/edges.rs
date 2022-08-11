@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -62,7 +70,10 @@ static mut efl: Freelist = Freelist {
 };
 #[no_mangle]
 pub unsafe extern "C" fn edgeinit() {
-    freeinit(&mut efl, ::std::mem::size_of::<Edge>() as libc::c_ulong as libc::c_int);
+    freeinit(
+        &mut efl,
+        ::std::mem::size_of::<Edge>() as libc::c_ulong as libc::c_int,
+    );
     nedges = 0 as libc::c_int;
 }
 #[no_mangle]
@@ -87,8 +98,7 @@ pub unsafe extern "C" fn gvbisect(mut s1: *mut Site, mut s2: *mut Site) -> *mut 
     dy = (*s2).coord.y - (*s1).coord.y;
     adx = fabs(dx);
     ady = fabs(dy);
-    (*newedge)
-        .c = (*s1).coord.x * dx + (*s1).coord.y * dy + (dx * dx + dy * dy) * 0.5f64;
+    (*newedge).c = (*s1).coord.x * dx + (*s1).coord.y * dy + (dx * dx + dy * dy) * 0.5f64;
     if adx > ady {
         (*newedge).a = 1.0f64;
         (*newedge).b = dy / dx;
@@ -133,7 +143,7 @@ pub unsafe extern "C" fn clip_line(mut e: *mut Edge) {
         if !s1.is_null() {
             y1 = (*s1).coord.y;
             if y1 > pymax {
-                return
+                return;
             } else {
                 if y1 >= pymin {
                     x1 = (*s1).coord.x;
@@ -149,7 +159,7 @@ pub unsafe extern "C" fn clip_line(mut e: *mut Edge) {
         if !s2.is_null() {
             y2 = (*s2).coord.y;
             if y2 < pymin {
-                return
+                return;
             } else {
                 if y2 <= pymax {
                     x2 = (*s2).coord.x;
@@ -185,7 +195,7 @@ pub unsafe extern "C" fn clip_line(mut e: *mut Edge) {
         if !s1.is_null() {
             x1 = (*s1).coord.x;
             if x1 > pxmax {
-                return
+                return;
             } else {
                 if x1 >= pxmin {
                     y1 = (*s1).coord.y;
@@ -201,7 +211,7 @@ pub unsafe extern "C" fn clip_line(mut e: *mut Edge) {
         if !s2.is_null() {
             x2 = (*s2).coord.x;
             if x2 < pxmin {
-                return
+                return;
             } else {
                 if x2 <= pxmax {
                     y2 = (*s2).coord.y;
@@ -237,11 +247,7 @@ pub unsafe extern "C" fn clip_line(mut e: *mut Edge) {
     doSeg(e, x1, y1, x2, y2);
 }
 #[no_mangle]
-pub unsafe extern "C" fn endpoint(
-    mut e: *mut Edge,
-    mut lr: libc::c_int,
-    mut s: *mut Site,
-) {
+pub unsafe extern "C" fn endpoint(mut e: *mut Edge, mut lr: libc::c_int, mut s: *mut Site) {
     let ref mut fresh4 = (*e).ep[lr as usize];
     *fresh4 = s;
     ref_0(s);

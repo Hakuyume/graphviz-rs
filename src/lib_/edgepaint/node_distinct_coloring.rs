@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -12,11 +20,7 @@ extern "C" {
     static mut stderr: *mut FILE;
     fn free(_: *mut libc::c_void);
     fn srand(__seed: libc::c_uint);
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
     fn drand() -> libc::c_double;
     fn irand(n: libc::c_int) -> libc::c_int;
@@ -29,10 +33,7 @@ extern "C" {
     ) -> !;
     static mut Verbose: libc::c_uchar;
     fn SparseMatrix_delete(A: SparseMatrix);
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_weakly_connected_components(
         A0: SparseMatrix,
         ncomp: *mut libc::c_int,
@@ -63,15 +64,9 @@ extern "C" {
     fn RGB2LAB(color: color_rgb) -> color_lab;
     fn LAB2RGB_real_01(color: *mut libc::c_double);
     fn LAB2RGB(color: color_lab) -> color_rgb;
-    fn color_lab_init(
-        l: libc::c_double,
-        a: libc::c_double,
-        b: libc::c_double,
-    ) -> color_lab;
-    fn lab_gamut_quadtree(
-        lightness: *const libc::c_char,
-        max_qtree_level: libc::c_int,
-    ) -> QuadTree;
+    fn color_lab_init(l: libc::c_double, a: libc::c_double, b: libc::c_double) -> color_lab;
+    fn lab_gamut_quadtree(lightness: *const libc::c_char, max_qtree_level: libc::c_int)
+        -> QuadTree;
     fn color_blend_rgb2lab(
         color_list: *mut libc::c_char,
         maxpoints: libc::c_int,
@@ -242,7 +237,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
     let mut flag: libc::c_int = 0 as libc::c_int;
     let mut imin: libc::c_int = 0;
     let mut wgt: *mut libc::c_double = 0 as *mut libc::c_double;
-    if accuracy > 0 as libc::c_int as libc::c_double {} else {
+    if accuracy > 0 as libc::c_int as libc::c_double {
+    } else {
         __assert_fail(
             b"accuracy > 0\0" as *const u8 as *const libc::c_char,
             b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -281,7 +277,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
     n = (*A).m;
     if n == 1 as libc::c_int {
         if scheme == COLOR_LAB as libc::c_int {
-            if !qt.is_null() {} else {
+            if !qt.is_null() {
+            } else {
                 __assert_fail(
                     b"qt\0" as *const u8 as *const libc::c_char,
                     b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -303,7 +300,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                 &mut min,
                 &mut flag,
             );
-            if flag == 0 {} else {
+            if flag == 0 {
+            } else {
                 __assert_fail(
                     b"!flag\0" as *const u8 as *const libc::c_char,
                     b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -333,7 +331,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
     } else {
         if n == 2 as libc::c_int {
             if scheme == COLOR_LAB as libc::c_int {
-                if !qt.is_null() {} else {
+                if !qt.is_null() {
+                } else {
                     __assert_fail(
                         b"qt\0" as *const u8 as *const libc::c_char,
                         b"node_distinct_coloring.c\0" as *const u8
@@ -356,7 +355,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                     &mut min,
                     &mut flag,
                 );
-                if flag == 0 {} else {
+                if flag == 0 {
+                } else {
                     __assert_fail(
                         b"!flag\0" as *const u8 as *const libc::c_char,
                         b"node_distinct_coloring.c\0" as *const u8
@@ -380,7 +380,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                     &mut min,
                     &mut flag,
                 );
-                if flag == 0 {} else {
+                if flag == 0 {
+                } else {
                     __assert_fail(
                         b"!flag\0" as *const u8 as *const libc::c_char,
                         b"node_distinct_coloring.c\0" as *const u8
@@ -406,10 +407,7 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                 }
                 i = 0 as libc::c_int;
                 while i < cdim {
-                    *colors
-                        .offset(
-                            (cdim + i) as isize,
-                        ) = 0 as libc::c_int as libc::c_double;
+                    *colors.offset((cdim + i) as isize) = 0 as libc::c_int as libc::c_double;
                     i += 1;
                 }
                 *colors.offset(cdim as isize) = 0.5f64;
@@ -419,7 +417,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
             return;
         }
     }
-    if n == (*A).m {} else {
+    if n == (*A).m {
+    } else {
         __assert_fail(
             b"n == A->m\0" as *const u8 as *const libc::c_char,
             b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -497,19 +496,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
             }
             cc = &mut *colors.offset((i * cdim) as isize) as *mut libc::c_double;
             if scheme == COLOR_LAB as libc::c_int {
-                furtherest_point_in_list(
-                    k,
-                    cdim,
-                    wgt,
-                    x,
-                    qt,
-                    max_level,
-                    &mut dist_max,
-                    &mut cc,
-                );
-            } else if scheme == COLOR_RGB as libc::c_int
-                    || scheme == COLOR_GRAY as libc::c_int
-                {
+                furtherest_point_in_list(k, cdim, wgt, x, qt, max_level, &mut dist_max, &mut cc);
+            } else if scheme == COLOR_RGB as libc::c_int || scheme == COLOR_GRAY as libc::c_int {
                 furtherest_point(
                     k,
                     cdim,
@@ -539,7 +527,11 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                 color_diff = dist_max;
                 color_diff_sum = dist_max;
             } else {
-                color_diff = if dist_max < color_diff { dist_max } else { color_diff };
+                color_diff = if dist_max < color_diff {
+                    dist_max
+                } else {
+                    color_diff
+                };
                 color_diff_sum += dist_max;
             }
             i += 1;
@@ -547,8 +539,8 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
         if Verbose != 0 {
             fprintf(
                 stderr,
-                b"iter ---- %d ---, color_diff = %f, color_diff_sum = %f\n\0"
-                    as *const u8 as *const libc::c_char,
+                b"iter ---- %d ---, color_diff = %f, color_diff_sum = %f\n\0" as *const u8
+                    as *const libc::c_char,
                 iter,
                 color_diff,
                 color_diff_sum,
@@ -556,7 +548,11 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
         }
     }
     if scheme == COLOR_LAB as libc::c_int {
-        let mut rgb_0: color_rgb = color_rgb { r: 0., g: 0., b: 0. };
+        let mut rgb_0: color_rgb = color_rgb {
+            r: 0.,
+            g: 0.,
+            b: 0.,
+        };
         let mut lab_0: color_lab = color_lab { l: 0, a: 0, b: 0 };
         i = 0 as libc::c_int;
         while i < n {
@@ -566,18 +562,11 @@ unsafe extern "C" fn node_distinct_coloring_internal2(
                 *colors.offset((i * cdim + 2 as libc::c_int) as isize),
             );
             rgb_0 = LAB2RGB(lab_0);
-            *colors
-                .offset(
-                    (i * cdim) as isize,
-                ) = rgb_0.r / 255 as libc::c_int as libc::c_double;
-            *colors
-                .offset(
-                    (i * cdim + 1 as libc::c_int) as isize,
-                ) = rgb_0.g / 255 as libc::c_int as libc::c_double;
-            *colors
-                .offset(
-                    (i * cdim + 2 as libc::c_int) as isize,
-                ) = rgb_0.b / 255 as libc::c_int as libc::c_double;
+            *colors.offset((i * cdim) as isize) = rgb_0.r / 255 as libc::c_int as libc::c_double;
+            *colors.offset((i * cdim + 1 as libc::c_int) as isize) =
+                rgb_0.g / 255 as libc::c_int as libc::c_double;
+            *colors.offset((i * cdim + 2 as libc::c_int) as isize) =
+                rgb_0.b / 255 as libc::c_int as libc::c_double;
             i += 1;
         }
     }
@@ -677,43 +666,44 @@ pub unsafe extern "C" fn node_distinct_coloring(
     }
     *cdim0 = 3 as libc::c_int;
     cdim = *cdim0;
-    if strcmp(color_scheme, b"lab\0" as *const u8 as *const libc::c_char)
-        == 0 as libc::c_int
-    {
+    if strcmp(color_scheme, b"lab\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int {
         if Verbose != 0 {
             fprintf(stderr, b"lab\n\0" as *const u8 as *const libc::c_char);
         }
         scheme = COLOR_LAB as libc::c_int;
         qt = lab_gamut_quadtree(lightness, max_qtree_level);
         if qt.is_null() {
-            fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+            fprintf(
+                stderr,
+                b"out of memory\n\0" as *const u8 as *const libc::c_char,
+            );
             return -(1 as libc::c_int);
         }
-    } else if strcmp(color_scheme, b"rgb\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+    } else if strcmp(color_scheme, b"rgb\0" as *const u8 as *const libc::c_char) == 0 as libc::c_int
+    {
         if Verbose != 0 {
             fprintf(stderr, b"rgb\n\0" as *const u8 as *const libc::c_char);
         }
         scheme = COLOR_RGB as libc::c_int;
     } else if strcmp(color_scheme, b"gray\0" as *const u8 as *const libc::c_char)
-            == 0 as libc::c_int
-        {
+        == 0 as libc::c_int
+    {
         scheme = COLOR_GRAY as libc::c_int;
         *cdim0 = 1 as libc::c_int;
         cdim = *cdim0;
     } else if sscanf(
-            color_scheme,
-            b"#%02X%02X%02X\0" as *const u8 as *const libc::c_char,
-            &mut r as *mut libc::c_int,
-            &mut g as *mut libc::c_int,
-            &mut b as *mut libc::c_int,
-        ) == 3 as libc::c_int
-        {
+        color_scheme,
+        b"#%02X%02X%02X\0" as *const u8 as *const libc::c_char,
+        &mut r as *mut libc::c_int,
+        &mut g as *mut libc::c_int,
+        &mut b as *mut libc::c_int,
+    ) == 3 as libc::c_int
+    {
         let mut colors_0: *mut libc::c_double = 0 as *mut libc::c_double;
         scheme = COLOR_LAB as libc::c_int;
         color_blend_rgb2lab(color_scheme, maxcolors, &mut colors_0);
-        if !colors_0.is_null() {} else {
+        if !colors_0.is_null() {
+        } else {
             __assert_fail(
                 b"colors\0" as *const u8 as *const libc::c_char,
                 b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -728,7 +718,8 @@ pub unsafe extern "C" fn node_distinct_coloring(
             );
         }
         qt = QuadTree_new_from_point_list(cdim, maxcolors, max_qtree_level, colors_0);
-        if !qt.is_null() {} else {
+        if !qt.is_null() {
+        } else {
             __assert_fail(
                 b"qt\0" as *const u8 as *const libc::c_char,
                 b"node_distinct_coloring.c\0" as *const u8 as *const libc::c_char,
@@ -743,7 +734,7 @@ pub unsafe extern "C" fn node_distinct_coloring(
             );
         }
     } else {
-        return ERROR_BAD_COLOR_SCHEME as libc::c_int
+        return ERROR_BAD_COLOR_SCHEME as libc::c_int;
     }
     if accuracy <= 0 as libc::c_int as libc::c_double {
         accuracy = 0.0001f64;
@@ -769,8 +760,7 @@ pub unsafe extern "C" fn node_distinct_coloring(
     SparseMatrix_weakly_connected_components(A, &mut ncomps, &mut comps, &mut comps_ptr);
     i = 0 as libc::c_int;
     while i < ncomps {
-        nn = *comps_ptr.offset((i + 1 as libc::c_int) as isize)
-            - *comps_ptr.offset(i as isize);
+        nn = *comps_ptr.offset((i + 1 as libc::c_int) as isize) - *comps_ptr.offset(i as isize);
         B = SparseMatrix_get_submatrix(
             A,
             nn,
@@ -778,16 +768,7 @@ pub unsafe extern "C" fn node_distinct_coloring(
             &mut *comps.offset(*comps_ptr.offset(i as isize) as isize),
             &mut *comps.offset(*comps_ptr.offset(i as isize) as isize),
         );
-        node_distinct_coloring_internal(
-            scheme,
-            qt,
-            weightedQ,
-            B,
-            cdim,
-            accuracy,
-            seed,
-            ctmp,
-        );
+        node_distinct_coloring_internal(scheme, qt, weightedQ, B, cdim, accuracy, seed, ctmp);
         j = *comps_ptr.offset(i as isize);
         while j < *comps_ptr.offset((i + 1 as libc::c_int) as isize) {
             jj = j - *comps_ptr.offset(i as isize);
@@ -797,9 +778,7 @@ pub unsafe extern "C" fn node_distinct_coloring(
                 &mut *ctmp.offset((jj * cdim) as isize) as *mut libc::c_double
                     as *const libc::c_void,
                 (cdim as libc::c_ulong)
-                    .wrapping_mul(
-                        ::std::mem::size_of::<libc::c_double>() as libc::c_ulong,
-                    ),
+                    .wrapping_mul(::std::mem::size_of::<libc::c_double>() as libc::c_ulong),
             );
             j += 1;
         }

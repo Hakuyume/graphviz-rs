@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -33,10 +41,7 @@ pub struct _vmalloc_s {
 }
 pub type Vmalloc_t = _vmalloc_s;
 #[no_mangle]
-pub unsafe extern "C" fn exstash(
-    mut sp: *mut Sfio_t,
-    mut vp: *mut Vmalloc_t,
-) -> *mut libc::c_char {
+pub unsafe extern "C" fn exstash(mut sp: *mut Sfio_t, mut vp: *mut Vmalloc_t) -> *mut libc::c_char {
     let mut s: *mut libc::c_char = 0 as *mut libc::c_char;
     if (*sp).next >= (*sp).endw {
         _sfflsbuf(sp, 0 as libc::c_int as libc::c_uchar as libc::c_int);
@@ -50,12 +55,10 @@ pub unsafe extern "C" fn exstash(
     *fresh2 = (*sp).data;
     s = *fresh2 as *mut libc::c_char;
     return if !s.is_null()
-        && (vp.is_null()
-            || {
-                s = vmstrdup(vp, s);
-                !s.is_null()
-            })
-    {
+        && (vp.is_null() || {
+            s = vmstrdup(vp, s);
+            !s.is_null()
+        }) {
         s
     } else {
         exnospace()

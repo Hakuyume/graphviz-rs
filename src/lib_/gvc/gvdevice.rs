@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(c_variadic, extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -19,11 +27,7 @@ extern "C" {
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strrchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memcpy(_: *mut libc::c_void, _: *const libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn __errno_location() -> *mut libc::c_int;
@@ -51,11 +55,8 @@ extern "C" {
     fn fclose(__stream: *mut FILE) -> libc::c_int;
     fn fflush(__stream: *mut FILE) -> libc::c_int;
     fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
-    fn vsprintf(
-        _: *mut libc::c_char,
-        _: *const libc::c_char,
-        _: ::std::ffi::VaList,
-    ) -> libc::c_int;
+    fn vsprintf(_: *mut libc::c_char, _: *const libc::c_char, _: ::std::ffi::VaList)
+        -> libc::c_int;
     fn snprintf(
         _: *mut libc::c_char,
         _: libc::c_ulong,
@@ -80,9 +81,7 @@ extern "C" {
     fn xml_escape(
         s: *const libc::c_char,
         flags: xml_flags_t,
-        cb: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-        >,
+        cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
         state: *mut libc::c_void,
     ) -> libc::c_int;
 }
@@ -119,8 +118,8 @@ pub type uInt = libc::c_uint;
 pub type uLong = libc::c_ulong;
 pub type Bytef = Byte;
 pub type voidpf = *mut libc::c_void;
-pub type alloc_func = Option::<unsafe extern "C" fn(voidpf, uInt, uInt) -> voidpf>;
-pub type free_func = Option::<unsafe extern "C" fn(voidpf, voidpf) -> ()>;
+pub type alloc_func = Option<unsafe extern "C" fn(voidpf, uInt, uInt) -> voidpf>;
+pub type free_func = Option<unsafe extern "C" fn(voidpf, voidpf) -> ()>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct z_stream_s {
@@ -284,9 +283,7 @@ pub struct gvevent_key_binding_s {
     pub keystring: *mut libc::c_char,
     pub callback: gvevent_key_callback_t,
 }
-pub type gvevent_key_callback_t = Option::<
-    unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int,
->;
+pub type gvevent_key_callback_t = Option<unsafe extern "C" fn(*mut GVJ_t) -> libc::c_int>;
 pub type GVJ_t = GVJ_s;
 pub type gv_argvlist_t = gv_argvlist_s;
 #[derive(Copy, Clone)]
@@ -300,25 +297,18 @@ pub type gvdevice_callbacks_t = gvdevice_callbacks_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_callbacks_s {
-    pub refresh: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub button_press: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub button_release: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> (),
-    >,
-    pub motion: Option::<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
-    pub modify: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub del: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub read: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
-    pub layout: Option::<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
-    pub render: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> (),
-    >,
+    pub refresh: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub button_press: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub button_release: Option<unsafe extern "C" fn(*mut GVJ_t, libc::c_int, pointf) -> ()>,
+    pub motion: Option<unsafe extern "C" fn(*mut GVJ_t, pointf) -> ()>,
+    pub modify:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub del: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub read:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
+    pub layout: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> ()>,
+    pub render:
+        Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, *const libc::c_char) -> ()>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -349,9 +339,9 @@ pub type gvdevice_engine_t = gvdevice_engine_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct gvdevice_engine_s {
-    pub initialize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub format: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
-    pub finalize: Option::<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub initialize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub format: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
+    pub finalize: Option<unsafe extern "C" fn(*mut GVJ_t) -> ()>,
 }
 pub type gvplugin_active_render_t = gvplugin_active_render_s;
 #[derive(Copy, Clone)]
@@ -427,7 +417,8 @@ pub struct obj_state_s {
     #[bitfield(name = "explicit_tailurl", ty = "libc::c_uint", bits = "7..=7")]
     #[bitfield(name = "explicit_headurl", ty = "libc::c_uint", bits = "8..=8")]
     #[bitfield(name = "labeledgealigned", ty = "libc::c_uint", bits = "9..=9")]
-    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned: [u8; 2],
+    pub explicit_tooltip_explicit_tailtooltip_explicit_headtooltip_explicit_labeltooltip_explicit_tailtarget_explicit_headtarget_explicit_edgetarget_explicit_tailurl_explicit_headurl_labeledgealigned:
+        [u8; 2],
     #[bitfield(padding)]
     pub c2rust_padding: [u8; 2],
     pub url_map_shape: map_shape_t,
@@ -588,16 +579,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -613,18 +598,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -632,16 +611,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -683,9 +655,8 @@ pub struct C2RustUnnamed_4 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agobj_t = Agobj_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -714,13 +685,8 @@ pub struct Agtag_s {
     pub id: IDTYPE,
 }
 pub type IDTYPE = uint64_t;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -753,26 +719,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -781,29 +739,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -811,8 +761,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -846,7 +796,7 @@ pub struct GVCOMMON_s {
     pub verbose: libc::c_int,
     pub config: bool,
     pub auto_outfile_names: bool,
-    pub errorfn: Option::<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
+    pub errorfn: Option<unsafe extern "C" fn(*const libc::c_char, ...) -> ()>,
     pub show_boxes: *mut *const libc::c_char,
     pub lib: *mut *const libc::c_char,
     pub viewNum: libc::c_int,
@@ -872,9 +822,7 @@ pub struct GVC_s {
     pub apis: [*mut gvplugin_available_t; 5],
     pub api: [*mut gvplugin_available_t; 5],
     pub packages: *mut gvplugin_package_t,
-    pub write_fn: Option::<
-        unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t,
-    >,
+    pub write_fn: Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char, size_t) -> size_t>,
     pub textfont_disc: Dtdisc_t,
     pub textfont_dt: *mut Dt_t,
     pub textlayout: gvplugin_active_textlayout_t,
@@ -1025,61 +973,57 @@ unsafe extern "C" fn gvwrite_no_z(
     mut len: size_t,
 ) -> size_t {
     if ((*(*job).gvc).write_fn).is_some() {
-        return ((*(*job).gvc).write_fn)
-            .expect("non-null function pointer")(job, s as *const libc::c_char, len);
+        return ((*(*job).gvc).write_fn).expect("non-null function pointer")(
+            job,
+            s as *const libc::c_char,
+            len,
+        );
     }
     if !((*job).output_data).is_null() {
         if len
-            > ((*job).output_data_allocated)
-                .wrapping_sub(
-                    ((*job).output_data_position)
-                        .wrapping_add(1 as libc::c_int as libc::c_uint),
-                ) as libc::c_ulong
+            > ((*job).output_data_allocated).wrapping_sub(
+                ((*job).output_data_position).wrapping_add(1 as libc::c_int as libc::c_uint),
+            ) as libc::c_ulong
         {
-            (*job)
-                .output_data_allocated = (((*job).output_data_position as libc::c_ulong)
+            (*job).output_data_allocated = (((*job).output_data_position as libc::c_ulong)
                 .wrapping_add(len)
                 .wrapping_add(1 as libc::c_int as libc::c_ulong)
                 .wrapping_add(PAGE_ALIGN as libc::c_ulong)
-                & !PAGE_ALIGN as libc::c_ulong) as libc::c_uint;
+                & !PAGE_ALIGN as libc::c_ulong)
+                as libc::c_uint;
             let ref mut fresh0 = (*job).output_data;
             *fresh0 = realloc(
                 (*job).output_data as *mut libc::c_void,
                 (*job).output_data_allocated as libc::c_ulong,
             ) as *mut libc::c_char;
             if ((*job).output_data).is_null() {
-                ((*(*job).common).errorfn)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                ((*(*job).common).errorfn).expect("non-null function pointer")(
                     b"memory allocation failure\n\0" as *const u8 as *const libc::c_char,
                 );
                 graphviz_exit(1 as libc::c_int);
             }
         }
         memcpy(
-            ((*job).output_data).offset((*job).output_data_position as isize)
-                as *mut libc::c_void,
+            ((*job).output_data).offset((*job).output_data_position as isize) as *mut libc::c_void,
             s,
             len,
         );
         let ref mut fresh1 = (*job).output_data_position;
-        *fresh1 = (*fresh1 as libc::c_ulong).wrapping_add(len) as libc::c_uint
-            as libc::c_uint;
-        *((*job).output_data)
-            .offset((*job).output_data_position as isize) = '\0' as i32 as libc::c_char;
+        *fresh1 = (*fresh1 as libc::c_ulong).wrapping_add(len) as libc::c_uint as libc::c_uint;
+        *((*job).output_data).offset((*job).output_data_position as isize) =
+            '\0' as i32 as libc::c_char;
         return len;
     } else {
-        if !((*job).output_file).is_null() {} else {
+        if !((*job).output_file).is_null() {
+        } else {
             __assert_fail(
                 b"job->output_file != NULL\0" as *const u8 as *const libc::c_char,
                 b"gvdevice.c\0" as *const u8 as *const libc::c_char,
                 79 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 51],
-                    &[libc::c_char; 51],
-                >(b"size_t gvwrite_no_z(GVJ_t *, const void *, size_t)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 51], &[libc::c_char; 51]>(
+                    b"size_t gvwrite_no_z(GVJ_t *, const void *, size_t)\0",
+                ))
+                .as_ptr(),
             );
         }
         return fwrite(
@@ -1160,10 +1104,7 @@ pub unsafe extern "C" fn gvdevice_initialize(mut job: *mut GVJ_t) -> libc::c_int
                     b"w\0" as *const u8 as *const libc::c_char,
                 );
                 if ((*job).output_file).is_null() {
-                    ((*(*job).common).errorfn)
-                        .expect(
-                            "non-null function pointer",
-                        )(
+                    ((*(*job).common).errorfn).expect("non-null function pointer")(
                         b"Could not open \"%s\" for writing : %s\n\0" as *const u8
                             as *const libc::c_char,
                         (*job).output_filename,
@@ -1206,12 +1147,8 @@ pub unsafe extern "C" fn gvdevice_initialize(mut job: *mut GVJ_t) -> libc::c_int
             ::std::mem::size_of::<z_stream>() as libc::c_ulong as libc::c_int,
         ) != 0 as libc::c_int
         {
-            ((*(*job).common).errorfn)
-                .expect(
-                    "non-null function pointer",
-                )(
-                b"Error initializing for deflation\n\0" as *const u8
-                    as *const libc::c_char,
+            ((*(*job).common).errorfn).expect("non-null function pointer")(
+                b"Error initializing for deflation\n\0" as *const u8 as *const libc::c_char,
             );
             return 1 as libc::c_int;
         }
@@ -1246,10 +1183,7 @@ pub unsafe extern "C" fn gvwrite(
             df = realloc(df as *mut libc::c_void, dfallocated as libc::c_ulong)
                 as *mut libc::c_uchar;
             if df.is_null() {
-                ((*(*job).common).errorfn)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                ((*(*job).common).errorfn).expect("non-null function pointer")(
                     b"memory allocation failure\n\0" as *const u8 as *const libc::c_char,
                 );
                 graphviz_exit(1 as libc::c_int);
@@ -1265,10 +1199,7 @@ pub unsafe extern "C" fn gvwrite(
             (*z).avail_out = dfallocated;
             let mut r: libc::c_int = deflate(z, 0 as libc::c_int);
             if r != 0 as libc::c_int {
-                ((*(*job).common).errorfn)
-                    .expect(
-                        "non-null function pointer",
-                    )(
+                ((*(*job).common).errorfn).expect("non-null function pointer")(
                     b"deflation problem %d\n\0" as *const u8 as *const libc::c_char,
                     r,
                 );
@@ -1278,12 +1209,8 @@ pub unsafe extern "C" fn gvwrite(
             if olen != 0 {
                 ret = gvwrite_no_z(job, df as *const libc::c_void, olen);
                 if ret != olen {
-                    ((*(*job).common).errorfn)
-                        .expect(
-                            "non-null function pointer",
-                        )(
-                        b"gvwrite_no_z problem %d\n\0" as *const u8
-                            as *const libc::c_char,
+                    ((*(*job).common).errorfn).expect("non-null function pointer")(
+                        b"gvwrite_no_z problem %d\n\0" as *const u8 as *const libc::c_char,
                         ret,
                     );
                     graphviz_exit(1 as libc::c_int);
@@ -1293,10 +1220,7 @@ pub unsafe extern "C" fn gvwrite(
     } else {
         ret = gvwrite_no_z(job, s as *const libc::c_void, len);
         if ret != len {
-            ((*(*job).common).errorfn)
-                .expect(
-                    "non-null function pointer",
-                )(
+            ((*(*job).common).errorfn).expect("non-null function pointer")(
                 b"gvwrite_no_z problem %d\n\0" as *const u8 as *const libc::c_char,
                 len,
             );
@@ -1314,10 +1238,7 @@ pub unsafe extern "C" fn gvferror(mut stream: *mut FILE) -> libc::c_int {
     return 0 as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn gvputs(
-    mut job: *mut GVJ_t,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+pub unsafe extern "C" fn gvputs(mut job: *mut GVJ_t, mut s: *const libc::c_char) -> libc::c_int {
     let mut len: size_t = strlen(s);
     if gvwrite(job, s, len) != len {
         return -(1 as libc::c_int);
@@ -1344,32 +1265,16 @@ pub unsafe extern "C" fn gvputs_xml(
         s,
         flags,
         ::std::mem::transmute::<
-            Option::<
-                unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int,
-            >,
-            Option::<
-                unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                ) -> libc::c_int,
-            >,
-        >(
-            Some(
-                gvputs
-                    as unsafe extern "C" fn(
-                        *mut GVJ_t,
-                        *const libc::c_char,
-                    ) -> libc::c_int,
-            ),
-        ),
+            Option<unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int>,
+            Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+        >(Some(
+            gvputs as unsafe extern "C" fn(*mut GVJ_t, *const libc::c_char) -> libc::c_int,
+        )),
         job as *mut libc::c_void,
     );
 }
 #[no_mangle]
-pub unsafe extern "C" fn gvputs_nonascii(
-    mut job: *mut GVJ_t,
-    mut s: *const libc::c_char,
-) {
+pub unsafe extern "C" fn gvputs_nonascii(mut job: *mut GVJ_t, mut s: *const libc::c_char) {
     while *s as libc::c_int != '\0' as i32 {
         if *s as libc::c_int == '\\' as i32 {
             gvputs(job, b"\\\\\0" as *const u8 as *const libc::c_char);
@@ -1388,24 +1293,25 @@ pub unsafe extern "C" fn gvputs_nonascii(
 #[no_mangle]
 pub unsafe extern "C" fn gvputc(mut job: *mut GVJ_t, mut c: libc::c_int) -> libc::c_int {
     let cc: libc::c_char = c as libc::c_char;
-    if gvwrite(job, &cc, 1 as libc::c_int as size_t) != 1 as libc::c_int as libc::c_ulong
-    {
+    if gvwrite(job, &cc, 1 as libc::c_int as size_t) != 1 as libc::c_int as libc::c_ulong {
         return -(1 as libc::c_int);
     }
     return c;
 }
 #[no_mangle]
 pub unsafe extern "C" fn gvflush(mut job: *mut GVJ_t) -> libc::c_int {
-    if !((*job).output_file).is_null() && !(*job).external_context
+    if !((*job).output_file).is_null()
+        && !(*job).external_context
         && ((*(*job).gvc).write_fn).is_none()
     {
-        return fflush((*job).output_file)
+        return fflush((*job).output_file);
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn gvdevice_close(mut job: *mut GVJ_t) {
-    if !((*job).output_filename).is_null() && (*job).output_file != stdout
+    if !((*job).output_filename).is_null()
+        && (*job).output_file != stdout
         && !(*job).external_context
     {
         if !((*job).output_file).is_null() {
@@ -1431,10 +1337,8 @@ pub unsafe extern "C" fn gvdevice_finalize(mut job: *mut GVJ_t) {
     let mut finalized_p: bool = 0 as libc::c_int != 0;
     if (*job).flags & (1 as libc::c_int) << 10 as libc::c_int != 0 {
         let mut z: z_streamp = &mut z_strm;
-        let mut out: [libc::c_uchar; 8] = *::std::mem::transmute::<
-            &[u8; 8],
-            &mut [libc::c_uchar; 8],
-        >(b"\0\0\0\0\0\0\0\0");
+        let mut out: [libc::c_uchar; 8] =
+            *::std::mem::transmute::<&[u8; 8], &mut [libc::c_uchar; 8]>(b"\0\0\0\0\0\0\0\0");
         let mut ret: libc::c_int = 0;
         let mut cnt: libc::c_int = 0 as libc::c_int;
         let ref mut fresh14 = (*z).next_in;
@@ -1445,13 +1349,11 @@ pub unsafe extern "C" fn gvdevice_finalize(mut job: *mut GVJ_t) {
         (*z).avail_out = dfallocated;
         loop {
             ret = deflate(z, 4 as libc::c_int);
-            if !(ret == 0 as libc::c_int
-                && {
-                    let fresh16 = cnt;
-                    cnt = cnt + 1;
-                    fresh16 <= 100 as libc::c_int
-                })
-            {
+            if !(ret == 0 as libc::c_int && {
+                let fresh16 = cnt;
+                cnt = cnt + 1;
+                fresh16 <= 100 as libc::c_int
+            }) {
                 break;
             }
             gvwrite_no_z(
@@ -1464,12 +1366,8 @@ pub unsafe extern "C" fn gvdevice_finalize(mut job: *mut GVJ_t) {
             (*z).avail_out = dfallocated;
         }
         if ret != 1 as libc::c_int {
-            ((*(*job).common).errorfn)
-                .expect(
-                    "non-null function pointer",
-                )(
-                b"deflation finish problem %d cnt=%d\n\0" as *const u8
-                    as *const libc::c_char,
+            ((*(*job).common).errorfn).expect("non-null function pointer")(
+                b"deflation finish problem %d cnt=%d\n\0" as *const u8 as *const libc::c_char,
                 ret,
                 cnt,
             );
@@ -1482,10 +1380,7 @@ pub unsafe extern "C" fn gvdevice_finalize(mut job: *mut GVJ_t) {
         );
         ret = deflateEnd(z);
         if ret != 0 as libc::c_int {
-            ((*(*job).common).errorfn)
-                .expect(
-                    "non-null function pointer",
-                )(
+            ((*(*job).common).errorfn).expect("non-null function pointer")(
                 b"deflation end problem %d\n\0" as *const u8 as *const libc::c_char,
                 ret,
             );
@@ -1496,12 +1391,9 @@ pub unsafe extern "C" fn gvdevice_finalize(mut job: *mut GVJ_t) {
         out[2 as libc::c_int as usize] = (crc >> 16 as libc::c_int) as libc::c_uchar;
         out[3 as libc::c_int as usize] = (crc >> 24 as libc::c_int) as libc::c_uchar;
         out[4 as libc::c_int as usize] = (*z).total_in as libc::c_uchar;
-        out[5 as libc::c_int
-            as usize] = ((*z).total_in >> 8 as libc::c_int) as libc::c_uchar;
-        out[6 as libc::c_int
-            as usize] = ((*z).total_in >> 16 as libc::c_int) as libc::c_uchar;
-        out[7 as libc::c_int
-            as usize] = ((*z).total_in >> 24 as libc::c_int) as libc::c_uchar;
+        out[5 as libc::c_int as usize] = ((*z).total_in >> 8 as libc::c_int) as libc::c_uchar;
+        out[6 as libc::c_int as usize] = ((*z).total_in >> 16 as libc::c_int) as libc::c_uchar;
+        out[7 as libc::c_int as usize] = ((*z).total_in >> 24 as libc::c_int) as libc::c_uchar;
         gvwrite_no_z(
             job,
             out.as_mut_ptr() as *const libc::c_void,
@@ -1558,10 +1450,7 @@ pub unsafe extern "C" fn gvprintf(
     }
 }
 static mut maxnegnumstr: [libc::c_char; 20] = unsafe {
-    *::std::mem::transmute::<
-        &[u8; 20],
-        &mut [libc::c_char; 20],
-    >(b"-999999999999999.99\0")
+    *::std::mem::transmute::<&[u8; 20], &mut [libc::c_char; 20]>(b"-999999999999999.99\0")
 };
 static mut maxnegnum: libc::c_double = -999999999999999.99f64;
 unsafe extern "C" fn gvprintnum(
@@ -1608,8 +1497,7 @@ unsafe extern "C" fn gvprintnum(
         N /= 10 as libc::c_int as libc::c_long;
         if digit != 0 || showzeros as libc::c_int != 0 {
             result = result.offset(-1);
-            *result = (digit as libc::c_char as libc::c_int | '0' as i32)
-                as libc::c_char;
+            *result = (digit as libc::c_char as libc::c_int | '0' as i32) as libc::c_char;
             showzeros = 1 as libc::c_int != 0;
         }
         if i == 1 as libc::c_int {
@@ -1636,24 +1524,27 @@ unsafe extern "C" fn gv_trim_zeros(mut buf: *mut libc::c_char) {
     if dotp.is_null() {
         return;
     }
-    if *(*__ctype_b_loc())
-        .offset(*dotp.offset(1 as libc::c_int as isize) as libc::c_int as isize)
-        as libc::c_int & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+    if *(*__ctype_b_loc()).offset(*dotp.offset(1 as libc::c_int as isize) as libc::c_int as isize)
+        as libc::c_int
+        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+        != 0
         && *(*__ctype_b_loc())
             .offset(*dotp.offset(2 as libc::c_int as isize) as libc::c_int as isize)
-            as libc::c_int & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
-            != 0 && *dotp.offset(3 as libc::c_int as isize) as libc::c_int == '\0' as i32
-    {} else {
+            as libc::c_int
+            & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+            != 0
+        && *dotp.offset(3 as libc::c_int as isize) as libc::c_int == '\0' as i32
+    {
+    } else {
         __assert_fail(
-            b"isdigit((int)dotp[1]) && isdigit((int)dotp[2]) && dotp[3] == '\\0'\0"
-                as *const u8 as *const libc::c_char,
+            b"isdigit((int)dotp[1]) && isdigit((int)dotp[2]) && dotp[3] == '\\0'\0" as *const u8
+                as *const libc::c_char,
             b"gvdevice.c\0" as *const u8 as *const libc::c_char,
             548 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 27],
-                &[libc::c_char; 27],
-            >(b"void gv_trim_zeros(char *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 27], &[libc::c_char; 27]>(
+                b"void gv_trim_zeros(char *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if *dotp.offset(2 as libc::c_int as isize) as libc::c_int == '0' as i32 {
@@ -1690,7 +1581,11 @@ pub unsafe extern "C" fn gvprintpointf(mut job: *mut GVJ_t, mut p: pointf) {
     let mut len: size_t = 0;
     buf = gvprintnum(&mut len, p.x);
     gvwrite(job, buf, len);
-    gvwrite(job, b" \0" as *const u8 as *const libc::c_char, 1 as libc::c_int as size_t);
+    gvwrite(
+        job,
+        b" \0" as *const u8 as *const libc::c_char,
+        1 as libc::c_int as size_t,
+    );
     buf = gvprintnum(&mut len, p.y);
     gvwrite(job, buf, len);
 }
@@ -1712,5 +1607,5 @@ pub unsafe extern "C" fn gvprintpointflist(
             b" \0" as *const u8 as *const libc::c_char,
             1 as libc::c_int as size_t,
         );
-    };
+    }
 }

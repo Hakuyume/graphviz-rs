@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -51,14 +59,8 @@ pub unsafe extern "C" fn Proutespline(
     let mut inpn: libc::c_int = 0;
     inps = input.ps;
     inpn = input.pn;
-    *evs
-        .offset(
-            0 as libc::c_int as isize,
-        ) = normv(*evs.offset(0 as libc::c_int as isize));
-    *evs
-        .offset(
-            1 as libc::c_int as isize,
-        ) = normv(*evs.offset(1 as libc::c_int as isize));
+    *evs.offset(0 as libc::c_int as isize) = normv(*evs.offset(0 as libc::c_int as isize));
+    *evs.offset(1 as libc::c_int as isize) = normv(*evs.offset(1 as libc::c_int as isize));
     opl = 0 as libc::c_int;
     if growops(4 as libc::c_int) < 0 as libc::c_int {
         return -(1 as libc::c_int);
@@ -111,8 +113,7 @@ unsafe extern "C" fn reallyroutespline(
     if tnan < inpn {
         tnas = realloc(
             tnas as *mut libc::c_void,
-            (::std::mem::size_of::<tna_t>() as libc::c_ulong)
-                .wrapping_mul(inpn as size_t),
+            (::std::mem::size_of::<tna_t>() as libc::c_ulong).wrapping_mul(inpn as size_t),
         ) as *mut tna_t;
         if tnas.is_null() {
             return -(1 as libc::c_int);
@@ -122,8 +123,7 @@ unsafe extern "C" fn reallyroutespline(
     (*tnas.offset(0 as libc::c_int as isize)).t = 0 as libc::c_int as libc::c_double;
     i = 1 as libc::c_int;
     while i < inpn {
-        (*tnas.offset(i as isize))
-            .t = (*tnas.offset((i - 1 as libc::c_int) as isize)).t
+        (*tnas.offset(i as isize)).t = (*tnas.offset((i - 1 as libc::c_int) as isize)).t
             + dist(
                 *inps.offset(i as isize),
                 *inps.offset((i - 1 as libc::c_int) as isize),
@@ -132,20 +132,20 @@ unsafe extern "C" fn reallyroutespline(
     }
     i = 1 as libc::c_int;
     while i < inpn {
-        (*tnas.offset(i as isize)).t
-            /= (*tnas.offset((inpn - 1 as libc::c_int) as isize)).t;
+        (*tnas.offset(i as isize)).t /= (*tnas.offset((inpn - 1 as libc::c_int) as isize)).t;
         i += 1;
     }
     i = 0 as libc::c_int;
     while i < inpn {
-        (*tnas.offset(i as isize))
-            .a[0 as libc::c_int as usize] = scale(ev0, B1((*tnas.offset(i as isize)).t));
-        (*tnas.offset(i as isize))
-            .a[1 as libc::c_int as usize] = scale(ev1, B2((*tnas.offset(i as isize)).t));
+        (*tnas.offset(i as isize)).a[0 as libc::c_int as usize] =
+            scale(ev0, B1((*tnas.offset(i as isize)).t));
+        (*tnas.offset(i as isize)).a[1 as libc::c_int as usize] =
+            scale(ev1, B2((*tnas.offset(i as isize)).t));
         i += 1;
     }
-    if mkspline(inps, inpn, tnas, ev0, ev1, &mut p1, &mut v1, &mut p2, &mut v2)
-        == -(1 as libc::c_int)
+    if mkspline(
+        inps, inpn, tnas, ev0, ev1, &mut p1, &mut v1, &mut p2, &mut v2,
+    ) == -(1 as libc::c_int)
     {
         return -(1 as libc::c_int);
     }
@@ -173,18 +173,14 @@ unsafe extern "C" fn reallyroutespline(
         i += 1;
     }
     spliti = maxi;
-    splitv1 = normv(
-        sub(
-            *inps.offset(spliti as isize),
-            *inps.offset((spliti - 1 as libc::c_int) as isize),
-        ),
-    );
-    splitv2 = normv(
-        sub(
-            *inps.offset((spliti + 1 as libc::c_int) as isize),
-            *inps.offset(spliti as isize),
-        ),
-    );
+    splitv1 = normv(sub(
+        *inps.offset(spliti as isize),
+        *inps.offset((spliti - 1 as libc::c_int) as isize),
+    ));
+    splitv2 = normv(sub(
+        *inps.offset((spliti + 1 as libc::c_int) as isize),
+        *inps.offset(spliti as isize),
+    ));
     splitv = normv(add(splitv1, splitv2));
     if reallyroutespline(edges, edgen, inps, spliti + 1 as libc::c_int, ev0, splitv)
         < 0 as libc::c_int
@@ -228,37 +224,30 @@ unsafe extern "C" fn mkspline(
     scale3 = 0.0f64;
     scale0 = scale3;
     c[1 as libc::c_int as usize][1 as libc::c_int as usize] = 0.0f64;
-    c[1 as libc::c_int
-        as usize][0 as libc::c_int
-        as usize] = c[1 as libc::c_int as usize][1 as libc::c_int as usize];
-    c[0 as libc::c_int
-        as usize][1 as libc::c_int
-        as usize] = c[1 as libc::c_int as usize][0 as libc::c_int as usize];
-    c[0 as libc::c_int
-        as usize][0 as libc::c_int
-        as usize] = c[0 as libc::c_int as usize][1 as libc::c_int as usize];
+    c[1 as libc::c_int as usize][0 as libc::c_int as usize] =
+        c[1 as libc::c_int as usize][1 as libc::c_int as usize];
+    c[0 as libc::c_int as usize][1 as libc::c_int as usize] =
+        c[1 as libc::c_int as usize][0 as libc::c_int as usize];
+    c[0 as libc::c_int as usize][0 as libc::c_int as usize] =
+        c[0 as libc::c_int as usize][1 as libc::c_int as usize];
     x[1 as libc::c_int as usize] = 0.0f64;
     x[0 as libc::c_int as usize] = x[1 as libc::c_int as usize];
     i = 0 as libc::c_int;
     while i < inpn {
-        c[0 as libc::c_int as usize][0 as libc::c_int as usize]
-            += dot(
-                (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
-                (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
-            );
-        c[0 as libc::c_int as usize][1 as libc::c_int as usize]
-            += dot(
-                (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
-                (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
-            );
-        c[1 as libc::c_int
-            as usize][0 as libc::c_int
-            as usize] = c[0 as libc::c_int as usize][1 as libc::c_int as usize];
-        c[1 as libc::c_int as usize][1 as libc::c_int as usize]
-            += dot(
-                (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
-                (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
-            );
+        c[0 as libc::c_int as usize][0 as libc::c_int as usize] += dot(
+            (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
+            (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
+        );
+        c[0 as libc::c_int as usize][1 as libc::c_int as usize] += dot(
+            (*tnas.offset(i as isize)).a[0 as libc::c_int as usize],
+            (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
+        );
+        c[1 as libc::c_int as usize][0 as libc::c_int as usize] =
+            c[0 as libc::c_int as usize][1 as libc::c_int as usize];
+        c[1 as libc::c_int as usize][1 as libc::c_int as usize] += dot(
+            (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
+            (*tnas.offset(i as isize)).a[1 as libc::c_int as usize],
+        );
         tmp = sub(
             *inps.offset(i as isize),
             add(
@@ -272,24 +261,20 @@ unsafe extern "C" fn mkspline(
                 ),
             ),
         );
-        x[0 as libc::c_int as usize]
-            += dot((*tnas.offset(i as isize)).a[0 as libc::c_int as usize], tmp);
-        x[1 as libc::c_int as usize]
-            += dot((*tnas.offset(i as isize)).a[1 as libc::c_int as usize], tmp);
+        x[0 as libc::c_int as usize] +=
+            dot((*tnas.offset(i as isize)).a[0 as libc::c_int as usize], tmp);
+        x[1 as libc::c_int as usize] +=
+            dot((*tnas.offset(i as isize)).a[1 as libc::c_int as usize], tmp);
         i += 1;
     }
     det01 = c[0 as libc::c_int as usize][0 as libc::c_int as usize]
         * c[1 as libc::c_int as usize][1 as libc::c_int as usize]
         - c[1 as libc::c_int as usize][0 as libc::c_int as usize]
             * c[0 as libc::c_int as usize][1 as libc::c_int as usize];
-    det0X = c[0 as libc::c_int as usize][0 as libc::c_int as usize]
-        * x[1 as libc::c_int as usize]
-        - c[0 as libc::c_int as usize][1 as libc::c_int as usize]
-            * x[0 as libc::c_int as usize];
-    detX1 = x[0 as libc::c_int as usize]
-        * c[1 as libc::c_int as usize][1 as libc::c_int as usize]
-        - x[1 as libc::c_int as usize]
-            * c[0 as libc::c_int as usize][1 as libc::c_int as usize];
+    det0X = c[0 as libc::c_int as usize][0 as libc::c_int as usize] * x[1 as libc::c_int as usize]
+        - c[0 as libc::c_int as usize][1 as libc::c_int as usize] * x[0 as libc::c_int as usize];
+    detX1 = x[0 as libc::c_int as usize] * c[1 as libc::c_int as usize][1 as libc::c_int as usize]
+        - x[1 as libc::c_int as usize] * c[0 as libc::c_int as usize][1 as libc::c_int as usize];
     if fabs(det01) >= 1e-6f64 {
         scale0 = detX1 / det01;
         scale3 = det0X / det01;
@@ -314,13 +299,10 @@ unsafe extern "C" fn dist_n(mut p: *mut Ppoint_t, mut n: libc::c_int) -> libc::c
     rv = 0.0f64;
     i = 1 as libc::c_int;
     while i < n {
-        rv
-            += hypot(
-                (*p.offset(i as isize)).x
-                    - (*p.offset((i - 1 as libc::c_int) as isize)).x,
-                (*p.offset(i as isize)).y
-                    - (*p.offset((i - 1 as libc::c_int) as isize)).y,
-            );
+        rv += hypot(
+            (*p.offset(i as isize)).x - (*p.offset((i - 1 as libc::c_int) as isize)).x,
+            (*p.offset(i as isize)).y - (*p.offset((i - 1 as libc::c_int) as isize)).y,
+        );
         i += 1;
     }
     return rv;
@@ -357,9 +339,7 @@ unsafe extern "C" fn splinefits(
         sps[2 as libc::c_int as usize].y = pb.y - b * vb.y / 3.0f64;
         sps[3 as libc::c_int as usize].x = pb.x;
         sps[3 as libc::c_int as usize].y = pb.y;
-        if first != 0
-            && dist_n(sps.as_mut_ptr(), 4 as libc::c_int) < dist_n(inps, inpn) - 1E-3f64
-        {
+        if first != 0 && dist_n(sps.as_mut_ptr(), 4 as libc::c_int) < dist_n(inps, inpn) - 1E-3f64 {
             return 0 as libc::c_int;
         }
         first = 0 as libc::c_int;
@@ -382,9 +362,7 @@ unsafe extern "C" fn splinefits(
             }
             return 1 as libc::c_int;
         }
-        if a == 0 as libc::c_int as libc::c_double
-            && b == 0 as libc::c_int as libc::c_double
-        {
+        if a == 0 as libc::c_int as libc::c_double && b == 0 as libc::c_int as libc::c_double {
             if forceflag != 0 {
                 if growops(opl + 4 as libc::c_int) < 0 as libc::c_int {
                     return -(1 as libc::c_int);
@@ -435,37 +413,39 @@ unsafe extern "C" fn splineisinside(
             rooti = 0 as libc::c_int;
             while rooti < rootn {
                 if !(roots[rooti as usize] < 1E-6f64
-                    || roots[rooti as usize]
-                        > 1 as libc::c_int as libc::c_double - 1E-6f64)
+                    || roots[rooti as usize] > 1 as libc::c_int as libc::c_double - 1E-6f64)
                 {
                     t = roots[rooti as usize];
                     td = t * t * t;
-                    tc = 3 as libc::c_int as libc::c_double * t * t
+                    tc = 3 as libc::c_int as libc::c_double
+                        * t
+                        * t
                         * (1 as libc::c_int as libc::c_double - t);
-                    tb = 3 as libc::c_int as libc::c_double * t
+                    tb = 3 as libc::c_int as libc::c_double
+                        * t
                         * (1 as libc::c_int as libc::c_double - t)
                         * (1 as libc::c_int as libc::c_double - t);
                     ta = (1 as libc::c_int as libc::c_double - t)
                         * (1 as libc::c_int as libc::c_double - t)
                         * (1 as libc::c_int as libc::c_double - t);
-                    ip
-                        .x = ta * (*sps.offset(0 as libc::c_int as isize)).x
+                    ip.x = ta * (*sps.offset(0 as libc::c_int as isize)).x
                         + tb * (*sps.offset(1 as libc::c_int as isize)).x
                         + tc * (*sps.offset(2 as libc::c_int as isize)).x
                         + td * (*sps.offset(3 as libc::c_int as isize)).x;
-                    ip
-                        .y = ta * (*sps.offset(0 as libc::c_int as isize)).y
+                    ip.y = ta * (*sps.offset(0 as libc::c_int as isize)).y
                         + tb * (*sps.offset(1 as libc::c_int as isize)).y
                         + tc * (*sps.offset(2 as libc::c_int as isize)).y
                         + td * (*sps.offset(3 as libc::c_int as isize)).y;
                     if !((ip.x - lps[0 as libc::c_int as usize].x)
                         * (ip.x - lps[0 as libc::c_int as usize].x)
                         + (ip.y - lps[0 as libc::c_int as usize].y)
-                            * (ip.y - lps[0 as libc::c_int as usize].y) < 1E-3f64
+                            * (ip.y - lps[0 as libc::c_int as usize].y)
+                        < 1E-3f64
                         || (ip.x - lps[1 as libc::c_int as usize].x)
                             * (ip.x - lps[1 as libc::c_int as usize].x)
                             + (ip.y - lps[1 as libc::c_int as usize].y)
-                                * (ip.y - lps[1 as libc::c_int as usize].y) < 1E-3f64)
+                                * (ip.y - lps[1 as libc::c_int as usize].y)
+                            < 1E-3f64)
                     {
                         return 0 as libc::c_int;
                     }
@@ -496,13 +476,11 @@ unsafe extern "C" fn splineintersectsline(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     xcoeff[0 as libc::c_int as usize] = (*lps.offset(0 as libc::c_int as isize)).x;
-    xcoeff[1 as libc::c_int
-        as usize] = (*lps.offset(1 as libc::c_int as isize)).x
-        - (*lps.offset(0 as libc::c_int as isize)).x;
+    xcoeff[1 as libc::c_int as usize] =
+        (*lps.offset(1 as libc::c_int as isize)).x - (*lps.offset(0 as libc::c_int as isize)).x;
     ycoeff[0 as libc::c_int as usize] = (*lps.offset(0 as libc::c_int as isize)).y;
-    ycoeff[1 as libc::c_int
-        as usize] = (*lps.offset(1 as libc::c_int as isize)).y
-        - (*lps.offset(0 as libc::c_int as isize)).y;
+    ycoeff[1 as libc::c_int as usize] =
+        (*lps.offset(1 as libc::c_int as isize)).y - (*lps.offset(0 as libc::c_int as isize)).y;
     rootn = 0 as libc::c_int;
     if xcoeff[1 as libc::c_int as usize] == 0 as libc::c_int as libc::c_double {
         if ycoeff[1 as libc::c_int as usize] == 0 as libc::c_int as libc::c_double {
@@ -526,7 +504,7 @@ unsafe extern "C" fn splineintersectsline(
             yrootn = solve3(scoeff.as_mut_ptr(), yroots.as_mut_ptr());
             if xrootn == 4 as libc::c_int {
                 if yrootn == 4 as libc::c_int {
-                    return 4 as libc::c_int
+                    return 4 as libc::c_int;
                 } else {
                     j = 0 as libc::c_int;
                     while j < yrootn {
@@ -581,11 +559,9 @@ unsafe extern "C" fn splineintersectsline(
                         scoeff.as_mut_ptr(),
                     );
                     sv = scoeff[0 as libc::c_int as usize]
-                        + tv
-                            * (scoeff[1 as libc::c_int as usize]
-                                + tv
-                                    * (scoeff[2 as libc::c_int as usize]
-                                        + tv * scoeff[3 as libc::c_int as usize]));
+                        + tv * (scoeff[1 as libc::c_int as usize]
+                            + tv * (scoeff[2 as libc::c_int as usize]
+                                + tv * scoeff[3 as libc::c_int as usize]));
                     sv = (sv - ycoeff[0 as libc::c_int as usize])
                         / ycoeff[1 as libc::c_int as usize];
                     if 0 as libc::c_int as libc::c_double <= sv
@@ -611,9 +587,8 @@ unsafe extern "C" fn splineintersectsline(
                 - rat * (*sps.offset(3 as libc::c_int as isize)).x,
             scoeff.as_mut_ptr(),
         );
-        scoeff[0 as libc::c_int as usize]
-            += rat * xcoeff[0 as libc::c_int as usize]
-                - ycoeff[0 as libc::c_int as usize];
+        scoeff[0 as libc::c_int as usize] +=
+            rat * xcoeff[0 as libc::c_int as usize] - ycoeff[0 as libc::c_int as usize];
         xrootn = solve3(scoeff.as_mut_ptr(), xroots.as_mut_ptr());
         if xrootn == 4 as libc::c_int {
             return 4 as libc::c_int;
@@ -621,8 +596,7 @@ unsafe extern "C" fn splineintersectsline(
         i = 0 as libc::c_int;
         while i < xrootn {
             tv = xroots[i as usize];
-            if tv >= 0 as libc::c_int as libc::c_double
-                && tv <= 1 as libc::c_int as libc::c_double
+            if tv >= 0 as libc::c_int as libc::c_double && tv <= 1 as libc::c_int as libc::c_double
             {
                 points2coeff(
                     (*sps.offset(0 as libc::c_int as isize)).x,
@@ -632,13 +606,10 @@ unsafe extern "C" fn splineintersectsline(
                     scoeff.as_mut_ptr(),
                 );
                 sv = scoeff[0 as libc::c_int as usize]
-                    + tv
-                        * (scoeff[1 as libc::c_int as usize]
-                            + tv
-                                * (scoeff[2 as libc::c_int as usize]
-                                    + tv * scoeff[3 as libc::c_int as usize]));
-                sv = (sv - xcoeff[0 as libc::c_int as usize])
-                    / xcoeff[1 as libc::c_int as usize];
+                    + tv * (scoeff[1 as libc::c_int as usize]
+                        + tv * (scoeff[2 as libc::c_int as usize]
+                            + tv * scoeff[3 as libc::c_int as usize]));
+                sv = (sv - xcoeff[0 as libc::c_int as usize]) / xcoeff[1 as libc::c_int as usize];
                 if 0 as libc::c_int as libc::c_double <= sv
                     && sv <= 1 as libc::c_int as libc::c_double
                 {
@@ -657,21 +628,12 @@ unsafe extern "C" fn points2coeff(
     mut v3: libc::c_double,
     mut coeff: *mut libc::c_double,
 ) {
-    *coeff
-        .offset(
-            3 as libc::c_int as isize,
-        ) = v3 + 3 as libc::c_int as libc::c_double * v1
+    *coeff.offset(3 as libc::c_int as isize) = v3 + 3 as libc::c_int as libc::c_double * v1
         - (v0 + 3 as libc::c_int as libc::c_double * v2);
-    *coeff
-        .offset(
-            2 as libc::c_int as isize,
-        ) = 3 as libc::c_int as libc::c_double * v0
+    *coeff.offset(2 as libc::c_int as isize) = 3 as libc::c_int as libc::c_double * v0
         + 3 as libc::c_int as libc::c_double * v2
         - 6 as libc::c_int as libc::c_double * v1;
-    *coeff
-        .offset(
-            1 as libc::c_int as isize,
-        ) = 3 as libc::c_int as libc::c_double * (v1 - v0);
+    *coeff.offset(1 as libc::c_int as isize) = 3 as libc::c_int as libc::c_double * (v1 - v0);
     *coeff.offset(0 as libc::c_int as isize) = v0;
 }
 unsafe extern "C" fn addroot(
@@ -679,9 +641,7 @@ unsafe extern "C" fn addroot(
     mut roots: *mut libc::c_double,
     mut rootnp: *mut libc::c_int,
 ) {
-    if root >= 0 as libc::c_int as libc::c_double
-        && root <= 1 as libc::c_int as libc::c_double
-    {
+    if root >= 0 as libc::c_int as libc::c_double && root <= 1 as libc::c_int as libc::c_double {
         *roots.offset(*rootnp as isize) = root;
         *rootnp += 1;
     }
@@ -702,8 +662,7 @@ unsafe extern "C" fn growops(mut newopn: libc::c_int) -> libc::c_int {
     }
     ops = realloc(
         ops as *mut libc::c_void,
-        (::std::mem::size_of::<Ppoint_t>() as libc::c_ulong)
-            .wrapping_mul(newopn as size_t),
+        (::std::mem::size_of::<Ppoint_t>() as libc::c_ulong).wrapping_mul(newopn as size_t),
     ) as *mut Ppoint_t;
     if ops.is_null() {
         return -(1 as libc::c_int);

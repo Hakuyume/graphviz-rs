@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, register_tool)]
 extern "C" {
@@ -18,17 +26,9 @@ extern "C" {
     fn strtod(_: *const libc::c_char, _: *mut *mut libc::c_char) -> libc::c_double;
     fn free(_: *mut libc::c_void);
     fn exit(_: libc::c_int) -> !;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
+    fn memset(_: *mut libc::c_void, _: libc::c_int, _: libc::c_ulong) -> *mut libc::c_void;
     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strncmp(
-        _: *const libc::c_char,
-        _: *const libc::c_char,
-        _: libc::c_ulong,
-    ) -> libc::c_int;
+    fn strncmp(_: *const libc::c_char, _: *const libc::c_char, _: libc::c_ulong) -> libc::c_int;
     fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
     fn strrchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strtok(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
@@ -48,11 +48,7 @@ extern "C" {
     fn agfstnode(g: *mut Agraph_t) -> *mut Agnode_t;
     fn agnxtout(g: *mut Agraph_t, e: *mut Agedge_t) -> *mut Agedge_t;
     fn agnameof(_: *mut libc::c_void) -> *mut libc::c_char;
-    fn agnxtattr(
-        g: *mut Agraph_t,
-        kind: libc::c_int,
-        attr: *mut Agsym_t,
-    ) -> *mut Agsym_t;
+    fn agnxtattr(g: *mut Agraph_t, kind: libc::c_int, attr: *mut Agsym_t) -> *mut Agsym_t;
     fn agbindrec(
         obj: *mut libc::c_void,
         name: *const libc::c_char,
@@ -64,9 +60,7 @@ extern "C" {
     fn xml_escape(
         s: *const libc::c_char,
         flags: xml_flags_t,
-        cb: Option::<
-            unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-        >,
+        cb: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
         state: *mut libc::c_void,
     ) -> libc::c_int;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
@@ -143,13 +137,8 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 pub type Dt_t = _dt_s;
@@ -174,16 +163,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
@@ -203,10 +186,9 @@ pub union C2RustUnnamed_0 {
     pub _htab: *mut *mut Dtlink_t,
     pub _head: *mut Dtlink_t,
 }
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -214,16 +196,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dict_t = _dt_s;
 pub type IDTYPE = uint64_t;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -304,17 +279,11 @@ pub struct C2RustUnnamed_1 {
     pub mod_0: agobjupdfn_t,
     pub del: agobjfn_t,
 }
-pub type agobjfn_t = Option::<
-    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> (),
->;
+pub type agobjfn_t =
+    Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void) -> ()>;
 pub type Agraph_t = Agraph_s;
-pub type agobjupdfn_t = Option::<
-    unsafe extern "C" fn(
-        *mut Agraph_t,
-        *mut Agobj_t,
-        *mut libc::c_void,
-        *mut Agsym_t,
-    ) -> (),
+pub type agobjupdfn_t = Option<
+    unsafe extern "C" fn(*mut Agraph_t, *mut Agobj_t, *mut libc::c_void, *mut Agsym_t) -> (),
 >;
 pub type Agsym_t = Agsym_s;
 #[derive(Copy, Clone)]
@@ -347,26 +316,18 @@ pub type Agiodisc_t = Agiodisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiodisc_s {
-    pub afread: Option::<
-        unsafe extern "C" fn(
-            *mut libc::c_void,
-            *mut libc::c_char,
-            libc::c_int,
-        ) -> libc::c_int,
+    pub afread: Option<
+        unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_char, libc::c_int) -> libc::c_int,
     >,
-    pub putstr: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int,
-    >,
-    pub flush: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub putstr: Option<unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int>,
+    pub flush: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
 }
 pub type Agiddisc_t = Agiddisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agiddisc_s {
-    pub open: Option::<
-        unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void,
-    >,
-    pub map: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agraph_t, *mut Agdisc_t) -> *mut libc::c_void>,
+    pub map: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             libc::c_int,
@@ -375,29 +336,21 @@ pub struct Agiddisc_s {
             libc::c_int,
         ) -> libc::c_long,
     >,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long,
-    >,
-    pub free: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> (),
-    >,
-    pub print: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
-    pub idregister: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> (),
-    >,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> libc::c_long>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> ()>,
+    pub print:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, IDTYPE) -> *mut libc::c_char>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub idregister:
+        Option<unsafe extern "C" fn(*mut libc::c_void, libc::c_int, *mut libc::c_void) -> ()>,
 }
 pub type Agmemdisc_t = Agmemdisc_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Agmemdisc_s {
-    pub open: Option::<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
-    pub alloc: Option::<
-        unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void,
-    >,
-    pub resize: Option::<
+    pub open: Option<unsafe extern "C" fn(*mut Agdisc_t) -> *mut libc::c_void>,
+    pub alloc: Option<unsafe extern "C" fn(*mut libc::c_void, size_t) -> *mut libc::c_void>,
+    pub resize: Option<
         unsafe extern "C" fn(
             *mut libc::c_void,
             *mut libc::c_void,
@@ -405,8 +358,8 @@ pub struct Agmemdisc_s {
             size_t,
         ) -> *mut libc::c_void,
     >,
-    pub free: Option::<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
-    pub close: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub free: Option<unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> ()>,
+    pub close: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 }
 pub type Agdesc_t = Agdesc_s;
 #[derive(Copy, Clone, ::c2rust_bitfields::BitfieldStruct)]
@@ -477,13 +430,13 @@ pub const _ISdigit: C2RustUnnamed_2 = 2048;
 pub const _ISalpha: C2RustUnnamed_2 = 1024;
 pub const _ISlower: C2RustUnnamed_2 = 512;
 pub const _ISupper: C2RustUnnamed_2 = 256;
-pub type opengfn = Option::<unsafe extern "C" fn(*mut FILE) -> *mut Agraph_t>;
+pub type opengfn = Option<unsafe extern "C" fn(*mut FILE) -> *mut Agraph_t>;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct ingdisc {
-    pub openf: Option::<unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void>,
-    pub readf: Option::<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>,
-    pub closef: Option::<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
+    pub openf: Option<unsafe extern "C" fn(*mut libc::c_char) -> *mut libc::c_void>,
+    pub readf: Option<unsafe extern "C" fn(*mut libc::c_void) -> *mut Agraph_t>,
+    pub closef: Option<unsafe extern "C" fn(*mut libc::c_void) -> libc::c_int>,
     pub dflt: *mut libc::c_void,
 }
 #[derive(Copy, Clone)]
@@ -551,8 +504,7 @@ unsafe extern "C" fn graphviz_exit(mut status: libc::c_int) -> ! {
 }
 static mut outFile: *mut FILE = 0 as *const FILE as *mut FILE;
 static mut CmdName: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
-static mut Files: *mut *mut libc::c_char = 0 as *const *mut libc::c_char
-    as *mut *mut libc::c_char;
+static mut Files: *mut *mut libc::c_char = 0 as *const *mut libc::c_char as *mut *mut libc::c_char;
 static mut id: uint64_t = 0;
 unsafe extern "C" fn indent(mut ix: libc::c_int) {
     loop {
@@ -562,7 +514,7 @@ unsafe extern "C" fn indent(mut ix: libc::c_int) {
             break;
         }
         fprintf(outFile, b"  \0" as *const u8 as *const libc::c_char);
-    };
+    }
 }
 unsafe extern "C" fn isNumber(mut s: *mut libc::c_char) -> libc::c_int {
     let mut ep: *mut libc::c_char = s;
@@ -570,20 +522,25 @@ unsafe extern "C" fn isNumber(mut s: *mut libc::c_char) -> libc::c_int {
     if s != ep {
         while *ep as libc::c_int != 0
             && *(*__ctype_b_loc()).offset(*ep as libc::c_int as isize) as libc::c_int
-                & _ISspace as libc::c_int as libc::c_ushort as libc::c_int != 0
+                & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
         {
             ep = ep.offset(1);
         }
-        if *ep != 0 { return 0 as libc::c_int } else { return 1 as libc::c_int }
+        if *ep != 0 {
+            return 0 as libc::c_int;
+        } else {
+            return 1 as libc::c_int;
+        }
     } else {
-        return 0 as libc::c_int
+        return 0 as libc::c_int;
     };
 }
 unsafe extern "C" fn parseStyle(mut s: *mut libc::c_char) -> libc::c_int {
     let mut flags: libc::c_int = 0 as libc::c_int;
     let mut ip: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut sep: *mut libc::c_char = b" \t,\0" as *const u8 as *const libc::c_char
-        as *mut libc::c_char;
+    let mut sep: *mut libc::c_char =
+        b" \t,\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
     s = strdup(s);
     ip = strtok(s, sep);
     while !ip.is_null() {
@@ -611,7 +568,12 @@ unsafe extern "C" fn emitInt(
     mut ix: libc::c_int,
 ) {
     indent(ix);
-    fprintf(outFile, b"%s %d\n\0" as *const u8 as *const libc::c_char, name, value);
+    fprintf(
+        outFile,
+        b"%s %d\n\0" as *const u8 as *const libc::c_char,
+        name,
+        value,
+    );
 }
 unsafe extern "C" fn emitReal(
     mut name: *mut libc::c_char,
@@ -619,13 +581,14 @@ unsafe extern "C" fn emitReal(
     mut ix: libc::c_int,
 ) {
     indent(ix);
-    fprintf(outFile, b"%s %g\n\0" as *const u8 as *const libc::c_char, name, value);
+    fprintf(
+        outFile,
+        b"%s %g\n\0" as *const u8 as *const libc::c_char,
+        name,
+        value,
+    );
 }
-unsafe extern "C" fn emitPoint(
-    mut x: libc::c_double,
-    mut y: libc::c_double,
-    mut ix: libc::c_int,
-) {
+unsafe extern "C" fn emitPoint(mut x: libc::c_double, mut y: libc::c_double, mut ix: libc::c_int) {
     indent(ix);
     fprintf(
         outFile,
@@ -636,7 +599,8 @@ unsafe extern "C" fn emitPoint(
 }
 unsafe extern "C" fn skipWS(mut s: *mut libc::c_char) -> *mut libc::c_char {
     while *(*__ctype_b_loc()).offset(*s as libc::c_int as isize) as libc::c_int
-        & _ISspace as libc::c_int as libc::c_ushort as libc::c_int != 0
+        & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
+        != 0
     {
         s = s.offset(1);
     }
@@ -656,7 +620,11 @@ unsafe extern "C" fn readPoint(
     endp = endp.offset(1);
     s = endp;
     *yp = strtod(s, &mut endp);
-    if s == endp { return 0 as *mut libc::c_char } else { return endp };
+    if s == endp {
+        return 0 as *mut libc::c_char;
+    } else {
+        return endp;
+    };
 }
 unsafe extern "C" fn arrowEnd(
     mut s0: *mut libc::c_char,
@@ -722,17 +690,11 @@ unsafe extern "C" fn emitSpline(mut s: *mut libc::c_char, mut ix: libc::c_int) {
     fprintf(outFile, b"]\n\0" as *const u8 as *const libc::c_char);
 }
 #[inline]
-unsafe extern "C" fn put(
-    mut stream: *mut libc::c_void,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn put(mut stream: *mut libc::c_void, mut s: *const libc::c_char) -> libc::c_int {
     return fputs(s, stream as *mut FILE);
 }
 #[inline]
-unsafe extern "C" fn xml_puts(
-    mut stream: *mut FILE,
-    mut s: *const libc::c_char,
-) -> libc::c_int {
+unsafe extern "C" fn xml_puts(mut stream: *mut FILE, mut s: *const libc::c_char) -> libc::c_int {
     let flags: xml_flags_t = {
         let mut init = xml_flags_t {
             raw_dash_nbsp_utf8: [0; 1],
@@ -747,13 +709,7 @@ unsafe extern "C" fn xml_puts(
     return xml_escape(
         s,
         flags,
-        Some(
-            put
-                as unsafe extern "C" fn(
-                    *mut libc::c_void,
-                    *const libc::c_char,
-                ) -> libc::c_int,
-        ),
+        Some(put as unsafe extern "C" fn(*mut libc::c_void, *const libc::c_char) -> libc::c_int),
         stream as *mut libc::c_void,
     );
 }
@@ -764,9 +720,18 @@ unsafe extern "C" fn emitAttr(
 ) {
     indent(ix);
     if isNumber(value) != 0 {
-        fprintf(outFile, b"%s %s\n\0" as *const u8 as *const libc::c_char, name, value);
+        fprintf(
+            outFile,
+            b"%s %s\n\0" as *const u8 as *const libc::c_char,
+            name,
+            value,
+        );
     } else {
-        fprintf(outFile, b"%s \"\0" as *const u8 as *const libc::c_char, name);
+        fprintf(
+            outFile,
+            b"%s \"\0" as *const u8 as *const libc::c_char,
+            name,
+        );
         xml_puts(outFile, value);
         fputs(b"\"\n\0" as *const u8 as *const libc::c_char, outFile);
     };
@@ -812,32 +777,26 @@ unsafe extern "C" fn emitNodeAttrs(
             if *v != 0 {
                 style = parseStyle(v);
                 if style & (1 as libc::c_int) << 3 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 4 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 5 as libc::c_int != 0 {
-                    attrs
-                        .outlineStyle = b"line\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char;
+                    attrs.outlineStyle =
+                        b"line\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                 }
                 if style & (1 as libc::c_int) << 6 as libc::c_int != 0 {
-                    attrs
-                        .outlineStyle = b"dashed\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char;
+                    attrs.outlineStyle =
+                        b"dashed\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                 }
                 if style & (1 as libc::c_int) << 7 as libc::c_int != 0 {
-                    attrs
-                        .outlineStyle = b"dotted\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char;
+                    attrs.outlineStyle =
+                        b"dotted\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                 }
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"label\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"label\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if strcmp(b"\\N\0" as *const u8 as *const libc::c_char, v) == 0 {
                 label = agnameof(np as *mut libc::c_void);
@@ -848,24 +807,20 @@ unsafe extern "C" fn emitNodeAttrs(
                 emitAttr((*s).name, label, ix);
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"penwidth\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"penwidth\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.width = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"width\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"width\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.w = 72.0f64 * atof(v);
                 attrs.flags |= ((1 as libc::c_int) << 1 as libc::c_int) as libc::c_uint;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"height\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"height\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.h = 72.0f64 * atof(v);
@@ -886,56 +841,52 @@ unsafe extern "C" fn emitNodeAttrs(
                 attrs.y = y;
                 attrs.flags |= ((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uint;
             }
-        } else if strcmp((*s).name, b"shape\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"shape\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.type_0 = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"color\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"color\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fill = v;
                 attrs.outline = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fillcolor\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp(
+            (*s).name,
+            b"fillcolor\0" as *const u8 as *const libc::c_char,
+        ) == 0
+        {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fill = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"pencolor\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"pencolor\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.outline = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontname\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"fontname\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontName = v;
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontsize\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"fontsize\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontSize = v;
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontcolor\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp(
+            (*s).name,
+            b"fontcolor\0" as *const u8 as *const libc::c_char,
+        ) == 0
+        {
             v = agxget(np as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontColor = v;
@@ -948,7 +899,10 @@ unsafe extern "C" fn emitNodeAttrs(
         s = agnxtattr(G, 1 as libc::c_int, s);
     }
     if doGraphics != 0 {
-        fprintf(outFile, b"    graphics [\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"    graphics [\n\0" as *const u8 as *const libc::c_char,
+        );
         if attrs.flags & ((1 as libc::c_int) << 0 as libc::c_int) as libc::c_uint != 0 {
             emitReal(
                 b"x\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1026,8 +980,7 @@ unsafe extern "C" fn emitNodeAttrs(
         }
         if !(attrs.outlineStyle).is_null() {
             emitAttr(
-                b"outlineStyle\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                b"outlineStyle\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 attrs.outlineStyle,
                 ix + 1 as libc::c_int,
             );
@@ -1035,7 +988,10 @@ unsafe extern "C" fn emitNodeAttrs(
         fprintf(outFile, b"    ]\n\0" as *const u8 as *const libc::c_char);
     }
     if doLabelGraphics != 0 {
-        fprintf(outFile, b"    LabelGraphics [\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"    LabelGraphics [\n\0" as *const u8 as *const libc::c_char,
+        );
         if !label.is_null() {
             emitAttr(
                 b"text\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1121,39 +1077,30 @@ unsafe extern "C" fn emitEdgeAttrs(
             if *v != 0 {
                 style = parseStyle(v);
                 if style & (1 as libc::c_int) << 3 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 5 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 6 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 6 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 6 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 7 as libc::c_int != 0 {
-                    attrs.flags
-                        |= ((1 as libc::c_int) << 7 as libc::c_int) as libc::c_uint;
+                    attrs.flags |= ((1 as libc::c_int) << 7 as libc::c_int) as libc::c_uint;
                 }
                 if style & (1 as libc::c_int) << 8 as libc::c_int != 0 {
-                    attrs
-                        .width = b"2\0" as *const u8 as *const libc::c_char
-                        as *mut libc::c_char;
+                    attrs.width = b"2\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                 }
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"label\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"label\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 label = v;
                 emitAttr((*s).name, label, ix);
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"penwidth\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"penwidth\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.width = v;
@@ -1171,56 +1118,55 @@ unsafe extern "C" fn emitEdgeAttrs(
                 doGraphics = 1 as libc::c_int;
                 attrs.arrow = v;
             }
-        } else if strcmp((*s).name, b"color\0" as *const u8 as *const libc::c_char) == 0
-            {
+        } else if strcmp((*s).name, b"color\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fill = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"pencolor\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"pencolor\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fill = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"arrowhead\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp(
+            (*s).name,
+            b"arrowhead\0" as *const u8 as *const libc::c_char,
+        ) == 0
+        {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.arrowhead = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"arrowtail\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp(
+            (*s).name,
+            b"arrowtail\0" as *const u8 as *const libc::c_char,
+        ) == 0
+        {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.arrowtail = v;
                 doGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontname\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"fontname\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontName = v;
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontsize\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp((*s).name, b"fontsize\0" as *const u8 as *const libc::c_char) == 0 {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontSize = v;
                 doLabelGraphics = 1 as libc::c_int;
             }
-        } else if strcmp((*s).name, b"fontcolor\0" as *const u8 as *const libc::c_char)
-                == 0
-            {
+        } else if strcmp(
+            (*s).name,
+            b"fontcolor\0" as *const u8 as *const libc::c_char,
+        ) == 0
+        {
             v = agxget(ep as *mut libc::c_void, s);
             if *v != 0 {
                 attrs.fontColor = v;
@@ -1233,7 +1179,10 @@ unsafe extern "C" fn emitEdgeAttrs(
         s = agnxtattr(G, 2 as libc::c_int, s);
     }
     if doGraphics != 0 {
-        fprintf(outFile, b"    graphics [\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"    graphics [\n\0" as *const u8 as *const libc::c_char,
+        );
         if !(attrs.pos).is_null() {
             emitSpline(attrs.pos, ix + 1 as libc::c_int);
         }
@@ -1260,16 +1209,14 @@ unsafe extern "C" fn emitEdgeAttrs(
         }
         if !(attrs.arrowhead).is_null() {
             emitAttr(
-                b"targetArrow\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                b"targetArrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 attrs.arrowhead,
                 ix + 1 as libc::c_int,
             );
         }
         if !(attrs.arrowtail).is_null() {
             emitAttr(
-                b"sourceArrow\0" as *const u8 as *const libc::c_char
-                    as *mut libc::c_char,
+                b"sourceArrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 attrs.arrowtail,
                 ix + 1 as libc::c_int,
             );
@@ -1280,17 +1227,13 @@ unsafe extern "C" fn emitEdgeAttrs(
                 b"dashed\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 ix + 1 as libc::c_int,
             );
-        } else if attrs.flags & ((1 as libc::c_int) << 7 as libc::c_int) as libc::c_uint
-                != 0
-            {
+        } else if attrs.flags & ((1 as libc::c_int) << 7 as libc::c_int) as libc::c_uint != 0 {
             emitAttr(
                 b"style\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 b"dotted\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 ix + 1 as libc::c_int,
             );
-        } else if attrs.flags & ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_uint
-                != 0
-            {
+        } else if attrs.flags & ((1 as libc::c_int) << 5 as libc::c_int) as libc::c_uint != 0 {
             emitAttr(
                 b"style\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                 b"line\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1298,32 +1241,29 @@ unsafe extern "C" fn emitEdgeAttrs(
             );
         }
         if !(attrs.arrow).is_null() {
-            if strcmp(attrs.arrow, b"forward\0" as *const u8 as *const libc::c_char) == 0
+            if strcmp(
+                attrs.arrow,
+                b"forward\0" as *const u8 as *const libc::c_char,
+            ) == 0
             {
                 emitAttr(
                     b"arrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     b"first\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     ix + 1 as libc::c_int,
                 );
-            } else if strcmp(attrs.arrow, b"back\0" as *const u8 as *const libc::c_char)
-                    == 0
-                {
+            } else if strcmp(attrs.arrow, b"back\0" as *const u8 as *const libc::c_char) == 0 {
                 emitAttr(
                     b"arrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     b"last\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     ix + 1 as libc::c_int,
                 );
-            } else if strcmp(attrs.arrow, b"both\0" as *const u8 as *const libc::c_char)
-                    == 0
-                {
+            } else if strcmp(attrs.arrow, b"both\0" as *const u8 as *const libc::c_char) == 0 {
                 emitAttr(
                     b"arrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     b"both\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     ix + 1 as libc::c_int,
                 );
-            } else if strcmp(attrs.arrow, b"none\0" as *const u8 as *const libc::c_char)
-                    == 0
-                {
+            } else if strcmp(attrs.arrow, b"none\0" as *const u8 as *const libc::c_char) == 0 {
                 emitAttr(
                     b"arrow\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
                     b"none\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1334,7 +1274,10 @@ unsafe extern "C" fn emitEdgeAttrs(
         fprintf(outFile, b"    ]\n\0" as *const u8 as *const libc::c_char);
     }
     if doLabelGraphics != 0 {
-        fprintf(outFile, b"    LabelGraphics [\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"    LabelGraphics [\n\0" as *const u8 as *const libc::c_char,
+        );
         if !label.is_null() {
             emitAttr(
                 b"text\0" as *const u8 as *const libc::c_char as *mut libc::c_char,
@@ -1375,14 +1318,12 @@ unsafe extern "C" fn emitEdge(mut G: *mut Agraph_t, mut e: *mut Agedge_t) {
     fprintf(
         outFile,
         b"    source %lu\n\0" as *const u8 as *const libc::c_char,
-        (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-            == 3 as libc::c_int
-        {
+        (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 3 as libc::c_int {
             e
         } else {
             e.offset(1 as libc::c_int as isize)
         })
-            .node)
+        .node)
             .base
             .data as *mut Local_Agnodeinfo_t))
             .id,
@@ -1390,14 +1331,12 @@ unsafe extern "C" fn emitEdge(mut G: *mut Agraph_t, mut e: *mut Agedge_t) {
     fprintf(
         outFile,
         b"    target %lu\n\0" as *const u8 as *const libc::c_char,
-        (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int
-            == 2 as libc::c_int
-        {
+        (*((*(*if ((*(e as *mut Agobj_t)).tag).objtype() as libc::c_int == 2 as libc::c_int {
             e
         } else {
             e.offset(-(1 as libc::c_int as isize))
         })
-            .node)
+        .node)
             .base
             .data as *mut Local_Agnodeinfo_t))
             .id,
@@ -1420,11 +1359,20 @@ unsafe extern "C" fn emitGraphAttrs(mut G: *mut Agraph_t) {
 unsafe extern "C" fn gv_to_gml(mut G: *mut Agraph_t) {
     let mut n: *mut Agnode_t = 0 as *mut Agnode_t;
     let mut e: *mut Agedge_t = 0 as *mut Agedge_t;
-    fprintf(outFile, b"graph [\n  version 2\n\0" as *const u8 as *const libc::c_char);
+    fprintf(
+        outFile,
+        b"graph [\n  version 2\n\0" as *const u8 as *const libc::c_char,
+    );
     if agisdirected(G) != 0 {
-        fprintf(outFile, b"  directed 1\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"  directed 1\n\0" as *const u8 as *const libc::c_char,
+        );
     } else {
-        fprintf(outFile, b"  directed 0\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            outFile,
+            b"  directed 0\n\0" as *const u8 as *const libc::c_char,
+        );
     }
     emitGraphAttrs(G);
     n = agfstnode(G);
@@ -1449,8 +1397,7 @@ unsafe extern "C" fn openFile(mut name: *const libc::c_char) -> *mut FILE {
     if fp.is_null() {
         fprintf(
             stderr,
-            b"%s: could not open file %s for writing\n\0" as *const u8
-                as *const libc::c_char,
+            b"%s: could not open file %s for writing\n\0" as *const u8 as *const libc::c_char,
             CmdName,
             name,
         );
@@ -1494,8 +1441,7 @@ unsafe extern "C" fn initargs(mut argc: libc::c_int, mut argv: *mut *mut libc::c
             58 => {
                 fprintf(
                     stderr,
-                    b"%s: option -%c missing parameter\n\0" as *const u8
-                        as *const libc::c_char,
+                    b"%s: option -%c missing parameter\n\0" as *const u8 as *const libc::c_char,
                     CmdName,
                     optopt,
                 );
@@ -1507,8 +1453,7 @@ unsafe extern "C" fn initargs(mut argc: libc::c_int, mut argv: *mut *mut libc::c
                 } else {
                     fprintf(
                         stderr,
-                        b"%s: option -%c unrecognized\n\0" as *const u8
-                            as *const libc::c_char,
+                        b"%s: option -%c unrecognized\n\0" as *const u8 as *const libc::c_char,
                         CmdName,
                         optopt,
                     );
@@ -1530,10 +1475,7 @@ unsafe extern "C" fn initargs(mut argc: libc::c_int, mut argv: *mut *mut libc::c
 unsafe extern "C" fn gread(mut fp: *mut FILE) -> *mut Agraph_t {
     return agread(fp as *mut libc::c_void, 0 as *mut Agdisc_t);
 }
-unsafe fn main_0(
-    mut argc: libc::c_int,
-    mut argv: *mut *mut libc::c_char,
-) -> libc::c_int {
+unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut G: *mut Agraph_t = 0 as *mut Agraph_t;
     let mut prev: *mut Agraph_t = 0 as *mut Agraph_t;
     let mut rv: libc::c_int = 0;
@@ -1571,7 +1513,7 @@ unsafe fn main_0(
     graphviz_exit(rv);
 }
 pub fn main() {
-    let mut args: Vec::<*mut libc::c_char> = Vec::new();
+    let mut args: Vec<*mut libc::c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             (::std::ffi::CString::new(arg))
@@ -1581,11 +1523,9 @@ pub fn main() {
     }
     args.push(::std::ptr::null_mut());
     unsafe {
-        ::std::process::exit(
-            main_0(
-                (args.len() - 1) as libc::c_int,
-                args.as_mut_ptr() as *mut *mut libc::c_char,
-            ) as i32,
-        )
+        ::std::process::exit(main_0(
+            (args.len() - 1) as libc::c_int,
+            args.as_mut_ptr() as *mut *mut libc::c_char,
+        ) as i32)
     }
 }

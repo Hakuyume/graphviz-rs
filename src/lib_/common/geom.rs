@@ -1,12 +1,16 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
-    fn sincos(
-        __x: libc::c_double,
-        __sinx: *mut libc::c_double,
-        __cosx: *mut libc::c_double,
-    );
+    fn sincos(__x: libc::c_double, __sinx: *mut libc::c_double, __cosx: *mut libc::c_double);
     fn fabs(_: libc::c_double) -> libc::c_double;
 }
 #[derive(Copy, Clone)]
@@ -50,17 +54,11 @@ unsafe extern "C" fn scale(mut c: libc::c_double, mut p: pointf) -> pointf {
     return r;
 }
 #[no_mangle]
-pub unsafe extern "C" fn lineToBox(
-    mut p: pointf,
-    mut q: pointf,
-    mut b: boxf,
-) -> libc::c_int {
+pub unsafe extern "C" fn lineToBox(mut p: pointf, mut q: pointf, mut b: boxf) -> libc::c_int {
     let mut inside1: libc::c_int = 0;
     let mut inside2: libc::c_int = 0;
-    inside1 = (p.x >= b.LL.x && p.x <= b.UR.x && p.y >= b.LL.y && p.y <= b.UR.y)
-        as libc::c_int;
-    inside2 = (q.x >= b.LL.x && q.x <= b.UR.x && q.y >= b.LL.y && q.y <= b.UR.y)
-        as libc::c_int;
+    inside1 = (p.x >= b.LL.x && p.x <= b.UR.x && p.y >= b.LL.y && p.y <= b.UR.y) as libc::c_int;
+    inside2 = (q.x >= b.LL.x && q.x <= b.UR.x && q.y >= b.LL.y && q.y <= b.UR.y) as libc::c_int;
     if inside1 != inside2 {
         return 0 as libc::c_int;
     }
@@ -69,13 +67,15 @@ pub unsafe extern "C" fn lineToBox(
     }
     if p.x == q.x {
         if (p.y >= b.LL.y) as libc::c_int ^ (q.y >= b.LL.y) as libc::c_int != 0
-            && p.x >= b.LL.x && p.x <= b.UR.x
+            && p.x >= b.LL.x
+            && p.x <= b.UR.x
         {
             return 0 as libc::c_int;
         }
     } else if p.y == q.y {
         if (p.x >= b.LL.x) as libc::c_int ^ (q.x >= b.LL.x) as libc::c_int != 0
-            && p.y >= b.LL.y && p.y <= b.UR.y
+            && p.y >= b.LL.y
+            && p.y <= b.UR.y
         {
             return 0 as libc::c_int;
         }
@@ -151,14 +151,12 @@ unsafe extern "C" fn rotatep(mut p: point, mut cwrot: libc::c_int) -> point {
     pf.x = p.x as libc::c_double;
     pf.y = p.y as libc::c_double;
     pf = rotatepf(pf, cwrot);
-    p
-        .x = (if pf.x >= 0 as libc::c_int as libc::c_double {
+    p.x = (if pf.x >= 0 as libc::c_int as libc::c_double {
         (pf.x + 0.5f64) as libc::c_int
     } else {
         (pf.x - 0.5f64) as libc::c_int
     });
-    p
-        .y = (if pf.y >= 0 as libc::c_int as libc::c_double {
+    p.y = (if pf.y >= 0 as libc::c_int as libc::c_double {
         (pf.y + 0.5f64) as libc::c_int
     } else {
         (pf.y - 0.5f64) as libc::c_int
@@ -302,11 +300,7 @@ pub unsafe extern "C" fn flip_rec_boxf(mut b: boxf, mut p: pointf) -> boxf {
     return r;
 }
 #[no_mangle]
-pub unsafe extern "C" fn ptToLine2(
-    mut a: pointf,
-    mut b: pointf,
-    mut p: pointf,
-) -> libc::c_double {
+pub unsafe extern "C" fn ptToLine2(mut a: pointf, mut b: pointf, mut p: pointf) -> libc::c_double {
     let mut dx: libc::c_double = b.x - a.x;
     let mut dy: libc::c_double = b.y - a.y;
     let mut a2: libc::c_double = (p.y - a.y) * dx - (p.x - a.x) * dy;

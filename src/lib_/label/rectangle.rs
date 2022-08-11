@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(label_break_value, register_tool)]
 extern "C" {
@@ -49,28 +57,26 @@ pub unsafe extern "C" fn NullRect() -> Rect_t {
 }
 #[no_mangle]
 pub unsafe extern "C" fn RectArea(mut r: *mut Rect_t) -> libc::c_uint {
-    if !r.is_null() {} else {
+    if !r.is_null() {
+    } else {
         __assert_fail(
             b"r\0" as *const u8 as *const libc::c_char,
             b"rectangle.c\0" as *const u8 as *const libc::c_char,
             68 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 32],
-                &[libc::c_char; 32],
-            >(b"unsigned int RectArea(Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 32], &[libc::c_char; 32]>(
+                b"unsigned int RectArea(Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*r).boundary[0 as libc::c_int as usize]
-        > (*r).boundary[2 as libc::c_int as usize]
-    {
+    if (*r).boundary[0 as libc::c_int as usize] > (*r).boundary[2 as libc::c_int as usize] {
         return 0 as libc::c_int as libc::c_uint;
     }
     let mut area: libc::c_uint = 1 as libc::c_int as libc::c_uint;
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < 2 as libc::c_int as libc::c_ulong {
-        let mut dim: libc::c_uint = ((*r)
-            .boundary[i.wrapping_add(2 as libc::c_int as libc::c_ulong) as usize]
+        let mut dim: libc::c_uint = ((*r).boundary
+            [i.wrapping_add(2 as libc::c_int as libc::c_ulong) as usize]
             - (*r).boundary[i as usize]) as libc::c_uint;
         if dim == 0 as libc::c_int as libc::c_uint {
             return 0 as libc::c_int as libc::c_uint;
@@ -78,12 +84,12 @@ pub unsafe extern "C" fn RectArea(mut r: *mut Rect_t) -> libc::c_uint {
         if (2147483647 as libc::c_int as libc::c_uint)
             .wrapping_mul(2 as libc::c_uint)
             .wrapping_add(1 as libc::c_uint)
-            .wrapping_div(dim) < area
+            .wrapping_div(dim)
+            < area
         {
             agerr(
                 AGERR,
-                b"label: area too large for rtree\n\0" as *const u8
-                    as *const libc::c_char,
+                b"label: area too large for rtree\n\0" as *const u8 as *const libc::c_char,
             );
             graphviz_exit(1 as libc::c_int);
         }
@@ -95,41 +101,33 @@ pub unsafe extern "C" fn RectArea(mut r: *mut Rect_t) -> libc::c_uint {
 #[no_mangle]
 pub unsafe extern "C" fn CombineRect(mut r: *mut Rect_t, mut rr: *mut Rect_t) -> Rect_t {
     let mut new: Rect_t = Rect_t { boundary: [0; 4] };
-    if !r.is_null() && !rr.is_null() {} else {
+    if !r.is_null() && !rr.is_null() {
+    } else {
         __assert_fail(
             b"r && rr\0" as *const u8 as *const libc::c_char,
             b"rectangle.c\0" as *const u8 as *const libc::c_char,
             92 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"Rect_t CombineRect(Rect_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"Rect_t CombineRect(Rect_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*r).boundary[0 as libc::c_int as usize]
-        > (*r).boundary[2 as libc::c_int as usize]
-    {
+    if (*r).boundary[0 as libc::c_int as usize] > (*r).boundary[2 as libc::c_int as usize] {
         return *rr;
     }
-    if (*rr).boundary[0 as libc::c_int as usize]
-        > (*rr).boundary[2 as libc::c_int as usize]
-    {
+    if (*rr).boundary[0 as libc::c_int as usize] > (*rr).boundary[2 as libc::c_int as usize] {
         return *r;
     }
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < 2 as libc::c_int as libc::c_ulong {
-        new
-            .boundary[i
-            as usize] = if (*r).boundary[i as usize] < (*rr).boundary[i as usize] {
+        new.boundary[i as usize] = if (*r).boundary[i as usize] < (*rr).boundary[i as usize] {
             (*r).boundary[i as usize]
         } else {
             (*rr).boundary[i as usize]
         };
         let mut j: size_t = i.wrapping_add(2 as libc::c_int as libc::c_ulong);
-        new
-            .boundary[j
-            as usize] = if (*r).boundary[j as usize] > (*rr).boundary[j as usize] {
+        new.boundary[j as usize] = if (*r).boundary[j as usize] > (*rr).boundary[j as usize] {
             (*r).boundary[j as usize]
         } else {
             (*rr).boundary[j as usize]
@@ -140,16 +138,16 @@ pub unsafe extern "C" fn CombineRect(mut r: *mut Rect_t, mut rr: *mut Rect_t) ->
 }
 #[no_mangle]
 pub unsafe extern "C" fn Overlap(mut r: *mut Rect_t, mut s: *mut Rect_t) -> libc::c_int {
-    if !r.is_null() && !s.is_null() {} else {
+    if !r.is_null() && !s.is_null() {
+    } else {
         __assert_fail(
             b"r && s\0" as *const u8 as *const libc::c_char,
             b"rectangle.c\0" as *const u8 as *const libc::c_char,
             112 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 32],
-                &[libc::c_char; 32],
-            >(b"int Overlap(Rect_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 32], &[libc::c_char; 32]>(
+                b"int Overlap(Rect_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     let mut i: size_t = 0 as libc::c_int as size_t;
@@ -165,30 +163,23 @@ pub unsafe extern "C" fn Overlap(mut r: *mut Rect_t, mut s: *mut Rect_t) -> libc
     return (0 as libc::c_int == 0) as libc::c_int;
 }
 #[no_mangle]
-pub unsafe extern "C" fn Contained(
-    mut r: *mut Rect_t,
-    mut s: *mut Rect_t,
-) -> libc::c_int {
-    if !r.is_null() && !s.is_null() {} else {
+pub unsafe extern "C" fn Contained(mut r: *mut Rect_t, mut s: *mut Rect_t) -> libc::c_int {
+    if !r.is_null() && !s.is_null() {
+    } else {
         __assert_fail(
             b"r && s\0" as *const u8 as *const libc::c_char,
             b"rectangle.c\0" as *const u8 as *const libc::c_char,
             127 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 34],
-                &[libc::c_char; 34],
-            >(b"int Contained(Rect_t *, Rect_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 34], &[libc::c_char; 34]>(
+                b"int Contained(Rect_t *, Rect_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*r).boundary[0 as libc::c_int as usize]
-        > (*r).boundary[2 as libc::c_int as usize]
-    {
+    if (*r).boundary[0 as libc::c_int as usize] > (*r).boundary[2 as libc::c_int as usize] {
         return (0 as libc::c_int == 0) as libc::c_int;
     }
-    if (*s).boundary[0 as libc::c_int as usize]
-        > (*s).boundary[2 as libc::c_int as usize]
-    {
+    if (*s).boundary[0 as libc::c_int as usize] > (*s).boundary[2 as libc::c_int as usize] {
         return 0 as libc::c_int;
     }
     let mut i: size_t = 0 as libc::c_int as size_t;

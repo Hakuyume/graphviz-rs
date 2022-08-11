@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(extern_types, label_break_value, register_tool)]
 extern "C" {
@@ -194,16 +202,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -219,18 +221,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -238,16 +234,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -364,18 +353,23 @@ unsafe extern "C" fn xlnew(
     mut n_lbls: libc::c_int,
     mut params: *mut label_params_t,
 ) -> *mut XLabels_t {
-    let mut xlp: *mut XLabels_t = zmalloc(
-        ::std::mem::size_of::<XLabels_t>() as libc::c_ulong,
-    ) as *mut XLabels_t;
+    let mut xlp: *mut XLabels_t =
+        zmalloc(::std::mem::size_of::<XLabels_t>() as libc::c_ulong) as *mut XLabels_t;
     let ref mut fresh0 = (*xlp).hdx;
     *fresh0 = dtopen(&mut Hdisc, Dtobag);
     if (*fresh0).is_null() {
-        fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+        fprintf(
+            stderr,
+            b"out of memory\n\0" as *const u8 as *const libc::c_char,
+        );
     } else {
         let ref mut fresh1 = (*xlp).spdx;
         *fresh1 = RTreeOpen();
         if (*fresh1).is_null() {
-            fprintf(stderr, b"out of memory\n\0" as *const u8 as *const libc::c_char);
+            fprintf(
+                stderr,
+                b"out of memory\n\0" as *const u8 as *const libc::c_char,
+            );
         } else {
             let ref mut fresh2 = (*xlp).objs;
             *fresh2 = objs;
@@ -429,48 +423,40 @@ unsafe extern "C" fn hd_hil_s_from_xy(mut p: point, mut n: libc::c_int) -> libc:
     return s;
 }
 unsafe extern "C" fn aabbaabb(mut r: *mut Rect_t, mut s: *mut Rect_t) -> libc::c_double {
-    if (*r).boundary[2 as libc::c_int as usize]
-        < (*s).boundary[0 as libc::c_int as usize]
-        || (*r).boundary[0 as libc::c_int as usize]
-            > (*s).boundary[2 as libc::c_int as usize]
+    if (*r).boundary[2 as libc::c_int as usize] < (*s).boundary[0 as libc::c_int as usize]
+        || (*r).boundary[0 as libc::c_int as usize] > (*s).boundary[2 as libc::c_int as usize]
     {
         return 0 as libc::c_int as libc::c_double;
     }
-    if (*r).boundary[3 as libc::c_int as usize]
-        < (*s).boundary[1 as libc::c_int as usize]
-        || (*r).boundary[1 as libc::c_int as usize]
-            > (*s).boundary[3 as libc::c_int as usize]
+    if (*r).boundary[3 as libc::c_int as usize] < (*s).boundary[1 as libc::c_int as usize]
+        || (*r).boundary[1 as libc::c_int as usize] > (*s).boundary[3 as libc::c_int as usize]
     {
         return 0 as libc::c_int as libc::c_double;
     }
-    let mut iminx: libc::c_double = (if (*r).boundary[0 as libc::c_int as usize]
-        > (*s).boundary[0 as libc::c_int as usize]
-    {
-        (*r).boundary[0 as libc::c_int as usize]
-    } else {
-        (*s).boundary[0 as libc::c_int as usize]
-    }) as libc::c_double;
-    let mut iminy: libc::c_double = (if (*r).boundary[1 as libc::c_int as usize]
-        > (*s).boundary[1 as libc::c_int as usize]
-    {
-        (*r).boundary[1 as libc::c_int as usize]
-    } else {
-        (*s).boundary[1 as libc::c_int as usize]
-    }) as libc::c_double;
-    let mut imaxx: libc::c_double = (if (*r).boundary[2 as libc::c_int as usize]
-        < (*s).boundary[2 as libc::c_int as usize]
-    {
-        (*r).boundary[2 as libc::c_int as usize]
-    } else {
-        (*s).boundary[2 as libc::c_int as usize]
-    }) as libc::c_double;
-    let mut imaxy: libc::c_double = (if (*r).boundary[3 as libc::c_int as usize]
-        < (*s).boundary[3 as libc::c_int as usize]
-    {
-        (*r).boundary[3 as libc::c_int as usize]
-    } else {
-        (*s).boundary[3 as libc::c_int as usize]
-    }) as libc::c_double;
+    let mut iminx: libc::c_double =
+        (if (*r).boundary[0 as libc::c_int as usize] > (*s).boundary[0 as libc::c_int as usize] {
+            (*r).boundary[0 as libc::c_int as usize]
+        } else {
+            (*s).boundary[0 as libc::c_int as usize]
+        }) as libc::c_double;
+    let mut iminy: libc::c_double =
+        (if (*r).boundary[1 as libc::c_int as usize] > (*s).boundary[1 as libc::c_int as usize] {
+            (*r).boundary[1 as libc::c_int as usize]
+        } else {
+            (*s).boundary[1 as libc::c_int as usize]
+        }) as libc::c_double;
+    let mut imaxx: libc::c_double =
+        (if (*r).boundary[2 as libc::c_int as usize] < (*s).boundary[2 as libc::c_int as usize] {
+            (*r).boundary[2 as libc::c_int as usize]
+        } else {
+            (*s).boundary[2 as libc::c_int as usize]
+        }) as libc::c_double;
+    let mut imaxy: libc::c_double =
+        (if (*r).boundary[3 as libc::c_int as usize] < (*s).boundary[3 as libc::c_int as usize] {
+            (*r).boundary[3 as libc::c_int as usize]
+        } else {
+            (*s).boundary[3 as libc::c_int as usize]
+        }) as libc::c_double;
     return (imaxx - iminx) * (imaxy - iminy);
 }
 unsafe extern "C" fn lblenclosing(
@@ -480,25 +466,25 @@ unsafe extern "C" fn lblenclosing(
     let mut xlp: *mut xlabel_t = (*objp).lbl;
     if (*objp1).sz.x == 0 as libc::c_int as libc::c_double
         && (*objp1).sz.y == 0 as libc::c_int as libc::c_double
-    {} else {
+    {
+    } else {
         __assert_fail(
-            b"objp1->sz.x == 0 && objp1->sz.y == 0\0" as *const u8
-                as *const libc::c_char,
+            b"objp1->sz.x == 0 && objp1->sz.y == 0\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             186 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 41],
-                &[libc::c_char; 41],
-            >(b"int lblenclosing(object_t *, object_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 41], &[libc::c_char; 41]>(
+                b"int lblenclosing(object_t *, object_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     if xlp.is_null() {
         return 0 as libc::c_int;
     }
-    return ((*objp1).pos.x > (*xlp).pos.x && (*objp1).pos.x < (*xlp).pos.x + (*xlp).sz.x
-        && (*objp1).pos.y > (*xlp).pos.y && (*objp1).pos.y < (*xlp).pos.y + (*xlp).sz.y)
-        as libc::c_int;
+    return ((*objp1).pos.x > (*xlp).pos.x
+        && (*objp1).pos.x < (*xlp).pos.x + (*xlp).sz.x
+        && (*objp1).pos.y > (*xlp).pos.y
+        && (*objp1).pos.y < (*xlp).pos.y + (*xlp).sz.y) as libc::c_int;
 }
 unsafe extern "C" fn objp2rect(mut op: *mut object_t, mut r: *mut Rect_t) {
     (*r).boundary[0 as libc::c_int as usize] = (*op).pos.x as libc::c_int;
@@ -523,59 +509,53 @@ unsafe extern "C" fn objplpmks(mut objp: *mut object_t) -> Rect_t {
     }
     rect.boundary[0 as libc::c_int as usize] = floor((*objp).pos.x - p.x) as libc::c_int;
     rect.boundary[1 as libc::c_int as usize] = floor((*objp).pos.y - p.y) as libc::c_int;
-    rect
-        .boundary[2 as libc::c_int
-        as usize] = ceil((*objp).pos.x + (*objp).sz.x + p.x) as libc::c_int;
-    if rect.boundary[2 as libc::c_int as usize] < 2147483647 as libc::c_int {} else {
+    rect.boundary[2 as libc::c_int as usize] =
+        ceil((*objp).pos.x + (*objp).sz.x + p.x) as libc::c_int;
+    if rect.boundary[2 as libc::c_int as usize] < 2147483647 as libc::c_int {
+    } else {
         __assert_fail(
             b"rect.boundary[2] < INT_MAX\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             231 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 29],
-                &[libc::c_char; 29],
-            >(b"Rect_t objplpmks(object_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 29], &[libc::c_char; 29]>(
+                b"Rect_t objplpmks(object_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    rect
-        .boundary[3 as libc::c_int
-        as usize] = ceil((*objp).pos.y + (*objp).sz.y + p.y) as libc::c_int;
-    if rect.boundary[3 as libc::c_int as usize] < 2147483647 as libc::c_int {} else {
+    rect.boundary[3 as libc::c_int as usize] =
+        ceil((*objp).pos.y + (*objp).sz.y + p.y) as libc::c_int;
+    if rect.boundary[3 as libc::c_int as usize] < 2147483647 as libc::c_int {
+    } else {
         __assert_fail(
             b"rect.boundary[3] < INT_MAX\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             233 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 29],
-                &[libc::c_char; 29],
-            >(b"Rect_t objplpmks(object_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 29], &[libc::c_char; 29]>(
+                b"Rect_t objplpmks(object_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     return rect;
 }
-unsafe extern "C" fn getintrsxi(
-    mut op: *mut object_t,
-    mut cp: *mut object_t,
-) -> libc::c_int {
+unsafe extern "C" fn getintrsxi(mut op: *mut object_t, mut cp: *mut object_t) -> libc::c_int {
     let mut i: libc::c_int = -(1 as libc::c_int);
     let mut lp: *mut xlabel_t = (*op).lbl;
     let mut clp: *mut xlabel_t = (*cp).lbl;
-    if lp != clp {} else {
+    if lp != clp {
+    } else {
         __assert_fail(
             b"lp != clp\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             243 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 39],
-                &[libc::c_char; 39],
-            >(b"int getintrsxi(object_t *, object_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 39], &[libc::c_char; 39]>(
+                b"int getintrsxi(object_t *, object_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
-    if (*lp).set as libc::c_int == 0 as libc::c_int
-        || (*clp).set as libc::c_int == 0 as libc::c_int
+    if (*lp).set as libc::c_int == 0 as libc::c_int || (*clp).set as libc::c_int == 0 as libc::c_int
     {
         return i;
     }
@@ -695,16 +675,16 @@ unsafe extern "C" fn xlintersections(
         area: 0.,
         pos: pointf { x: 0., y: 0. },
     };
-    if !((*objp).lbl).is_null() {} else {
+    if !((*objp).lbl).is_null() {
+    } else {
         __assert_fail(
             b"objp->lbl\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             347 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 64],
-                &[libc::c_char; 64],
-            >(b"BestPos_t xlintersections(XLabels_t *, object_t *, object_t **)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 64], &[libc::c_char; 64]>(
+                b"BestPos_t xlintersections(XLabels_t *, object_t *, object_t **)\0",
+            ))
+            .as_ptr(),
         );
     }
     bp.n = 0 as libc::c_int;
@@ -713,10 +693,8 @@ unsafe extern "C" fn xlintersections(
     let mut i: libc::c_int = 0 as libc::c_int;
     while i < (*xlp).n_objs {
         if !(objp == &mut *((*xlp).objs).offset(i as isize) as *mut object_t) {
-            if !((*((*xlp).objs).offset(i as isize)).sz.x
-                > 0 as libc::c_int as libc::c_double
-                && (*((*xlp).objs).offset(i as isize)).sz.y
-                    > 0 as libc::c_int as libc::c_double)
+            if !((*((*xlp).objs).offset(i as isize)).sz.x > 0 as libc::c_int as libc::c_double
+                && (*((*xlp).objs).offset(i as isize)).sz.y > 0 as libc::c_int as libc::c_double)
             {
                 if lblenclosing(objp, &mut *((*xlp).objs).offset(i as isize)) != 0 {
                     bp.n += 1;
@@ -726,11 +704,7 @@ unsafe extern "C" fn xlintersections(
         i += 1;
     }
     objplp2rect(objp, &mut rect);
-    let mut llp: *mut LeafList_t = RTreeSearch(
-        (*xlp).spdx,
-        (*(*xlp).spdx).root,
-        &mut rect,
-    );
+    let mut llp: *mut LeafList_t = RTreeSearch((*xlp).spdx, (*(*xlp).spdx).root, &mut rect);
     if llp.is_null() {
         return bp;
     }
@@ -762,15 +736,14 @@ unsafe extern "C" fn xlintersections(
     RTreeLeafListFree(llp);
     return bp;
 }
-unsafe extern "C" fn xladjust(
-    mut xlp: *mut XLabels_t,
-    mut objp: *mut object_t,
-) -> BestPos_t {
+unsafe extern "C" fn xladjust(mut xlp: *mut XLabels_t, mut objp: *mut object_t) -> BestPos_t {
     let mut lp: *mut xlabel_t = (*objp).lbl;
     let mut xincr: libc::c_double = (2 as libc::c_int as libc::c_double * (*lp).sz.x
-        + (*objp).sz.x) / 8 as libc::c_int as libc::c_double;
+        + (*objp).sz.x)
+        / 8 as libc::c_int as libc::c_double;
     let mut yincr: libc::c_double = (2 as libc::c_int as libc::c_double * (*lp).sz.y
-        + (*objp).sz.y) / 2 as libc::c_int as libc::c_double;
+        + (*objp).sz.y)
+        / 2 as libc::c_int as libc::c_double;
     let mut intrsx: [*mut object_t; 9] = [
         0 as *mut object_t,
         0 as *mut object_t,
@@ -792,16 +765,16 @@ unsafe extern "C" fn xladjust(
         area: 0.,
         pos: pointf { x: 0., y: 0. },
     };
-    if !((*objp).lbl).is_null() {} else {
+    if !((*objp).lbl).is_null() {
+    } else {
         __assert_fail(
             b"objp->lbl\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             410 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"BestPos_t xladjust(XLabels_t *, object_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 44], &[libc::c_char; 44]>(
+                b"BestPos_t xladjust(XLabels_t *, object_t *)\0",
+            ))
+            .as_ptr(),
         );
     }
     (*lp).pos.x = (*objp).pos.x - (*lp).sz.x;
@@ -958,23 +931,24 @@ unsafe extern "C" fn xlhdxload(mut xlp: *mut XLabels_t) -> libc::c_int {
         let mut pi: point = point { x: 0, y: 0 };
         hp = zmalloc(::std::mem::size_of::<HDict_t>() as libc::c_ulong) as *mut HDict_t;
         let ref mut fresh9 = (*hp).d.data;
-        *fresh9 = &mut *((*xlp).objs).offset(i as isize) as *mut object_t
-            as *mut libc::c_void;
+        *fresh9 = &mut *((*xlp).objs).offset(i as isize) as *mut object_t as *mut libc::c_void;
         (*hp).d.rect = objplpmks(&mut *((*xlp).objs).offset(i as isize));
-        pi
-            .x = (*hp).d.rect.boundary[0 as libc::c_int as usize]
+        pi.x = (*hp).d.rect.boundary[0 as libc::c_int as usize]
             + ((*hp).d.rect.boundary[2 as libc::c_int as usize]
-                - (*hp).d.rect.boundary[0 as libc::c_int as usize]) / 2 as libc::c_int;
-        pi
-            .y = (*hp).d.rect.boundary[1 as libc::c_int as usize]
+                - (*hp).d.rect.boundary[0 as libc::c_int as usize])
+                / 2 as libc::c_int;
+        pi.y = (*hp).d.rect.boundary[1 as libc::c_int as usize]
             + ((*hp).d.rect.boundary[3 as libc::c_int as usize]
-                - (*hp).d.rect.boundary[1 as libc::c_int as usize]) / 2 as libc::c_int;
+                - (*hp).d.rect.boundary[1 as libc::c_int as usize])
+                / 2 as libc::c_int;
         (*hp).key = hd_hil_s_from_xy(pi, order) as libc::c_int;
         if ((Some(((*(*xlp).hdx).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )((*xlp).hdx, hp as *mut libc::c_void, 0o1 as libc::c_int))
-            .is_null()
+            .expect("non-null function pointer")(
+            (*xlp).hdx,
+            hp as *mut libc::c_void,
+            0o1 as libc::c_int,
+        ))
+        .is_null()
         {
             return -(1 as libc::c_int);
         }
@@ -991,52 +965,53 @@ unsafe extern "C" fn xlhdxunload(mut xlp: *mut XLabels_t) {
                 (*((*(*(*xlp).hdx).data).here as *mut Dthold_t)).obj
             } else {
                 ((*(*(*xlp).hdx).data).here as *mut libc::c_char)
-                    .offset(-((*(*(*xlp).hdx).disc).link as isize)) as *mut libc::c_void
+                    .offset(-((*(*(*xlp).hdx).disc).link as isize))
+                    as *mut libc::c_void
             }
         } else {
             0 as *mut libc::c_void
         };
-        if !vp.is_null() {} else {
+        if !vp.is_null() {
+        } else {
             __assert_fail(
                 b"vp\0" as *const u8 as *const libc::c_char,
                 b"xlabels.c\0" as *const u8 as *const libc::c_char,
                 572 as libc::c_int as libc::c_uint,
-                (*::std::mem::transmute::<
-                    &[u8; 30],
-                    &[libc::c_char; 30],
-                >(b"void xlhdxunload(XLabels_t *)\0"))
-                    .as_ptr(),
+                (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                    b"void xlhdxunload(XLabels_t *)\0",
+                ))
+                .as_ptr(),
             );
         }
         if !vp.is_null() {
             (Some(((*(*xlp).hdx).searchf).expect("non-null function pointer")))
-                .expect(
-                    "non-null function pointer",
-                )((*xlp).hdx, vp, 0o10000 as libc::c_int);
+                .expect("non-null function pointer")(
+                (*xlp).hdx, vp, 0o10000 as libc::c_int
+            );
             free(vp);
             freed += 1;
         }
     }
-    if size == freed {} else {
+    if size == freed {
+    } else {
         __assert_fail(
             b"size==freed\0" as *const u8 as *const libc::c_char,
             b"xlabels.c\0" as *const u8 as *const libc::c_char,
             579 as libc::c_int as libc::c_uint,
-            (*::std::mem::transmute::<
-                &[u8; 30],
-                &[libc::c_char; 30],
-            >(b"void xlhdxunload(XLabels_t *)\0"))
-                .as_ptr(),
+            (*::std::mem::transmute::<&[u8; 30], &[libc::c_char; 30]>(
+                b"void xlhdxunload(XLabels_t *)\0",
+            ))
+            .as_ptr(),
         );
     };
 }
 unsafe extern "C" fn xlspdxload(mut xlp: *mut XLabels_t) -> libc::c_int {
-    let mut op: *mut HDict_t = (Some(
-        ((*(*xlp).hdx).searchf).expect("non-null function pointer"),
-    ))
-        .expect(
-            "non-null function pointer",
-        )((*xlp).hdx, 0 as *mut libc::c_void, 0o200 as libc::c_int) as *mut HDict_t;
+    let mut op: *mut HDict_t = (Some(((*(*xlp).hdx).searchf).expect("non-null function pointer")))
+        .expect("non-null function pointer")(
+        (*xlp).hdx,
+        0 as *mut libc::c_void,
+        0o200 as libc::c_int,
+    ) as *mut HDict_t;
     while !op.is_null() {
         RTreeInsert(
             (*xlp).spdx,
@@ -1046,9 +1021,11 @@ unsafe extern "C" fn xlspdxload(mut xlp: *mut XLabels_t) -> libc::c_int {
             0 as libc::c_int,
         );
         op = (Some(((*(*xlp).hdx).searchf).expect("non-null function pointer")))
-            .expect(
-                "non-null function pointer",
-            )((*xlp).hdx, op as *mut libc::c_void, 0o10 as libc::c_int) as *mut HDict_t;
+            .expect("non-null function pointer")(
+            (*xlp).hdx,
+            op as *mut libc::c_void,
+            0o10 as libc::c_int,
+        ) as *mut HDict_t;
     }
     return 0 as libc::c_int;
 }
@@ -1090,18 +1067,15 @@ pub unsafe extern "C" fn placeLabels(
         if !((*objs.offset(i as isize)).lbl).is_null() {
             bp = xladjust(xlp, &mut *objs.offset(i as isize));
             if bp.n == 0 as libc::c_int {
-                (*(*objs.offset(i as isize)).lbl)
-                    .set = 1 as libc::c_int as libc::c_uchar;
+                (*(*objs.offset(i as isize)).lbl).set = 1 as libc::c_int as libc::c_uchar;
             } else if bp.area == 0 as libc::c_int as libc::c_double {
                 (*(*objs.offset(i as isize)).lbl).pos.x = bp.pos.x;
                 (*(*objs.offset(i as isize)).lbl).pos.y = bp.pos.y;
-                (*(*objs.offset(i as isize)).lbl)
-                    .set = 1 as libc::c_int as libc::c_uchar;
+                (*(*objs.offset(i as isize)).lbl).set = 1 as libc::c_int as libc::c_uchar;
             } else if (*params).force as libc::c_int == 1 as libc::c_int {
                 (*(*objs.offset(i as isize)).lbl).pos.x = bp.pos.x;
                 (*(*objs.offset(i as isize)).lbl).pos.y = bp.pos.y;
-                (*(*objs.offset(i as isize)).lbl)
-                    .set = 1 as libc::c_int as libc::c_uchar;
+                (*(*objs.offset(i as isize)).lbl).set = 1 as libc::c_int as libc::c_uchar;
             } else {
                 r = 1 as libc::c_int;
             }

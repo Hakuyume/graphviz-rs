@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -6,18 +14,10 @@ extern "C" {
     fn drand() -> libc::c_double;
     fn gmalloc(_: size_t) -> *mut libc::c_void;
     fn SparseMatrix_delete(A: SparseMatrix);
-    fn SparseMatrix_is_symmetric(
-        A: SparseMatrix,
-        test_pattern_symmetry_only: bool,
-    ) -> libc::c_int;
-    fn SparseMatrix_symmetrize(
-        A: SparseMatrix,
-        pattern_symmetric_only: bool,
-    ) -> SparseMatrix;
+    fn SparseMatrix_is_symmetric(A: SparseMatrix, test_pattern_symmetry_only: bool) -> libc::c_int;
+    fn SparseMatrix_symmetrize(A: SparseMatrix, pattern_symmetric_only: bool) -> SparseMatrix;
     fn SparseMatrix_remove_diagonal(A: SparseMatrix) -> SparseMatrix;
-    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(
-        A: SparseMatrix,
-    ) -> SparseMatrix;
+    fn SparseMatrix_get_real_adjacency_matrix_symmetrized(A: SparseMatrix) -> SparseMatrix;
     fn SparseStressMajorizationSmoother_delete(sm: SparseStressMajorizationSmoother);
     fn SparseStressMajorizationSmoother_new(
         A: SparseMatrix,
@@ -72,7 +72,7 @@ pub struct StressMajorizationSmoother_struct {
     pub Lw: SparseMatrix,
     pub Lwd: SparseMatrix,
     pub lambda: *mut libc::c_double,
-    pub data_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    pub data_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     pub data: *mut libc::c_void,
     pub scheme: libc::c_int,
     pub scaling: libc::c_double,
@@ -95,8 +95,7 @@ unsafe extern "C" fn stress_model_core(
     mut flag: *mut libc::c_int,
 ) {
     let mut m: libc::c_int = 0;
-    let mut sm: SparseStressMajorizationSmoother = 0
-        as *mut StressMajorizationSmoother_struct;
+    let mut sm: SparseStressMajorizationSmoother = 0 as *mut StressMajorizationSmoother_struct;
     let mut lambda: libc::c_double = 0 as libc::c_int as libc::c_double;
     let mut i: libc::c_int = 0;
     let mut A: SparseMatrix = B;

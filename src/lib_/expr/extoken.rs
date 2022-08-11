@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -152,16 +160,10 @@ pub struct _dtmethod_s {
     pub searchf: Dtsearch_f,
     pub type_0: libc::c_int,
 }
-pub type Dtsearch_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void,
->;
-pub type Dtmemory_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        size_t,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
+pub type Dtsearch_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, libc::c_int) -> *mut libc::c_void>;
+pub type Dtmemory_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, size_t, *mut Dtdisc_t) -> *mut libc::c_void,
 >;
 pub type Dtdisc_t = _dtdisc_s;
 #[derive(Copy, Clone)]
@@ -177,18 +179,12 @@ pub struct _dtdisc_s {
     pub memoryf: Dtmemory_f,
     pub eventf: Dtevent_f,
 }
-pub type Dtevent_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        libc::c_int,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> libc::c_int,
+pub type Dtevent_f = Option<
+    unsafe extern "C" fn(*mut Dt_t, libc::c_int, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_int,
 >;
-pub type Dthash_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint,
->;
-pub type Dtcompar_f = Option::<
+pub type Dthash_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> libc::c_uint>;
+pub type Dtcompar_f = Option<
     unsafe extern "C" fn(
         *mut Dt_t,
         *mut libc::c_void,
@@ -196,16 +192,9 @@ pub type Dtcompar_f = Option::<
         *mut Dtdisc_t,
     ) -> libc::c_int,
 >;
-pub type Dtfree_f = Option::<
-    unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> (),
->;
-pub type Dtmake_f = Option::<
-    unsafe extern "C" fn(
-        *mut Dt_t,
-        *mut libc::c_void,
-        *mut Dtdisc_t,
-    ) -> *mut libc::c_void,
->;
+pub type Dtfree_f = Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> ()>;
+pub type Dtmake_f =
+    Option<unsafe extern "C" fn(*mut Dt_t, *mut libc::c_void, *mut Dtdisc_t) -> *mut libc::c_void>;
 pub type Dtdata_t = _dtdata_s;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -353,15 +342,9 @@ pub struct C2RustUnnamed_11 {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_12 {
-    pub floating: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double,
-    >,
-    pub integer: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong,
-    >,
-    pub string: Option::<
-        unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char,
-    >,
+    pub floating: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_double>,
+    pub integer: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> libc::c_longlong>,
+    pub string: Option<unsafe extern "C" fn(*mut *mut libc::c_char) -> *mut libc::c_char>,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -380,7 +363,7 @@ pub struct Exdisc_s {
     pub data: *mut *mut libc::c_char,
     pub lib: *mut libc::c_char,
     pub type_0: *mut libc::c_char,
-    pub castf: Option::<
+    pub castf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -391,7 +374,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub convertf: Option::<
+    pub convertf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -401,7 +384,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub binaryf: Option::<
+    pub binaryf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -411,27 +394,14 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub typename: Option::<
-        unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char,
+    pub typename: Option<unsafe extern "C" fn(*mut Expr_t, libc::c_int) -> *mut libc::c_char>,
+    pub stringof: Option<
+        unsafe extern "C" fn(*mut Expr_t, *mut Exnode_t, libc::c_int, *mut Exdisc_t) -> libc::c_int,
     >,
-    pub stringof: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            *mut Exnode_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> libc::c_int,
-    >,
-    pub keyf: Option::<
-        unsafe extern "C" fn(
-            *mut Expr_t,
-            Extype_t,
-            libc::c_int,
-            *mut Exdisc_t,
-        ) -> Extype_t,
-    >,
+    pub keyf:
+        Option<unsafe extern "C" fn(*mut Expr_t, Extype_t, libc::c_int, *mut Exdisc_t) -> Extype_t>,
     pub errorf: Exerror_f,
-    pub getf: Option::<
+    pub getf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -442,7 +412,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub reff: Option::<
+    pub reff: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -453,7 +423,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> Extype_t,
     >,
-    pub setf: Option::<
+    pub setf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -465,7 +435,7 @@ pub struct Exdisc_s {
             *mut Exdisc_t,
         ) -> libc::c_int,
     >,
-    pub matchf: Option::<
+    pub matchf: Option<
         unsafe extern "C" fn(
             *mut Expr_t,
             *mut Exnode_t,
@@ -480,9 +450,7 @@ pub struct Exdisc_s {
     pub types: *mut libc::c_int,
     pub user: *mut libc::c_void,
 }
-pub type Exexit_f = Option::<
-    unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> (),
->;
+pub type Exexit_f = Option<unsafe extern "C" fn(*mut Expr_t, *mut Exdisc_t, libc::c_int) -> ()>;
 pub type Exdisc_t = Exdisc_s;
 pub type Expr_t = Expr_s;
 #[derive(Copy, Clone)]
@@ -512,7 +480,7 @@ pub struct Expr_s {
     pub loopop: libc::c_int,
     pub nesting: libc::c_int,
 }
-pub type Exerror_f = Option::<
+pub type Exerror_f = Option<
     unsafe extern "C" fn(
         *mut Expr_t,
         *mut Exdisc_t,
@@ -621,11 +589,13 @@ unsafe extern "C" fn lex(mut ex: *mut Expr_t) -> libc::c_int {
                 }
                 c = 0 as libc::c_int;
             } else if (*(*ex).disc).flags
-                    & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong != 0
-                    && c == '\n' as i32 && !((*(*ex).input).next).is_null()
-                    && ((*(*(*ex).input).next).next).is_null()
-                    && (*(*ex).input).nesting <= 0 as libc::c_int
-                {
+                & ((1 as libc::c_int) << 3 as libc::c_int) as libc::c_ulong
+                != 0
+                && c == '\n' as i32
+                && !((*(*ex).input).next).is_null()
+                && ((*(*(*ex).input).next).next).is_null()
+                && (*(*ex).input).nesting <= 0 as libc::c_int
+            {
                 _err_info.line += 1;
                 expop(ex);
                 c = 0 as libc::c_int;
@@ -641,22 +611,21 @@ unsafe extern "C" fn lex(mut ex: *mut Expr_t) -> libc::c_int {
             if (*ex).linep
                 >= &mut *((*ex).line)
                     .as_mut_ptr()
-                    .offset(
-                        ::std::mem::size_of::<[libc::c_char; 512]>() as libc::c_ulong
-                            as isize,
-                    ) as *mut libc::c_char
+                    .offset(::std::mem::size_of::<[libc::c_char; 512]>() as libc::c_ulong as isize)
+                    as *mut libc::c_char
             {
                 let ref mut fresh9 = (*ex).linep;
                 *fresh9 = ((*ex).line).as_mut_ptr();
                 (*ex).linewrap = 1 as libc::c_int;
-            } else {};
+            } else {
+            };
             let ref mut fresh10 = (*ex).linep;
             let fresh11 = *fresh10;
             *fresh10 = (*fresh10).offset(1);
             *fresh11 = c as libc::c_char;
         }
         return c;
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
@@ -683,8 +652,19 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                         current_block = 5720623009719927633;
                         loop {
                             match current_block {
-                                5720623009719927633 => {
-                                    match lex(ex) {
+                                5720623009719927633 => match lex(ex) {
+                                    10 => {
+                                        if _err_info.line != 0 {
+                                            _err_info.line += 1;
+                                        } else {
+                                            _err_info.line = 2 as libc::c_int;
+                                        }
+                                        current_block = 5720623009719927633;
+                                    }
+                                    42 => match lex(ex) {
+                                        0 => {
+                                            break 's_30;
+                                        }
                                         10 => {
                                             if _err_info.line != 0 {
                                                 _err_info.line += 1;
@@ -694,37 +674,22 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                             current_block = 5720623009719927633;
                                         }
                                         42 => {
-                                            match lex(ex) {
-                                                0 => {
-                                                    break 's_30;
-                                                }
-                                                10 => {
-                                                    if _err_info.line != 0 {
-                                                        _err_info.line += 1;
-                                                    } else {
-                                                        _err_info.line = 2 as libc::c_int;
-                                                    }
-                                                    current_block = 5720623009719927633;
-                                                }
-                                                42 => {
-                                                    let ref mut fresh12 = (*ex).linep;
-                                                    *fresh12 = (*fresh12).offset(-1);
-                                                    (*(*ex).input).peek = '*' as i32;
-                                                    current_block = 5720623009719927633;
-                                                }
-                                                47 => {
-                                                    continue 's_30;
-                                                }
-                                                _ => {
-                                                    current_block = 5720623009719927633;
-                                                }
-                                            }
+                                            let ref mut fresh12 = (*ex).linep;
+                                            *fresh12 = (*fresh12).offset(-1);
+                                            (*(*ex).input).peek = '*' as i32;
+                                            current_block = 5720623009719927633;
+                                        }
+                                        47 => {
+                                            continue 's_30;
                                         }
                                         _ => {
                                             current_block = 5720623009719927633;
                                         }
+                                    },
+                                    _ => {
+                                        current_block = 5720623009719927633;
                                     }
-                                }
+                                },
                                 _ => {
                                     c = lex(ex);
                                     if !(c != '\n' as i32) {
@@ -744,8 +709,19 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                         current_block = 11194104282611034094;
                         loop {
                             match current_block {
-                                5720623009719927633 => {
-                                    match lex(ex) {
+                                5720623009719927633 => match lex(ex) {
+                                    10 => {
+                                        if _err_info.line != 0 {
+                                            _err_info.line += 1;
+                                        } else {
+                                            _err_info.line = 2 as libc::c_int;
+                                        }
+                                        current_block = 5720623009719927633;
+                                    }
+                                    42 => match lex(ex) {
+                                        0 => {
+                                            break 's_30;
+                                        }
                                         10 => {
                                             if _err_info.line != 0 {
                                                 _err_info.line += 1;
@@ -755,37 +731,22 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                             current_block = 5720623009719927633;
                                         }
                                         42 => {
-                                            match lex(ex) {
-                                                0 => {
-                                                    break 's_30;
-                                                }
-                                                10 => {
-                                                    if _err_info.line != 0 {
-                                                        _err_info.line += 1;
-                                                    } else {
-                                                        _err_info.line = 2 as libc::c_int;
-                                                    }
-                                                    current_block = 5720623009719927633;
-                                                }
-                                                42 => {
-                                                    let ref mut fresh12 = (*ex).linep;
-                                                    *fresh12 = (*fresh12).offset(-1);
-                                                    (*(*ex).input).peek = '*' as i32;
-                                                    current_block = 5720623009719927633;
-                                                }
-                                                47 => {
-                                                    continue 's_30;
-                                                }
-                                                _ => {
-                                                    current_block = 5720623009719927633;
-                                                }
-                                            }
+                                            let ref mut fresh12 = (*ex).linep;
+                                            *fresh12 = (*fresh12).offset(-1);
+                                            (*(*ex).input).peek = '*' as i32;
+                                            current_block = 5720623009719927633;
+                                        }
+                                        47 => {
+                                            continue 's_30;
                                         }
                                         _ => {
                                             current_block = 5720623009719927633;
                                         }
+                                    },
+                                    _ => {
+                                        current_block = 5720623009719927633;
                                     }
-                                }
+                                },
                                 _ => {
                                     c = lex(ex);
                                     if !(c != '\n' as i32) {
@@ -827,8 +788,7 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             43 | 45 => {
                 q = lex(ex);
                 if q == c {
-                    ex_lval
-                        .op = if c == '+' as i32 {
+                    ex_lval.op = if c == '+' as i32 {
                         333 as libc::c_int
                     } else {
                         334 as libc::c_int
@@ -889,15 +849,14 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             35 => {
                 if (*ex).linewrap == 0
                     && (*(*ex).disc).flags
-                        & ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_ulong == 0
+                        & ((1 as libc::c_int) << 4 as libc::c_int) as libc::c_ulong
+                        == 0
                 {
                     s = ((*ex).linep).offset(-(1 as libc::c_int as isize));
                     while s > ((*ex).line).as_mut_ptr()
                         && *(*__ctype_b_loc())
-                            .offset(
-                                *s.offset(-(1 as libc::c_int as isize)) as libc::c_int
-                                    as isize,
-                            ) as libc::c_int
+                            .offset(*s.offset(-(1 as libc::c_int as isize)) as libc::c_int as isize)
+                            as libc::c_int
                             & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
                             != 0
                     {
@@ -909,13 +868,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                 s = ((*ex_lval.id).name).as_mut_ptr();
                             }
                             _ => {
-                                s = b"\0" as *const u8 as *const libc::c_char
-                                    as *mut libc::c_char;
+                                s = b"\0" as *const u8 as *const libc::c_char as *mut libc::c_char;
                             }
                         }
-                        if strcmp(s, b"include\0" as *const u8 as *const libc::c_char)
-                            == 0
-                        {
+                        if strcmp(s, b"include\0" as *const u8 as *const libc::c_char) == 0 {
                             if extoken_fn(ex) != 263 as libc::c_int {
                                 exerror(
                                     b"#%s: string argument expected\0" as *const u8
@@ -923,22 +879,20 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                     s,
                                 );
                             } else if expush(
-                                    ex,
-                                    ex_lval.string,
-                                    1 as libc::c_int,
-                                    0 as *const libc::c_char,
-                                    0 as *mut Sfio_t,
-                                ) == 0
-                                {
+                                ex,
+                                ex_lval.string,
+                                1 as libc::c_int,
+                                0 as *const libc::c_char,
+                                0 as *mut Sfio_t,
+                            ) == 0
+                            {
                                 let ref mut fresh21 = (*ex).linep;
                                 *fresh21 = ((*ex).line).as_mut_ptr();
                                 (*ex).linewrap = 0 as libc::c_int;
                                 continue;
                             }
                         } else {
-                            exerror(
-                                b"unknown directive\0" as *const u8 as *const libc::c_char,
-                            );
+                            exerror(b"unknown directive\0" as *const u8 as *const libc::c_char);
                         }
                     }
                 }
@@ -949,7 +903,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                 q = c;
                 if (0 as libc::c_int) < 0 as libc::c_int
                     || 0 as libc::c_int as libc::c_long > (*(*ex).tmp).size
-                {} else {
+                {
+                } else {
                     let ref mut fresh22 = (*(*ex).tmp).next;
                     *fresh22 = ((*(*ex).tmp).data).offset(0 as libc::c_int as isize);
                 };
@@ -973,8 +928,7 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                     }
                     if c == 0 {
                         exerror(
-                            b"unterminated %c string\0" as *const u8
-                                as *const libc::c_char,
+                            b"unterminated %c string\0" as *const u8 as *const libc::c_char,
                             q,
                         );
                         break 's_30;
@@ -1001,7 +955,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                 s = exstash((*ex).tmp, 0 as *mut Vmalloc_t);
                 if q == '"' as i32
                     || (*(*ex).disc).flags
-                        & ((1 as libc::c_int) << 0 as libc::c_int) as libc::c_ulong != 0
+                        & ((1 as libc::c_int) << 0 as libc::c_int) as libc::c_ulong
+                        != 0
                 {
                     ex_lval.string = vmstrdup((*ex).vm, s);
                     if (ex_lval.string).is_null() {
@@ -1017,11 +972,13 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             46 => {
                 c = lex(ex);
                 if *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                    & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                    & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                    != 0
                 {
                     if (0 as libc::c_int) < 0 as libc::c_int
                         || 0 as libc::c_int as libc::c_long > (*(*ex).tmp).size
-                    {} else {
+                    {
+                    } else {
                         let ref mut fresh29 = (*(*ex).tmp).next;
                         *fresh29 = ((*(*ex).tmp).data).offset(0 as libc::c_int as isize);
                     };
@@ -1053,7 +1010,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 => {
                 if (0 as libc::c_int) < 0 as libc::c_int
                     || 0 as libc::c_int as libc::c_long > (*(*ex).tmp).size
-                {} else {
+                {
+                } else {
                     let ref mut fresh35 = (*(*ex).tmp).next;
                     *fresh35 = ((*(*ex).tmp).data).offset(0 as libc::c_int as isize);
                 };
@@ -1081,8 +1039,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                     loop {
                         c = lex(ex);
                         match c {
-                            48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 97 | 98
-                            | 99 | 100 | 101 | 102 | 65 | 66 | 67 | 68 | 69 | 70 => {}
+                            48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 97 | 98 | 99
+                            | 100 | 101 | 102 | 65 | 66 | 67 | 68 | 69 | 70 => {}
                             _ => {
                                 break;
                             }
@@ -1099,7 +1057,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                     current_block = 13176516025253886821;
                 } else {
                     while *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                        != 0
                     {
                         if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
                             _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
@@ -1147,12 +1106,15 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             }
             _ => {
                 if *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                    & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int != 0
-                    || c == '_' as i32 || c == '$' as i32
+                    & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+                    != 0
+                    || c == '_' as i32
+                    || c == '$' as i32
                 {
                     if (0 as libc::c_int) < 0 as libc::c_int
                         || 0 as libc::c_int as libc::c_long > (*(*ex).tmp).size
-                    {} else {
+                    {
+                    } else {
                         let ref mut fresh59 = (*(*ex).tmp).next;
                         *fresh59 = ((*(*ex).tmp).data).offset(0 as libc::c_int as isize);
                     };
@@ -1168,7 +1130,9 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                         c = lex(ex);
                         if !(*(*__ctype_b_loc()).offset(c as isize) as libc::c_int
                             & _ISalnum as libc::c_int as libc::c_ushort as libc::c_int
-                            != 0 || c == '_' as i32 || c == '$' as i32)
+                            != 0
+                            || c == '_' as i32
+                            || c == '$' as i32)
                         {
                             break;
                         }
@@ -1186,20 +1150,18 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                     (*(*ex).input).peek = c;
                     s = exstash((*ex).tmp, 0 as *mut Vmalloc_t);
                     v = 0 as *mut Dt_t;
-                    ex_lval
-                        .id = (Some(
-                        ((*(*ex).symbols).searchf).expect("non-null function pointer"),
-                    ))
-                        .expect(
-                            "non-null function pointer",
-                        )((*ex).symbols, s as *mut libc::c_void, 0o1000 as libc::c_int)
-                        as *mut Exid_s;
+                    ex_lval.id =
+                        (Some(((*(*ex).symbols).searchf).expect("non-null function pointer")))
+                            .expect("non-null function pointer")(
+                            (*ex).symbols,
+                            s as *mut libc::c_void,
+                            0o1000 as libc::c_int,
+                        ) as *mut Exid_s;
                     if !v.is_null() {
                         dtview((*ex).symbols, v);
                     }
                     if (ex_lval.id).is_null() {
-                        ex_lval
-                            .id = if 0 as libc::c_int != 0 {
+                        ex_lval.id = if 0 as libc::c_int != 0 {
                             realloc(
                                 0 as *mut libc::c_char as *mut libc::c_void,
                                 (::std::mem::size_of::<Exid_t>() as libc::c_ulong)
@@ -1230,10 +1192,9 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                             (*ex_lval.id).lex = 287 as libc::c_int as libc::c_long;
                             let ref mut fresh65 = (*ex_lval.id).isstatic;
                             *fresh65 = expr.instatic as libc::c_long;
-                            expr
-                                .statics = (expr.statics as libc::c_long + *fresh65)
-                                as libc::c_int;
-                            if c == ':' as i32 && expr.nolabel == 0
+                            expr.statics = (expr.statics as libc::c_long + *fresh65) as libc::c_int;
+                            if c == ':' as i32
+                                && expr.nolabel == 0
                                 && !((*ex).frame).is_null()
                                 && !((*(*ex).frame).view).is_null()
                             {
@@ -1241,21 +1202,16 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                     ((*(*(*ex).frame).view).searchf)
                                         .expect("non-null function pointer"),
                                 ))
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                .expect("non-null function pointer")(
                                     (*(*ex).frame).view,
                                     ex_lval.id as *mut libc::c_void,
                                     0o1 as libc::c_int,
                                 );
                             } else {
                                 (Some(
-                                    ((*(*ex).symbols).searchf)
-                                        .expect("non-null function pointer"),
+                                    ((*(*ex).symbols).searchf).expect("non-null function pointer"),
                                 ))
-                                    .expect(
-                                        "non-null function pointer",
-                                    )(
+                                .expect("non-null function pointer")(
                                     (*ex).symbols,
                                     ex_lval.id as *mut libc::c_void,
                                     0o1 as libc::c_int,
@@ -1265,14 +1221,13 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                     }
                     match (*ex_lval.id).lex {
                         273 => {
-                            if (*ex_lval.id).index == 261 as libc::c_int as libc::c_long
-                            {
+                            if (*ex_lval.id).index == 261 as libc::c_int as libc::c_long {
                                 if c == '*' as i32 {
                                     lex(ex);
-                                    ex_lval
-                                        .id = &mut *exbuiltin
+                                    ex_lval.id = &mut *exbuiltin
                                         .as_mut_ptr()
-                                        .offset(0 as libc::c_int as isize) as *mut Exid_t;
+                                        .offset(0 as libc::c_int as isize)
+                                        as *mut Exid_t;
                                 }
                             }
                         }
@@ -1289,10 +1244,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                             let mut t: libc::c_int = 0;
                             if (0 as libc::c_int) < 0 as libc::c_int
                                 || 0 as libc::c_int as libc::c_long > (*(*ex).tmp).size
-                            {} else {
+                            {
+                            } else {
                                 let ref mut fresh66 = (*(*ex).tmp).next;
-                                *fresh66 = ((*(*ex).tmp).data)
-                                    .offset(0 as libc::c_int as isize);
+                                *fresh66 = ((*(*ex).tmp).data).offset(0 as libc::c_int as isize);
                             };
                             b_0 = 1 as libc::c_int;
                             n = 0 as libc::c_int;
@@ -1307,87 +1262,91 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                     47 => {
                                         q = lex(ex);
                                         match q {
-                                            42 => {
-                                                loop {
-                                                    match lex(ex) {
-                                                        10 => {
-                                                            if _err_info.line != 0 {
-                                                                _err_info.line += 1;
-                                                            } else {
-                                                                _err_info.line = 2 as libc::c_int;
-                                                            }
-                                                            continue;
+                                            42 => loop {
+                                                match lex(ex) {
+                                                    10 => {
+                                                        if _err_info.line != 0 {
+                                                            _err_info.line += 1;
+                                                        } else {
+                                                            _err_info.line = 2 as libc::c_int;
                                                         }
-                                                        42 => {
-                                                            match lex(ex) {
-                                                                0 => {
-                                                                    break 's_30;
+                                                        continue;
+                                                    }
+                                                    42 => match lex(ex) {
+                                                        0 => {
+                                                            break 's_30;
+                                                        }
+                                                        10 => {
+                                                            current_block = 4450415816793006058;
+                                                            match current_block {
+                                                                12827718114001486934 => {
+                                                                    let ref mut fresh67 =
+                                                                        (*ex).linep;
+                                                                    *fresh67 =
+                                                                        (*fresh67).offset(-1);
+                                                                    (*(*ex).input).peek =
+                                                                        '*' as i32;
+                                                                    continue;
                                                                 }
-                                                                10 => {
-                                                                    current_block = 4450415816793006058;
-                                                                    match current_block {
-                                                                        12827718114001486934 => {
-                                                                            let ref mut fresh67 = (*ex).linep;
-                                                                            *fresh67 = (*fresh67).offset(-1);
-                                                                            (*(*ex).input).peek = '*' as i32;
-                                                                            continue;
-                                                                        }
-                                                                        _ => {
-                                                                            if _err_info.line != 0 {
-                                                                                _err_info.line += 1;
-                                                                            } else {
-                                                                                _err_info.line = 2 as libc::c_int;
-                                                                            }
-                                                                            continue;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                42 => {
-                                                                    current_block = 12827718114001486934;
-                                                                    match current_block {
-                                                                        12827718114001486934 => {
-                                                                            let ref mut fresh67 = (*ex).linep;
-                                                                            *fresh67 = (*fresh67).offset(-1);
-                                                                            (*(*ex).input).peek = '*' as i32;
-                                                                            continue;
-                                                                        }
-                                                                        _ => {
-                                                                            if _err_info.line != 0 {
-                                                                                _err_info.line += 1;
-                                                                            } else {
-                                                                                _err_info.line = 2 as libc::c_int;
-                                                                            }
-                                                                            continue;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                47 => {}
                                                                 _ => {
+                                                                    if _err_info.line != 0 {
+                                                                        _err_info.line += 1;
+                                                                    } else {
+                                                                        _err_info.line =
+                                                                            2 as libc::c_int;
+                                                                    }
                                                                     continue;
                                                                 }
                                                             }
                                                         }
-                                                        _ => {}
-                                                    }
-                                                    let fresh68 = b_0;
-                                                    b_0 = b_0 + 1;
-                                                    if fresh68 == 0 {
-                                                        break 's_30;
-                                                    }
-                                                    if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                        _sfflsbuf(
-                                                            (*ex).tmp,
-                                                            ' ' as i32 as libc::c_uchar as libc::c_int,
-                                                        );
-                                                    } else {
-                                                        let ref mut fresh69 = (*(*ex).tmp).next;
-                                                        let fresh70 = *fresh69;
-                                                        *fresh69 = (*fresh69).offset(1);
-                                                        *fresh70 = ' ' as i32 as libc::c_uchar;
-                                                    };
-                                                    break;
+                                                        42 => {
+                                                            current_block = 12827718114001486934;
+                                                            match current_block {
+                                                                12827718114001486934 => {
+                                                                    let ref mut fresh67 =
+                                                                        (*ex).linep;
+                                                                    *fresh67 =
+                                                                        (*fresh67).offset(-1);
+                                                                    (*(*ex).input).peek =
+                                                                        '*' as i32;
+                                                                    continue;
+                                                                }
+                                                                _ => {
+                                                                    if _err_info.line != 0 {
+                                                                        _err_info.line += 1;
+                                                                    } else {
+                                                                        _err_info.line =
+                                                                            2 as libc::c_int;
+                                                                    }
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        }
+                                                        47 => {}
+                                                        _ => {
+                                                            continue;
+                                                        }
+                                                    },
+                                                    _ => {}
                                                 }
-                                            }
+                                                let fresh68 = b_0;
+                                                b_0 = b_0 + 1;
+                                                if fresh68 == 0 {
+                                                    break 's_30;
+                                                }
+                                                if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
+                                                    _sfflsbuf(
+                                                        (*ex).tmp,
+                                                        ' ' as i32 as libc::c_uchar as libc::c_int,
+                                                    );
+                                                } else {
+                                                    let ref mut fresh69 = (*(*ex).tmp).next;
+                                                    let fresh70 = *fresh69;
+                                                    *fresh69 = (*fresh69).offset(1);
+                                                    *fresh70 = ' ' as i32 as libc::c_uchar;
+                                                };
+                                                break;
+                                            },
                                             47 => {
                                                 loop {
                                                     c = lex(ex);
@@ -1419,7 +1378,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                             _ => {
                                                 b_0 = 0 as libc::c_int;
                                                 if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                    _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
+                                                    _sfflsbuf(
+                                                        (*ex).tmp,
+                                                        c as libc::c_uchar as libc::c_int,
+                                                    );
                                                 } else {
                                                     let ref mut fresh73 = (*(*ex).tmp).next;
                                                     let fresh74 = *fresh73;
@@ -1427,7 +1389,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                                     *fresh74 = c as libc::c_uchar;
                                                 };
                                                 if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                    _sfflsbuf((*ex).tmp, q as libc::c_uchar as libc::c_int);
+                                                    _sfflsbuf(
+                                                        (*ex).tmp,
+                                                        q as libc::c_uchar as libc::c_int,
+                                                    );
                                                 } else {
                                                     let ref mut fresh75 = (*(*ex).tmp).next;
                                                     let fresh76 = *fresh75;
@@ -1512,19 +1477,20 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                             break;
                                         } else {
                                             if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
+                                                _sfflsbuf(
+                                                    (*ex).tmp,
+                                                    c as libc::c_uchar as libc::c_int,
+                                                );
                                             } else {
                                                 let ref mut fresh85 = (*(*ex).tmp).next;
                                                 let fresh86 = *fresh85;
                                                 *fresh85 = (*fresh85).offset(1);
                                                 *fresh86 = c as libc::c_uchar;
                                             };
-                                            if c == pc
-                                                && {
-                                                    n -= 1;
-                                                    n <= 0 as libc::c_int
-                                                }
-                                            {
+                                            if c == pc && {
+                                                n -= 1;
+                                                n <= 0 as libc::c_int
+                                            } {
                                                 if t == po {
                                                     break;
                                                 }
@@ -1566,7 +1532,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                             }
                                             if c == '\\' as i32 {
                                                 if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                    _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
+                                                    _sfflsbuf(
+                                                        (*ex).tmp,
+                                                        c as libc::c_uchar as libc::c_int,
+                                                    );
                                                 } else {
                                                     let ref mut fresh92 = (*(*ex).tmp).next;
                                                     let fresh93 = *fresh92;
@@ -1591,7 +1560,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                                     }
                                                 }
                                                 if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
-                                                    _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
+                                                    _sfflsbuf(
+                                                        (*ex).tmp,
+                                                        c as libc::c_uchar as libc::c_int,
+                                                    );
                                                 } else {
                                                     let ref mut fresh94 = (*(*ex).tmp).next;
                                                     let fresh95 = *fresh94;
@@ -1617,12 +1589,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                                 }
                                 c = lex(ex);
                             }
-                            (Some(
-                                ((*(*ex).disc).reff).expect("non-null function pointer"),
-                            ))
-                                .expect(
-                                    "non-null function pointer",
-                                )(
+                            (Some(((*(*ex).disc).reff).expect("non-null function pointer")))
+                                .expect("non-null function pointer")(
                                 ex,
                                 0 as *mut Exnode_t,
                                 ex_lval.id,
@@ -1656,7 +1624,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                 loop {
                     c = lex(ex);
                     if !(*(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0)
+                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                        != 0)
                     {
                         break;
                     }
@@ -1751,7 +1720,8 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
                         c = lex(ex);
                     }
                     while *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int != 0
+                        & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                        != 0
                     {
                         if (*(*ex).tmp).next >= (*(*ex).tmp).endw {
                             _sfflsbuf((*ex).tmp, c as libc::c_uchar as libc::c_int);
@@ -1782,8 +1752,10 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
         (*(*ex).input).peek = c;
         if *e as libc::c_int != 0
             || *(*__ctype_b_loc()).offset(c as isize) as libc::c_int
-                & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int != 0
-            || c == '_' as i32 || c == '$' as i32
+                & _ISalpha as libc::c_int as libc::c_ushort as libc::c_int
+                != 0
+            || c == '_' as i32
+            || c == '$' as i32
         {
             exerror(
                 b"%s: invalid numeric constant\0" as *const u8 as *const libc::c_char,
@@ -1791,7 +1763,7 @@ pub unsafe extern "C" fn extoken_fn(mut ex: *mut Expr_t) -> libc::c_int {
             );
             break;
         } else {
-            return q
+            return q;
         }
     }
     (*ex).eof = 1 as libc::c_int;

@@ -1,4 +1,12 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
 #![register_tool(c2rust)]
 #![feature(register_tool)]
 extern "C" {
@@ -23,9 +31,7 @@ pub struct DoubleLinkedList_struct {
 }
 pub type DoubleLinkedList = *mut DoubleLinkedList_struct;
 #[no_mangle]
-pub unsafe extern "C" fn SingleLinkedList_new(
-    mut data: *mut libc::c_void,
-) -> SingleLinkedList {
+pub unsafe extern "C" fn SingleLinkedList_new(mut data: *mut libc::c_void) -> SingleLinkedList {
     let mut head: SingleLinkedList = 0 as *mut SingleLinkedList_struct;
     head = gmalloc(::std::mem::size_of::<SingleLinkedList_struct>() as libc::c_ulong)
         as *mut SingleLinkedList_struct;
@@ -36,19 +42,16 @@ pub unsafe extern "C" fn SingleLinkedList_new(
     return head;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SingleLinkedList_new_int(
-    mut i: libc::c_int,
-) -> SingleLinkedList {
+pub unsafe extern "C" fn SingleLinkedList_new_int(mut i: libc::c_int) -> SingleLinkedList {
     let mut data: *mut libc::c_int = 0 as *mut libc::c_int;
-    data = malloc(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    data = malloc(::std::mem::size_of::<libc::c_int>() as libc::c_ulong) as *mut libc::c_int;
     *data.offset(0 as libc::c_int as isize) = i;
     return SingleLinkedList_new(data as *mut libc::c_void);
 }
 #[no_mangle]
 pub unsafe extern "C" fn SingleLinkedList_delete(
     mut head: SingleLinkedList,
-    mut linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     let mut next: SingleLinkedList = 0 as *mut SingleLinkedList_struct;
     if head.is_null() {
@@ -64,7 +67,7 @@ pub unsafe extern "C" fn SingleLinkedList_delete(
         if head.is_null() {
             break;
         }
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn SingleLinkedList_prepend(
@@ -82,27 +85,22 @@ pub unsafe extern "C" fn SingleLinkedList_prepend_int(
     mut i: libc::c_int,
 ) -> SingleLinkedList {
     let mut data: *mut libc::c_int = 0 as *mut libc::c_int;
-    data = malloc(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-        as *mut libc::c_int;
+    data = malloc(::std::mem::size_of::<libc::c_int>() as libc::c_ulong) as *mut libc::c_int;
     *data.offset(0 as libc::c_int as isize) = i;
     return SingleLinkedList_prepend(l, data as *mut libc::c_void);
 }
 #[no_mangle]
-pub unsafe extern "C" fn SingleLinkedList_get_data(
-    mut l: SingleLinkedList,
-) -> *mut libc::c_void {
+pub unsafe extern "C" fn SingleLinkedList_get_data(mut l: SingleLinkedList) -> *mut libc::c_void {
     return (*l).data;
 }
 #[no_mangle]
-pub unsafe extern "C" fn SingleLinkedList_get_next(
-    mut l: SingleLinkedList,
-) -> SingleLinkedList {
+pub unsafe extern "C" fn SingleLinkedList_get_next(mut l: SingleLinkedList) -> SingleLinkedList {
     return (*l).next;
 }
 #[no_mangle]
 pub unsafe extern "C" fn SingleLinkedList_print(
     mut head: SingleLinkedList,
-    mut linkedlist_print: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut linkedlist_print: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     if head.is_null() {
         return;
@@ -115,12 +113,10 @@ pub unsafe extern "C" fn SingleLinkedList_print(
         if head.is_null() {
             break;
         }
-    };
+    }
 }
 #[no_mangle]
-pub unsafe extern "C" fn DoubleLinkedList_new(
-    mut data: *mut libc::c_void,
-) -> DoubleLinkedList {
+pub unsafe extern "C" fn DoubleLinkedList_new(mut data: *mut libc::c_void) -> DoubleLinkedList {
     let mut head: DoubleLinkedList = 0 as *mut DoubleLinkedList_struct;
     head = gmalloc(::std::mem::size_of::<DoubleLinkedList_struct>() as libc::c_ulong)
         as *mut DoubleLinkedList_struct;
@@ -135,7 +131,7 @@ pub unsafe extern "C" fn DoubleLinkedList_new(
 #[no_mangle]
 pub unsafe extern "C" fn DoubleLinkedList_delete(
     mut head: DoubleLinkedList,
-    mut linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     let mut next: DoubleLinkedList = 0 as *mut DoubleLinkedList_struct;
     if head.is_null() {
@@ -151,7 +147,7 @@ pub unsafe extern "C" fn DoubleLinkedList_delete(
         if head.is_null() {
             break;
         }
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn DoubleLinkedList_prepend(
@@ -168,21 +164,17 @@ pub unsafe extern "C" fn DoubleLinkedList_prepend(
     return head;
 }
 #[no_mangle]
-pub unsafe extern "C" fn DoubleLinkedList_get_data(
-    mut l: DoubleLinkedList,
-) -> *mut libc::c_void {
+pub unsafe extern "C" fn DoubleLinkedList_get_data(mut l: DoubleLinkedList) -> *mut libc::c_void {
     return (*l).data;
 }
 #[no_mangle]
-pub unsafe extern "C" fn DoubleLinkedList_get_next(
-    mut l: DoubleLinkedList,
-) -> DoubleLinkedList {
+pub unsafe extern "C" fn DoubleLinkedList_get_next(mut l: DoubleLinkedList) -> DoubleLinkedList {
     return (*l).next;
 }
 #[no_mangle]
 pub unsafe extern "C" fn DoubleLinkedList_print(
     mut head: DoubleLinkedList,
-    mut linkedlist_print: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut linkedlist_print: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
 ) {
     if head.is_null() {
         return;
@@ -195,12 +187,12 @@ pub unsafe extern "C" fn DoubleLinkedList_print(
         if head.is_null() {
             break;
         }
-    };
+    }
 }
 #[no_mangle]
 pub unsafe extern "C" fn DoubleLinkedList_delete_element(
     mut l: DoubleLinkedList,
-    mut linklist_deallocator: Option::<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
+    mut linklist_deallocator: Option<unsafe extern "C" fn(*mut libc::c_void) -> ()>,
     mut head: *mut DoubleLinkedList,
 ) {
     let mut next: DoubleLinkedList = 0 as *mut DoubleLinkedList_struct;

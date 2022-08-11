@@ -1,9 +1,9 @@
-pub mod route;
-pub mod solvers;
-pub mod shortestpth;
-pub mod shortest;
-pub mod util;
-pub mod triang;
-pub mod visibility;
 pub mod cvt;
 pub mod inpoly;
+pub mod route;
+pub mod shortest;
+pub mod shortestpth;
+pub mod solvers;
+pub mod triang;
+pub mod util;
+pub mod visibility;

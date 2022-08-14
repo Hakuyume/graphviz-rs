@@ -248,6 +248,695 @@ unsafe extern "C" fn sffmtint(
     *v -= 1 as libc::c_int;
     return str as *mut libc::c_char;
 }
+unsafe extern "C" fn sffmtpos(
+    mut f: *mut Sfio_t,
+    mut form: *const libc::c_char,
+    mut args: ::core::ffi::VaList,
+    mut type_0: libc::c_int,
+) -> *mut Fmtpos_t {
+    let mut current_block: u64;
+    let mut base: libc::c_int = 0;
+    let mut fmt: libc::c_int = 0;
+    let mut flags: libc::c_int = 0;
+    let mut dot: libc::c_int = 0;
+    let mut width: libc::c_int = 0;
+    let mut precis: libc::c_int = 0;
+    let mut n_str: ssize_t = 0;
+    let mut size: ssize_t = 0 as libc::c_int as ssize_t;
+    let mut t_str: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut sp: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut v: libc::c_int = 0;
+    let mut n: libc::c_int = 0;
+    let mut skip: libc::c_int = 0;
+    let mut dollar: libc::c_int = 0;
+    let mut decimal: libc::c_char = 0;
+    let mut thousand: libc::c_char = 0;
+    let mut ft: *mut Sffmt_t = 0 as *mut Sffmt_t;
+    let mut savft: Sffmt_t = Sffmt_t {
+        extf: None,
+        eventf: None,
+        form: 0 as *mut libc::c_char,
+        args: (::core::mem::MaybeUninit::uninit()).assume_init(),
+        fmt: 0,
+        size: 0,
+        flags: 0,
+        width: 0,
+        precis: 0,
+        base: 0,
+        t_str: 0 as *mut libc::c_char,
+        n_str: 0,
+    };
+    let mut fp: *mut Fmtpos_t = 0 as *mut Fmtpos_t;
+    let mut argp: libc::c_int = 0;
+    let mut argn: libc::c_int = 0;
+    let mut maxp: libc::c_int = 0;
+    let mut need: [libc::c_int; 5] = [0; 5];
+    if type_0 < 0 as libc::c_int {
+        fp = 0 as *mut Fmtpos_t;
+    } else {
+        fp = sffmtpos(f, form, args.as_va_list(), -(1 as libc::c_int));
+        if fp.is_null() {
+            return 0 as *mut Fmtpos_t;
+        }
+    }
+    dollar = 0 as libc::c_int;
+    thousand = 0 as libc::c_int as libc::c_char;
+    decimal = thousand;
+    maxp = -(1 as libc::c_int);
+    argn = maxp;
+    loop {
+        n = *form as libc::c_int;
+        if !(n != 0) {
+            break;
+        }
+        if n != '%' as i32 {
+            let fresh0 = form;
+            form = form.offset(1);
+            sp = fresh0 as *mut libc::c_char;
+            while *form as libc::c_int != 0 && *form as libc::c_int != '%' as i32 {
+                form = form.offset(1 as libc::c_int as isize);
+            }
+        } else {
+            form = form.offset(1 as libc::c_int as isize);
+            if *form as libc::c_int == 0 as libc::c_int {
+                break;
+            }
+            if *form as libc::c_int == '%' as i32 {
+                form = form.offset(1 as libc::c_int as isize);
+            } else {
+                if *form as libc::c_int == '*' as i32 && type_0 > 0 as libc::c_int {
+                    skip = 1 as libc::c_int;
+                    form = form.offset(1 as libc::c_int as isize);
+                    argp = -(1 as libc::c_int);
+                } else {
+                    skip = 0 as libc::c_int;
+                    sp = sffmtint(form, &mut argp);
+                    if *sp as libc::c_int == '$' as i32 {
+                        dollar = 1 as libc::c_int;
+                        form = sp.offset(1 as libc::c_int as isize);
+                    } else {
+                        argp = -(1 as libc::c_int);
+                    }
+                }
+                dot = 0 as libc::c_int;
+                flags = dot;
+                t_str = 0 as *mut libc::c_char;
+                n_str = 0 as libc::c_int as ssize_t;
+                base = -(1 as libc::c_int);
+                precis = base;
+                width = precis;
+                size = width as ssize_t;
+                n = 0 as libc::c_int;
+                while n < 5 as libc::c_int {
+                    need[n as usize] = -(1 as libc::c_int);
+                    n += 1;
+                }
+                '_loop_flags: loop {
+                    let fresh1 = form;
+                    form = form.offset(1);
+                    fmt = *fresh1 as libc::c_int;
+                    match fmt {
+                        40 => {
+                            t_str = form as *mut libc::c_char;
+                            v = 1 as libc::c_int;
+                            loop {
+                                let fresh2 = form;
+                                form = form.offset(1);
+                                match *fresh2 as libc::c_int {
+                                    0 => {
+                                        form = t_str;
+                                        t_str = 0 as *mut libc::c_char;
+                                        n_str = 0 as libc::c_int as ssize_t;
+                                        continue '_loop_flags;
+                                    }
+                                    40 => {
+                                        v += 1 as libc::c_int;
+                                    }
+                                    41 => {
+                                        v -= 1 as libc::c_int;
+                                        if v != 0 as libc::c_int {
+                                            continue;
+                                        }
+                                        n_str = form.offset_from(t_str) as libc::c_long;
+                                        if *t_str as libc::c_int == '*' as i32 {
+                                            t_str = sffmtint(
+                                                t_str.offset(1 as libc::c_int as isize),
+                                                &mut n,
+                                            );
+                                            if *t_str as libc::c_int == '$' as i32 {
+                                                dollar = 1 as libc::c_int;
+                                            } else {
+                                                n = -(1 as libc::c_int);
+                                            }
+                                            n = (if n < 0 as libc::c_int {
+                                                argn += 1 as libc::c_int;
+                                                argn
+                                            } else {
+                                                argn = n;
+                                                argn
+                                            });
+                                            if n > maxp {
+                                                maxp = n;
+                                            }
+                                            if !fp.is_null()
+                                                && (*fp.offset(n as isize)).ft.fmt
+                                                    == 0 as libc::c_int
+                                            {
+                                                (*fp.offset(n as isize)).ft.fmt = '(' as i32;
+                                                let ref mut fresh3 =
+                                                    (*fp.offset(n as isize)).ft.form;
+                                                *fresh3 = form as *mut libc::c_char;
+                                            }
+                                            need[3 as libc::c_int as usize] = n;
+                                        }
+                                        continue '_loop_flags;
+                                    }
+                                    _ => {}
+                                }
+                            }
+                        }
+                        45 => {
+                            flags |= 0o100 as libc::c_int;
+                            flags &= !(0o1000 as libc::c_int);
+                            continue;
+                        }
+                        48 => {
+                            if flags & 0o100 as libc::c_int == 0 {
+                                flags |= 0o1000 as libc::c_int;
+                            }
+                            continue;
+                        }
+                        32 => {
+                            if flags & 0o200 as libc::c_int == 0 {
+                                flags |= 0o400 as libc::c_int;
+                            }
+                            continue;
+                        }
+                        43 => {
+                            flags |= 0o200 as libc::c_int;
+                            flags &= !(0o400 as libc::c_int);
+                            continue;
+                        }
+                        35 => {
+                            flags |= 0o2000 as libc::c_int;
+                            continue;
+                        }
+                        39 => {
+                            let mut lv: *mut lconv = 0 as *mut lconv;
+                            if decimal as libc::c_int == 0 as libc::c_int {
+                                decimal = '.' as i32 as libc::c_char;
+                                lv = localeconv();
+                                if !lv.is_null() {
+                                    if !((*lv).decimal_point).is_null()
+                                        && *((*lv).decimal_point).offset(0 as libc::c_int as isize)
+                                            as libc::c_int
+                                            != 0
+                                    {
+                                        decimal = *((*lv).decimal_point)
+                                            .offset(0 as libc::c_int as isize);
+                                    }
+                                    if !((*lv).thousands_sep).is_null()
+                                        && *((*lv).thousands_sep).offset(0 as libc::c_int as isize)
+                                            as libc::c_int
+                                            != 0
+                                    {
+                                        thousand = *((*lv).thousands_sep)
+                                            .offset(0 as libc::c_int as isize);
+                                    }
+                                }
+                            }
+                            if thousand != 0 {
+                                flags |= 0o4000 as libc::c_int;
+                            }
+                            continue;
+                        }
+                        46 => {
+                            dot += 1 as libc::c_int;
+                            if dot == 2 as libc::c_int {
+                                base = 0 as libc::c_int;
+                            }
+                            if *(*__ctype_b_loc()).offset(*form as libc::c_int as isize)
+                                as libc::c_int
+                                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                != 0
+                            {
+                                let fresh4 = form;
+                                form = form.offset(1);
+                                fmt = *fresh4 as libc::c_int;
+                                current_block = 1290827960411992432;
+                            } else {
+                                if *form as libc::c_int != '*' as i32 {
+                                    continue;
+                                }
+                                form = form.offset(1 as libc::c_int as isize);
+                                current_block = 14995344608209714559;
+                            }
+                        }
+                        42 => {
+                            current_block = 14995344608209714559;
+                        }
+                        49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 => {
+                            current_block = 1290827960411992432;
+                        }
+                        73 => {
+                            size = 0 as libc::c_int as ssize_t;
+                            flags = flags
+                                & !(0o20000 as libc::c_int
+                                    | 0o10 as libc::c_int
+                                    | 0o40000 as libc::c_int
+                                    | 0o100000 as libc::c_int
+                                    | 0o200000 as libc::c_int
+                                    | 0o2000000 as libc::c_int
+                                    | 0o4000000 as libc::c_int
+                                    | 0o20 as libc::c_int
+                                    | 0o40 as libc::c_int)
+                                | 0o2000000 as libc::c_int;
+                            if *(*__ctype_b_loc()).offset(*form as libc::c_int as isize)
+                                as libc::c_int
+                                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                != 0
+                            {
+                                n = *form as libc::c_int;
+                                while *(*__ctype_b_loc()).offset(n as isize) as libc::c_int
+                                    & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                    != 0
+                                {
+                                    size = size * 10 as libc::c_int as libc::c_long
+                                        + (n - '0' as i32) as libc::c_long;
+                                    form = form.offset(1);
+                                    n = *form as libc::c_int;
+                                }
+                            } else if *form as libc::c_int == '*' as i32 {
+                                form = sffmtint(form.offset(1 as libc::c_int as isize), &mut n);
+                                if *form as libc::c_int == '$' as i32 {
+                                    dollar = 1 as libc::c_int;
+                                    form = form.offset(1 as libc::c_int as isize);
+                                } else {
+                                    n = -(1 as libc::c_int);
+                                }
+                                n = (if n < 0 as libc::c_int {
+                                    argn += 1 as libc::c_int;
+                                    argn
+                                } else {
+                                    argn = n;
+                                    argn
+                                });
+                                if n > maxp {
+                                    maxp = n;
+                                }
+                                if !fp.is_null()
+                                    && (*fp.offset(n as isize)).ft.fmt == 0 as libc::c_int
+                                {
+                                    (*fp.offset(n as isize)).ft.fmt = 'I' as i32;
+                                    (*fp.offset(n as isize)).ft.size =
+                                        ::core::mem::size_of::<libc::c_int>() as libc::c_ulong
+                                            as ssize_t;
+                                    let ref mut fresh6 = (*fp.offset(n as isize)).ft.form;
+                                    *fresh6 = form as *mut libc::c_char;
+                                }
+                                need[4 as libc::c_int as usize] = n;
+                            }
+                            continue;
+                        }
+                        108 => {
+                            size = -(1 as libc::c_int) as ssize_t;
+                            flags &= !(0o20000 as libc::c_int
+                                | 0o10 as libc::c_int
+                                | 0o40000 as libc::c_int
+                                | 0o100000 as libc::c_int
+                                | 0o200000 as libc::c_int
+                                | 0o2000000 as libc::c_int
+                                | 0o4000000 as libc::c_int
+                                | 0o20 as libc::c_int
+                                | 0o40 as libc::c_int);
+                            if *form as libc::c_int == 'l' as i32 {
+                                form = form.offset(1 as libc::c_int as isize);
+                                flags |= 0o100000 as libc::c_int;
+                            } else {
+                                flags |= 0o40000 as libc::c_int;
+                            }
+                            continue;
+                        }
+                        104 => {
+                            size = -(1 as libc::c_int) as ssize_t;
+                            flags &= !(0o20000 as libc::c_int
+                                | 0o10 as libc::c_int
+                                | 0o40000 as libc::c_int
+                                | 0o100000 as libc::c_int
+                                | 0o200000 as libc::c_int
+                                | 0o2000000 as libc::c_int
+                                | 0o4000000 as libc::c_int
+                                | 0o20 as libc::c_int
+                                | 0o40 as libc::c_int);
+                            if *form as libc::c_int == 'h' as i32 {
+                                form = form.offset(1 as libc::c_int as isize);
+                                flags |= 0o10 as libc::c_int;
+                            } else {
+                                flags |= 0o20000 as libc::c_int;
+                            }
+                            continue;
+                        }
+                        76 => {
+                            size = -(1 as libc::c_int) as ssize_t;
+                            flags = flags
+                                & !(0o20000 as libc::c_int
+                                    | 0o10 as libc::c_int
+                                    | 0o40000 as libc::c_int
+                                    | 0o100000 as libc::c_int
+                                    | 0o200000 as libc::c_int
+                                    | 0o2000000 as libc::c_int
+                                    | 0o4000000 as libc::c_int
+                                    | 0o20 as libc::c_int
+                                    | 0o40 as libc::c_int)
+                                | 0o200000 as libc::c_int;
+                            continue;
+                        }
+                        _ => {
+                            break;
+                        }
+                    }
+                    match current_block {
+                        1290827960411992432 => {
+                            v = fmt - '0' as i32;
+                            fmt = *form as libc::c_int;
+                            while *(*__ctype_b_loc()).offset(fmt as isize) as libc::c_int
+                                & _ISdigit as libc::c_int as libc::c_ushort as libc::c_int
+                                != 0
+                            {
+                                v = v * 10 as libc::c_int + (fmt - '0' as i32);
+                                form = form.offset(1);
+                                fmt = *form as libc::c_int;
+                            }
+                            if dot == 0 as libc::c_int {
+                                width = v;
+                            } else if dot == 1 as libc::c_int {
+                                precis = v;
+                            } else if dot == 2 as libc::c_int {
+                                base = v;
+                            }
+                        }
+                        _ => {
+                            form = sffmtint(form, &mut n);
+                            if *form as libc::c_int == '$' as i32 {
+                                dollar = 1 as libc::c_int;
+                                form = form.offset(1 as libc::c_int as isize);
+                            } else {
+                                n = -(1 as libc::c_int);
+                            }
+                            n = (if n < 0 as libc::c_int {
+                                argn += 1 as libc::c_int;
+                                argn
+                            } else {
+                                argn = n;
+                                argn
+                            });
+                            if n > maxp {
+                                maxp = n;
+                            }
+                            if !fp.is_null() && (*fp.offset(n as isize)).ft.fmt == 0 as libc::c_int
+                            {
+                                (*fp.offset(n as isize)).ft.fmt = '.' as i32;
+                                (*fp.offset(n as isize)).ft.size = dot as ssize_t;
+                                let ref mut fresh5 = (*fp.offset(n as isize)).ft.form;
+                                *fresh5 = form as *mut libc::c_char;
+                            }
+                            if dot <= 2 as libc::c_int {
+                                need[dot as usize] = n;
+                            }
+                        }
+                    }
+                }
+                if flags
+                    & ((0o20000 as libc::c_int
+                        | 0o10 as libc::c_int
+                        | 0o40000 as libc::c_int
+                        | 0o100000 as libc::c_int
+                        | 0o200000 as libc::c_int
+                        | 0o2000000 as libc::c_int
+                        | 0o4000000 as libc::c_int
+                        | 0o20 as libc::c_int
+                        | 0o40 as libc::c_int)
+                        & !(0o2000000 as libc::c_int))
+                    != 0
+                {
+                    if _Sftable.sf_type[fmt as usize] as libc::c_int
+                        & (0o1 as libc::c_int | 0o2 as libc::c_int)
+                        != 0
+                        || fmt == 'n' as i32
+                    {
+                        size = (if flags & 0o100000 as libc::c_int != 0 {
+                            ::core::mem::size_of::<libc::c_longlong>() as libc::c_ulong
+                        } else if flags & 0o40000 as libc::c_int != 0 {
+                            ::core::mem::size_of::<libc::c_long>() as libc::c_ulong
+                        } else if flags & 0o20000 as libc::c_int != 0 {
+                            ::core::mem::size_of::<libc::c_short>() as libc::c_ulong
+                        } else if flags & 0o10 as libc::c_int != 0 {
+                            ::core::mem::size_of::<libc::c_char>() as libc::c_ulong
+                        } else if flags & 0o4000000 as libc::c_int != 0 {
+                            ::core::mem::size_of::<libc::c_longlong>() as libc::c_ulong
+                        } else if flags & 0o20 as libc::c_int != 0 {
+                            ::core::mem::size_of::<ptrdiff_t>() as libc::c_ulong
+                        } else if flags & 0o40 as libc::c_int != 0 {
+                            ::core::mem::size_of::<size_t>() as libc::c_ulong
+                        } else {
+                            -(1 as libc::c_int) as libc::c_ulong
+                        }) as ssize_t;
+                    } else if _Sftable.sf_type[fmt as usize] as libc::c_int & 0o4 as libc::c_int
+                        != 0
+                    {
+                        size = (if flags & 0o200000 as libc::c_int != 0 {
+                            ::core::mem::size_of::<f128::f128>() as libc::c_ulong
+                        } else if flags & (0o40000 as libc::c_int | 0o100000 as libc::c_int) != 0 {
+                            ::core::mem::size_of::<libc::c_double>() as libc::c_ulong
+                        } else {
+                            -(1 as libc::c_int) as libc::c_ulong
+                        }) as ssize_t;
+                    }
+                }
+                if skip != 0 {
+                    continue;
+                }
+                argp = (if argp < 0 as libc::c_int {
+                    argn += 1 as libc::c_int;
+                    argn
+                } else {
+                    argn = argp;
+                    argn
+                });
+                if argp > maxp {
+                    maxp = argp;
+                }
+                if dollar != 0 && fmt == '!' as i32 {
+                    return 0 as *mut Fmtpos_t;
+                }
+                if !fp.is_null() && (*fp.offset(argp as isize)).ft.fmt == 0 as libc::c_int {
+                    let ref mut fresh7 = (*fp.offset(argp as isize)).ft.form;
+                    *fresh7 = form as *mut libc::c_char;
+                    let ref mut fresh8 = (*fp.offset(argp as isize)).fmt;
+                    *fresh8 = fmt;
+                    (*fp.offset(argp as isize)).ft.fmt = *fresh8;
+                    (*fp.offset(argp as isize)).ft.size = size;
+                    (*fp.offset(argp as isize)).ft.flags = flags;
+                    (*fp.offset(argp as isize)).ft.width = width;
+                    (*fp.offset(argp as isize)).ft.precis = precis;
+                    (*fp.offset(argp as isize)).ft.base = base;
+                    let ref mut fresh9 = (*fp.offset(argp as isize)).ft.t_str;
+                    *fresh9 = t_str;
+                    (*fp.offset(argp as isize)).ft.n_str = n_str;
+                    n = 0 as libc::c_int;
+                    while n < 5 as libc::c_int {
+                        (*fp.offset(argp as isize)).need[n as usize] = need[n as usize];
+                        n += 1;
+                    }
+                }
+            }
+        }
+    }
+    if fp.is_null() {
+        if dollar == 0 || {
+            fp = malloc(
+                ((maxp + 1 as libc::c_int) as libc::c_ulong)
+                    .wrapping_mul(::core::mem::size_of::<Fmtpos_t>() as libc::c_ulong),
+            ) as *mut Fmtpos_t;
+            fp.is_null()
+        } {
+            return 0 as *mut Fmtpos_t;
+        }
+        n = 0 as libc::c_int;
+        while n <= maxp {
+            (*fp.offset(n as isize)).ft.fmt = 0 as libc::c_int;
+            n += 1;
+        }
+        return fp;
+    }
+    n = 0 as libc::c_int;
+    ft = 0 as *mut Sffmt_t;
+    while n <= maxp {
+        if (*fp.offset(n as isize)).ft.fmt == 0 as libc::c_int {
+            (*fp.offset(n as isize)).ft.fmt = 'd' as i32;
+            (*fp.offset(n as isize)).ft.width = 0 as libc::c_int;
+            (*fp.offset(n as isize)).ft.precis = 0 as libc::c_int;
+            (*fp.offset(n as isize)).ft.base = 0 as libc::c_int;
+            (*fp.offset(n as isize)).ft.size = 0 as libc::c_int as ssize_t;
+            let ref mut fresh10 = (*fp.offset(n as isize)).ft.t_str;
+            *fresh10 = 0 as *mut libc::c_char;
+            (*fp.offset(n as isize)).ft.n_str = 0 as libc::c_int as ssize_t;
+            (*fp.offset(n as isize)).ft.flags = 0 as libc::c_int;
+            v = 0 as libc::c_int;
+            while v < 5 as libc::c_int {
+                (*fp.offset(n as isize)).need[v as usize] = -(1 as libc::c_int);
+                v += 1;
+            }
+        }
+        let mut current_block_236: u64;
+        if !ft.is_null() && ((*ft).extf).is_some() {
+            let ref mut fresh11 = (*fp.offset(n as isize)).ft.extf;
+            *fresh11 = (*ft).extf;
+            let ref mut fresh12 = (*fp.offset(n as isize)).ft.eventf;
+            *fresh12 = (*ft).eventf;
+            v = (*fp.offset(n as isize)).need[0 as libc::c_int as usize];
+            if v >= 0 as libc::c_int && v < n {
+                (*fp.offset(n as isize)).ft.width = (*fp.offset(v as isize)).argv.i;
+            }
+            v = (*fp.offset(n as isize)).need[1 as libc::c_int as usize];
+            if v >= 0 as libc::c_int && v < n {
+                (*fp.offset(n as isize)).ft.precis = (*fp.offset(v as isize)).argv.i;
+            }
+            v = (*fp.offset(n as isize)).need[2 as libc::c_int as usize];
+            if v >= 0 as libc::c_int && v < n {
+                (*fp.offset(n as isize)).ft.base = (*fp.offset(v as isize)).argv.i;
+            }
+            v = (*fp.offset(n as isize)).need[3 as libc::c_int as usize];
+            if v >= 0 as libc::c_int && v < n {
+                let ref mut fresh13 = (*fp.offset(n as isize)).ft.t_str;
+                *fresh13 = (*fp.offset(v as isize)).argv.s;
+            }
+            v = (*fp.offset(n as isize)).need[4 as libc::c_int as usize];
+            if v >= 0 as libc::c_int && v < n {
+                (*fp.offset(n as isize)).ft.size = (*fp.offset(v as isize)).argv.i as ssize_t;
+            }
+            memcpy(
+                ft as *mut libc::c_void,
+                &mut (*fp.offset(n as isize)).ft as *mut Sffmt_t as *const libc::c_void,
+                ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+            );
+            (*ft).args = args.clone();
+            (*ft).flags |= 0o1000000 as libc::c_int;
+            v = (Some(((*ft).extf).expect("non-null function pointer")))
+                .expect("non-null function pointer")(
+                &mut (*fp.offset(n as isize)).argv as *mut Argv_t as *mut libc::c_void,
+                ft,
+            );
+            args = ((*ft).args).clone();
+            memcpy(
+                &mut (*fp.offset(n as isize)).ft as *mut Sffmt_t as *mut libc::c_void,
+                ft as *const libc::c_void,
+                ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+            );
+            if v < 0 as libc::c_int {
+                memcpy(
+                    ft as *mut libc::c_void,
+                    &mut savft as *mut Sffmt_t as *const libc::c_void,
+                    ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+                );
+                ft = 0 as *mut Sffmt_t;
+            }
+            if (*fp.offset(n as isize)).ft.flags & 0o400000 as libc::c_int == 0 {
+                current_block_236 = 822504560048054417;
+            } else {
+                current_block_236 = 17723783950272744135;
+            }
+        } else {
+            current_block_236 = 822504560048054417;
+        }
+        match current_block_236 {
+            822504560048054417 => {
+                if (*fp.offset(n as isize)).ft.fmt == '(' as i32 {
+                    let ref mut fresh14 = (*fp.offset(n as isize)).argv.s;
+                    *fresh14 = args.arg::<*mut libc::c_char>();
+                    (*fp.offset(n as isize)).ft.size =
+                        strlen((*fp.offset(n as isize)).argv.s) as ssize_t;
+                } else if (*fp.offset(n as isize)).ft.fmt == '.' as i32
+                    || (*fp.offset(n as isize)).ft.fmt == 'I' as i32
+                {
+                    (*fp.offset(n as isize)).argv.i = args.arg::<libc::c_int>();
+                } else if (*fp.offset(n as isize)).ft.fmt == '!' as i32 {
+                    if !ft.is_null() {
+                        memcpy(
+                            ft as *mut libc::c_void,
+                            &mut savft as *mut Sffmt_t as *const libc::c_void,
+                            ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+                        );
+                    }
+                    ft = args.arg::<*mut Sffmt_t>();
+                    let ref mut fresh15 = (*fp.offset(n as isize)).argv.ft;
+                    *fresh15 = ft;
+                    if !((*ft).form).is_null() {
+                        ft = 0 as *mut Sffmt_t;
+                    }
+                    if !ft.is_null() {
+                        memcpy(
+                            &mut savft as *mut Sffmt_t as *mut libc::c_void,
+                            ft as *const libc::c_void,
+                            ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+                        );
+                    }
+                } else if type_0 > 0 as libc::c_int {
+                    let ref mut fresh16 = (*fp.offset(n as isize)).argv.vp;
+                    *fresh16 = args.arg::<*mut libc::c_void>();
+                } else {
+                    match _Sftable.sf_type[(*fp.offset(n as isize)).ft.fmt as usize] as libc::c_int
+                    {
+                        1 | 2 => {
+                            if size as libc::c_ulong
+                                == ::core::mem::size_of::<libc::c_long>() as libc::c_ulong
+                                || size == 0 as libc::c_int as libc::c_long
+                                    && ::core::mem::size_of::<libc::c_long>() as libc::c_ulong
+                                        == ::core::mem::size_of::<libc::c_longlong>()
+                                            as libc::c_ulong
+                                || size == 64 as libc::c_int as libc::c_long
+                                    && size as libc::c_ulong
+                                        == (::core::mem::size_of::<libc::c_long>() as libc::c_ulong)
+                                            .wrapping_mul(8 as libc::c_int as libc::c_ulong)
+                            {
+                                (*fp.offset(n as isize)).argv.l = args.arg::<libc::c_long>();
+                            } else {
+                                (*fp.offset(n as isize)).argv.i = args.arg::<libc::c_int>();
+                            }
+                        }
+                        4 => {
+                            (*fp.offset(n as isize)).argv.d = args.arg::<libc::c_double>();
+                        }
+                        16 => {
+                            let ref mut fresh17 = (*fp.offset(n as isize)).argv.vp;
+                            *fresh17 = args.arg::<*mut libc::c_void>();
+                        }
+                        8 => {
+                            if (*fp.offset(n as isize)).ft.base >= 0 as libc::c_int {
+                                let ref mut fresh18 = (*fp.offset(n as isize)).argv.s;
+                                *fresh18 = args.arg::<*mut libc::c_char>();
+                            } else {
+                                (*fp.offset(n as isize)).argv.c =
+                                    args.arg::<libc::c_int>() as libc::c_char;
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+            }
+            _ => {}
+        }
+        n += 1;
+    }
+    if !ft.is_null() {
+        memcpy(
+            ft as *mut libc::c_void,
+            &mut savft as *mut Sffmt_t as *const libc::c_void,
+            ::core::mem::size_of::<Sffmt_t>() as libc::c_ulong,
+        );
+    }
+    return fp;
+}
 unsafe extern "C" fn sfcvinit() -> libc::c_int {
     let mut d: libc::c_int = 0;
     let mut l: libc::c_int = 0;

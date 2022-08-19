@@ -827,7 +827,7 @@ unsafe extern "C" fn sffmtpos(
                 &mut (*fp.offset(n as isize)).argv as *mut Argv_t as *mut libc::c_void,
                 ft,
             );
-            args = ((*ft).args).clone();
+            *args = ((*ft).args).clone();
             memcpy(
                 &mut (*fp.offset(n as isize)).ft as *mut Sffmt_t as *mut libc::c_void,
                 ft as *const libc::c_void,

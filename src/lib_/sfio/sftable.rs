@@ -219,10 +219,10 @@ pub struct _sftab_ {
     pub sf_cvinitf: Option<unsafe extern "C" fn() -> libc::c_int>,
     pub sf_cvinit: libc::c_int,
     pub sf_fmtposf: Option<
-        for<'a, 'f> unsafe extern "C" fn(
+        for<'a> unsafe extern "C" fn(
             *mut Sfio_t,
             *const libc::c_char,
-            ::std::ffi::VaList<'a, 'f>,
+            ::std::ffi::VaList<'a, 'a>,
             libc::c_int,
         ) -> *mut Fmtpos_t<'a>,
     >,
@@ -248,12 +248,12 @@ unsafe extern "C" fn sffmtint(
     *v -= 1 as libc::c_int;
     return str as *mut libc::c_char;
 }
-unsafe extern "C" fn sffmtpos(
+unsafe extern "C" fn sffmtpos<'a>(
     mut f: *mut Sfio_t,
     mut form: *const libc::c_char,
-    mut args: ::core::ffi::VaList,
+    mut args: ::core::ffi::VaList<'a, 'a>,
     mut type_0: libc::c_int,
-) -> *mut Fmtpos_t {
+) -> *mut Fmtpos_t<'a> {
     let mut current_block: u64;
     let mut base: libc::c_int = 0;
     let mut fmt: libc::c_int = 0;
@@ -1224,10 +1224,10 @@ pub static mut _Sftable: Sftab_t = unsafe {
             sf_cvinit: 0 as libc::c_int,
             sf_fmtposf: Some(
                 sffmtpos
-                    as for<'a, 'f> unsafe extern "C" fn(
+                    as for<'a> unsafe extern "C" fn(
                         *mut Sfio_t,
                         *const libc::c_char,
-                        ::std::ffi::VaList<'a, 'f>,
+                        ::std::ffi::VaList<'a, 'a>,
                         libc::c_int,
                     ) -> *mut Fmtpos_t<'a>,
             ),

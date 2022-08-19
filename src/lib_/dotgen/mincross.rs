@@ -5135,7 +5135,7 @@ unsafe extern "C" fn medians(
                 .size
                 == 0 as libc::c_int
         {
-            hasfixed = (hasfixed as libc::c_int | flat_mval(n) as libc::c_int) as bool;
+            hasfixed = (hasfixed as libc::c_int | flat_mval(n) as libc::c_int) != 0;
         }
         i += 1;
     }

@@ -219,7 +219,7 @@ unsafe extern "C" fn xml_core(
         while !is_invalid && length > l {
             is_invalid = (is_invalid as libc::c_int
                 | (*s.offset(l as isize) as libc::c_int == '\0' as i32) as libc::c_int)
-                as bool;
+                != 0;
             l = l.wrapping_add(1);
         }
         if is_invalid {

@@ -369,7 +369,7 @@ unsafe extern "C" fn imageDiff(
         while x < w {
             d = gdImageGetTrueColorPixel(B, x, y) - gdImageGetTrueColorPixel(A, x, y) != 0;
             gdImageSetPixel(C, x, y, if d as libc::c_int != 0 { white } else { black });
-            rc = (rc as libc::c_int | d as libc::c_int) as bool;
+            rc = (rc as libc::c_int | d as libc::c_int) != 0;
             x += 1;
         }
         y += 1;

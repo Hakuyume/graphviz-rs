@@ -553,7 +553,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 directionalityExist = (directionalityExist as libc::c_int
                     | (*((*graph.offset(i as isize)).edists).offset(j as isize)
                         != 0 as libc::c_int as libc::c_float) as libc::c_int)
-                    as bool;
+                    != 0;
                 j += 1;
             }
             i += 1;
@@ -1010,7 +1010,7 @@ pub unsafe extern "C" fn stress_majorization_with_hierarchy(
                 converged = fabs(new_stress - old_stress) / fabs(old_stress + 1e-10f64) < Epsilon;
                 converged = (converged as libc::c_int
                     | (iterations > 1 as libc::c_int && new_stress > old_stress) as libc::c_int)
-                    as bool;
+                    != 0;
                 old_stress = new_stress;
                 k = 0 as libc::c_int;
                 while k < dim {
